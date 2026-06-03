@@ -129,6 +129,34 @@
     "or": "या"
   },
 
+
+  "editProfile": {
+    "title": "प्रोफ़ाइल संपादित करें",
+    "changePhoto": "फोटो बदलें",
+    "username": "यूज़रनेम",
+    "aboutMe": "मेरे बारे में",
+    "addBio": "बायो जोड़ें",
+    "yearsOfExperience": "अनुभव के वर्ष",
+    "workSocialLinks": "कार्य और सामाजिक लिंक",
+    "githubHint": "github.com/username",
+    "linkedinHint": "linkedin.com/in/username",
+    "websiteHint": "लिंक जोड़ें",
+    "privacyDisclaimer": "नाम, बायो और लिंक जैसी प्रोफाइल जानकारी सभी को दिखाई देगी।",
+    "submit": "सबमिट करें",
+    "cancel": "रद्द करें",
+    "removePhoto": "हटाएं?",
+    "removeConfirmation": "क्या आप वाकई प्रोफाइल फोटो हटाना चाहते हैं?",
+    "delete": "हटाएं",
+    "importGallery": "गैलरी से इम्पोर्ट करें",
+    "takePhoto": "फोटो लें",
+    "removeCurrentPicture": "वर्तमान फोटो हटाएं",
+    "photoUploadError": "फोटो अपलोड करने में विफल। कृपया पुनः प्रयास करें।",
+    "yearsOptions": {
+      "year_0_1": "0-1 वर्ष",
+      "year_1_2": "1-2 वर्ष",
+      "year_2_3": "2-3 वर्ष",
+      "year_3_5": "3-5 वर्ष",
+      "year_5_plus": "5+ वर्ष"
   "home": {
     "searchHint": "इवेंट्स खोजें",
     "whatsNew": "नया क्या है",

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_back_button.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_card.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_header.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_back_button.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_card.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_header.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
 
 class CommunityGuidelinesScreen extends StatelessWidget {
   const CommunityGuidelinesScreen({super.key});

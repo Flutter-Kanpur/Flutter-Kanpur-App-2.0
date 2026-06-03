@@ -18,9 +18,10 @@ import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/upload_project_landing_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/events/presentation/screens/events_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/screens/home_screen.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/my_profile_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/my_profile_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/edit_profile_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/manage_profile_screen.dart';
 // ignore: unused_import
-import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/profile_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/screens/app_feedback_screen.dart';
 import 'package:go_router/go_router.dart';
 
@@ -122,6 +123,22 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: RouteNames.profile,
               builder: (context, state) => const MyProfileScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.manage_profile,
+              builder: (context, state) => const ManageProfileScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.edit_profile,
+              builder: (context, state) => const EditProfileScreen(),
             ),
           ],
         ),

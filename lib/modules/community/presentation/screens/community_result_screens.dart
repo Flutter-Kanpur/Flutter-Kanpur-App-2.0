@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_result_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_result_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/colors.dart';
 import 'package:go_router/go_router.dart';
 

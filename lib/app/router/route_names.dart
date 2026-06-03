@@ -33,4 +33,7 @@ class RouteNames {
   static const communityUploadProjectFormSegment = 'form';
   static const communityProjectSubmittedSegment = 'project-submitted';
   static const communityNetworkErrorSegment = 'network-error';
+
+  static const manage_profile = '/profile/manage-profile';
+  static const edit_profile = '/profile/edit-profile';
 }

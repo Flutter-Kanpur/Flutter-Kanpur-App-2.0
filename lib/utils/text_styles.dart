@@ -530,7 +530,7 @@ TextStyle textStyle_18BlackMedium() {
   );
 }
 
-TextStyle textStyleHintText() {
+TextStyle textStyle_hintText() {
   return TextStyle(
     fontFamily: 'ProductSans',
     fontSize: 16.sp,

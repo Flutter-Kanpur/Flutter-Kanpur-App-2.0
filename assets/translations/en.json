@@ -129,6 +129,28 @@
     "or": "OR"
   },
 
+
+  "profile": {
+    "title":"Edit Profile",
+    "manageProfile": "Manage Profile",
+    "editProfile": "Edit profile",
+    "problemOfDay": "Problem of the Day",
+    "lv": "Lv.",
+    "viewProgress": "View progress",
+    "aboutMe": "About me",
+    "roleExperience": "Role & Experience",
+    "skills": "Skills",
+    "edit": "Edit",
+    "saveChanges": "Save changes",
+    "cancel": "Cancel",
+    "addSkills": "Add skills",
+    "searchRolesSkills": "Search roles or skills...",
+    "addOther": "Add other",
+    "updateSuccess": "Profile updated successfully!",
+    "yearsSuffix": "years",
+    "enterSkill": "Enter skill",
+    "enterRole": "Enter role",
+    "yearsOfExperience": "Years of experience"
   "home": {
     "searchHint": "Search Events",
     "whatsNew": "What's new",

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../utils/colors.dart';
+import '../../utils/colors.dart';
 
 /// A customizable container widget that applies beautiful inner shadows
 /// from any side (top-left, top-right, bottom-right, bottom-left).

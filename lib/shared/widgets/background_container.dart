@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../utils/translate.dart';
+import '../../utils/translate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../utils/gradiants.dart';
-import '../utils/text_styles.dart';
+import '../../utils/gradiants.dart';
+import '../../utils/text_styles.dart';
 
 class BackgroundContainer extends StatelessWidget {
   const BackgroundContainer({super.key});

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../common_widgets/gradiant_background.dart';
+import '../../shared/widgets/gradiant_background.dart';
 import '../../utils/assets_path.dart';
 import '../../utils/colors.dart';
 import '../../utils/text_styles.dart';
