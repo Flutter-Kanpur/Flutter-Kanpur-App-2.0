@@ -1,15 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/community/application/community_provider.dart';
-import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_card.dart';
-import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_header.dart';
-import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
-import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_section_title.dart';
-import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_status_chip.dart';
-import 'package:flutter_knp_mobile_app_v2/utils/colors.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/gradiant_background.dart';
 import 'package:flutter_knp_mobile_app_v2/common_widgets/search_bar.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/widgets/home_app_bar.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/widgets/home_announcement_carousel.dart';
@@ -17,7 +8,6 @@ import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/widgets/home
 import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/widgets/event_card_component.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

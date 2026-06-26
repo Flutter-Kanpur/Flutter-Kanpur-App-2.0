@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import '../../../../../utils/assets_path.dart';
 import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,7 +11,6 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../../utils/translate.dart';
 
 import '../../../../../shared/widgets/gradiant_background.dart';
-import '../../../../../utils/colors.dart';
 import '../../../../../utils/text_styles.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -31,7 +31,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   static const _aboutMaxLength = 150;
   String _yearsOfExperience = '0-1 years';
-  bool _initialized = false;
+  // bool _initialized = false;
 
   @override
   void initState() {
@@ -55,26 +55,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.dispose();
   }
 
-  void _prefillFromProfile( profile, String? authEmail) {
-    if (_initialized || profile == null) return;
-    if (profile.fullName == null &&
-        profile.about == null &&
-        profile.github == null) {}
-
-    _initialized = true;
-    final emailPrefix = authEmail?.split('@').first ?? '';
-
-    _usernameController.text = profile.fullName ?? '';
-
-    _aboutController.text = profile.about ?? '';
-
-    _githubController.text = profile.github ?? 'github.com/$emailPrefix';
-    _linkedInController.text =
-        profile.linkedin ?? 'linkedin.com/in/$emailPrefix';
-    _websiteController.text = profile.website ?? '';
-
-    _yearsOfExperience = profile.yearsOfExperience ?? '0-1 years';
-  }
+  // void _prefillFromProfile( profile, String? authEmail) {
+  //   if (_initialized || profile == null) return;
+  //   if (profile.fullName == null &&
+  //       profile.about == null &&
+  //       profile.github == null) {}
+  //
+  //   _initialized = true;
+  //   final emailPrefix = authEmail?.split('@').first ?? '';
+  //
+  //   _usernameController.text = profile.fullName ?? '';
+  //
+  //   _aboutController.text = profile.about ?? '';
+  //
+  //   _githubController.text = profile.github ?? 'github.com/$emailPrefix';
+  //   _linkedInController.text =
+  //       profile.linkedin ?? 'linkedin.com/in/$emailPrefix';
+  //   _websiteController.text = profile.website ?? '';
+  //
+  //   _yearsOfExperience = profile.yearsOfExperience ?? '0-1 years';
+  // }
 
   InputDecoration _decoration(String hint, {Widget? prefixIcon}) {
     return InputDecoration(

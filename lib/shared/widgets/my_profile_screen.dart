@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +9,6 @@ import 'package:go_router/go_router.dart';
 // import '../../../services/remote_config_service.dart';
 import '../../app/router/route_names.dart';
 import '../../utils/assets_path.dart';
-import '../../utils/colors.dart';
 import '../../utils/text_styles.dart';
 // import '../../auth/presentation/bloc/auth_bloc.dart';
 // import '../../auth/presentation/bloc/auth_event.dart';
@@ -63,7 +63,7 @@ class MyProfileScreen extends StatelessWidget {
                   ProfileSectionBlock(
                     title: 'Account',
                     tiles: [
-                      ProfileTile(iconSvgPath: AssetsPath.profileManageProfile, title: 'Manage Profile', onTap: () => context.push(RouteNames.manage_profile)),
+                      ProfileTile(iconSvgPath: AssetsPath.profileManageProfile, title: 'Manage Profile', onTap: () => context.push(RouteNames.manageProfile)),
                       ProfileTile(iconSvgPath: AssetsPath.profileLoginSecurity, title: 'Login & Security', onTap: () {}),
                       ProfileTile(iconSvgPath: AssetsPath.profileNotifications, title: 'Notifications', onTap: () {}),
                     ],

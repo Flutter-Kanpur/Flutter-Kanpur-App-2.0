@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import '../../../../../utils/translate.dart';
+
 import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/add_role_experience_bottom_sheet.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/add_skills_bottom_sheet.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/manage_profile_header.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/manage_profile_section_card.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/problem_of_day_section.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/translate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../shared/widgets/gradiant_background.dart';
-import '../../../../../utils/colors.dart';
-import '../../../../../utils/text_styles.dart';
-// import '../../domain/entities/profile_entity.dart';
-import '../../../../../shared/widgets/manage_profile_header.dart';
-import '../../../../../shared/widgets/manage_profile_section_card.dart';
-import '../../../../../shared/widgets/problem_of_day_section.dart';
-import '../../../../../shared/widgets/add_role_experience_bottom_sheet.dart';
-import '../../../../../shared/widgets/add_skills_bottom_sheet.dart';
+
 
 
 class ManageProfileScreen extends StatefulWidget {
