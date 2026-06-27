@@ -183,10 +183,17 @@ class AuthNotifier extends Notifier<AppAuthState> {
       if (msg.contains('user already registered')) {
         return 'An account with this email already exists.';
       }
+      if (msg.contains('security purposes') || msg.contains('after ')) {
+        return 'Please wait a moment before trying again.';
+      }
       if (msg.contains('password')) {
         return 'Password must be at least 6 characters.';
       }
       return e.message;
+    }
+    if (e is PostgrestException) {
+      if (e.code == '23505') return 'Username or email is already taken.';
+      return 'Database error. Please try again.';
     }
     return 'Something went wrong. Please try again.';
   }

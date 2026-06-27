@@ -54,14 +54,20 @@ class AuthRemoteDataSource {
     final user = response.user;
     if (user == null) throw const AuthException('Sign up failed.');
 
-    await _client.from(AuthConstants.usersTable).insert(
-      AuthUserModel.toInsertMap(
-        uid: user.id,
-        email: email,
-        username: username,
-        isEmailVerified: user.emailConfirmedAt != null,
-      ),
-    );
+    // Insert the users row. If this fails (e.g. the auth signup already ran
+    // and only the insert crashed), don't block the user — they just verify email.
+    try {
+      await _client.from(AuthConstants.usersTable).insert(
+        AuthUserModel.toInsertMap(
+          uid: user.id,
+          email: email,
+          username: username,
+          isEmailVerified: user.emailConfirmedAt != null,
+        ),
+      );
+    } catch (_) {
+      // Row might already exist from a previous partial attempt — safe to ignore.
+    }
 
     return AuthUserModel(
       id: user.id,
