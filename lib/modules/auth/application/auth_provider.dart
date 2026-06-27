@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter_knp_mobile_app_v2/modules/auth/application/auth_state.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/auth/data/datasources/auth_remote_data_source.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/auth/data/models/auth_user_model.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/auth/data/repositories/auth_repository_impl.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/auth/domain/repositories/auth_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,8 +21,51 @@ final authNotifierProvider = NotifierProvider<AuthNotifier, AppAuthState>(
 );
 
 class AuthNotifier extends Notifier<AppAuthState> {
+  StreamSubscription<AuthChangeEvent>? _authSub;
+
   @override
-  AppAuthState build() => const AppAuthState();
+  AppAuthState build() {
+    // Listen to Supabase auth state changes (catches OAuth redirects)
+    _authSub = Supabase.instance.client.auth.onAuthStateChange.map((d) => d.event).listen(
+      (event) {
+        if (event == AuthChangeEvent.signedIn) {
+          final session = Supabase.instance.client.auth.currentSession;
+          if (session != null) {
+            final u = session.user;
+            final user = AuthUserModel(
+              id: u.id,
+              email: u.email ?? '',
+              username: u.userMetadata?['username'] as String? ?? '',
+              displayName: u.userMetadata?['full_name'] as String?,
+              photoUrl: u.userMetadata?['avatar_url'] as String?,
+              isEmailVerified: u.emailConfirmedAt != null,
+            );
+            state = state.copyWith(status: AuthStatus.authenticated, user: user, error: null);
+          }
+        } else if (event == AuthChangeEvent.signedOut) {
+          state = const AppAuthState(status: AuthStatus.unauthenticated);
+        } else if (event == AuthChangeEvent.userUpdated) {
+          final u = Supabase.instance.client.auth.currentUser;
+          if (u != null && u.emailConfirmedAt != null && state.user != null) {
+            state = state.copyWith(
+              status: AuthStatus.authenticated,
+              user: AuthUserModel(
+                id: u.id,
+                email: u.email ?? '',
+                username: state.user!.username,
+                isEmailVerified: true,
+              ),
+              error: null,
+            );
+          }
+        }
+      },
+    );
+
+    ref.onDispose(() => _authSub?.cancel());
+
+    return const AppAuthState();
+  }
 
   AuthRepository get _repository => ref.read(authRepositoryProvider);
 
@@ -85,12 +131,8 @@ class AuthNotifier extends Notifier<AppAuthState> {
   Future<void> signInWithGoogle() async {
     state = state.copyWith(status: AuthStatus.loading, error: null);
     try {
-      final user = await _repository.signInWithGoogle();
-      if (user == null) {
-        state = state.copyWith(status: AuthStatus.unauthenticated, error: null);
-        return;
-      }
-      state = state.copyWith(status: AuthStatus.authenticated, user: user, error: null);
+      await _repository.signInWithGoogle();
+      // Navigation happens via onAuthStateChange listener above
     } catch (e) {
       state = state.copyWith(status: AuthStatus.error, error: _parseError(e));
     }
@@ -146,7 +188,6 @@ class AuthNotifier extends Notifier<AppAuthState> {
       }
       return e.message;
     }
-    if (e is UnimplementedError) return e.message ?? 'Not available yet.';
     return 'Something went wrong. Please try again.';
   }
 }

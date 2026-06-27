@@ -33,6 +33,7 @@ class AuthConstants {
   static const int splashDurationMs = 2500;
   static const int resendCooldownSeconds = 60;
 
-  // Google sign-in web client ID (set in firebase/google-services.json)
-  static const String googleWebClientId = '';
+  // Supabase OAuth redirect — must match Supabase dashboard → Auth → URL Configuration
+  static const String oauthRedirectUrl =
+      'com.example.flutter_knp_mobile_app_v2://login-callback';
 }

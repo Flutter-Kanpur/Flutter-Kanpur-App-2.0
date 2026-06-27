@@ -72,9 +72,16 @@ class AuthRemoteDataSource {
     );
   }
 
-  // Google sign-in — wire up when google_sign_in v7 native flow is ready
+  // Opens the device browser for Google OAuth.
+  // After the user signs in, Supabase redirects back to the app via the
+  // deep-link scheme and the onAuthStateChange stream fires SIGNED_IN.
   Future<AuthUserModel?> signInWithGoogle() async {
-    throw UnimplementedError('Google sign-in coming soon.');
+    await _client.auth.signInWithOAuth(
+      OAuthProvider.google,
+      redirectTo: AuthConstants.oauthRedirectUrl,
+    );
+    // Return null — navigation is driven by the onAuthStateChange listener
+    return null;
   }
 
   Future<void> signOut() async {
