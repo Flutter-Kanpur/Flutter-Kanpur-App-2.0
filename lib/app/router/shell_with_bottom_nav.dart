@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../common_widgets/gradiant_background.dart';
+import '../../shared/widgets/gradiant_background.dart';
 import '../../utils/assets_path.dart';
-import '../../utils/colors.dart';
+
 import '../../utils/text_styles.dart';
 
 /// Persistent shell that shows the bottom nav bar on home, community, events, and profile tabs.
@@ -68,7 +69,7 @@ class ShellWithBottomNav extends StatelessWidget {
                   splashFactory: NoSplash.splashFactory,
                 ),
                 child: BottomNavigationBar(
-                  backgroundColor: AppColors.navBarBackgroundColorV2,
+                  backgroundColor: AppColors.navBarBackgroundColor,
                   currentIndex: currentIndex,
                   onTap: (index) => navigationShell.goBranch(index),
                   type: BottomNavigationBarType.fixed,

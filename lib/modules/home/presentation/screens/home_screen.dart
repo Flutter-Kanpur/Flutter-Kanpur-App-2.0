@@ -1,136 +1,177 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/community/application/community_provider.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_card.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_header.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_screen.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_section_title.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_status_chip.dart';
-import 'package:flutter_knp_mobile_app_v2/utils/colors.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_knp_mobile_app_v2/common_widgets/search_bar.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/widgets/home_app_bar.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/widgets/home_announcement_carousel.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/widgets/home_filter_tabs.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/widgets/event_card_component.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final community = ref.watch(communityDashboardProvider);
-
-    return FkScreen(
-      children: [
-        FkHeader(
-          title: 'Flutter Kanpur',
-          subtitle:
-              'Guest workspace is open while auth is under implementation.',
-          trailing: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.notifications_none_rounded),
-          ),
-        ),
-        const SizedBox(height: 18),
-        FkCard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const FkStatusChip(
-                label: 'Development mode',
-                icon: Icons.lock_open_rounded,
-              ),
-              const SizedBox(height: 12),
-              Text(
-                'Start community pages now',
-                style: Theme.of(
-                  context,
-                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w900),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Auth, profile restore, and Supabase writes can be connected later. UI/state flow is ready for feature work.',
-              ),
-            ],
-          ),
-        ),
-        FkSectionTitle(
-          title: 'Ecosystem Modules',
-          actionLabel: 'Community',
-          onActionTap: () => context.go('/community'),
-        ),
-        _ModuleTile(
-          title: 'Community',
-          subtitle:
-              '${community.memberCount} members - ${community.postCount} feed items',
-          icon: Icons.groups_rounded,
-          onTap: () => context.go('/community'),
-        ),
-        _ModuleTile(
-          title: 'Events',
-          subtitle: 'Meetups, workshops, tickets, QR check-in',
-          icon: Icons.event_rounded,
-          onTap: () => context.go('/events'),
-        ),
-        _ModuleTile(
-          title: 'Blogs',
-          subtitle: 'Modular blog platform integration',
-          icon: Icons.article_rounded,
-          onTap: () => context.go('/blogs'),
-        ),
-        _ModuleTile(
-          title: 'Profile',
-          subtitle: 'Default guest profile until auth is connected',
-          icon: Icons.person_rounded,
-          onTap: () => context.go('/profile'),
-        ),
-      ],
-    );
-  }
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _ModuleTile extends StatelessWidget {
-  const _ModuleTile({
-    required this.title,
-    required this.subtitle,
-    required this.icon,
-    required this.onTap,
-  });
-
-  final String title;
-  final String subtitle;
-  final IconData icon;
-  final VoidCallback onTap;
+class _HomeScreenState extends State<HomeScreen> {
+  late int _currentAnnouncementPage = 0;
+  late int _selectedFilterIndex = 1;
+  late int _selectedFiltersCount = 0;
 
   @override
   Widget build(BuildContext context) {
-    return FkCard(
-      onTap: onTap,
-      child: Row(
-        children: [
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(icon, color: AppColors.primary),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
+    final announcements = [
+      {
+        'title': 'home.announcements.first.title'.tr(),
+        'body': 'home.announcements.first.body'.tr(),
+        'btn_text': 'home.announcements.first.button'.tr(),
+        'btn_url': '',
+        'background_image': null,
+      },
+      {
+        'title': 'home.announcements.second.title'.tr(),
+        'body': 'home.announcements.second.body'.tr(),
+        'btn_text': 'home.announcements.second.button'.tr(),
+        'btn_url': '',
+        'background_image': null,
+      },
+      {
+        'title': 'home.announcements.third.title'.tr(),
+        'body': 'home.announcements.third.body'.tr(),
+        'btn_text': 'home.announcements.third.button'.tr(),
+        'btn_url': '',
+        'background_image': null,
+      },
+    ];
+
+    return GradientBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
+                const HomeAppBar(),
+                CommonSearchBar(
+                  readOnly: true,
+                  hintText: 'home.searchHint'.tr(),
+                  onTap: () {
+                    // Handle search navigation
+                  },
+                ),
+                HomeAnnouncementCarousel(
+                  announcements: announcements,
+                  currentPage: _currentAnnouncementPage,
+                  onPageChanged: (page) {
+                    setState(() {
+                      _currentAnnouncementPage = page;
+                    });
+                  },
+                ),
+
+                HomeFilterTabs(
+                  selectedFilterIndex: _selectedFilterIndex,
+                  onFilterSelected: (index) {
+                    setState(() {
+                      _selectedFilterIndex = index;
+                    });
+                  },
+                  onFiltersTap: () {
+                    // Handle filters bottom sheet
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'home.filtersBottomSheetPlaceholder'.tr(),
+                        ),
+                      ),
+                    );
+                  },
+                  selectedFiltersCount: _selectedFiltersCount,
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 16.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'home.whatsNew'.tr(),
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          // Handle see all navigation
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              'home.seeAll'.tr(),
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                            SizedBox(width: 2.w),
+                            Icon(
+                              Icons.chevron_right,
+                              size: 20.sp,
+                              color: Colors.grey[600],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text(subtitle),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  child: Column(
+                    children: [
+                      // First Event Card
+                      EventCardComponent(
+                        assetPath: AssetsPath.launcheventpng,
+                        status: 'home.events.upcoming'.tr(),
+                        statusColor: const Color(0xFF10B981),
+                        organization: 'home.events.organization'.tr(),
+                        title: 'home.events.first.title'.tr(),
+                        description: 'home.events.first.description'.tr(),
+                        dateTime: 'home.events.first.dateTime'.tr(),
+                        buttonText: 'home.events.button'.tr(),
+                        onButtonPressed: () {},
+                        showEyeIcon: true,
+                        onEyeIconPressed: () {},
+                      ),
+                      16.verticalSpace,
+                      // Second Event Card
+                      EventCardComponent(
+                        assetPath: AssetsPath.fkcard,
+                        status: 'home.events.upcoming'.tr(),
+                        statusColor: const Color(0xFF10B981),
+                        organization: 'home.events.organization'.tr(),
+                        title: 'home.events.second.title'.tr(),
+                        description: 'home.events.second.description'.tr(),
+                        dateTime: 'home.events.second.dateTime'.tr(),
+                        buttonText: 'home.events.button'.tr(),
+                        onButtonPressed: () {},
+                        showEyeIcon: true,
+                        onEyeIconPressed: () {},
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
-          const Icon(Icons.chevron_right_rounded),
-        ],
+        ),
       ),
     );
   }

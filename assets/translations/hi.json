@@ -8,9 +8,6 @@
     "welcomeBack": "वापसी पर स्वागत है",
     "welcomeBackSubTitle": "जहाँ आपने छोड़ा था, वहीं से जारी रखने के लिए लॉग इन करें।",
 
-    "welcomeBack": "वापसी पर स्वागत है",
-    "welcomeBackSubTitle": "जहाँ आपने छोड़ा था, वहीं से जारी रखने के लिए लॉग इन करें।",
-
     "username": "यूज़रनेम",
     "emailAddress": "ईमेल पता",
     "emailOrUsername": "ईमेल पता/यूज़रनेम",
@@ -130,5 +127,85 @@
     "fullNameError": "कृपया अपना नाम दर्ज करें।",
 
     "or": "या"
+  },
+
+
+  "editProfile": {
+    "title": "प्रोफ़ाइल संपादित करें",
+    "changePhoto": "फोटो बदलें",
+    "username": "यूज़रनेम",
+    "aboutMe": "मेरे बारे में",
+    "addBio": "बायो जोड़ें",
+    "yearsOfExperience": "अनुभव के वर्ष",
+    "workSocialLinks": "कार्य और सामाजिक लिंक",
+    "githubHint": "github.com/username",
+    "linkedinHint": "linkedin.com/in/username",
+    "websiteHint": "लिंक जोड़ें",
+    "privacyDisclaimer": "नाम, बायो और लिंक जैसी प्रोफाइल जानकारी सभी को दिखाई देगी।",
+    "submit": "सबमिट करें",
+    "cancel": "रद्द करें",
+    "removePhoto": "हटाएं?",
+    "removeConfirmation": "क्या आप वाकई प्रोफाइल फोटो हटाना चाहते हैं?",
+    "delete": "हटाएं",
+    "importGallery": "गैलरी से इम्पोर्ट करें",
+    "takePhoto": "फोटो लें",
+    "removeCurrentPicture": "वर्तमान फोटो हटाएं",
+    "photoUploadError": "फोटो अपलोड करने में विफल। कृपया पुनः प्रयास करें।",
+    "yearsOptions": {
+      "year_0_1": "0-1 वर्ष",
+      "year_1_2": "1-2 वर्ष",
+      "year_2_3": "2-3 वर्ष",
+      "year_3_5": "3-5 वर्ष",
+      "year_5_plus": "5+ वर्ष"
+  "home": {
+    "searchHint": "इवेंट्स खोजें",
+    "whatsNew": "नया क्या है",
+    "seeAll": "सभी देखें",
+    "filtersBottomSheetPlaceholder": "फिल्टर शीट यहां खुलेगी",
+    "filterTabs": {
+      "filters": "फ़िल्टर",
+      "myEvents": "मेरे इवेंट्स",
+      "announcements": "घोषणाएँ",
+      "upcoming": "आगामी",
+      "past": "पिछले"
+    },
+    "bottomNav": {
+      "home": "होम",
+      "community": "कम्युनिटी",
+      "explore": "एक्सप्लोर",
+      "profile": "प्रोफ़ाइल"
+    },
+    "events": {
+      "upcoming": "आगामी",
+      "organization": "Flutter Kanpur",
+      "button": "लाइव जुड़ें  ->",
+      "first": {
+        "title": "लॉन्च इवेंट",
+        "description": "उद्योग विशेषज्ञों के साथ नए रुझानों और तकनीकी क्षेत्र में सर्वोत्तम प्रथाओं पर एक रोचक सत्र में शामिल हों।",
+        "dateTime": "रवि, 7 अप्रैल • 4:00 PM • कानपुर"
+      },
+      "second": {
+        "title": "Figma से Flutter तक: प्रैक्टिकल वर्कफ़्लो",
+        "description": "यह सत्र वास्तविक दुनिया के परिदृश्यों में स्केल करने वाले Flutter ऐप्लिकेशन बनाने पर केंद्रित है...और देखें",
+        "dateTime": "रवि, 7 अप्रैल • 4:00 PM • कानपुर"
+      }
+    },
+    "announcements": {
+      "first": {
+        "title": "डिज़ाइन चैलेंज 2026",
+        "body": "एक रोमांचक डिज़ाइन चैलेंज में शामिल हों! शानदार UI/UX डिज़ाइन बनाएं और आकर्षक पुरस्कार जीतें!",
+        "button": "विवरण देखें"
+      },
+      "second": {
+        "title": "Flutter वर्कशॉप",
+        "body": "उद्योग विशेषज्ञों से उन्नत Flutter पैटर्न और सर्वोत्तम प्रथाएँ सीखें।",
+        "button": "अभी रजिस्टर करें"
+      },
+      "third": {
+        "title": "हैकाथॉन 2026",
+        "body": "नवाचारपूर्ण समाधान बनाएं और अन्य डेवलपर्स के साथ प्रतिस्पर्धा करें और रोमांचक पुरस्कार जीतें।",
+        "button": "साइन अप करें"
+      }
+    }
   }
 }

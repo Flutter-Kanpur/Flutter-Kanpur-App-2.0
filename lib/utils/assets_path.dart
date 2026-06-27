@@ -80,8 +80,13 @@ class AssetsPath {
   static const String playstoreSvg = 'assets/icons/playstore.svg';
   static const String linkedinSvg = 'assets/icons/linkedin_v2.svg';
   static const String websiteSvg = 'assets/icons/website_v2.svg';
-  static const String notification = 'assets/notification_icon.svg';
+  static const String notification = 'assets/icons/notification_icon.svg';
   static const String historyIcon = 'assets/icons/history_icon.svg';
   static const String dash = 'assets/dash.png';
   static const String profileUpdated = 'assets/icons/profile_updated.svg';
-}
+  static const String announcementcardbg = 'assets/announcements_card_bg.svg';
+  static const String launchevent = 'assets/launch_event.svg';
+  static const String flutterkanpurcard = 'assets/flutter_kanpur_card.svg';
+  static const String fkcard = 'assets/fk_card.png';
+  static const String launcheventpng = 'assets/launch_event.png';
+  }

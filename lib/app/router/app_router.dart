@@ -1,5 +1,6 @@
-import 'package:flutter_knp_mobile_app_v2/app/router/shell_with_bottom_nav.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
+import 'package:flutter_knp_mobile_app_v2/app/router/shell_with_bottom_nav.dart';
+
 import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/auth_landing_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/auth_options_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/sign_in_screen.dart';
@@ -7,24 +8,28 @@ import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/sign
 import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/splash_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/blogs/presentation/screens/blogs_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/ask_question_screen.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/community_result_screens.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/community_discussions_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/community_guidelines_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/community_members_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/community_projects_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/community_result_screens.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/community_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/discussion_detail_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/upload_project_form_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/upload_project_landing_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/events/presentation/screens/events_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/screens/home_screen.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/profile_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/onboarding/presentation/screens/onboarding_navigation_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/onboarding/presentation/screens/onboarding_success_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/my_profile_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/edit_profile_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/manage_profile_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/screens/app_feedback_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final GoRouter appRouter = GoRouter(
-  // Temporary development bypass: auth is not implemented yet, so start on home.
   initialLocation: RouteNames.home,
+
   routes: [
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
@@ -34,6 +39,8 @@ final GoRouter appRouter = GoRouter(
         );
       },
       branches: [
+
+        /// Home
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -42,11 +49,15 @@ final GoRouter appRouter = GoRouter(
             ),
           ],
         ),
+
+        /// Community
         StatefulShellBranch(
           routes: [
             GoRoute(
               path: RouteNames.community,
-              builder: (context, state) => const CommunityScreen(),
+              builder: (context, state) =>
+              const CommunityScreen(),
+
               routes: [
                 GoRoute(
                   path: RouteNames.communityDiscussionsSegment,
@@ -55,15 +66,18 @@ final GoRouter appRouter = GoRouter(
                 ),
                 GoRoute(
                   path: RouteNames.communityDiscussionDetailSegment,
-                  builder: (context, state) => const DiscussionDetailScreen(),
+                  builder: (context, state) =>
+                  const DiscussionDetailScreen(),
                 ),
                 GoRoute(
                   path: RouteNames.communityAskQuestionSegment,
-                  builder: (context, state) => const AskQuestionScreen(),
+                  builder: (context, state) =>
+                  const AskQuestionScreen(),
                 ),
                 GoRoute(
                   path: RouteNames.communityMembersSegment,
-                  builder: (context, state) => const CommunityMembersScreen(),
+                  builder: (context, state) =>
+                  const CommunityMembersScreen(),
                 ),
                 GoRoute(
                   path: RouteNames.communityProjectsSegment,
@@ -99,19 +113,25 @@ final GoRouter appRouter = GoRouter(
             ),
           ],
         ),
+
+        /// Events
         StatefulShellBranch(
           routes: [
             GoRoute(
               path: RouteNames.events,
-              builder: (context, state) => const EventsScreen(),
+              builder: (context, state) =>
+              const EventsScreen(),
             ),
           ],
         ),
+
+        /// Blogs
         StatefulShellBranch(
           routes: [
             GoRoute(
               path: RouteNames.blogs,
-              builder: (context, state) => const BlogsScreen(),
+              builder: (context, state) =>
+              const BlogsScreen(),
             ),
           ],
         ),
@@ -119,32 +139,79 @@ final GoRouter appRouter = GoRouter(
           routes: [
             GoRoute(
               path: RouteNames.profile,
-              builder: (context, state) => const ProfileScreen(),
+              builder: (context, state) =>
+              const MyProfileScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.manageProfile,
+              builder: (context, state) => const ManageProfileScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.editProfile,
+              builder: (context, state) => const EditProfileScreen(),
             ),
           ],
         ),
       ],
     ),
+
+    /// Splash
     GoRoute(
       path: RouteNames.splash,
       builder: (context, state) => const SplashScreen(),
     ),
+
+    /// Auth Landing
     GoRoute(
       path: RouteNames.authLanding,
-      builder: (context, state) => const AuthLandingScreen(),
+      builder: (context, state) =>
+      const AuthLandingScreen(),
     ),
+
+    /// Auth Options
     GoRoute(
       path: RouteNames.authOptions,
-      builder: (context, state) => const AuthOptionsScreen(),
+      builder: (context, state) =>
+      const AuthOptionsScreen(),
     ),
+
+    /// Sign In
     GoRoute(
       path: RouteNames.signIn,
-      builder: (context, state) => const SignInScreen(),
+      builder: (context, state) =>
+      const SignInScreen(),
     ),
+
+    /// Sign Up
     GoRoute(
       path: RouteNames.signUp,
-      builder: (context, state) => const SignUpScreen(),
+      builder: (context, state) =>
+      const SignUpScreen(),
     ),
+
+    /// Onboarding
+    GoRoute(
+      path: RouteNames.onboardingNavigation,
+      builder: (context, state) =>
+      const OnboardingNavigationScreen(),
+    ),
+
+    /// Onboarding Success
+    GoRoute(
+      path: RouteNames.onboardingSuccess,
+      builder: (context, state) =>
+      const OnboardingSuccessScreen(),
+    ),
+
+    /// Shared Feedback Screen
     GoRoute(
       path: RouteNames.feedback,
 
