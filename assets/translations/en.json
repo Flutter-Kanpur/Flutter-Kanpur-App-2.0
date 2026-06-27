@@ -131,7 +131,7 @@
 
 
   "profile": {
-    "title":"Edit Profile",
+    "title": "Edit Profile",
     "manageProfile": "Manage Profile",
     "editProfile": "Edit profile",
     "problemOfDay": "Problem of the Day",
@@ -152,7 +152,6 @@
     "enterRole": "Enter role",
     "yearsOfExperience": "Years of experience"
   },
-
   "home": {
     "searchHint": "Search Events",
     "whatsNew": "What's new",
