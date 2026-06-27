@@ -5,6 +5,7 @@ class RouteNames {
   static const authOptions = '/auth-options';
   static const signIn = '/sign-in';
   static const signUp = '/sign-up';
+  static const emailVerification = '/email-verification';
   static const feedback = '/feedback';
   static const home = '/home';
   static const community = '/community';

@@ -6,24 +6,23 @@ import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/core/constants/app_assets.dart';
-import 'package:flutter_knp_mobile_app_v2/shared/screens/app_feedback_screen.dart';
-
+import 'package:flutter_knp_mobile_app_v2/modules/auth/application/auth_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/auth/application/auth_state.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/custom_textfield.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradient_background.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-class SignUpScreen extends StatefulWidget {
+class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  ConsumerState<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
-
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -42,32 +41,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   void initState() {
     super.initState();
-
     for (final node in [
       _usernameFocusNode,
       _emailFocusNode,
       _passwordFocusNode,
       _confirmPasswordFocusNode,
     ]) {
-      node.addListener(_scrollToFocusedField);
+      node.addListener(_scrollToFocused);
     }
   }
 
-  void _scrollToFocusedField() {
+  void _scrollToFocused() {
     final nodes = [
       _usernameFocusNode,
       _emailFocusNode,
       _passwordFocusNode,
       _confirmPasswordFocusNode,
     ];
-
     final keys = [
       _usernameFieldKey,
       _emailFieldKey,
       _passwordFieldKey,
       _confirmPasswordFieldKey,
     ];
-
     for (int i = 0; i < nodes.length; i++) {
       if (nodes[i].hasFocus && keys[i].currentContext != null) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -77,7 +73,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
             curve: Curves.easeInOut,
           );
         });
-
         break;
       }
     }
@@ -91,20 +86,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _passwordFocusNode,
       _confirmPasswordFocusNode,
     ]) {
-      node.removeListener(_scrollToFocusedField);
-      node.dispose();
+      node
+        ..removeListener(_scrollToFocused)
+        ..dispose();
     }
-
     _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
-
     super.dispose();
+  }
+
+  void _submit() {
+    if (!_formKey.currentState!.validate()) return;
+    ref.read(authNotifierProvider.notifier).signUpWithEmail(
+      username: _usernameController.text.trim(),
+      email: _emailController.text.trim(),
+      password: _passwordController.text,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authNotifierProvider);
+
+    ref.listen<AppAuthState>(authNotifierProvider, (_, next) {
+      if (!context.mounted) return;
+      if (next.status == AuthStatus.verificationSent) {
+        context.go(RouteNames.emailVerification);
+      } else if (next.status == AuthStatus.authenticated) {
+        context.go(RouteNames.home);
+      }
+    });
+
     return GradientBackground(
       child: SafeArea(
         child: LayoutBuilder(
@@ -118,44 +132,110 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: IntrinsicHeight(
-                  child: Column(
-                    children: [
-                      110.verticalSpace,
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        110.verticalSpace,
+                        _buildMascot(),
+                        18.verticalSpace,
+                        _buildHeaderText(),
+                        35.verticalSpace,
 
-                      _buildSignUpForm(),
-                    ],
+                        if (authState.error != null) ...[
+                          _ErrorBanner(message: authState.error!),
+                          16.verticalSpace,
+                        ],
+
+                        _buildField(
+                          fieldKey: _usernameFieldKey,
+                          text: 'auth.username'.tr(),
+                          controller: _usernameController,
+                          focusNode: _usernameFocusNode,
+                          validator: (v) => (v == null || v.trim().isEmpty)
+                              ? 'auth.usernameRequired'.tr()
+                              : null,
+                        ),
+                        12.verticalSpace,
+                        _buildField(
+                          fieldKey: _emailFieldKey,
+                          text: 'auth.emailAddress'.tr(),
+                          controller: _emailController,
+                          focusNode: _emailFocusNode,
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (v) =>
+                              (v == null || v.isEmpty) ? 'auth.emailRequired'.tr() : null,
+                        ),
+                        12.verticalSpace,
+                        _buildField(
+                          fieldKey: _passwordFieldKey,
+                          text: 'auth.createPassword'.tr(),
+                          controller: _passwordController,
+                          focusNode: _passwordFocusNode,
+                          isPassword: true,
+                          validator: (v) =>
+                              (v == null || v.isEmpty) ? 'auth.passwordRequired'.tr() : null,
+                        ),
+                        12.verticalSpace,
+                        _buildField(
+                          fieldKey: _confirmPasswordFieldKey,
+                          text: 'auth.confirmPassword'.tr(),
+                          controller: _confirmPasswordController,
+                          focusNode: _confirmPasswordFocusNode,
+                          isPassword: true,
+                          validator: (v) {
+                            if (v == null || v.isEmpty) {
+                              return 'auth.confirmPasswordRequired'.tr();
+                            }
+                            if (v != _passwordController.text) {
+                              return 'auth.passwordsDoNotMatch'.tr();
+                            }
+                            return null;
+                          },
+                        ),
+
+                        35.verticalSpace,
+
+                        GradientButton(
+                          height: 45.h,
+                          text: authState.isLoading
+                              ? 'auth.loading'.tr()
+                              : 'auth.createAccountButton'.tr(),
+                          textStyle:
+                              textStyle_16RegularBlack().copyWith(color: Colors.white),
+                          onTap: authState.isLoading ? () {} : _submit,
+                        ),
+
+                        20.verticalSpace,
+
+                        Center(
+                          child: Text.rich(
+                            TextSpan(
+                              text: '${'auth.alreadyHaveAccount'.tr()} ',
+                              style: textStyle_14RegularBlack(),
+                              children: [
+                                TextSpan(
+                                  text: 'auth.loginNow'.tr(),
+                                  style: textStyle_14RegularBlack().copyWith(
+                                    color: AppColors.selectedNavBarIconColor,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () => context.go(RouteNames.signIn),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        8.verticalSpace,
+                      ],
+                    ),
                   ),
                 ),
               ),
             );
           },
         ),
-      ),
-    );
-  }
-
-  Widget _buildSignUpForm() {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          _buildMascot(),
-          18.verticalSpace,
-          _buildHeaderText(),
-          35.verticalSpace,
-          _buildUsernameField(),
-          12.verticalSpace,
-          _buildEmailField(),
-          12.verticalSpace,
-          _buildPasswordField(),
-          12.verticalSpace,
-          _buildConfirmPasswordField(),
-          35.verticalSpace,
-          _buildContinueButton(),
-          20.verticalSpace,
-          _buildFooterText(),
-          8.verticalSpace,
-        ],
       ),
     );
   }
@@ -175,253 +255,66 @@ class _SignUpScreenState extends State<SignUpScreen> {
           'auth.signUpTitle'.tr(),
           style: textStyle_18MediumBlack().copyWith(fontSize: 24.sp),
         ),
-
         18.verticalSpace,
-
         Text(
           'auth.signUpSubTitle'.tr(),
           textAlign: TextAlign.center,
-          style: textStyle_16RegularBlack().copyWith(
-            color: AppColors.subtitleTextDarkGrey,
-          ),
+          style: textStyle_16RegularBlack().copyWith(color: AppColors.subtitleTextDarkGrey),
         ),
       ],
     );
   }
 
-  Widget _buildUsernameField() {
+  Widget _buildField({
+    required GlobalKey fieldKey,
+    required String text,
+    required TextEditingController controller,
+    required FocusNode focusNode,
+    TextInputType keyboardType = TextInputType.text,
+    bool isPassword = false,
+    String? Function(String?)? validator,
+  }) {
     return Container(
-      key: _usernameFieldKey,
+      key: fieldKey,
       child: CustomTextField(
-        text: 'auth.username'.tr(),
-
-        controller: _usernameController,
-
-        focusNode: _usernameFocusNode,
-
-        showBorder:
-            _usernameFocusNode.hasFocus || _usernameController.text.isNotEmpty,
-
-        fillColor:
-            _usernameFocusNode.hasFocus || _usernameController.text.isNotEmpty
+        text: text,
+        controller: controller,
+        focusNode: focusNode,
+        keyboardType: keyboardType,
+        isPassword: isPassword,
+        showBorder: focusNode.hasFocus || controller.text.isNotEmpty,
+        borderColor: focusNode.hasFocus
+            ? AppColors.selectedNavBarIconColor
+            : controller.text.isNotEmpty
+                ? AppColors.communityBorderColor
+                : const Color(0xFFF6F6F6),
+        fillColor: focusNode.hasFocus || controller.text.isNotEmpty
             ? Colors.transparent
             : const Color(0xFFF6F6F6),
-
-        borderColor: _usernameFocusNode.hasFocus
-            ? AppColors.selectedNavBarIconColor
-            : _usernameController.text.isNotEmpty
-            ? AppColors.communityBorderColor
-            : const Color(0xFFF6F6F6),
-
-        validator: (value) {
-          if (value == null || value.trim().isEmpty) {
-            return 'auth.usernameRequired'.tr();
-          }
-
-          return null;
-        },
+        validator: validator,
       ),
     );
   }
+}
 
-  Widget _buildEmailField() {
+class _ErrorBanner extends StatelessWidget {
+  const _ErrorBanner({required this.message});
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      key: _emailFieldKey,
-      child: CustomTextField(
-        text: 'auth.emailAddress'.tr(),
-
-        controller: _emailController,
-
-        focusNode: _emailFocusNode,
-
-        keyboardType: TextInputType.emailAddress,
-
-        showBorder:
-            _emailFocusNode.hasFocus || _emailController.text.isNotEmpty,
-
-        borderColor: _emailFocusNode.hasFocus
-            ? AppColors.selectedNavBarIconColor
-            : _emailController.text.isNotEmpty
-            ? AppColors.communityBorderColor
-            : const Color(0xFFF6F6F6),
-
-        fillColor: _emailFocusNode.hasFocus || _emailController.text.isNotEmpty
-            ? Colors.transparent
-            : const Color(0xFFF6F6F6),
-
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'auth.emailRequired'.tr();
-          }
-
-          return null;
-        },
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      decoration: BoxDecoration(
+        color: Colors.red.shade50,
+        borderRadius: BorderRadius.circular(10.r),
+        border: Border.all(color: Colors.red.shade200),
       ),
-    );
-  }
-
-  Widget _buildPasswordField() {
-    return Container(
-      key: _passwordFieldKey,
-      child: CustomTextField(
-        text: 'auth.createPassword'.tr(),
-
-        controller: _passwordController,
-
-        focusNode: _passwordFocusNode,
-
-        isPassword: true,
-
-        showBorder:
-            _passwordFocusNode.hasFocus || _passwordController.text.isNotEmpty,
-
-        fillColor:
-            _passwordFocusNode.hasFocus || _passwordController.text.isNotEmpty
-            ? Colors.transparent
-            : const Color(0xFFF6F6F6),
-
-        borderColor: _passwordFocusNode.hasFocus
-            ? AppColors.selectedNavBarIconColor
-            : _passwordController.text.isNotEmpty
-            ? AppColors.communityBorderColor
-            : const Color(0xFFF6F6F6),
-
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'auth.passwordRequired'.tr();
-          }
-
-          return null;
-        },
-      ),
-    );
-  }
-
-  Widget _buildConfirmPasswordField() {
-    return Container(
-      key: _confirmPasswordFieldKey,
-      child: CustomTextField(
-        text: 'auth.confirmPassword'.tr(),
-
-        controller: _confirmPasswordController,
-
-        focusNode: _confirmPasswordFocusNode,
-
-        isPassword: true,
-
-        showBorder:
-            _confirmPasswordFocusNode.hasFocus ||
-            _confirmPasswordController.text.isNotEmpty,
-
-        fillColor:
-            _confirmPasswordFocusNode.hasFocus ||
-                _confirmPasswordController.text.isNotEmpty
-            ? Colors.transparent
-            : const Color(0xFFF6F6F6),
-
-        borderColor: _confirmPasswordFocusNode.hasFocus
-            ? AppColors.selectedNavBarIconColor
-            : _confirmPasswordController.text.isNotEmpty
-            ? AppColors.communityBorderColor
-            : const Color(0xFFF6F6F6),
-
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'auth.confirmPasswordRequired'.tr();
-          }
-
-          if (value != _passwordController.text) {
-            return 'auth.passwordsDoNotMatch'.tr();
-          }
-
-          return null;
-        },
-      ),
-    );
-  }
-
-  Widget _buildContinueButton() {
-    return GradientButton(
-      height: 45.h,
-
-      text: 'auth.createAccount'.tr(),
-
-      textStyle: textStyle_16RegularBlack().copyWith(color: Colors.white),
-
-        onTap: () {
-
-          if (_formKey.currentState!.validate()) {
-
-            /// SUCCESS SCREEN
-            context.push(
-              RouteNames.feedback,
-
-              extra: AppFeedbackScreen(
-                image: AppAssets.successIcon,
-
-                title: 'auth.emailVerifiedTitle'.tr(),
-
-                subtitle:
-                'auth.emailVerifiedSubTitle'.tr(),
-
-                buttonText: 'auth.login'.tr(),
-
-                onPressed: () {
-                  context.go(RouteNames.signIn);
-                },
-              ),
-            );
-
-          } else {
-
-            /// FAILURE SCREEN
-            context.push(
-              RouteNames.feedback,
-
-              extra: AppFeedbackScreen(
-                image: AppAssets.successIcon,
-
-                title:
-                'auth.verificationFailedTitle'.tr(),
-
-                subtitle:
-                'auth.verificationFailedSubTitle'.tr(),
-
-                buttonText: 'auth.retry'.tr(),
-
-                onPressed: () {
-                  context.pop();
-                },
-              ),
-            );
-          }
-        },
-    );
-  }
-
-  Widget _buildFooterText() {
-    return Center(
-      child: Text.rich(
-        TextSpan(
-          text: '${'auth.alreadyHaveAccount'.tr()} ',
-
-          style: textStyle_14RegularBlack(),
-
-          children: [
-            TextSpan(
-              text: 'auth.login'.tr(),
-
-              style: textStyle_14RegularBlack().copyWith(
-                color: AppColors.selectedNavBarIconColor,
-              ),
-
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  context.go(RouteNames.signIn);
-                },
-            ),
-          ],
-        ),
+      child: Text(
+        message,
+        style: textStyle_14RegularBlack().copyWith(color: Colors.red.shade700),
+        textAlign: TextAlign.center,
       ),
     );
   }

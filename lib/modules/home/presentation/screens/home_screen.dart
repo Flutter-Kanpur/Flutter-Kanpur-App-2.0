@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/application/community_provider.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_card.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_header.dart';
@@ -9,7 +9,7 @@ import 'package:flutter_knp_mobile_app_v2/utils/colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/gradiant_background.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
 import 'package:flutter_knp_mobile_app_v2/common_widgets/search_bar.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/widgets/home_app_bar.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/widgets/home_announcement_carousel.dart';
@@ -186,3 +186,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+

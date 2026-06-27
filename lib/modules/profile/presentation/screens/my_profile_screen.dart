@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/gradiant_background.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -288,3 +288,4 @@ class MyProfileScreen extends StatelessWidget {
     );
   }
 }
+
