@@ -32,26 +32,81 @@ class CommunityMember {
     required this.role,
     required this.skills,
     required this.status,
+    this.photoUrl,
   });
 
   final String name;
   final String role;
   final List<String> skills;
   final String status;
+  final String? photoUrl;
+
+  factory CommunityMember.fromMap(Map<String, dynamic> map) {
+    final user = map['member'] as Map<String, dynamic>?;
+    final skillsList = (user?['user_skills'] as List<dynamic>?) ?? [];
+    return CommunityMember(
+      name: user?['display_name'] as String? ??
+          user?['username'] as String? ??
+          'Anonymous',
+      role: map['role'] as String? ?? 'member',
+      skills: skillsList
+          .map((s) => (s as Map)['skill_name'] as String? ?? '')
+          .where((s) => s.isNotEmpty)
+          .toList(),
+      status: map['membership_status'] as String? ?? 'active',
+      photoUrl: user?['photo_url'] as String?,
+    );
+  }
 }
 
 class CommunityProject {
   const CommunityProject({
+    this.id = '',
     required this.title,
     required this.summary,
     required this.status,
     required this.techStack,
+    this.ownerName,
+    this.githubUrl,
   });
 
+  final String id;
   final String title;
   final String summary;
   final String status;
   final List<String> techStack;
+  final String? ownerName;
+  final String? githubUrl;
+
+  factory CommunityProject.fromMap(Map<String, dynamic> map) {
+    final owner = map['owner'] as Map<String, dynamic>?;
+    final techList = (map['project_tech_stack'] as List<dynamic>?) ?? [];
+    return CommunityProject(
+      id: map['id'] as String? ?? '',
+      title: map['title'] as String? ?? '',
+      summary: map['summary'] as String? ?? '',
+      status: _formatStatus(map['status'] as String? ?? 'draft'),
+      techStack: techList
+          .map((t) => (t as Map)['tech_name'] as String? ?? '')
+          .where((t) => t.isNotEmpty)
+          .toList(),
+      ownerName: owner?['display_name'] as String? ?? owner?['username'] as String?,
+      githubUrl: map['github_url'] as String?,
+    );
+  }
+
+  static String _formatStatus(String raw) {
+    switch (raw) {
+      case 'active':
+        return 'Active';
+      case 'pending_review':
+        return 'In Review';
+      case 'completed':
+        return 'Completed';
+      default:
+        return 'Planned';
+    }
+  }
 }
 
 class CommunityQuestion {
@@ -64,6 +119,7 @@ class CommunityQuestion {
     required this.status,
     required this.authorName,
     required this.createdLabel,
+    this.authorPhotoUrl,
   });
 
   final String id;
@@ -74,6 +130,41 @@ class CommunityQuestion {
   final String status;
   final String authorName;
   final String createdLabel;
+  final String? authorPhotoUrl;
+
+  factory CommunityQuestion.fromMap(Map<String, dynamic> map) {
+    final author = map['author'] as Map<String, dynamic>?;
+    return CommunityQuestion(
+      id: map['id'] as String? ?? '',
+      title: map['title'] as String? ?? '',
+      body: map['body'] as String? ?? '',
+      tag: '',
+      answerCount: map['answer_count'] as int? ?? 0,
+      status: map['status'] as String? ?? 'open',
+      authorName: author?['display_name'] as String? ??
+          author?['username'] as String? ??
+          'Anonymous',
+      createdLabel: _timeAgo(map['created_at'] as String?),
+      authorPhotoUrl: author?['photo_url'] as String?,
+    );
+  }
+
+  static String _timeAgo(String? isoDate) {
+    if (isoDate == null) return '';
+    final dt = DateTime.tryParse(isoDate);
+    if (dt == null) return '';
+    final diff = DateTime.now().difference(dt.toLocal());
+    if (diff.inMinutes < 1) return 'Just now';
+    if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';
+    if (diff.inHours < 24) return '${diff.inHours}h ago';
+    if (diff.inDays == 1) return 'Yesterday';
+    if (diff.inDays < 30) return '${diff.inDays}d ago';
+    const months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    return '${dt.day} ${months[dt.month - 1]}';
+  }
 }
 
 class CommunityReply {
@@ -90,6 +181,19 @@ class CommunityReply {
   final String body;
   final int likeCount;
   final int replyCount;
+
+  factory CommunityReply.fromMap(Map<String, dynamic> map) {
+    final author = map['author'] as Map<String, dynamic>?;
+    return CommunityReply(
+      authorName: author?['display_name'] as String? ??
+          author?['username'] as String? ??
+          'Anonymous',
+      createdLabel: CommunityQuestion._timeAgo(map['created_at'] as String?),
+      body: map['body'] as String? ?? '',
+      likeCount: 0,
+      replyCount: 0,
+    );
+  }
 }
 
 class CommunityProjectSubmission {
@@ -118,25 +222,4 @@ class CommunityQuestionDraft {
   final String details;
   final String category;
   final List<String> tags;
-}
-
-class CommunityDashboardState {
-  const CommunityDashboardState({
-    required this.posts,
-    required this.members,
-    required this.projects,
-    required this.questions,
-  });
-
-  final List<CommunityPost> posts;
-  final List<CommunityMember> members;
-  final List<CommunityProject> projects;
-  final List<CommunityQuestion> questions;
-
-  int get memberCount => members.length;
-  int get postCount => posts.length;
-  int get contributionCount => projects.length + posts.length;
-  int get eventsHostedCount => 25;
-  int get activeProjectCount =>
-      projects.where((project) => project.status == 'Active').length;
 }

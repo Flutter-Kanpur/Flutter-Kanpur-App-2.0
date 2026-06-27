@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_primary_button.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_screen.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_status_chip.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/application/community_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_models.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_status_chip.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -13,9 +14,37 @@ class DiscussionDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final questions = ref.watch(communityDashboardProvider).questions;
-    final question = questions.first;
-    final replies = ref.watch(communityRepliesProvider);
+    final questionsAsync = ref.watch(questionsProvider);
+
+    return questionsAsync.when(
+      loading: () => const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      ),
+      error: (e, _) => Scaffold(
+        body: Center(child: Text('Error: $e')),
+      ),
+      data: (questions) {
+        if (questions.isEmpty) {
+          return Scaffold(
+            appBar: AppBar(leading: BackButton(onPressed: () => context.go(RouteNames.communityDiscussions))),
+            body: const Center(child: Text('No discussions found.')),
+          );
+        }
+        final question = questions.first;
+        return _DetailBody(question: question);
+      },
+    );
+  }
+}
+
+class _DetailBody extends ConsumerWidget {
+  const _DetailBody({required this.question});
+
+  final CommunityQuestion question;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final repliesAsync = ref.watch(repliesProvider(question.id));
 
     return FkScreen(
       padding: const EdgeInsets.fromLTRB(22, 12, 22, 96),
@@ -31,79 +60,81 @@ class DiscussionDetailScreen extends ConsumerWidget {
         ),
         const SizedBox(height: 20),
         Text(
-          'How to manage state efficiently in Flutter without overcomplicating the app?',
+          question.title,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.w500,
-            height: 1.25,
-          ),
+                fontWeight: FontWeight.w500,
+                height: 1.25,
+              ),
         ),
         const SizedBox(height: 14),
-        const Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            FkStatusChip(label: 'State management'),
-            FkStatusChip(label: 'Flutter development'),
-          ],
-        ),
+        if (question.tag.isNotEmpty)
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [FkStatusChip(label: question.tag)],
+          ),
         const SizedBox(height: 18),
         Text(
           question.body,
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: AppColors.subtitleTextDarkGrey,
-            height: 1.45,
-          ),
+                color: AppColors.subtitleTextDarkGrey,
+                height: 1.45,
+              ),
         ),
         const SizedBox(height: 18),
-        SizedBox(
-          height: 84,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemCount: 3,
-            separatorBuilder: (context, index) => const SizedBox(width: 10),
-            itemBuilder: (context, index) => Container(
-              width: 145,
-              decoration: BoxDecoration(
-                color: index == 0 ? Colors.black : const Color(0xFFF5F5F5),
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: AppColors.borderSecondary),
-              ),
-            ),
-          ),
+        _AuthorRow(
+          name: question.authorName,
+          subtitle: question.createdLabel,
+          photoUrl: question.authorPhotoUrl,
         ),
-        const SizedBox(height: 22),
-        _AuthorRow(name: 'Angelica Singh', subtitle: 'Posted 6h ago'),
         const Divider(height: 30),
-        Text(
-          'Responses ${replies.length}',
-          style: Theme.of(
-            context,
-          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
-        ),
-        const SizedBox(height: 16),
-        TextField(
-          minLines: 3,
-          maxLines: 4,
-          decoration: InputDecoration(
-            hintText: 'Write a reply',
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+        repliesAsync.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (e, _) => Text(
+            'Could not load replies.',
+            style: TextStyle(color: Colors.grey.shade600),
           ),
-          onTap: () => _showReplySheet(context, replies.first),
-        ),
-        const SizedBox(height: 24),
-        for (final reply in replies) _ReplyTile(reply: reply),
-        TextButton(
-          onPressed: () {},
-          child: const Align(
-            alignment: Alignment.centerLeft,
-            child: Text('Show replies'),
+          data: (replies) => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Responses ${replies.length}',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                minLines: 3,
+                maxLines: 4,
+                decoration: InputDecoration(
+                  hintText: 'Write a reply',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                ),
+                onTap: replies.isEmpty
+                    ? null
+                    : () => _showReplySheet(context, replies.first),
+              ),
+              const SizedBox(height: 24),
+              for (final reply in replies) _ReplyTile(reply: reply),
+              if (replies.isNotEmpty)
+                TextButton(
+                  onPressed: () {},
+                  child: const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Show more replies'),
+                  ),
+                ),
+            ],
           ),
         ),
       ],
     );
   }
 
-  void _showReplySheet(BuildContext context, reply) {
+  void _showReplySheet(BuildContext context, CommunityReply reply) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -138,8 +169,8 @@ class DiscussionDetailScreen extends ConsumerWidget {
                   child: Text(
                     'Post your reply',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w800,
-                    ),
+                          fontWeight: FontWeight.w800,
+                        ),
                   ),
                 ),
                 IconButton.filled(
@@ -149,7 +180,10 @@ class DiscussionDetailScreen extends ConsumerWidget {
               ],
             ),
             const SizedBox(height: 16),
-            _AuthorRow(name: reply.authorName, subtitle: reply.createdLabel),
+            _AuthorRow(
+              name: reply.authorName,
+              subtitle: reply.createdLabel,
+            ),
             const SizedBox(height: 12),
             Text(reply.body),
             const SizedBox(height: 16),
@@ -185,9 +219,10 @@ class _TopBar extends StatelessWidget {
           child: Text(
             title,
             textAlign: TextAlign.center,
-            style: Theme.of(
-              context,
-            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge
+                ?.copyWith(fontWeight: FontWeight.w700),
           ),
         ),
         IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz)),
@@ -197,31 +232,46 @@ class _TopBar extends StatelessWidget {
 }
 
 class _AuthorRow extends StatelessWidget {
-  const _AuthorRow({required this.name, required this.subtitle});
+  const _AuthorRow({
+    required this.name,
+    required this.subtitle,
+    this.photoUrl,
+  });
 
   final String name;
   final String subtitle;
+  final String? photoUrl;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const CircleAvatar(backgroundColor: Color(0xFFFFB5C8)),
+        CircleAvatar(
+          backgroundColor: const Color(0xFFFFB5C8),
+          backgroundImage:
+              photoUrl != null ? NetworkImage(photoUrl!) : null,
+          child: photoUrl == null
+              ? Text(name.isNotEmpty ? name[0].toUpperCase() : '?',
+                  style: const TextStyle(color: Colors.white))
+              : null,
+        ),
         const SizedBox(width: 12),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               name,
-              style: Theme.of(
-                context,
-              ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(fontWeight: FontWeight.w700),
             ),
             Text(
               subtitle,
-              style: Theme.of(
-                context,
-              ).textTheme.bodySmall?.copyWith(color: Colors.grey),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall
+                  ?.copyWith(color: Colors.grey),
             ),
           ],
         ),
@@ -233,7 +283,7 @@ class _AuthorRow extends StatelessWidget {
 class _ReplyTile extends StatelessWidget {
   const _ReplyTile({required this.reply});
 
-  final dynamic reply;
+  final CommunityReply reply;
 
   @override
   Widget build(BuildContext context) {
@@ -250,7 +300,9 @@ class _ReplyTile extends StatelessWidget {
             children: [
               const Icon(Icons.favorite, color: Colors.red),
               const SizedBox(width: 6),
-              Text(reply.likeCount >= 1000 ? '14.5k' : '${reply.likeCount}'),
+              Text(reply.likeCount >= 1000
+                  ? '${(reply.likeCount / 1000).toStringAsFixed(1)}k'
+                  : '${reply.likeCount}'),
               const SizedBox(width: 24),
               const Icon(Icons.chat_bubble_outline, size: 18),
               const SizedBox(width: 6),
