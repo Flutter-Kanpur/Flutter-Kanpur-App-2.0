@@ -23,6 +23,7 @@ class AuthUserModel extends AuthUser {
     );
   }
 
+  // Only columns that actually exist in public.users
   static Map<String, dynamic> toInsertMap({
     required String uid,
     required String email,
@@ -30,15 +31,10 @@ class AuthUserModel extends AuthUser {
     required bool isEmailVerified,
   }) {
     return {
-      AuthConstants.uidField: uid,
-      AuthConstants.emailField: email,
-      AuthConstants.usernameField: username.toLowerCase().trim(),
+      AuthConstants.uidField:           uid,
+      AuthConstants.emailField:         email,
+      AuthConstants.usernameField:      username.toLowerCase().trim(),
       AuthConstants.emailVerifiedField: isEmailVerified,
-      AuthConstants.isContributorField: false,
-      AuthConstants.rolesField: <String>[],
-      AuthConstants.communityRolesField: <String>[],
-      AuthConstants.skillsField: <String>[],
-      AuthConstants.createdAtField: DateTime.now().toIso8601String(),
     };
   }
 }
