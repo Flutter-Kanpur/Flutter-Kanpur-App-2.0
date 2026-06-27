@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/gradiant_background.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-// import '../../../common_widgets/gradiant_background.dart';
-// import '../../../services/remote_config_service.dart';
 import '../../../../utils/assets_path.dart';
-import '../../../../utils/colors.dart';
 import '../../../../utils/text_styles.dart';
-// import '../../auth/presentation/bloc/auth_bloc.dart';
-// import '../../auth/presentation/bloc/auth_event.dart';
-// import '../../auth/presentation/bloc/auth_state.dart';
 import 'widgets/profile_header.dart';
 import 'widgets/profile_section_block.dart';
 import 'widgets/profile_tile.dart';

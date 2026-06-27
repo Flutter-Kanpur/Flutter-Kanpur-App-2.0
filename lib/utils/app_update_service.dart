@@ -2,8 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:new_version_plus/model/version_status.dart';
 import 'package:new_version_plus/new_version_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
-import '../utils/colors.dart'; // Assuming you have an AppColors file, otherwise I will use standard colors
+import 'package:url_launcher/url_launcher.dart'; // Assuming you have an AppColors file, otherwise I will use standard colors
 
 class AppUpdateService {
   static final AppUpdateService _instance = AppUpdateService._internal();

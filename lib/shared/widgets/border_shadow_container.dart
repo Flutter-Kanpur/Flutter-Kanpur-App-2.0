@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../utils/colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 
 /// A customizable container widget that applies beautiful inner shadows
 /// from any side (top-left, top-right, bottom-right, bottom-left).
