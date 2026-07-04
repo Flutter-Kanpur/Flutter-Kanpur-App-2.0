@@ -11,26 +11,31 @@ class AppColors {
 
   ///community Guidelines
   static const Color communityGuidelinesContainerBackground = Color(0XFFEFF3FF);
-  static  Color contributorGreenContainerBackground = const Color(0XFF30C85D).withValues(alpha: 0.21);
-  static  const Color contributorTextGreenBackground =  Color(0XFF006748);
-  static  const Color applicationSubmittedContainerBackground =  Color(0XFFFDFDFD);
+  static Color contributorGreenContainerBackground = const Color(
+    0XFF30C85D,
+  ).withValues(alpha: 0.21);
+  static const Color contributorTextGreenBackground = Color(0XFF006748);
+  static const Color applicationSubmittedContainerBackground = Color(
+    0XFFFDFDFD,
+  );
 
   ///borderColor
-  static  const Color communityBorderColor =  Color(0XFFE3E3E3);
-  static  const Color lightGrayText =  Color(0XFFDADADA);
+  static const Color communityBorderColor = Color(0XFFE3E3E3);
+  static const Color lightGrayText = Color(0XFFDADADA);
 
   ////warning Color
-  static  const Color yellowWarningBackground =  Color(0XFFFDF7E9);
-  static  const Color yellowWarningText =  Color(0XFFFEF9F2);
+  static const Color yellowWarningBackground = Color(0XFFFDF7E9);
+  static const Color yellowWarningText = Color(0XFFFEF9F2);
+  static const Color redWarningBackground = Color(0xFFFCE4E4);
 
   ///profile
-  static  const Color profileSectionBackground =  Color(0XFFF6F6F6);
+  static const Color profileSectionBackground = Color(0XFFF6F6F6);
 
   ///textfield border
-  static  const Color contributorFieldBorderColor =  Color(0XFFD1D1D1);
-  static  const Color contributorFocusFieldBorderColor =  Color(0XFF4167F2);
-  static  const Color contributorFieldHintColor =  Color(0XFFB0B0B0);
-  static  const Color subtitleTextDarkGrey =  Color(0XFF6D6D6D);
+  static const Color contributorFieldBorderColor = Color(0XFFD1D1D1);
+  static const Color contributorFocusFieldBorderColor = Color(0XFF4167F2);
+  static const Color contributorFieldHintColor = Color(0XFFB0B0B0);
+  static const Color subtitleTextDarkGrey = Color(0XFF6D6D6D);
 
   // MARK: - Community Screen Colors
   static const Color communityBackgroundColor = Color(0xFF03080B);
@@ -53,7 +58,6 @@ class AppColors {
   static const Color textBlue = Color(0XFF3FD1FF);
   static const Color secondaryBlue = Color(0xFF6B73FF);
 
-
   // MARK: - Border Colors
   static const Color borderGray = Color(0xFF2E3942);
 
@@ -70,7 +74,6 @@ class AppColors {
   static const Color githubColor = Color(0xFF333333);
   static const Color linkedinColor = Color(0xFF0077B5);
 
-
   //Revamp Colors
   static const Color bgPrimary = Color(0xFFDCE5FD);
   static const Color bgSecondary = Color(0xFFF6F6F6);
@@ -78,8 +81,4 @@ class AppColors {
   static const Color borderSecondary = Color(0xFFE3E3E3);
   static const Color unselectedNavBarIconColor = Color(0xFFBCBCBC);
   static const Color navBarBackgroundColor = Color(0xFFFAFCFF);
-
-
-
-
 }
