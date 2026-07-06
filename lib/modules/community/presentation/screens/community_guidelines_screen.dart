@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_back_button.dart';
@@ -14,14 +15,14 @@ class CommunityGuidelinesScreen extends StatelessWidget {
     return GradientBackground(
       child: FkScreen(
         children: [
-          const FkHeader(
-            title: 'Communitiy Guidelines',
+          FkHeader(
+            title: "community.communityGuidelines.title".tr(),
             subtitle: '',
             leading: FkBackButton(),
           ),
           const SizedBox(height: 18),
           Text(
-            "Flutter Kanpur is a collaborative space for developers, designers, learners, and contributors to connect, learn, and grow together. Our goal is to create an environment where everyone feels safe, respected, and encouraged to participate. These guidelines exist to maintain a healthy and welcoming community experience for all members.",
+            "community.communityGuidelines.about".tr(),
             style: theme.textTheme.bodyLarge,
           ),
           const SizedBox(height: 28),
@@ -30,37 +31,50 @@ class CommunityGuidelinesScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _ContainerBackground(
-                  title: 'Respect and conduct',
+                  title: "community.communityGuidelines.respectAndConduct.title"
+                      .tr(),
                   description:
-                      'We expect all members to interact with each other respectfully and professionally. Differences in opinions, experience levels, and perspectives are natural and welcome, but disrespectful behavior, harassment, or offensive language is not acceptable. Every member deserves to be treated with dignity.',
+                      "community.communityGuidelines.respectAndConduct.description"
+                          .tr(),
                 ),
                 SizedBox(height: 18),
                 _ContainerBackground(
-                  title: 'Inclusivity',
+                  title: "community.communityGuidelines.inclusivity.title".tr(),
                   description:
-                      'Flutter Kanpur is an inclusive community. We encourage patience, empathy, and support—especially toward beginners and new members. Avoid language or behavior that may discourage participation or make others feel unwelcome. Inclusivity helps the community grow stronger.',
+                      "community.communityGuidelines.inclusivity.description"
+                          .tr(),
                 ),
                 SizedBox(height: 18),
                 _ContainerBackground(
-                  title: 'Meaningful Participation',
+                  title:
+                      "community.communityGuidelines.meaningfulParticipation.title"
+                          .tr(),
                   description:
-                      'Conversations, feedback, and contributions should be constructive and relevant. Healthy discussions are encouraged, but personal attacks, unnecessary negativity, or disruptive behavior reduce the value of the community. When offering feedback, focus on being helpful and respectful.',
+                      "community.communityGuidelines.meaningfulParticipation.description"
+                          .tr(),
                 ),
                 SizedBox(height: 18),
                 _ContainerBackground(
-                  title: 'Responsible Sharing',
+                  title:
+                      "community.communityGuidelines.responsibleSharing.title"
+                          .tr(),
                   description:
-                      'Members are encouraged to share resources, projects, and opportunities that add value to the community. Excessive self-promotion, spam, or irrelevant advertising is discouraged. Sharing should always prioritize community benefit over personal promotion.',
+                      "community.communityGuidelines.responsibleSharing.description"
+                          .tr(),
                 ),
                 SizedBox(height: 18),
                 _ContainerBackground(
-                  title: 'Privacy & Trust',
+                  title: "community.communityGuidelines.privacyAndTrust.title"
+                      .tr(),
                   description:
-                      'Respecting privacy is essential. Do not share personal information, private conversations, or sensitive details without consent. Trust allows members and contributors to collaborate openly and confidently.',
+                      "community.communityGuidelines.privacyAndTrust.description"
+                          .tr(),
                 ),
                 SizedBox(height: 18),
                 Text(
-                  "Last updated: April 2026",
+                  "common.lastUpdated".tr(
+                    args: ["common.lastUpdatedDate".tr()],
+                  ),
                   style: theme.textTheme.titleLarge,
                 ),
               ],

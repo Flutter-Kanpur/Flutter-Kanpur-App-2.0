@@ -223,5 +223,60 @@
       "10": "October",
       "11": "November",
       "12": "December"
+    },
+    "aboutUs" :{
+      "aboutUs1":"Flutter Kanpur is a community-driven initiative focused on bringing together Flutter developers, designers, and technology enthusiasts from Kanpur and beyond. Our goal is to create a supportive environment where members can learn, build, and grow together through shared knowledge and collaboration.",
+      "aboutUs2":"We organize meetups, workshops, coding challenges, and discussions that help members stay up to date with Flutter, UI/UX, and modern app development practices. Whether you are a beginner exploring Flutter or an experienced professional contributing to open-source or community projects, Flutter Kanpur is a place for you.",
+      "aboutUs3":"Beyond events, we aim to build meaningful community products and learning experiences that encourage consistency, participation, and contribution. We believe strong communities are built on inclusivity, curiosity, and mutual respect."
+    },
+    "privacyPolicy":{
+      "privacyPolicy1":"Flutter Kanpur respects your privacy and is committed to protecting your personal information. This policy explains how we collect, use, and safeguard data when you use our app and services.",
+      "privacyPolicy2":"When you create an account, we may collect basic information such as your name, email address, and profile details. This information is used only to provide core features like events, contests, contributor access, and personalized experiences within the app.",
+      "privacyPolicy3":"We do not sell, trade, or misuse your personal data. Information shared within the community, such as profile details or contributions, is visible only according to your privacy settings. Sensitive information like login credentials is securely handled and never shared publicly.",
+      "privacyPolicy4":"We may collect limited usage data to improve app performance, fix issues, and understand how features are used. This data is analyzed in aggregate and does not identify individual users.",
+      "privacyPolicy5":"You can update or delete your account information at any time from the app settings. If you have questions or concerns about your data, you can contact the Flutter Kanpur team directly. By using the app, you agree to the practices described in this policy."
+    },
+    "termsOfServices":{
+      "termsOfServices1":"By accessing or using the Flutter Kanpur app, you agree to follow these terms. These terms help ensure a safe and respectful experience for all community members.",
+      "termsOfServices2":"Flutter Kanpur provides access to community features such as events, contests, learning activities, and contributor tools. You are responsible for how you use these features and for ensuring that your activity follows community guidelines and applicable laws.",
+      "termsOfServices3":"You agree not to misuse the app, attempt to disrupt services, or engage in behavior that harms other members or the community. Any content you submit, including messages, submissions, or contributions, should be appropriate and respectful.",
+      "termsOfServices4":"Contributor access and community roles are granted based on application review and may be modified or revoked if guidelines are violated. Flutter Kanpur reserves the right to update or discontinue features as the community evolves. We may update these terms from time to time to reflect changes in features or policies. Continued use of the app after updates indicates acceptance of the revised terms.",
+      "termsOfServicesWarning":"If you do not agree with these terms, you should stop using the app."
+    },
+    
+  "community": {
+    "communityGuidelines": {
+      "title": "Community Guidelines",
+      "about": "Flutter Kanpur is a collaborative space for developers, designers, learners, and contributors to connect, learn, and grow together. Our goal is to create an environment where everyone feels safe, respected, and encouraged to participate. These guidelines exist to maintain a healthy and welcoming community experience for all members.",
+
+      "respectAndConduct": {
+        "title": "Respect and Conduct",
+        "description": "We expect all members to interact with each other respectfully and professionally. Differences in opinions, experience levels, and perspectives are natural and welcome, but disrespectful behavior, harassment, or offensive language is not acceptable. Every member deserves to be treated with dignity."
+      },
+
+      "inclusivity": {
+        "title": "Inclusivity",
+        "description": "Flutter Kanpur is an inclusive community. We encourage patience, empathy, and support especially toward beginners and new members. Avoid language or behavior that may discourage participation or make others feel unwelcome. Inclusivity helps the community grow stronger."
+      },
+
+      "meaningfulParticipation": {
+        "title": "Meaningful Participation",
+        "description": "Conversations, feedback, and contributions should be constructive and relevant. Healthy discussions are encouraged, but personal attacks, unnecessary negativity, or disruptive behavior reduce the value of the community. When offering feedback, focus on being helpful and respectful."
+      },
+
+      "responsibleSharing": {
+        "title": "Responsible Sharing",
+        "description": "Share content responsibly and ensure that information posted within the community is accurate and appropriate. Avoid spam, misleading content, or promotional material that does not contribute to meaningful discussions."
+      },
+
+      "privacyAndTrust": {
+        "title": "Privacy & Trust",
+        "description": "Respecting privacy is essential. Do not share personal information, private conversations, or sensitive details without consent. Trust allows members and contributors to collaborate openly and confidently."
+      }
     }
+  },
+  "common": {
+    "lastUpdated": "Last updated: {}",
+    "lastUpdatedDate": "April 2026"
+  }
 }
