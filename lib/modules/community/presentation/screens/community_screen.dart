@@ -9,7 +9,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_section_title.dart';
-import 'package:flutter_knp_mobile_app_v2/utils/colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 

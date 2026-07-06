@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_models.dart';
-import 'package:flutter_knp_mobile_app_v2/utils/colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 
 class DiscussionListItem extends StatelessWidget {
   const DiscussionListItem({
