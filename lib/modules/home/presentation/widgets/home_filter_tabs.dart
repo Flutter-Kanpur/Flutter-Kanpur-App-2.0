@@ -4,7 +4,6 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/border_shadow_container.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
 
 class HomeFilterTabs extends StatefulWidget {
   const HomeFilterTabs({

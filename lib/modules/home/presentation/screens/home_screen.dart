@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/application/community_provider.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_card.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_header.dart';
@@ -17,7 +17,6 @@ import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/widgets/home
 import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/widgets/event_card_component.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

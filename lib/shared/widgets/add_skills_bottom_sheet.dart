@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -8,7 +7,6 @@ import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
 
 // import '../../../../services/remote_config_service.dart';
 import '../../../utils/assets_path.dart';
-import '../../../utils/colors.dart';
 import '../../../utils/text_styles.dart';
 import '../../../utils/translate.dart';
 // import '../../domain/entities/profile_entity.dart';
