@@ -50,7 +50,7 @@ app.*.map.json
 .env
 
 # Local Supabase schema dump / manual SQL setup
-supabase/schema.sql
+supabase
 
 # FVM Version Cache
 .fvm/
