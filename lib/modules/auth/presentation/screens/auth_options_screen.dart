@@ -5,16 +5,30 @@ import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/core/constants/app_assets.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/auth/application/auth_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/auth/application/auth_state.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradient_background.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-class AuthOptionsScreen extends StatelessWidget {
+class AuthOptionsScreen extends ConsumerWidget {
   const AuthOptionsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authNotifierProvider);
+
+    ref.listen<AppAuthState>(authNotifierProvider, (_, next) {
+      if (!context.mounted) return;
+      if (next.status == AuthStatus.authenticated) {
+        context.go(RouteNames.home);
+      } else if (next.status == AuthStatus.verificationSent) {
+        context.go(RouteNames.emailVerification);
+      }
+    });
+
     return GradientBackground(
       child: SafeArea(
         child: Padding(
@@ -24,32 +38,67 @@ class AuthOptionsScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               40.verticalSpace,
-
               _buildMascot(),
-
               32.verticalSpace,
-
               _buildHeadline(),
-
               8.verticalSpace,
-
               _buildSubtitle(),
-
               40.verticalSpace,
 
-              _buildContinueWithGoogle(),
+              if (authState.error != null) ...[
+                _ErrorBanner(message: authState.error!),
+                16.verticalSpace,
+              ],
+
+              _AuthOptionButton(
+                onPressed: authState.isLoading
+                    ? () {}
+                    : () => ref.read(authNotifierProvider.notifier).signInWithGoogle(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(AppAssets.googleIcon, width: 20.w, height: 20.h),
+                    12.horizontalSpace,
+                    Text('auth.continueWithGoogle'.tr(), style: textStyle_16MediumBlack()),
+                  ],
+                ),
+              ),
 
               16.verticalSpace,
 
-              _buildSignInWithEmail(context),
+              _AuthOptionButton(
+                onPressed: authState.isLoading ? () {} : () => context.go(RouteNames.signIn),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.mail_outline_rounded, size: 22.sp, color: Colors.black87),
+                    12.horizontalSpace,
+                    Text('auth.signInWithEmail'.tr(), style: textStyle_16MediumBlack()),
+                  ],
+                ),
+              ),
 
               20.verticalSpace,
 
-              _buildOrDivider(),
+              Row(
+                children: [
+                  Expanded(child: Divider(color: Colors.grey.shade300, thickness: 1)),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12.w),
+                    child: Text('onboarding.or'.tr(), style: textStyle_16MediumBlack()),
+                  ),
+                  Expanded(child: Divider(color: Colors.grey.shade300, thickness: 1)),
+                ],
+              ),
 
               20.verticalSpace,
 
-              _buildCreateAccountButton(context),
+              GradientButton(
+                height: 45.h,
+                text: authState.isLoading ? 'auth.loading'.tr() : 'auth.createAccount'.tr(),
+                textStyle: textStyle_16RegularBlack().copyWith(color: Colors.white),
+                onTap: authState.isLoading ? () {} : () => context.go(RouteNames.signUp),
+              ),
 
               32.verticalSpace,
             ],
@@ -67,29 +116,20 @@ class AuthOptionsScreen extends StatelessWidget {
         child: Image.asset(
           AppAssets.dashIcon,
           fit: BoxFit.contain,
-
-          errorBuilder: (_, _, _) {
-            return Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFFE8F0FE),
-                shape: BoxShape.circle,
-
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.06),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-
-              child: Icon(
-                Icons.person_rounded,
-                size: 72.sp,
-                color: const Color(0xFF4373E2),
-              ),
-            );
-          },
+          errorBuilder: (_, _, _) => Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFFE8F0FE),
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.06),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Icon(Icons.person_rounded, size: 72.sp, color: const Color(0xFF4373E2)),
+          ),
         ),
       ),
     );
@@ -98,9 +138,7 @@ class AuthOptionsScreen extends StatelessWidget {
   Widget _buildHeadline() {
     return Text(
       'auth.signInTitle'.tr(),
-
       textAlign: TextAlign.center,
-
       style: textStyle_18MediumBlack().copyWith(fontSize: 24.sp),
     );
   }
@@ -108,12 +146,9 @@ class AuthOptionsScreen extends StatelessWidget {
   Widget _buildSubtitle() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 24.w),
-
       child: Text(
         'auth.signInSubTitle'.tr(),
-
         textAlign: TextAlign.center,
-
         style: textStyle_16RegularBlack().copyWith(
           height: 1.5,
           color: AppColors.subtitleTextDarkGrey,
@@ -121,79 +156,12 @@ class AuthOptionsScreen extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildContinueWithGoogle() {
-    return _AuthOptionButton(
-      onPressed: () {},
-
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-
-        children: [
-          SvgPicture.asset(AppAssets.googleIcon, width: 20.w, height: 20.h),
-
-          12.horizontalSpace,
-
-          Text(
-            'auth.continueWithGoogle'.tr(),
-            style: textStyle_16MediumBlack(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSignInWithEmail(BuildContext context) {
-    return _AuthOptionButton(
-      onPressed: () => context.go(RouteNames.signIn),
-
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-
-        children: [
-          Icon(Icons.mail_outline_rounded, size: 22.sp, color: Colors.black87),
-
-          12.horizontalSpace,
-
-          Text('auth.signInWithEmail'.tr(), style: textStyle_16MediumBlack()),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildOrDivider() {
-    return Row(
-      children: [
-        Expanded(child: Divider(color: Colors.grey.shade300, thickness: 1)),
-
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.w),
-
-          child: Text('onboarding.or'.tr(), style: textStyle_16MediumBlack()),
-        ),
-
-        Expanded(child: Divider(color: Colors.grey.shade300, thickness: 1)),
-      ],
-    );
-  }
-
-  Widget _buildCreateAccountButton(BuildContext context) {
-    return GradientButton(
-      height: 45.h,
-
-      text: 'auth.createAccount'.tr(),
-
-      textStyle: textStyle_16RegularBlack().copyWith(color: Colors.white),
-
-      onTap: () => context.go(RouteNames.signUp),
-    );
-  }
 }
 
 class _AuthOptionButton extends StatelessWidget {
   const _AuthOptionButton({required this.onPressed, required this.child});
 
-  final VoidCallback? onPressed;
+  final VoidCallback onPressed;
   final Widget child;
 
   @override
@@ -216,6 +184,30 @@ class _AuthOptionButton extends StatelessWidget {
             child: Center(child: child),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _ErrorBanner extends StatelessWidget {
+  const _ErrorBanner({required this.message});
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      decoration: BoxDecoration(
+        color: Colors.red.shade50,
+        borderRadius: BorderRadius.circular(10.r),
+        border: Border.all(color: Colors.red.shade200),
+      ),
+      child: Text(
+        message,
+        style: textStyle_14RegularBlack().copyWith(color: Colors.red.shade700),
+        textAlign: TextAlign.center,
       ),
     );
   }
