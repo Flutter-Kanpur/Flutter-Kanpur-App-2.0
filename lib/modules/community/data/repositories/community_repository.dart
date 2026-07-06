@@ -17,12 +17,19 @@ class CommunityRepository {
     var query = _client
         .from(DatabaseTables.questions)
         .select(
-          'id, title, body, status, answer_count, created_at, '
-          'author:users!author_uid(display_name, username, photo_url)',
+          '''id, title, body, image_url, status, answer_count, like_count,
+             view_count, created_at, author_uid,
+             author:users!author_uid(uid, display_name, username, photo_url)''',
         )
         .eq('is_deleted', false);
 
     if (filter == 'unanswered') query = query.eq('answer_count', 0);
+    if (filter == 'my_questions') {
+      final userId = _client.auth.currentUser?.id;
+      if (userId != null) {
+        query = query.eq('author_uid', userId);
+      }
+    }
 
     final data = await query
         .order('created_at', ascending: false)
@@ -33,18 +40,43 @@ class CommunityRepository {
         .toList();
   }
 
-  Future<List<CommunityReply>> fetchReplies(String questionId) async {
+  Future<CommunityQuestion?> fetchQuestionById(String questionId) async {
+    try {
+      final data = await _client
+          .from(DatabaseTables.questions)
+          .select(
+            '''id, title, body, image_url, status, answer_count, like_count,
+               view_count, created_at, author_uid,
+               author:users!author_uid(uid, display_name, username, photo_url)''',
+          )
+          .eq('id', questionId)
+          .eq('is_deleted', false)
+          .single();
+
+      return CommunityQuestion.fromMap(data as Map<String, dynamic>);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<List<CommunityReply>> fetchReplies(
+    String questionId, {
+    int limit = 5,
+    int offset = 0,
+  }) async {
     final data = await _client
         .from(DatabaseTables.answers)
         .select(
-          'id, body, created_at, '
-          'author:users!author_uid(display_name, username, photo_url)',
+          '''id, body, like_count, view_count, created_at,
+             author_uid,
+             author:users!author_uid(uid, display_name, username, photo_url)''',
         )
         .eq('question_id', questionId)
         .eq('is_deleted', false)
-        .order('created_at', ascending: true);
+        .order('like_count', ascending: false)
+        .range(offset, offset + limit - 1);
 
-    return (data as List<dynamic>)
+    return (data as List)
         .map((m) => CommunityReply.fromMap(m as Map<String, dynamic>))
         .toList();
   }
@@ -117,6 +149,10 @@ class CommunityRepository {
       'body': draft.details,
       'author_uid': userId,
       'status': 'open',
+      'category': draft.category,
+      'image_url': draft.imageUrl,
+      'like_count': 0,
+      'view_count': 0,
     });
   }
 

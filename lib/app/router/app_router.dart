@@ -28,7 +28,7 @@ import 'package:flutter_knp_mobile_app_v2/shared/screens/app_feedback_screen.dar
 import 'package:go_router/go_router.dart';
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: RouteNames.home,
+  initialLocation: RouteNames.splash,
 
   routes: [
     StatefulShellRoute.indexedStack(
@@ -63,11 +63,21 @@ final GoRouter appRouter = GoRouter(
                   path: RouteNames.communityDiscussionsSegment,
                   builder: (context, state) =>
                       const CommunityDiscussionsScreen(),
+                  routes: [
+                    GoRoute(
+                      path: ':questionId',
+                      builder: (context, state) => DiscussionDetailScreen(
+                        questionId: state.pathParameters['questionId'] ?? '',
+                      ),
+                    ),
+                  ],
                 ),
                 GoRoute(
-                  path: RouteNames.communityDiscussionDetailSegment,
+                  path: '${RouteNames.communityDiscussionDetailSegment}/:questionId',
                   builder: (context, state) =>
-                  const DiscussionDetailScreen(),
+                      DiscussionDetailScreen(
+                        questionId: state.pathParameters['questionId'] ?? '',
+                      ),
                 ),
                 GoRoute(
                   path: RouteNames.communityAskQuestionSegment,

@@ -21,9 +21,14 @@ class CommunityScreen extends ConsumerWidget {
     final questionsAsync = ref.watch(questionsProvider);
     final membersAsync = ref.watch(communityMembersProvider);
 
-    return FkScreen(
-      padding: const EdgeInsets.fromLTRB(22, 0, 22, 96),
-      children: [
+    return RefreshIndicator(
+      onRefresh: () async {
+        await ref.read(questionsProvider.notifier).refresh();
+        await ref.read(communityMembersProvider.notifier).refresh();
+      },
+      child: FkScreen(
+        padding: const EdgeInsets.fromLTRB(22, 0, 22, 96),
+        children: [
         Row(
           children: [
             Expanded(
@@ -82,8 +87,9 @@ class CommunityScreen extends ConsumerWidget {
                     itemBuilder: (_, i) => CommunityDiscussionCard(
                       question: questions[i],
                       width: cardWidth,
-                      onTap: () =>
-                          context.go(RouteNames.communityDiscussionDetail),
+                      onTap: () => context.push(
+                        '${RouteNames.communityDiscussionDetail}/${questions[i].id}',
+                      ),
                     ),
                   ),
                 );
@@ -173,6 +179,7 @@ class CommunityScreen extends ConsumerWidget {
           ],
         ),
       ],
+      ),
     );
   }
 }

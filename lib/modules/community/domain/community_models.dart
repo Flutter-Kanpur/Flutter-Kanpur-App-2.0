@@ -169,29 +169,38 @@ class CommunityQuestion {
 
 class CommunityReply {
   const CommunityReply({
+    required this.id,
+    required this.authorId,
     required this.authorName,
+    required this.authorPhotoUrl,
     required this.createdLabel,
     required this.body,
     required this.likeCount,
-    required this.replyCount,
+    required this.createdAt,
   });
 
+  final String id;
+  final String authorId;
   final String authorName;
+  final String? authorPhotoUrl;
   final String createdLabel;
   final String body;
   final int likeCount;
-  final int replyCount;
+  final String createdAt;
 
   factory CommunityReply.fromMap(Map<String, dynamic> map) {
     final author = map['author'] as Map<String, dynamic>?;
     return CommunityReply(
+      id: map['id'] as String? ?? '',
+      authorId: author?['uid'] as String? ?? '',
       authorName: author?['display_name'] as String? ??
           author?['username'] as String? ??
           'Anonymous',
+      authorPhotoUrl: author?['photo_url'] as String?,
       createdLabel: CommunityQuestion._timeAgo(map['created_at'] as String?),
       body: map['body'] as String? ?? '',
-      likeCount: 0,
-      replyCount: 0,
+      likeCount: map['like_count'] as int? ?? 0,
+      createdAt: map['created_at'] as String? ?? '',
     );
   }
 }
@@ -216,10 +225,12 @@ class CommunityQuestionDraft {
     required this.details,
     required this.category,
     required this.tags,
+    this.imageUrl,
   });
 
   final String title;
   final String details;
   final String category;
   final List<String> tags;
+  final String? imageUrl;
 }

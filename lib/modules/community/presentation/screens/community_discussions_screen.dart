@@ -21,11 +21,41 @@ class DiscussionFilterNotifier extends Notifier<String?> {
   void update(String? value) => state = value;
 }
 
-class CommunityDiscussionsScreen extends ConsumerWidget {
+class CommunityDiscussionsScreen extends ConsumerStatefulWidget {
   const CommunityDiscussionsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CommunityDiscussionsScreen> createState() =>
+      _CommunityDiscussionsScreenState();
+}
+
+class _CommunityDiscussionsScreenState
+    extends ConsumerState<CommunityDiscussionsScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 500) {
+      // User scrolled near bottom - could trigger load more here
+      // For now, we load all at once via the provider
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final questionsAsync = ref.watch(questionsProvider);
     final activeFilter = ref.watch(_discussionFilterProvider);
 
@@ -81,24 +111,34 @@ class CommunityDiscussionsScreen extends ConsumerWidget {
             if (questions.isEmpty) {
               return const _EmptyView();
             }
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '${questions.length} discussions',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: AppColors.subtitleTextDarkGrey,
+            return RefreshIndicator(
+              onRefresh: () async {
+                await ref.read(questionsProvider.notifier).refresh();
+              },
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${questions.length} discussions',
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color: AppColors.subtitleTextDarkGrey,
+                          ),
+                    ),
+                    const SizedBox(height: 16),
+                    ...questions.map(
+                      (q) => DiscussionListItem(
+                        question: q,
+                        onTap: () =>
+                            context.push('${RouteNames.communityDiscussions}/${q.id}'),
                       ),
+                    ),
+                    const SizedBox(height: 24),
+                  ],
                 ),
-                const SizedBox(height: 16),
-                ...questions.map(
-                  (q) => DiscussionListItem(
-                    question: q,
-                    onTap: () =>
-                        context.go(RouteNames.communityDiscussionDetail),
-                  ),
-                ),
-              ],
+              ),
             );
           },
         ),

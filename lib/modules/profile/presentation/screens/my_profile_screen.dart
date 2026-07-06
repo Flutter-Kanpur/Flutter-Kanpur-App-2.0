@@ -3,14 +3,16 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/auth/application/logout_provider.dart';
 import '../../../../utils/assets_path.dart';
 import '../../../../utils/text_styles.dart';
 import 'widgets/profile_header.dart';
 import 'widgets/profile_section_block.dart';
 import 'widgets/profile_tile.dart';
 
-class MyProfileScreen extends StatelessWidget {
+class MyProfileScreen extends ConsumerWidget {
   const MyProfileScreen({super.key});
 
   bool _canPop(BuildContext context) {
@@ -18,7 +20,7 @@ class MyProfileScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     String displayName = 'Hari om';
     String username = 'hariomfk';
     return GradientBackground(
@@ -127,7 +129,7 @@ class MyProfileScreen extends StatelessWidget {
                         title: 'Log out',
                         textColor: AppColors.errorColor,
                         iconColor: AppColors.errorColor,
-                        onTap: () => _showLogoutDialog(context),
+                        onTap: () => _showLogoutDialog(context, ref),
                       ),
                       ProfileTile(
                         iconSvgPath: AssetsPath.profileDeleteAccount,
@@ -259,7 +261,7 @@ class MyProfileScreen extends StatelessWidget {
     );
   }
 
-  void _showLogoutDialog(BuildContext context) {
+  void _showLogoutDialog(BuildContext context, WidgetRef ref) {
     showDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -271,9 +273,29 @@ class MyProfileScreen extends StatelessWidget {
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.of(ctx).pop();
-              // context.read<AuthBloc>().add(SignOutRequested());
+              print('🔐 [ProfileScreen] User confirmed logout');
+
+              final logoutSuccess = await ref
+                  .read(logoutControllerProvider.notifier)
+                  .logout();
+
+              if (!context.mounted) return;
+
+              if (logoutSuccess) {
+                print('✅ [ProfileScreen] Logout successful, redirecting to splash');
+                // Clear route stack and go to splash
+                context.go(RouteNames.splash);
+              } else {
+                print('❌ [ProfileScreen] Logout failed');
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('❌ Logout failed. Please try again.'),
+                    backgroundColor: AppColors.errorColor,
+                  ),
+                );
+              }
             },
             child: const Text('Log out', style: TextStyle(color: AppColors.errorColor)),
           ),

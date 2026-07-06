@@ -4,6 +4,7 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/core/constants/app_assets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,16 +17,19 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-
     _navigateToNextScreen();
   }
 
   Future<void> _navigateToNextScreen() async {
     await Future.delayed(const Duration(seconds: 5));
-
     if (!mounted) return;
 
-    context.go(RouteNames.authOptions);
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user != null) {
+      context.go(RouteNames.home);
+    } else {
+      context.go(RouteNames.authOptions);
+    }
   }
 
   @override
