@@ -7,6 +7,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/auth/application/auth_state.da
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -19,13 +20,19 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _init();
+    _navigateToNextScreen();
   }
 
-  Future<void> _init() async {
-    await Future.delayed(const Duration(milliseconds: 2500));
+  Future<void> _navigateToNextScreen() async {
+    await Future.delayed(const Duration(seconds: 5));
     if (!mounted) return;
-    await ref.read(authNotifierProvider.notifier).initialize();
+
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user != null) {
+      context.go(RouteNames.home);
+    } else {
+      context.go(RouteNames.authOptions);
+    }
   }
 
   @override

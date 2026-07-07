@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_models.dart';
-import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_card.dart';
-import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_status_chip.dart';
+import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_card.dart';
+import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_status_chip.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 
 class CommunityPostCard extends StatelessWidget {
   const CommunityPostCard({super.key, required this.post, this.onTap});

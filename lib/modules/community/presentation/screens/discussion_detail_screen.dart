@@ -1,21 +1,104 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
-import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/application/community_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_models.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/answer_card.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/answer_form.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_status_chip.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/community/application/community_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class DiscussionDetailScreen extends ConsumerWidget {
-  const DiscussionDetailScreen({super.key});
+class DiscussionDetailScreen extends ConsumerStatefulWidget {
+  final String questionId;
+
+  const DiscussionDetailScreen({
+    super.key,
+    required this.questionId,
+  });
+
+  @override
+  ConsumerState<DiscussionDetailScreen> createState() =>
+      _DiscussionDetailScreenState();
+}
+
+class _DiscussionDetailScreenState extends ConsumerState<DiscussionDetailScreen> {
+  bool _showAnswerForm = false;
+  int _currentPage = 0;
+  final int _answersPerPage = 5;
+
+  @override
+  Widget build(BuildContext context) {
+    final questionAsync = ref.watch(questionDetailProvider(widget.questionId));
+    final currentUserIdAsync = ref.watch(currentUserIdProvider);
+
+    return questionAsync.when(
+      loading: () => const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      ),
+      error: (e, _) => Scaffold(
+        appBar: AppBar(
+          leading: BackButton(
+            onPressed: () => context.go(RouteNames.communityDiscussions),
+          ),
+        ),
+        body: Center(child: Text('Error: $e')),
+      ),
+      data: (question) {
+        if (question == null) {
+          return Scaffold(
+            appBar: AppBar(
+              leading: BackButton(
+                onPressed: () => context.go(RouteNames.communityDiscussions),
+              ),
+            ),
+            body: const Center(child: Text('Question not found')),
+          );
+        }
+        return _DetailBody(
+          question: question,
+          currentUserId: currentUserIdAsync.maybeWhen(
+            data: (id) => id,
+            orElse: () => null,
+          ),
+          showAnswerForm: _showAnswerForm,
+          onToggleAnswerForm: () {
+            setState(() => _showAnswerForm = !_showAnswerForm);
+          },
+          currentPage: _currentPage,
+          answersPerPage: _answersPerPage,
+          onPageChanged: (page) {
+            setState(() => _currentPage = page);
+          },
+        );
+      },
+    );
+  }
+}
+
+class _DetailBody extends ConsumerWidget {
+  const _DetailBody({
+    required this.question,
+    required this.showAnswerForm,
+    required this.onToggleAnswerForm,
+    required this.currentPage,
+    required this.answersPerPage,
+    required this.onPageChanged,
+    this.currentUserId,
+  });
+
+  final CommunityQuestion question;
+  final bool showAnswerForm;
+  final VoidCallback onToggleAnswerForm;
+  final int currentPage;
+  final int answersPerPage;
+  final Function(int) onPageChanged;
+  final String? currentUserId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final questions = ref.watch(communityDashboardProvider).questions;
-    final question = questions.first;
-    final replies = ref.watch(communityRepliesProvider);
+    final repliesAsync = ref.watch(repliesProvider(question.id));
 
     return FkScreen(
       padding: const EdgeInsets.fromLTRB(22, 12, 22, 96),
@@ -25,27 +108,20 @@ class DiscussionDetailScreen extends ConsumerWidget {
           onBack: () => context.go(RouteNames.communityDiscussions),
         ),
         const SizedBox(height: 28),
-        FkPrimaryButton(
-          label: 'Start a new discussion',
-          onPressed: () => context.go(RouteNames.communityAskQuestion),
-        ),
-        const SizedBox(height: 20),
         Text(
-          'How to manage state efficiently in Flutter without overcomplicating the app?',
+          question.title,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.w500,
             height: 1.25,
           ),
         ),
         const SizedBox(height: 14),
-        const Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            FkStatusChip(label: 'State management'),
-            FkStatusChip(label: 'Flutter development'),
-          ],
-        ),
+        if (question.tag.isNotEmpty)
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [FkStatusChip(label: question.tag)],
+          ),
         const SizedBox(height: 18),
         Text(
           question.body,
@@ -55,117 +131,120 @@ class DiscussionDetailScreen extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 18),
-        SizedBox(
-          height: 84,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemCount: 3,
-            separatorBuilder: (context, index) => const SizedBox(width: 10),
-            itemBuilder: (context, index) => Container(
-              width: 145,
-              decoration: BoxDecoration(
-                color: index == 0 ? Colors.black : const Color(0xFFF5F5F5),
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: AppColors.borderSecondary),
-              ),
-            ),
-          ),
+        _AuthorRow(
+          name: question.authorName,
+          subtitle: question.createdLabel,
+          photoUrl: question.authorPhotoUrl,
         ),
-        const SizedBox(height: 22),
-        _AuthorRow(name: 'Angelica Singh', subtitle: 'Posted 6h ago'),
         const Divider(height: 30),
-        Text(
-          'Responses ${replies.length}',
-          style: Theme.of(
-            context,
-          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
-        ),
-        const SizedBox(height: 16),
-        TextField(
-          minLines: 3,
-          maxLines: 4,
-          decoration: InputDecoration(
-            hintText: 'Write a reply',
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
-          ),
-          onTap: () => _showReplySheet(context, replies.first),
-        ),
-        const SizedBox(height: 24),
-        for (final reply in replies) _ReplyTile(reply: reply),
-        TextButton(
-          onPressed: () {},
-          child: const Align(
-            alignment: Alignment.centerLeft,
-            child: Text('Show replies'),
-          ),
-        ),
-      ],
-    );
-  }
 
-  void _showReplySheet(BuildContext context, reply) {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-      ),
-      builder: (context) => Padding(
-        padding: EdgeInsets.only(
-          left: 24,
-          right: 24,
-          top: 12,
-          bottom: MediaQuery.of(context).viewInsets.bottom + 28,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        // Answers Section
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Center(
-              child: Container(
-                width: 76,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(999),
-                ),
+            Text(
+              'Answers',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w700,
               ),
             ),
-            const SizedBox(height: 18),
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'Post your reply',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                ),
-                IconButton.filled(
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.close_rounded),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            _AuthorRow(name: reply.authorName, subtitle: reply.createdLabel),
-            const SizedBox(height: 12),
-            Text(reply.body),
-            const SizedBox(height: 16),
-            TextField(
-              minLines: 4,
-              maxLines: 5,
-              decoration: InputDecoration(
-                hintText: 'Write a reply',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
-              ),
+            ElevatedButton.icon(
+              onPressed: onToggleAnswerForm,
+              icon: const Icon(Icons.add),
+              label: const Text('Answer'),
             ),
           ],
         ),
-      ),
+        const SizedBox(height: 16),
+
+        // Answer Form
+        if (showAnswerForm) ...[
+          AnswerForm(
+            questionId: question.id,
+            onSubmitted: onToggleAnswerForm,
+          ),
+          const SizedBox(height: 24),
+        ],
+
+        // Answers List
+        repliesAsync.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (e, _) => Center(
+            child: Text('Error loading answers: $e'),
+          ),
+          data: (replies) {
+            if (replies.isEmpty) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 32),
+                child: Center(
+                  child: Text('No answers yet. Be the first to answer!'),
+                ),
+              );
+            }
+
+            final pageSize = answersPerPage;
+            final totalPages = (replies.length / pageSize).ceil();
+            final startIndex = currentPage * pageSize;
+            final endIndex = (startIndex + pageSize).clamp(0, replies.length);
+            final pageReplies = replies.sublist(startIndex, endIndex);
+
+            return Column(
+              children: [
+                Text(
+                  'Responses ${replies.length}',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.subtitleTextDarkGrey,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                ...pageReplies.map((reply) => AnswerCard(
+                  answerId: reply.id,
+                  authorName: reply.authorName,
+                  authorPhotoUrl: reply.authorPhotoUrl,
+                  body: reply.body,
+                  createdAt: reply.createdLabel,
+                  likeCount: reply.likeCount,
+                  isOwnAnswer: reply.authorId == currentUserId,
+                  onLike: () {
+                    ref
+                        .read(communityActionControllerProvider.notifier)
+                        .likeAnswer(reply.id, question.id);
+                  },
+                  onDelete: reply.authorId == currentUserId
+                      ? () {
+                          ref
+                              .read(communityActionControllerProvider.notifier)
+                              .deleteAnswer(reply.id, question.id);
+                        }
+                      : null,
+                )),
+
+                if (totalPages > 1) ...[
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (currentPage > 0)
+                        ElevatedButton(
+                          onPressed: () => onPageChanged(currentPage - 1),
+                          child: const Text('← Previous'),
+                        ),
+                      const SizedBox(width: 16),
+                      Text('Page ${currentPage + 1} of $totalPages'),
+                      const SizedBox(width: 16),
+                      if (currentPage < totalPages - 1)
+                        ElevatedButton(
+                          onPressed: () => onPageChanged(currentPage + 1),
+                          child: const Text('Next →'),
+                        ),
+                    ],
+                  ),
+                ],
+              ],
+            );
+          },
+        ),
+      ],
     );
   }
 }
@@ -185,9 +264,10 @@ class _TopBar extends StatelessWidget {
           child: Text(
             title,
             textAlign: TextAlign.center,
-            style: Theme.of(
-              context,
-            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge
+                ?.copyWith(fontWeight: FontWeight.w700),
           ),
         ),
         IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz)),
@@ -197,31 +277,46 @@ class _TopBar extends StatelessWidget {
 }
 
 class _AuthorRow extends StatelessWidget {
-  const _AuthorRow({required this.name, required this.subtitle});
+  const _AuthorRow({
+    required this.name,
+    required this.subtitle,
+    this.photoUrl,
+  });
 
   final String name;
   final String subtitle;
+  final String? photoUrl;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const CircleAvatar(backgroundColor: Color(0xFFFFB5C8)),
+        CircleAvatar(
+          backgroundColor: const Color(0xFFFFB5C8),
+          backgroundImage:
+              photoUrl != null ? NetworkImage(photoUrl!) : null,
+          child: photoUrl == null
+              ? Text(name.isNotEmpty ? name[0].toUpperCase() : '?',
+                  style: const TextStyle(color: Colors.white))
+              : null,
+        ),
         const SizedBox(width: 12),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               name,
-              style: Theme.of(
-                context,
-              ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(fontWeight: FontWeight.w700),
             ),
             Text(
               subtitle,
-              style: Theme.of(
-                context,
-              ).textTheme.bodySmall?.copyWith(color: Colors.grey),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall
+                  ?.copyWith(color: Colors.grey),
             ),
           ],
         ),
@@ -230,36 +325,3 @@ class _AuthorRow extends StatelessWidget {
   }
 }
 
-class _ReplyTile extends StatelessWidget {
-  const _ReplyTile({required this.reply});
-
-  final dynamic reply;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _AuthorRow(name: reply.authorName, subtitle: reply.createdLabel),
-          const SizedBox(height: 12),
-          Text(reply.body, style: Theme.of(context).textTheme.bodyLarge),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              const Icon(Icons.favorite, color: Colors.red),
-              const SizedBox(width: 6),
-              Text(reply.likeCount >= 1000 ? '14.5k' : '${reply.likeCount}'),
-              const SizedBox(width: 24),
-              const Icon(Icons.chat_bubble_outline, size: 18),
-              const SizedBox(width: 6),
-              Text('${reply.replyCount} reply'),
-            ],
-          ),
-          const Divider(height: 28),
-        ],
-      ),
-    );
-  }
-}

@@ -30,6 +30,7 @@ import 'package:go_router/go_router.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: RouteNames.splash,
+
   routes: [
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
@@ -63,11 +64,21 @@ final GoRouter appRouter = GoRouter(
                   path: RouteNames.communityDiscussionsSegment,
                   builder: (context, state) =>
                       const CommunityDiscussionsScreen(),
+                  routes: [
+                    GoRoute(
+                      path: ':questionId',
+                      builder: (context, state) => DiscussionDetailScreen(
+                        questionId: state.pathParameters['questionId'] ?? '',
+                      ),
+                    ),
+                  ],
                 ),
                 GoRoute(
-                  path: RouteNames.communityDiscussionDetailSegment,
+                  path: '${RouteNames.communityDiscussionDetailSegment}/:questionId',
                   builder: (context, state) =>
-                  const DiscussionDetailScreen(),
+                      DiscussionDetailScreen(
+                        questionId: state.pathParameters['questionId'] ?? '',
+                      ),
                 ),
                 GoRoute(
                   path: RouteNames.communityAskQuestionSegment,
