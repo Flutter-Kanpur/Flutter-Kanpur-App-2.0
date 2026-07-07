@@ -26,12 +26,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late int _currentAnnouncementPage = 0;
-  late int _selectedFilterIndex = 1;
-  late int _selectedFiltersCount = 0;
+  int _currentAnnouncementPage = 0;
+  int _selectedFilterIndex = 1;
 
   @override
   Widget build(BuildContext context) {
+
     final announcements = [
       {
         'title': 'home.announcements.first.title'.tr(),
@@ -77,30 +77,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   announcements: announcements,
                   currentPage: _currentAnnouncementPage,
                   onPageChanged: (page) {
-                    setState(() {
-                      _currentAnnouncementPage = page;
-                    });
+                    setState(() => _currentAnnouncementPage = page);
                   },
                 ),
-
                 HomeFilterTabs(
                   selectedFilterIndex: _selectedFilterIndex,
                   onFilterSelected: (index) {
-                    setState(() {
-                      _selectedFilterIndex = index;
-                    });
+                    setState(() => _selectedFilterIndex = index);
                   },
                   onFiltersTap: () {
-                    // Handle filters bottom sheet
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'home.filtersBottomSheetPlaceholder'.tr(),
-                        ),
-                      ),
+                      SnackBar(content: Text('home.filtersBottomSheetPlaceholder'.tr())),
                     );
                   },
-                  selectedFiltersCount: _selectedFiltersCount,
+                  selectedFiltersCount: 0,
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 16.h),
@@ -145,7 +135,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
                   child: Column(
                     children: [
-                      // First Event Card
                       EventCardComponent(
                         assetPath: AssetsPath.launcheventpng,
                         status: 'home.events.upcoming'.tr(),
@@ -160,7 +149,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         onEyeIconPressed: () {},
                       ),
                       16.verticalSpace,
-                      // Second Event Card
                       EventCardComponent(
                         assetPath: AssetsPath.fkcard,
                         status: 'home.events.upcoming'.tr(),

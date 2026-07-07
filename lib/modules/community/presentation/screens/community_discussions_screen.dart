@@ -1,26 +1,89 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/application/community_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_filter_row.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/discussion_list_item.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/community/application/community_provider.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_models.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class CommunityDiscussionsScreen extends ConsumerWidget {
+// Local filter state for the discussions screen.
+final _discussionFilterProvider =
+    NotifierProvider<DiscussionFilterNotifier, String?>(
+  DiscussionFilterNotifier.new,
+);
+
+class DiscussionFilterNotifier extends Notifier<String?> {
+  @override
+  String? build() => null;
+  void update(String? value) => state = value;
+}
+
+class CommunityDiscussionsScreen extends ConsumerStatefulWidget {
   const CommunityDiscussionsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final questions = ref.watch(communityDashboardProvider).questions;
+  ConsumerState<CommunityDiscussionsScreen> createState() =>
+      _CommunityDiscussionsScreenState();
+}
+
+class _CommunityDiscussionsScreenState
+    extends ConsumerState<CommunityDiscussionsScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 500) {
+      // User scrolled near bottom - could trigger load more here
+      // For now, we load all at once via the provider
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final questionsAsync = ref.watch(questionsProvider);
+    final activeFilter = ref.watch(_discussionFilterProvider);
 
     return FkScreen(
       padding: const EdgeInsets.fromLTRB(22, 12, 22, 96),
       children: [
-        _TopBar(
-          title: 'Discussion',
-          onBack: () => context.go(RouteNames.community),
+        // Top bar
+        Row(
+          children: [
+            IconButton(
+              onPressed: () => context.go(RouteNames.community),
+              icon: const Icon(Icons.arrow_back),
+            ),
+            Expanded(
+              child: Text(
+                'Discussions',
+                textAlign: TextAlign.center,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(fontWeight: FontWeight.w700),
+              ),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.more_horiz),
+            ),
+          ],
         ),
         const SizedBox(height: 28),
         FkPrimaryButton(
@@ -28,178 +91,105 @@ class CommunityDiscussionsScreen extends ConsumerWidget {
           onPressed: () => context.go(RouteNames.communityAskQuestion),
         ),
         const SizedBox(height: 18),
-        SizedBox(
-          height: 38,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: const [
-              _FilterChip(label: 'Filters', icon: Icons.filter_list_rounded),
-              _FilterChip(label: 'Trending'),
-              _FilterChip(label: 'Active'),
-              _FilterChip(label: 'Unanswered'),
-            ],
-          ),
+        CommunityFilterRow(
+          selected: activeFilter,
+          onSelected: (filter) {
+            ref.read(_discussionFilterProvider.notifier).state = filter;
+            ref.read(questionsProvider.notifier).setFilter(filter);
+          },
         ),
         const SizedBox(height: 16),
-        Text(
-          '24,181,717 questions',
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: AppColors.subtitleTextDarkGrey,
+        questionsAsync.when(
+          loading: () => const Padding(
+            padding: EdgeInsets.symmetric(vertical: 48),
+            child: Center(child: CircularProgressIndicator()),
           ),
+          error: (e, _) => _ErrorView(
+            onRetry: () => ref.read(questionsProvider.notifier).refresh(),
+          ),
+          data: (questions) {
+            if (questions.isEmpty) {
+              return const _EmptyView();
+            }
+            return RefreshIndicator(
+              onRefresh: () async {
+                await ref.read(questionsProvider.notifier).refresh();
+              },
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${questions.length} discussions',
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color: AppColors.subtitleTextDarkGrey,
+                          ),
+                    ),
+                    const SizedBox(height: 16),
+                    ...questions.map(
+                      (q) => DiscussionListItem(
+                        question: q,
+                        onTap: () =>
+                            context.push('${RouteNames.communityDiscussions}/${q.id}'),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                  ],
+                ),
+              ),
+            );
+          },
         ),
-        const SizedBox(height: 16),
-        for (final question in questions)
-          _DiscussionListCard(
-            question: question,
-            onTap: () => context.go(RouteNames.communityDiscussionDetail),
-          ),
       ],
     );
   }
 }
 
-class _TopBar extends StatelessWidget {
-  const _TopBar({required this.title, required this.onBack});
+class _ErrorView extends StatelessWidget {
+  const _ErrorView({required this.onRetry});
 
-  final String title;
-  final VoidCallback onBack;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        IconButton(onPressed: onBack, icon: const Icon(Icons.arrow_back)),
-        Expanded(
-          child: Text(
-            title,
-            textAlign: TextAlign.center,
-            style: Theme.of(
-              context,
-            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
-          ),
-        ),
-        IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz)),
-      ],
-    );
-  }
-}
-
-class _FilterChip extends StatelessWidget {
-  const _FilterChip({required this.label, this.icon});
-
-  final String label;
-  final IconData? icon;
+  final VoidCallback onRetry;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(right: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 14),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: const Color(0xFFD8DDF0)),
-      ),
-      child: Row(
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 48),
+      child: Column(
         children: [
-          if (icon != null) ...[Icon(icon, size: 16), const SizedBox(width: 6)],
+          const Icon(Icons.wifi_off_rounded, size: 48, color: Colors.grey),
+          const SizedBox(height: 12),
           Text(
-            label,
-            style: Theme.of(
-              context,
-            ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w700),
+            'Could not load discussions',
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge
+                ?.copyWith(color: AppColors.subtitleTextDarkGrey),
           ),
-          if (icon != null) const Icon(Icons.keyboard_arrow_down, size: 18),
+          const SizedBox(height: 16),
+          TextButton(onPressed: onRetry, child: const Text('Try again')),
         ],
       ),
     );
   }
 }
 
-class _DiscussionListCard extends StatelessWidget {
-  const _DiscussionListCard({required this.question, required this.onTap});
-
-  final CommunityQuestion question;
-  final VoidCallback onTap;
+class _EmptyView extends StatelessWidget {
+  const _EmptyView();
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: const Color(0xFFE2E2E2)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              question.title,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: AppColors.primary,
-                height: 1.4,
-              ),
-            ),
-            if (question.id == 'tags-model') ...[
-              const SizedBox(height: 12),
-              SizedBox(
-                height: 84,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 3,
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(width: 10),
-                  itemBuilder: (context, index) => Container(
-                    width: 145,
-                    decoration: BoxDecoration(
-                      color: index == 0 ? Colors.black : Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: AppColors.borderSecondary),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-            const SizedBox(height: 18),
-            Row(
-              children: [
-                const CircleAvatar(
-                  radius: 18,
-                  backgroundColor: Color(0xFFFFB5C8),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        question.authorName,
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      Text(
-                        question.createdLabel,
-                        style: Theme.of(
-                          context,
-                        ).textTheme.bodySmall?.copyWith(color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                ),
-                Text(
-                  '${question.answerCount + 3} answers',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.subtitleTextDarkGrey,
-                  ),
-                ),
-              ],
-            ),
-          ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 48),
+      child: Center(
+        child: Text(
+          'No discussions yet.\nBe the first to start one!',
+          textAlign: TextAlign.center,
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge
+              ?.copyWith(color: AppColors.subtitleTextDarkGrey),
         ),
       ),
     );
