@@ -5,6 +5,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/auth
 import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/auth_options_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/sign_in_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/sign_up_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/email_verification_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/splash_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/blogs/presentation/screens/blogs_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/ask_question_screen.dart';
@@ -222,6 +223,10 @@ final GoRouter appRouter = GoRouter(
     ),
 
     /// Shared Feedback Screen
+    GoRoute(
+      path: RouteNames.emailVerification,
+      builder: (context, state) => const EmailVerificationScreen(),
+    ),
     GoRoute(
       path: RouteNames.feedback,
 
