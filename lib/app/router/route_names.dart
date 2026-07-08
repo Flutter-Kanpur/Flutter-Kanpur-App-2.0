@@ -47,6 +47,7 @@ class RouteNames {
 
   static const manageProfile = '/profile/manage-profile';
   static const editProfile = '/profile/edit-profile';
+  static const myEvents = '/profile/my-events';
 
   /// Onboarding Segments
   static const onboardingProfileSegment = 'profile';

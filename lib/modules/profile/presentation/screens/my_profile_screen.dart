@@ -66,7 +66,7 @@ class MyProfileScreen extends ConsumerWidget {
                   ProfileSectionBlock(
                     title: 'My Activity',
                     tiles: [
-                      ProfileTile(iconSvgPath: AssetsPath.profileMyEvents, title: 'My Events', onTap: () {}),
+                      ProfileTile(iconSvgPath: AssetsPath.profileMyEvents, title: 'My Events', onTap: () => context.push(RouteNames.myEvents)),
                       ProfileTile(iconSvgPath: AssetsPath.profileMyContests, title: 'My Contests', onTap: () {}),
                       ProfileTile(iconSvgPath: AssetsPath.profileProblemOfDay, title: 'Problem of the Day', onTap: () {}),
                     ],

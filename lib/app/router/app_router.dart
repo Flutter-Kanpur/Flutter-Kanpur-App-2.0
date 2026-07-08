@@ -25,6 +25,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/onboarding/presentation/screen
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/my_profile_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/edit_profile_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/manage_profile_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/my_events_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/screens/app_feedback_screen.dart';
 import 'package:go_router/go_router.dart';
 
@@ -168,6 +169,14 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: RouteNames.editProfile,
               builder: (context, state) => const EditProfileScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.myEvents,
+              builder: (context, state) => const MyEventsScreen(),
             ),
           ],
         ),
