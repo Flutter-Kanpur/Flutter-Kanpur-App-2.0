@@ -8,7 +8,8 @@ ProblemOfDayOverview _mockOverview() {
     problem: const DailyProblem(
       id: 'potd-reverse-a-string',
       title: 'Reverse a String',
-      description: 'Practice basic string manipulation using arrays or pointers.',
+      description:
+          'Practice basic string manipulation using arrays or pointers.',
     ),
     progress: const ProblemStreakProgress(
       currentStreakDays: 6,

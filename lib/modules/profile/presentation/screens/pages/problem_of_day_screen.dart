@@ -28,7 +28,11 @@ class ProblemOfDayScreen extends ConsumerWidget {
           centerTitle: true,
           leading: IconButton(
             onPressed: () => context.pop(),
-            icon: Icon(Icons.arrow_back, size: 22.sp, color: AppColors.textBlack),
+            icon: Icon(
+              Icons.arrow_back,
+              size: 22.sp,
+              color: AppColors.textBlack,
+            ),
           ),
           title: Text('Problem of the Day', style: textStyle_18BoldBlack()),
         ),
@@ -45,7 +49,10 @@ class ProblemOfDayScreen extends ConsumerWidget {
               SizedBox(height: 20.h),
               Text('Details', style: textStyle_16RegularGrey()),
               SizedBox(height: 8.h),
-              _DetailsCard(details: overview.details, progress: overview.progress),
+              _DetailsCard(
+                details: overview.details,
+                progress: overview.progress,
+              ),
               SizedBox(height: 24.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -60,7 +67,9 @@ class ProblemOfDayScreen extends ConsumerWidget {
               SizedBox(height: 12.h),
               _BadgeStack(badges: overview.badges),
               SizedBox(height: 16.h),
-              _NextBadgeNotice(streakDaysThreshold: overview.nextBadgeStreakThreshold),
+              _NextBadgeNotice(
+                streakDaysThreshold: overview.nextBadgeStreakThreshold,
+              ),
             ],
           ),
         ),
@@ -116,12 +125,18 @@ class _HeroCard extends StatelessWidget {
                     onTap: onSolve,
                     borderRadius: BorderRadius.circular(999),
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 24.w,
+                        vertical: 12.h,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(999),
                       ),
-                      child: Text('Solve problem', style: textStyle_16MediumBlack()),
+                      child: Text(
+                        'Solve problem',
+                        style: textStyle_16MediumBlack(),
+                      ),
                     ),
                   ),
                 ),
@@ -168,9 +183,12 @@ class _ProgressCard extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(999),
             child: LinearProgressIndicator(
-              value: progress.challengeDaysCompleted / progress.challengeDaysGoal,
+              value:
+                  progress.challengeDaysCompleted / progress.challengeDaysGoal,
               backgroundColor: AppColors.bgPrimary,
-              valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
+              valueColor: const AlwaysStoppedAnimation<Color>(
+                AppColors.primary,
+              ),
               minHeight: 8.h,
             ),
           ),
@@ -230,10 +248,7 @@ class _StatColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          value,
-          style: textStyle_24BlackBold().copyWith(fontSize: 28.sp),
-        ),
+        Text(value, style: textStyle_24BlackBold().copyWith(fontSize: 28.sp)),
         SizedBox(height: 4.h),
         Text(label, style: textStyle_14RegularGrey()),
       ],
@@ -252,7 +267,8 @@ class _DetailsCard extends StatelessWidget {
     final startedOn = details.startedOn;
     final startedOnLabel =
         '${startedOn.shortMonth} ${startedOn.day}, ${startedOn.year}';
-    final levelLabel = 'Level ${progress.currentLevel} — ${progress.currentLevelName}';
+    final levelLabel =
+        'Level ${progress.currentLevel} — ${progress.currentLevelName}';
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w),

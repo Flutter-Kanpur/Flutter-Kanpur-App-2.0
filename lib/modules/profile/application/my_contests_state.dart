@@ -6,10 +6,10 @@ enum MyContestsTab { ongoing, upcoming, past }
 
 extension MyContestsTabX on MyContestsTab {
   String get label => switch (this) {
-        MyContestsTab.ongoing => 'Ongoing',
-        MyContestsTab.upcoming => 'Upcoming',
-        MyContestsTab.past => 'Past',
-      };
+    MyContestsTab.ongoing => 'Ongoing',
+    MyContestsTab.upcoming => 'Upcoming',
+    MyContestsTab.past => 'Past',
+  };
 }
 
 /// Color treatment for [MyContest.metaValue]: red for an ongoing contest's
@@ -55,15 +55,16 @@ class MyContest {
   }
 
   MyContestMetaTone get metaTone => switch (category) {
-        MyContestCategory.upcoming => MyContestMetaTone.positive,
-        MyContestCategory.ongoing || MyContestCategory.past => MyContestMetaTone.urgent,
-      };
+    MyContestCategory.upcoming => MyContestMetaTone.positive,
+    MyContestCategory.ongoing ||
+    MyContestCategory.past => MyContestMetaTone.urgent,
+  };
 
   String get metaLabel => switch (category) {
-        MyContestCategory.ongoing => 'Ends in',
-        MyContestCategory.upcoming => 'Starts in',
-        MyContestCategory.past => 'Ended on',
-      };
+    MyContestCategory.ongoing => 'Ends in',
+    MyContestCategory.upcoming => 'Starts in',
+    MyContestCategory.past => 'Ended on',
+  };
 
   /// A countdown to start/end for ongoing/upcoming contests, or the end
   /// date for a past one. Computed against `DateTime.now()` whenever this
@@ -81,9 +82,9 @@ class MyContest {
   }
 
   String get actionLabel => switch (category) {
-        MyContestCategory.ongoing => 'Continue contest',
-        MyContestCategory.upcoming || MyContestCategory.past => 'View summary',
-      };
+    MyContestCategory.ongoing => 'Continue contest',
+    MyContestCategory.upcoming || MyContestCategory.past => 'View summary',
+  };
 
   /// Fixed schedule line for the detail screen, e.g. "Sun, 11 Jan, 08:00 IST".
   String get scheduleLabel {
@@ -97,8 +98,14 @@ class MyContest {
     if (remaining.isNegative) return '0d 00:00:00';
     final days = remaining.inDays;
     final hours = remaining.inHours.remainder(24).toString().padLeft(2, '0');
-    final minutes = remaining.inMinutes.remainder(60).toString().padLeft(2, '0');
-    final seconds = remaining.inSeconds.remainder(60).toString().padLeft(2, '0');
+    final minutes = remaining.inMinutes
+        .remainder(60)
+        .toString()
+        .padLeft(2, '0');
+    final seconds = remaining.inSeconds
+        .remainder(60)
+        .toString()
+        .padLeft(2, '0');
     return '${days}d $hours:$minutes:$seconds';
   }
 

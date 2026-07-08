@@ -96,8 +96,9 @@ class MyContestsScreen extends ConsumerWidget {
                                 .read(myContestsProvider.notifier)
                                 .toggleSaved(contest.id),
                             onAction: () {},
-                            onTap: () => context
-                                .push('${RouteNames.myContests}/${contest.id}'),
+                            onTap: () => context.push(
+                              '${RouteNames.myContests}/${contest.id}',
+                            ),
                           );
                         },
                       ),

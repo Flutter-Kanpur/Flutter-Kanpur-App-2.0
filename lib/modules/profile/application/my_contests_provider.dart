@@ -98,9 +98,10 @@ class MyContestsNotifier extends Notifier<List<MyContest>> {
   }
 }
 
-final myContestsProvider = NotifierProvider<MyContestsNotifier, List<MyContest>>(
-  MyContestsNotifier.new,
-);
+final myContestsProvider =
+    NotifierProvider<MyContestsNotifier, List<MyContest>>(
+      MyContestsNotifier.new,
+    );
 
 class MyContestsSelectedTabNotifier extends Notifier<MyContestsTab> {
   @override
@@ -111,8 +112,8 @@ class MyContestsSelectedTabNotifier extends Notifier<MyContestsTab> {
 
 final myContestsSelectedTabProvider =
     NotifierProvider<MyContestsSelectedTabNotifier, MyContestsTab>(
-  MyContestsSelectedTabNotifier.new,
-);
+      MyContestsSelectedTabNotifier.new,
+    );
 
 /// Ticks once a second so anything watching it rebuilds. `category` and
 /// `metaValue` on [MyContest] are computed from `DateTime.now()` when read,
@@ -143,7 +144,10 @@ final myContestsFilteredProvider = Provider.autoDispose<List<MyContest>>((ref) {
 /// every tick would make Riverpod's default identity-equality check treat
 /// it as "unchanged" and silently skip notifying the widget — which was
 /// exactly why this screen's countdown wasn't updating.
-final myContestByIdProvider = Provider.autoDispose.family<MyContest?, String>((ref, id) {
+final myContestByIdProvider = Provider.autoDispose.family<MyContest?, String>((
+  ref,
+  id,
+) {
   ref.watch(contestsTickerProvider);
   final contests = ref.watch(myContestsProvider);
   for (final contest in contests) {

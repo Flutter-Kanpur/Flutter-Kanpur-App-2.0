@@ -87,7 +87,9 @@ class MyEventsScreen extends ConsumerWidget {
                                   text: selectedTab.emptyActionLabel,
                                   height: 48.h,
                                   onTap: () => ref
-                                      .read(myEventsSelectedTabProvider.notifier)
+                                      .read(
+                                        myEventsSelectedTabProvider.notifier,
+                                      )
                                       .select(selectedTab.emptyActionTarget),
                                 ),
                               ),

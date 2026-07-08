@@ -75,7 +75,9 @@ class MyEventCard extends ConsumerWidget {
                     SizedBox(width: 6.w),
                     Text(
                       event.statusLabel,
-                      style: textStyle_14RegularBlack().copyWith(color: statusColor),
+                      style: textStyle_14RegularBlack().copyWith(
+                        color: statusColor,
+                      ),
                     ),
                   ],
                 ),
@@ -89,7 +91,9 @@ class MyEventCard extends ConsumerWidget {
                     event.isSaved
                         ? Icons.bookmark_rounded
                         : Icons.bookmark_border_rounded,
-                    color: event.isSaved ? AppColors.primary : AppColors.textGray,
+                    color: event.isSaved
+                        ? AppColors.primary
+                        : AppColors.textGray,
                     size: 24.sp,
                   ),
                 ),
@@ -111,8 +115,9 @@ class MyEventCard extends ConsumerWidget {
           ),
           if (!expanded)
             GestureDetector(
-              onTap: () =>
-                  ref.read(myEventCardExpandedProvider(event.id).notifier).toggle(),
+              onTap: () => ref
+                  .read(myEventCardExpandedProvider(event.id).notifier)
+                  .toggle(),
               child: Padding(
                 padding: EdgeInsets.only(top: 2.h),
                 child: Text('see more', style: textStyle_14RegularLinkBlue()),
@@ -140,7 +145,9 @@ class MyEventCard extends ConsumerWidget {
                       width: 48.w,
                       height: 48.h,
                       decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.contributorFieldBorder),
+                        border: Border.all(
+                          color: AppColors.contributorFieldBorder,
+                        ),
                         borderRadius: BorderRadius.circular(999),
                       ),
                       child: Icon(

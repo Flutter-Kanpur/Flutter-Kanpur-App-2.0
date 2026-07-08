@@ -30,7 +30,9 @@ class MyContestCard extends StatelessWidget {
   TextStyle _metaValueStyle() {
     return switch (contest.metaTone) {
       MyContestMetaTone.urgent => textStyle_16RedRegular(),
-      MyContestMetaTone.positive => textStyle_16RegularBlack().copyWith(color: AppColors.green),
+      MyContestMetaTone.positive => textStyle_16RegularBlack().copyWith(
+        color: AppColors.green,
+      ),
     };
   }
 
@@ -63,7 +65,9 @@ class MyContestCard extends StatelessWidget {
                       contest.isSaved
                           ? Icons.favorite_rounded
                           : Icons.favorite_border_rounded,
-                      color: contest.isSaved ? AppColors.primary : AppColors.textGray,
+                      color: contest.isSaved
+                          ? AppColors.primary
+                          : AppColors.textGray,
                       size: 24.sp,
                     ),
                   ),
@@ -78,7 +82,10 @@ class MyContestCard extends StatelessWidget {
                 children: contest.tags
                     .map(
                       (tag) => Container(
-                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 8.h,
+                        ),
                         decoration: BoxDecoration(
                           color: AppColors.bgPrimary,
                           borderRadius: BorderRadius.circular(100),
@@ -89,7 +96,11 @@ class MyContestCard extends StatelessWidget {
                     .toList(),
               ),
               SizedBox(height: 16.h),
-              Divider(height: 1, thickness: 1, color: AppColors.contributorFieldBorder),
+              Divider(
+                height: 1,
+                thickness: 1,
+                color: AppColors.contributorFieldBorder,
+              ),
               SizedBox(height: 16.h),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -98,7 +109,10 @@ class MyContestCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(contest.metaLabel, style: textStyle_14RegularGrey()),
+                        Text(
+                          contest.metaLabel,
+                          style: textStyle_14RegularGrey(),
+                        ),
                         SizedBox(height: 4.h),
                         Text(contest.metaValue, style: _metaValueStyle()),
                       ],

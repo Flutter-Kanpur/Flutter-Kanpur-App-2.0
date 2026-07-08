@@ -56,7 +56,10 @@ class MyEventsNotifier extends Notifier<List<MyEvent>> {
   void toggleSaved(String eventId) {
     state = [
       for (final event in state)
-        if (event.id == eventId) event.copyWith(isSaved: !event.isSaved) else event,
+        if (event.id == eventId)
+          event.copyWith(isSaved: !event.isSaved)
+        else
+          event,
     ];
   }
 }
@@ -74,8 +77,8 @@ class MyEventsSelectedTabNotifier extends Notifier<MyEventsTab> {
 
 final myEventsSelectedTabProvider =
     NotifierProvider<MyEventsSelectedTabNotifier, MyEventsTab>(
-  MyEventsSelectedTabNotifier.new,
-);
+      MyEventsSelectedTabNotifier.new,
+    );
 
 /// Events narrowed to the currently selected tab.
 final myEventsFilteredProvider = Provider<List<MyEvent>>((ref) {
@@ -105,5 +108,5 @@ class MyEventCardExpandedNotifier extends Notifier<bool> {
 
 final myEventCardExpandedProvider =
     NotifierProvider.family<MyEventCardExpandedNotifier, bool, String>(
-  MyEventCardExpandedNotifier.new,
-);
+      MyEventCardExpandedNotifier.new,
+    );

@@ -43,7 +43,9 @@ class MyContestDetailScreen extends ConsumerWidget {
   TextStyle _metaValueStyle(MyContestMetaTone tone) {
     return switch (tone) {
       MyContestMetaTone.urgent => textStyle_16RedRegular(),
-      MyContestMetaTone.positive => textStyle_16RegularBlack().copyWith(color: AppColors.green),
+      MyContestMetaTone.positive => textStyle_16RegularBlack().copyWith(
+        color: AppColors.green,
+      ),
     };
   }
 
@@ -53,94 +55,119 @@ class MyContestDetailScreen extends ConsumerWidget {
 
     return GradientBackground(
       child: Scaffold(
-      backgroundColor: Colors.transparent,
-      appBar: AppBar(
         backgroundColor: Colors.transparent,
-        forceMaterialTransparency: true,
-        centerTitle: true,
-        leading: IconButton(
-          onPressed: () => context.pop(),
-          icon: Icon(Icons.arrow_back, size: 22.sp, color: AppColors.textBlack),
-        ),
-        title: Text('Contest details', style: textStyle_18BlackMedium()),
-      ),
-      body: contest == null
-          ? Center(
-              child: Text('Contest not found.', style: textStyle_16RegularGrey()),
-            )
-          : SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(20.w, 8.h, 20.w, 32.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(contest.title, style: textStyle_24BlackBold()),
-                  SizedBox(height: 4.h),
-                  Text(contest.categoryLabel, style: textStyle_16RegularGrey()),
-                  SizedBox(height: 16.h),
-                  Row(
-                    children: [
-                      _OutlinedPillButton(
-                        icon: Icons.share_outlined,
-                        label: 'Share',
-                        onTap: () => _shareContest(contest),
-                      ),
-                      SizedBox(width: 12.w),
-                      _OutlinedPillButton(
-                        icon: contest.isSaved
-                            ? Icons.favorite_rounded
-                            : Icons.favorite_border_rounded,
-                        label: contest.isSaved ? 'Saved' : 'Save',
-                        onTap: () => ref
-                            .read(myContestsProvider.notifier)
-                            .toggleSaved(contest.id),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 16.h),
-                  Text(contest.scheduleLabel, style: textStyle_16RegularBlack()),
-                  SizedBox(height: 4.h),
-                  Text(
-                    '${contest.metaLabel} ${contest.metaValue}',
-                    style: _metaValueStyle(contest.metaTone),
-                  ),
-                  SizedBox(height: 16.h),
-                  Wrap(
-                    spacing: 8.w,
-                    runSpacing: 8.h,
-                    children: contest.tags
-                        .map(
-                          (tag) => Container(
-                            padding:
-                                EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                            decoration: BoxDecoration(
-                              color: AppColors.bgPrimary,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: Text(tag, style: textStyle_14RegularBlack()),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                  SizedBox(height: 20.h),
-                  Divider(height: 1, thickness: 1, color: AppColors.communityBorder),
-                  SizedBox(height: 20.h),
-                  Text('What You\'ll Do', style: textStyle_18BlackMedium()),
-                  SizedBox(height: 12.h),
-                  _BulletList(items: contest.whatYoullDo),
-                  SizedBox(height: 20.h),
-                  Text('Rewards & Outcomes', style: textStyle_18BlackMedium()),
-                  SizedBox(height: 12.h),
-                  _BulletList(items: contest.rewardsAndOutcomes),
-                  SizedBox(height: 32.h),
-                  GradientButton(
-                    text: 'Add to Calendar',
-                    height: 48.h,
-                    onTap: () => _addToCalendar(contest),
-                    textStyle: textStyle_14SemiBoldWhite(),
-                  ),
-                ],
-              ),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          forceMaterialTransparency: true,
+          centerTitle: true,
+          leading: IconButton(
+            onPressed: () => context.pop(),
+            icon: Icon(
+              Icons.arrow_back,
+              size: 22.sp,
+              color: AppColors.textBlack,
             ),
+          ),
+          title: Text('Contest details', style: textStyle_18BlackMedium()),
+        ),
+        body: contest == null
+            ? Center(
+                child: Text(
+                  'Contest not found.',
+                  style: textStyle_16RegularGrey(),
+                ),
+              )
+            : SingleChildScrollView(
+                padding: EdgeInsets.fromLTRB(20.w, 8.h, 20.w, 32.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(contest.title, style: textStyle_24BlackBold()),
+                    SizedBox(height: 4.h),
+                    Text(
+                      contest.categoryLabel,
+                      style: textStyle_16RegularGrey(),
+                    ),
+                    SizedBox(height: 16.h),
+                    Row(
+                      children: [
+                        _OutlinedPillButton(
+                          icon: Icons.share_outlined,
+                          label: 'Share',
+                          onTap: () => _shareContest(contest),
+                        ),
+                        SizedBox(width: 12.w),
+                        _OutlinedPillButton(
+                          icon: contest.isSaved
+                              ? Icons.favorite_rounded
+                              : Icons.favorite_border_rounded,
+                          label: contest.isSaved ? 'Saved' : 'Save',
+                          onTap: () => ref
+                              .read(myContestsProvider.notifier)
+                              .toggleSaved(contest.id),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16.h),
+                    Text(
+                      contest.scheduleLabel,
+                      style: textStyle_16RegularBlack(),
+                    ),
+                    SizedBox(height: 4.h),
+                    Text(
+                      '${contest.metaLabel} ${contest.metaValue}',
+                      style: _metaValueStyle(contest.metaTone),
+                    ),
+                    SizedBox(height: 16.h),
+                    Wrap(
+                      spacing: 8.w,
+                      runSpacing: 8.h,
+                      children: contest.tags
+                          .map(
+                            (tag) => Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 16.w,
+                                vertical: 8.h,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.bgPrimary,
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: Text(
+                                tag,
+                                style: textStyle_14RegularBlack(),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                    SizedBox(height: 20.h),
+                    Divider(
+                      height: 1,
+                      thickness: 1,
+                      color: AppColors.communityBorder,
+                    ),
+                    SizedBox(height: 20.h),
+                    Text('What You\'ll Do', style: textStyle_18BlackMedium()),
+                    SizedBox(height: 12.h),
+                    _BulletList(items: contest.whatYoullDo),
+                    SizedBox(height: 20.h),
+                    Text(
+                      'Rewards & Outcomes',
+                      style: textStyle_18BlackMedium(),
+                    ),
+                    SizedBox(height: 12.h),
+                    _BulletList(items: contest.rewardsAndOutcomes),
+                    SizedBox(height: 32.h),
+                    GradientButton(
+                      text: 'Add to Calendar',
+                      height: 48.h,
+                      onTap: () => _addToCalendar(contest),
+                      textStyle: textStyle_14SemiBoldWhite(),
+                    ),
+                  ],
+                ),
+              ),
       ),
     );
   }

@@ -6,38 +6,44 @@ enum MyEventsTab { upcoming, past, missed, saved }
 
 extension MyEventsTabX on MyEventsTab {
   String get label => switch (this) {
-        MyEventsTab.upcoming => 'Upcoming',
-        MyEventsTab.past => 'Past',
-        MyEventsTab.missed => 'Missed',
-        MyEventsTab.saved => 'Saved',
-      };
+    MyEventsTab.upcoming => 'Upcoming',
+    MyEventsTab.past => 'Past',
+    MyEventsTab.missed => 'Missed',
+    MyEventsTab.saved => 'Saved',
+  };
 
   /// Empty-state heading/subheading/CTA when this tab has no events. Each
   /// tab's CTA points at a *different* tab (usually Upcoming) rather than
   /// itself, since suggesting the user browse the empty tab again is useless.
   String get emptyHeading => switch (this) {
-        MyEventsTab.upcoming => 'No upcoming events right now',
-        MyEventsTab.past => 'No past events yet',
-        MyEventsTab.missed => 'No missed events',
-        MyEventsTab.saved => 'No saved events yet',
-      };
+    MyEventsTab.upcoming => 'No upcoming events right now',
+    MyEventsTab.past => 'No past events yet',
+    MyEventsTab.missed => 'No missed events',
+    MyEventsTab.saved => 'No saved events yet',
+  };
 
   String get emptySubheading => switch (this) {
-        MyEventsTab.upcoming => 'Check back soon for upcoming meetups and sessions.',
-        MyEventsTab.past => "Attend an event and it'll show up here afterward.",
-        MyEventsTab.missed => "Great — you haven't missed any events you registered for.",
-        MyEventsTab.saved => 'Tap the bookmark on an event to save it for later.',
-      };
+    MyEventsTab.upcoming =>
+      'Check back soon for upcoming meetups and sessions.',
+    MyEventsTab.past => "Attend an event and it'll show up here afterward.",
+    MyEventsTab.missed =>
+      "Great — you haven't missed any events you registered for.",
+    MyEventsTab.saved => 'Tap the bookmark on an event to save it for later.',
+  };
 
   String get emptyActionLabel => switch (this) {
-        MyEventsTab.upcoming => 'Browse past events',
-        MyEventsTab.past || MyEventsTab.missed || MyEventsTab.saved => 'Browse upcoming events',
-      };
+    MyEventsTab.upcoming => 'Browse past events',
+    MyEventsTab.past ||
+    MyEventsTab.missed ||
+    MyEventsTab.saved => 'Browse upcoming events',
+  };
 
   MyEventsTab get emptyActionTarget => switch (this) {
-        MyEventsTab.upcoming => MyEventsTab.past,
-        MyEventsTab.past || MyEventsTab.missed || MyEventsTab.saved => MyEventsTab.upcoming,
-      };
+    MyEventsTab.upcoming => MyEventsTab.past,
+    MyEventsTab.past ||
+    MyEventsTab.missed ||
+    MyEventsTab.saved => MyEventsTab.upcoming,
+  };
 }
 
 class MyEvent {
@@ -73,10 +79,10 @@ class MyEvent {
   }
 
   String get statusLabel => switch (category) {
-        MyEventCategory.upcoming => 'Live',
-        MyEventCategory.past => 'Completed',
-        MyEventCategory.missed => 'Missed',
-      };
+    MyEventCategory.upcoming => 'Live',
+    MyEventCategory.past => 'Completed',
+    MyEventCategory.missed => 'Missed',
+  };
 
   /// e.g. "Sun, 7 Apr • 4:00 PM • Kanpur" — combines [dateTime]/[location]
   /// back into the single display string the card/detail UI expects.
