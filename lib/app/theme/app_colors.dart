@@ -69,6 +69,7 @@ abstract class AppColors {
   static const Color textBlack = Color(0xFF161616);
   static const Color textGray = Color(0xFFA6A6A6);
   static const Color textGrey = Color(0xFF9E9E9E);
+  static const Color amberText = Color(0xFFEF9F20);
   static const Color borderSecondary = Color(0xFFE3E3E3);
 
   // ── Social Media ─────────────────────────────────────────────────────────

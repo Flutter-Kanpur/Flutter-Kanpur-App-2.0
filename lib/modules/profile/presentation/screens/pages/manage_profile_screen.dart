@@ -105,7 +105,8 @@ class _ManageProfileScreenState extends State<ManageProfileScreen> {
                       ProblemOfDaySection(
                         level: 2,
                         progress: 0.25,
-                        onViewProgress: () {},
+                        onViewProgress: () =>
+                            context.push('/profile/problem-of-day'),
                       ),
                       SizedBox(height: 24.h),
                       ManageProfileSectionCard(

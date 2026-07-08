@@ -28,6 +28,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/p
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/my_contest_detail_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/my_contests_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/my_events_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/problem_of_day_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/screens/app_feedback_screen.dart';
 import 'package:go_router/go_router.dart';
 
@@ -195,6 +196,14 @@ final GoRouter appRouter = GoRouter(
                   ),
                 ),
               ],
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.problemOfDay,
+              builder: (context, state) => const ProblemOfDayScreen(),
             ),
           ],
         ),
