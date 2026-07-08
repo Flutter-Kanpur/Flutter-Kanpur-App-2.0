@@ -25,6 +25,8 @@ import 'package:flutter_knp_mobile_app_v2/modules/onboarding/presentation/screen
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/my_profile_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/edit_profile_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/manage_profile_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/my_contest_detail_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/my_contests_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/my_events_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/screens/app_feedback_screen.dart';
 import 'package:go_router/go_router.dart';
@@ -177,6 +179,22 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: RouteNames.myEvents,
               builder: (context, state) => const MyEventsScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.myContests,
+              builder: (context, state) => const MyContestsScreen(),
+              routes: [
+                GoRoute(
+                  path: ':contestId',
+                  builder: (context, state) => MyContestDetailScreen(
+                    contestId: state.pathParameters['contestId'] ?? '',
+                  ),
+                ),
+              ],
             ),
           ],
         ),

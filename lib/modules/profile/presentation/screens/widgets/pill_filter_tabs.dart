@@ -3,32 +3,44 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/text_styles.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../application/my_events_state.dart';
-
-/// Category filter pills for the My Events screen (Upcoming/Past/Missed/Saved).
-/// Meant to sit above the event list, outside its scroll view, so it stays fixed.
-class MyEventsFilterTabs extends StatelessWidget {
-  const MyEventsFilterTabs({
+/// Generic selectable pill filter row (e.g. Upcoming/Past/Missed/Saved on My
+/// Events, Ongoing/Upcoming/Past on My Contests). Meant to sit above a list,
+/// outside its scroll view, so it stays fixed while the list scrolls.
+///
+/// The active pill is always reshuffled to the front; the rest keep their
+/// original relative order behind it. [selectedIndex]/[onChanged] still
+/// refer to positions in [labels], not to the reshuffled display order —
+/// callers don't need to know reshuffling happens.
+class PillFilterTabs extends StatelessWidget {
+  const PillFilterTabs({
     super.key,
-    required this.selectedTab,
+    required this.labels,
+    required this.selectedIndex,
     required this.onChanged,
   });
 
-  final MyEventsTab selectedTab;
-  final ValueChanged<MyEventsTab> onChanged;
+  final List<String> labels;
+  final int selectedIndex;
+  final ValueChanged<int> onChanged;
 
   @override
   Widget build(BuildContext context) {
+    final displayOrder = [
+      selectedIndex,
+      for (var i = 0; i < labels.length; i++)
+        if (i != selectedIndex) i,
+    ];
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: Row(
-        children: MyEventsTab.values.map((tab) {
-          final isSelected = tab == selectedTab;
+        children: displayOrder.map((index) {
+          final isSelected = index == selectedIndex;
           return Padding(
             padding: EdgeInsets.only(right: 8.w),
             child: GestureDetector(
-              onTap: () => onChanged(tab),
+              onTap: () => onChanged(index),
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 10.h),
                 decoration: BoxDecoration(
@@ -39,7 +51,7 @@ class MyEventsFilterTabs extends StatelessWidget {
                       : Border.all(color: AppColors.contributorFieldBorder),
                 ),
                 child: Text(
-                  tab.label,
+                  labels[index],
                   style: isSelected
                       ? textStyle_16MediumBlack().copyWith(color: Colors.white)
                       : textStyle_16MediumBlack(),

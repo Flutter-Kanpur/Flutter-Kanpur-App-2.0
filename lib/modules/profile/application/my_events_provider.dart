@@ -3,45 +3,51 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'my_events_state.dart';
 
 // Temporary mock data - remove when backend is integrated
-List<MyEvent> _mockEvents() => [
-      const MyEvent(
-        id: 'evt-1',
-        title: 'From Figma to Flutter: Practical Workflow',
-        dateTimeLocation: 'Sun, 7 Apr • 4:00 PM • Kanpur',
-        description:
-            'Learn production-ready Flutter architecture, from Figma handoff to a shipped app.',
-        statusLabel: 'Live',
-        category: MyEventCategory.upcoming,
-        isSaved: true,
-      ),
-      const MyEvent(
-        id: 'evt-2',
-        title: 'From Figma to Flutter: Practical Workflow',
-        dateTimeLocation: 'Sun, 7 Apr • 4:00 PM • Kanpur',
-        description:
-            'Learn production-ready Flutter architecture, from Figma handoff to a shipped app.',
-        statusLabel: 'Live',
-        category: MyEventCategory.upcoming,
-      ),
-      const MyEvent(
-        id: 'evt-3',
-        title: 'Flutter Kanpur Meetup #12',
-        dateTimeLocation: 'Sun, 2 Mar • 5:00 PM • Kanpur',
-        description:
-            'A recap of the community meetup covering state management patterns and Q&A.',
-        statusLabel: 'Ended',
-        category: MyEventCategory.past,
-      ),
-      const MyEvent(
-        id: 'evt-4',
-        title: 'Intro to Riverpod Workshop',
-        dateTimeLocation: 'Sat, 18 Jan • 11:00 AM • Kanpur',
-        description:
-            'A hands-on workshop introducing Riverpod for state management in Flutter apps.',
-        statusLabel: 'Missed',
-        category: MyEventCategory.missed,
-      ),
-    ];
+// dateTime is relative to DateTime.now() at app-start rather than a fixed
+// calendar date, so category (derived from dateTime/attended) always looks
+// "live" no matter when this actually runs — same reasoning as My Contests.
+List<MyEvent> _mockEvents() {
+  final now = DateTime.now();
+  return [
+    MyEvent(
+      id: 'evt-1',
+      title: 'From Figma to Flutter: Practical Workflow',
+      dateTime: now.add(const Duration(days: 3, hours: 4)),
+      location: 'Kanpur',
+      description:
+          'Learn production-ready Flutter architecture, from Figma handoff to a shipped app.',
+      attended: false,
+      isSaved: true,
+    ),
+    MyEvent(
+      id: 'evt-2',
+      title: 'From Figma to Flutter: Practical Workflow',
+      dateTime: now.add(const Duration(days: 5, hours: 4)),
+      location: 'Kanpur',
+      description:
+          'Learn production-ready Flutter architecture, from Figma handoff to a shipped app.',
+      attended: false,
+    ),
+    MyEvent(
+      id: 'evt-3',
+      title: 'Flutter Kanpur Meetup #12',
+      dateTime: now.subtract(const Duration(days: 10)),
+      location: 'Kanpur',
+      description:
+          'A recap of the community meetup covering state management patterns and Q&A.',
+      attended: true,
+    ),
+    MyEvent(
+      id: 'evt-4',
+      title: 'Intro to Riverpod Workshop',
+      dateTime: now.subtract(const Duration(days: 5)),
+      location: 'Kanpur',
+      description:
+          'A hands-on workshop introducing Riverpod for state management in Flutter apps.',
+      attended: false,
+    ),
+  ];
+}
 
 class MyEventsNotifier extends Notifier<List<MyEvent>> {
   @override

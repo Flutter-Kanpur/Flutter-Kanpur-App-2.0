@@ -100,7 +100,7 @@ abstract class AppColors {
   /// Returns the status foreground / background pair for a given [status].
   static ({Color fg, Color bg}) statusPair(String status) {
     return switch (status.trim().toLowerCase()) {
-      'open' || 'active' || 'approved' || 'success' => (
+      'open' || 'active' || 'approved' || 'success' || 'completed' => (
       fg: successFg,
       bg: successBg,
       ),
