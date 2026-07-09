@@ -6,50 +6,43 @@ import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/core/constants/app_assets.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/auth/application/auth_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/auth/application/auth_state_manager.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/custom_textfield.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradient_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-class SignInScreen extends ConsumerWidget {
+class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
-    final formKey = GlobalKey<FormState>();
-    final signInState = ref.watch(signInControllerProvider);
+  ConsumerState<SignInScreen> createState() => _SignInScreenState();
+}
 
-    ref.listen(signInControllerProvider, (previous, next) {
-      // Only trigger when state changes from non-data to data (successful login)
-      if (previous != null && previous.hasError == false && next.hasValue == true) {
-        _showToast(
-          context,
-          'auth.signin_success'.tr(),
-          Colors.green.shade600,
-          Icons.check_circle,
-        );
-        Future.delayed(const Duration(milliseconds: 800)).then((_) {
-          if (context.mounted) {
-            context.go(RouteNames.home);
-          }
-        });
-      }
+class _SignInScreenState extends ConsumerState<SignInScreen> {
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
+  late GlobalKey<FormState> formKey;
+  bool isLoading = false;
 
-      // Show error only if error state changed
-      if (next.hasError) {
-        _showToast(
-          context,
-          next.error.toString(),
-          Colors.red.shade600,
-          Icons.error,
-        );
-      }
-    });
+  @override
+  void initState() {
+    super.initState();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    formKey = GlobalKey<FormState>();
+  }
 
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return GradientBackground(
       child: SafeArea(
         child: SingleChildScrollView(
@@ -82,7 +75,7 @@ class SignInScreen extends ConsumerWidget {
                   formKey,
                   emailController,
                   passwordController,
-                  signInState.isLoading,
+                  isLoading,
                 ),
                 24.verticalSpace,
                 _buildSignUpText(context),
@@ -187,16 +180,45 @@ class SignInScreen extends ConsumerWidget {
         ),
         onTap: isLoading
             ? () {}
-            : () {
+            : () async {
                 if (!formKey.currentState!.validate()) return;
                 FocusScope.of(context).unfocus();
 
                 final email = emailController.text.trim();
                 final password = passwordController.text.trim();
+                final ctx = context;
 
-                ref
-                    .read(signInControllerProvider.notifier)
-                    .signIn(email: email, password: password);
+                setState(() => isLoading = true);
+
+                try {
+                  await ref.read(signInProvider)(
+                    email: email,
+                    password: password,
+                  );
+                  if (mounted) {
+                    _showToast(
+                      ctx,
+                      'auth.signin_success'.tr(),
+                      Colors.green.shade600,
+                      Icons.check_circle,
+                    );
+                    Future.delayed(const Duration(milliseconds: 800)).then((_) {
+                      if (mounted) {
+                        ctx.pushReplacement(RouteNames.home);
+                      }
+                    });
+                  }
+                } catch (e) {
+                  if (mounted) {
+                    _showToast(
+                      ctx,
+                      e.toString(),
+                      Colors.red.shade600,
+                      Icons.error,
+                    );
+                    setState(() => isLoading = false);
+                  }
+                }
               },
       ),
     );
@@ -220,7 +242,7 @@ class SignInScreen extends ConsumerWidget {
                   fontWeight: FontWeight.w700,
                 ),
                 recognizer: TapGestureRecognizer()
-                  ..onTap = () => context.go(RouteNames.signUp),
+                  ..onTap = () => context.pushReplacement(RouteNames.signUp),
               ),
             ],
           ),

@@ -4,8 +4,9 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dar
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_knp_mobile_app_v2/app/router/navigation_provider.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/auth/application/logout_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/auth/application/auth_state_manager.dart';
 import '../../../../utils/assets_path.dart';
 import '../../../../utils/text_styles.dart';
 import 'widgets/profile_header.dart';
@@ -277,16 +278,14 @@ class MyProfileScreen extends ConsumerWidget {
               Navigator.of(ctx).pop();
               print('🔐 [ProfileScreen] User confirmed logout');
 
-              final logoutSuccess = await ref
-                  .read(logoutControllerProvider.notifier)
-                  .logout();
+              final logoutSuccess = await _logout(ref);
 
               if (!context.mounted) return;
 
               if (logoutSuccess) {
                 print('✅ [ProfileScreen] Logout successful, redirecting to splash');
                 // Clear route stack and go to splash
-                context.go(RouteNames.splash);
+                context.go(RouteNames.authLanding);
               } else {
                 print('❌ [ProfileScreen] Logout failed');
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -302,6 +301,18 @@ class MyProfileScreen extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  Future<bool> _logout(WidgetRef ref) async {
+    try {
+      await ref.read(signOutProvider)();
+      ref.invalidate(currentUserProvider);
+      ref.invalidate(nextRouteProvider);
+      ref.invalidate(splashRouteProvider);
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 }
 

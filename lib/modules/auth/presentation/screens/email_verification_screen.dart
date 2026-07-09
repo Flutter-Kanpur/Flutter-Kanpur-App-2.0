@@ -5,7 +5,7 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
 import 'package:flutter_knp_mobile_app_v2/core/constants/app_assets.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/auth/application/auth_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/auth/application/auth_state_manager.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradient_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,13 +16,13 @@ class EmailVerificationScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isAuthenticated = ref.watch(currentUserProvider);
+    final currentUser = ref.watch(currentUserProvider);
     final email = '';
 
-    isAuthenticated.whenData((authenticated) {
+    currentUser.whenData((user) {
       if (!context.mounted) return;
-      if (authenticated) {
-        context.go(RouteNames.home);
+      if (user != null) {
+        context.pushReplacement(RouteNames.home);
       }
     });
 

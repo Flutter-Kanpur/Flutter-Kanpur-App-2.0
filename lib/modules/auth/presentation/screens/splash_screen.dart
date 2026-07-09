@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
+import 'package:flutter_knp_mobile_app_v2/app/router/navigation_provider.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/core/constants/app_assets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -15,22 +14,20 @@ class SplashScreen extends ConsumerStatefulWidget {
 }
 
 class _SplashScreenState extends ConsumerState<SplashScreen> {
+  bool _hasNavigated = false;
+
   @override
   void initState() {
     super.initState();
-    _navigateToNextScreen();
+    Future<void>.microtask(_navigateFromSplash);
   }
 
-  Future<void> _navigateToNextScreen() async {
-    await Future.delayed(const Duration(seconds: 5));
-    if (!mounted) return;
+  Future<void> _navigateFromSplash() async {
+    final routePath = await ref.read(splashRouteProvider.future);
+    if (!mounted || _hasNavigated) return;
 
-    final user = Supabase.instance.client.auth.currentUser;
-    if (user != null) {
-      context.go(RouteNames.home);
-    } else {
-      context.go(RouteNames.authOptions);
-    }
+    _hasNavigated = true;
+    context.go(routePath);
   }
 
   @override

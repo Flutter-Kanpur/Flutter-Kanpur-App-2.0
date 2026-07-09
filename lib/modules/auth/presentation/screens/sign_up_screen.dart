@@ -11,47 +11,44 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradient_background.dar
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../application/auth_provider.dart';
+import '../../application/auth_state_manager.dart';
 
-class SignUpScreen extends ConsumerWidget {
+class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final usernameController = TextEditingController();
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
-    final confirmPasswordController = TextEditingController();
-    final formKey = GlobalKey<FormState>();
-    final signUpState = ref.watch(signUpControllerProvider);
+  ConsumerState<SignUpScreen> createState() => _SignUpScreenState();
+}
 
-    ref.listen(signUpControllerProvider, (previous, next) {
-      // Only trigger when state changes from non-data to data (successful signup)
-      if (previous != null && previous.hasError == false && next.hasValue == true) {
-        _showToast(
-          context,
-          'auth.signup_success'.tr(),
-          Colors.green.shade600,
-          Icons.check_circle,
-        );
-        Future.delayed(const Duration(milliseconds: 800)).then((_) {
-          if (context.mounted) {
-            context.go(RouteNames.signIn);
-          }
-        });
-      }
+class _SignUpScreenState extends ConsumerState<SignUpScreen> {
+  late TextEditingController usernameController;
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
+  late TextEditingController confirmPasswordController;
+  late GlobalKey<FormState> formKey;
+  bool isLoading = false;
 
-      // Show error only if error state changed
-      if (next.hasError) {
-        _showToast(
-          context,
-          next.error.toString(),
-          Colors.red.shade600,
-          Icons.error,
-        );
-      }
-    });
+  @override
+  void initState() {
+    super.initState();
+    usernameController = TextEditingController();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    confirmPasswordController = TextEditingController();
+    formKey = GlobalKey<FormState>();
+  }
 
+  @override
+  void dispose() {
+    usernameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return GradientBackground(
       child: SafeArea(
         child: SingleChildScrollView(
@@ -92,7 +89,7 @@ class SignUpScreen extends ConsumerWidget {
                   usernameController,
                   emailController,
                   passwordController,
-                  signUpState.isLoading,
+                  isLoading,
                 ),
                 20.verticalSpace,
                 _buildSignInText(context),
@@ -241,21 +238,44 @@ Widget _buildCreateButton(
       ),
       onTap: isLoading
           ? () {}
-          : () {
+          : () async {
               if (!formKey.currentState!.validate()) return;
               FocusScope.of(context).unfocus();
 
               final username = usernameController.text.trim();
               final email = emailController.text.trim();
               final password = passwordController.text.trim();
+              final ctx = context;
 
-              ref
-                  .read(signUpControllerProvider.notifier)
-                  .signUp(
-                    email: email,
-                    password: password,
-                    displayName: username,
+              try {
+                await ref.read(signUpProvider)(
+                  email: email,
+                  password: password,
+                  displayName: username,
+                );
+                if (ctx.mounted) {
+                  _showToast(
+                    ctx,
+                    'auth.signup_success'.tr(),
+                    Colors.green.shade600,
+                    Icons.check_circle,
                   );
+                  Future.delayed(const Duration(milliseconds: 800)).then((_) {
+                    if (ctx.mounted) {
+                      ctx.pushReplacement(RouteNames.signIn);
+                    }
+                  });
+                }
+              } catch (e) {
+                if (ctx.mounted) {
+                  _showToast(
+                    ctx,
+                    e.toString(),
+                    Colors.red.shade600,
+                    Icons.error,
+                  );
+                }
+              }
             },
     ),
   );
@@ -279,7 +299,7 @@ Widget _buildSignInText(BuildContext context) {
                 fontWeight: FontWeight.w700,
               ),
               recognizer: TapGestureRecognizer()
-                ..onTap = () => context.go(RouteNames.signIn),
+                ..onTap = () => context.pushReplacement(RouteNames.signIn),
             ),
           ],
         ),
