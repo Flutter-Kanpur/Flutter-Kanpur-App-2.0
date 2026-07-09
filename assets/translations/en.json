@@ -30,6 +30,7 @@
 
     "loginNow": "Log in",
     "createAccountNow": "Create an account",
+    "signUpNow": "Sign up",
 
     "forgotPassword": "Forgot Password?",
 
@@ -52,7 +53,8 @@
     "emailRequired": "Please enter email",
     "passwordRequired": "Please enter password",
     "confirmPasswordRequired": "Please confirm password",
-    "passwordsDoNotMatch": "Passwords do not match"
+    "passwordsDoNotMatch": "Passwords do not match",
+    "minusError": "Minus"
   },
 
   "authLanding": {
@@ -131,8 +133,40 @@
 
     "fullName": "Full name",
     "fullNameError": "Please enter your name.",
-
-    "or": "OR"
+    "successTitle": "Setup Complete",
+    "successSubTitle": "Your profile is all set!",
+    "redirectToHome": "Redirecting to home...",
+    "or": "OR",
+    "addSkills": "Add Skills (Minimum 3 skills)",
+    "selectAtLeastOneOption": "Please select at least one option.",
+    "yearsOfExperience": "Years of experience",
+    "camera": "Camera",
+    "gallery": "Gallery",
+    "takePhoto": "Take photo",
+    "importFromGallery": "Import from gallery",
+    "removeCurrentPicture": "Remove current picture",
+    "invalidImage": "Please select a JPG or PNG image.",
+    "removePhotoTitle": "Remove?",
+    "removePhotoSubTitle": "Are you sure want to remove the profile photo?",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "viewPhoto": "View photo",
+    "searchRolesHint": "Search roles or skills...",
+    "noRolesFound": "No matching roles found.",
+    "resultsFound": "3 results found",
+    "addOther": "Add other",
+    "experience1Year": "1 year",
+    "experience2Years": "2 years",
+    "experience3Years": "3 years",
+    "experience4Years": "4 years",
+    "githubLink": "Github Link",
+    "linkedinLink": "LinkedIn link",
+    "portfolioLink": "Portfolio/Website link",
+    "githubLinkDetected": "GitHub link detected.",
+    "invalidLink": "We couldn't verify this link.",
+    "editAnytime": "You can edit these anytime.",
+    "finishSetup": "Finish Setup",
+    "skipForNow": "Skip for now"
   },
 
 
@@ -156,7 +190,25 @@
     "yearsSuffix": "years",
     "enterSkill": "Enter skill",
     "enterRole": "Enter role",
-    "yearsOfExperience": "Years of experience"
+    "yearsOfExperience": "Years of experience",
+    "logout": "Log out",
+    "deleteAccount": "Delete account",
+    "helpCenter": "Help Center",
+    "contactCommunity": "Contact Community Team",
+    "reportIssue": "Report an Issue",
+    "aboutFlutterKanpur": "About Flutter Kanpur",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfUse": "Terms of Use",
+    "myEvents": "My Events",
+    "myContests": "My Contests",
+    "myContributions": "My Contributions",
+    "joinAsContributor": "Join as a Contributor",
+    "communityGuidelines": "Community Guidelines",
+    "yourBadges": "Your Badges",
+    "yourRank": "Your Rank",
+    "leaderboard": "Leaderboard",
+    "loginAndSecurity": "Login & Security",
+    "notifications": "Notifications"
   },
   "home": {
     "searchHint": "Search Events",
@@ -284,5 +336,91 @@
   "common": {
     "lastUpdated": "Last updated: {}",
     "lastUpdatedDate": "April 2026"
+  },
+
+  "community": {
+    "title": "Community",
+    "discussions": "Discussions",
+    "members": "Members",
+    "projects": "Projects",
+    "guidelines": "Guidelines",
+    "startDiscussion": "Start a new discussion",
+    "askQuestion": "Ask a Question",
+    "myContributions": "My Contributions",
+    "joinAsContributor": "Join as a Contributor",
+    "discussionDetail": "Discussion Detail",
+    "reply": "Reply",
+    "replies": "Replies",
+    "likes": "Likes",
+    "views": "Views",
+    "uploadProject": "Upload Project",
+    "projectTitle": "Project Title",
+    "projectDescription": "Project Description",
+    "githubUrl": "GitHub URL",
+    "projectStatus": "Project Status",
+    "draft": "Draft",
+    "published": "Published",
+    "archived": "Archived"
+  },
+
+  "forum": {
+    "title": "Forum",
+    "newThread": "New Thread",
+    "threadTitle": "Thread Title",
+    "threadDescription": "Thread Description",
+    "post": "Post",
+    "reply": "Reply",
+    "likes": "Likes",
+    "views": "Views",
+    "posted": "Posted",
+    "by": "by",
+    "noThreads": "No discussions yet. Be the first to start one!",
+    "noReplies": "No replies yet.",
+    "deleteConfirm": "Are you sure you want to delete this?"
+  },
+
+  "events": {
+    "title": "Events",
+    "upcomingEvents": "Upcoming Events",
+    "pastEvents": "Past Events",
+    "eventDetails": "Event Details",
+    "registerNow": "Register Now",
+    "alreadyRegistered": "Already Registered",
+    "eventName": "Event Name",
+    "eventDate": "Event Date",
+    "eventTime": "Event Time",
+    "eventLocation": "Event Location",
+    "eventDescription": "Event Description",
+    "registrants": "Registrants",
+    "joinNow": "Join Now"
+  },
+
+  "contests": {
+    "title": "Contests",
+    "upcomingContests": "Upcoming Contests",
+    "pastContests": "Past Contests",
+    "contestDetails": "Contest Details",
+    "participateNow": "Participate Now",
+    "alreadyParticipating": "Already Participating",
+    "contestName": "Contest Name",
+    "endDate": "End Date",
+    "endTime": "End Time",
+    "contestDescription": "Contest Description",
+    "participantCount": "Participants",
+    "submitNow": "Submit Now"
+  },
+
+  "problemOfDay": {
+    "title": "Problem of the Day",
+    "problemStatement": "Problem Statement",
+    "inputFormat": "Input Format",
+    "outputFormat": "Output Format",
+    "examples": "Examples",
+    "constraints": "Constraints",
+    "solveProblem": "Solve Problem",
+    "viewSolution": "View Solution",
+    "submissions": "Submissions",
+    "accepted": "Accepted",
+    "attempts": "Attempts"
   }
 }
