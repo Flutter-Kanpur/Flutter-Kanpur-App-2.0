@@ -59,7 +59,15 @@ class SignInScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                120.verticalSpace,
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    onPressed: () => context.pop(),
+                    icon: const Icon(Icons.arrow_back),
+                    padding: EdgeInsets.zero,
+                  ),
+                ),
+                80.verticalSpace,
                 _buildMascot(),
                 40.verticalSpace,
                 _buildHeaderText(),

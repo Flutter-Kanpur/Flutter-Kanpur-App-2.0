@@ -61,7 +61,15 @@ class SignUpScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                80.verticalSpace,
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    onPressed: () => context.pop(),
+                    icon: const Icon(Icons.arrow_back),
+                    padding: EdgeInsets.zero,
+                  ),
+                ),
+                60.verticalSpace,
                 _buildMascot(),
                 30.verticalSpace,
                 _buildHeaderText(),

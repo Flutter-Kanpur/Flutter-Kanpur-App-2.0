@@ -44,7 +44,10 @@ class AuthOptionsScreen extends ConsumerWidget {
               40.verticalSpace,
 
               _AuthOptionButton(
-                onPressed: () => context.go(RouteNames.signIn),
+                onPressed: () {
+                  // TODO: Implement Google Sign In
+                  context.go(RouteNames.signIn);
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -58,7 +61,7 @@ class AuthOptionsScreen extends ConsumerWidget {
               16.verticalSpace,
 
               _AuthOptionButton(
-                onPressed: () => context.go(RouteNames.signIn),
+                onPressed: () => context.push(RouteNames.signIn),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -88,7 +91,7 @@ class AuthOptionsScreen extends ConsumerWidget {
                 height: 45.h,
                 text: 'auth.createAccount'.tr(),
                 textStyle: textStyle_16RegularBlack().copyWith(color: Colors.white),
-                onTap: () => context.go(RouteNames.signUp),
+                onTap: () => context.push(RouteNames.signUp),
               ),
 
               32.verticalSpace,

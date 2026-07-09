@@ -35,6 +35,12 @@
 
     "retry": "Retry",
     "loading": "Loading...",
+    "signin_success": "Signed in successfully",
+    "signup_success": "Account created successfully",
+    "signingIn": "Signing in...",
+    "creatingAccount": "Creating account...",
+    "signUpNow": "Sign up",
+    "minusError": "Minus",
 
     "emailVerifiedTitle": "Email verified",
     "emailVerifiedSubTitle": "Your email address is successfully verified.",
