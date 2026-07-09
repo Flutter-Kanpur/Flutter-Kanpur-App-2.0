@@ -183,8 +183,10 @@ class _ProgressCard extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(999),
             child: LinearProgressIndicator(
-              value:
-                  progress.challengeDaysCompleted / progress.challengeDaysGoal,
+              value: progress.challengeDaysGoal == 0
+                  ? 0
+                  : (progress.challengeDaysCompleted / progress.challengeDaysGoal)
+                      .clamp(0.0, 1.0),
               backgroundColor: AppColors.bgPrimary,
               valueColor: const AlwaysStoppedAnimation<Color>(
                 AppColors.primary,
