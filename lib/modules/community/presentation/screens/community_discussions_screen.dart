@@ -94,7 +94,7 @@ class _CommunityDiscussionsScreenState
         CommunityFilterRow(
           selected: activeFilter,
           onSelected: (filter) {
-            ref.read(_discussionFilterProvider.notifier).state = filter;
+            ref.read(_discussionFilterProvider.notifier).update(filter);
             ref.read(questionsProvider.notifier).setFilter(filter);
           },
         ),

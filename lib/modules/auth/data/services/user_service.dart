@@ -20,7 +20,7 @@ class UserService {
       final data = await _client
           .from('users')
           .select()
-          .eq('id', user.id)
+          .eq('uid', user.id)
           .single();
 
       print('✅ [UserService] Profile loaded: ${user.email}');
@@ -49,14 +49,14 @@ class UserService {
 
       await _client.from('users').upsert(
         {
-          'id': user.id,
+          'uid': user.id,
           'email': user.email,
           'display_name': displayName,
           'username': username,
           'photo_url': photoUrl,
           'updated_at': DateTime.now().toIso8601String(),
         },
-        onConflict: 'id',
+        onConflict: 'uid',
       );
 
       print('✅ [UserService] Profile saved');
@@ -84,7 +84,7 @@ class UserService {
 
       await _client.from('user_devices').upsert(
         {
-          'user_id': user.id,
+          'user_uid': user.id,
           'device_id': deviceId,
           'device_name': deviceInfo['deviceName'],
           'device_os': deviceInfo['deviceOs'],
@@ -143,18 +143,7 @@ class UserService {
       final user = _client.auth.currentUser;
       if (user != null) {
         print('🔐 [UserService] Logging out: ${user.email}');
-
-        // Update last logout timestamp
-        await _client.from('users').update({
-          'last_logout': DateTime.now().toIso8601String(),
-        }).eq('id', user.id);
-
-        print('✅ [UserService] Updated logout timestamp');
       }
-
-      // Clear session
-      await _client.auth.signOut();
-      print('✅ [UserService] Session cleared');
       return true;
     } catch (e) {
       print('❌ [UserService] Error during logout: $e');
@@ -187,7 +176,7 @@ class UserService {
       final data = await _client
           .from('user_devices')
           .select()
-          .eq('user_id', user.id);
+          .eq('user_uid', user.id);
 
       print('✅ [UserService] Devices loaded: ${data.length}');
       return List<Map<String, dynamic>>.from(data);

@@ -15,7 +15,7 @@ class AnswerService {
       final currentUser = _authService.getCurrentUser();
       if (currentUser == null) throw Exception('User not authenticated');
 
-      final response = await _client.from('answers').insert({
+      await _client.from('answers').insert({
         'question_id': questionId,
         'author_uid': currentUser.id,
         'body': body,
@@ -26,7 +26,6 @@ class AnswerService {
         'created_at': DateTime.now().toIso8601String(),
       });
 
-      print('✅ Answer submitted successfully');
       return true;
     } catch (e) {
       print('❌ Error submitting answer: $e');
