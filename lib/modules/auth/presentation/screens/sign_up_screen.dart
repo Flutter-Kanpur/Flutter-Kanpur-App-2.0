@@ -26,30 +26,30 @@ class SignUpScreen extends ConsumerWidget {
     final signUpState = ref.watch(signUpControllerProvider);
 
     ref.listen(signUpControllerProvider, (previous, next) {
-      next.when(
-        data: (_) {
-          _showToast(
-            context,
-            'auth.signup_success'.tr(),
-            Colors.green.shade600,
-            Icons.check_circle,
-          );
-          Future.delayed(const Duration(milliseconds: 800)).then((_) {
-            if (context.mounted) {
-              context.go(RouteNames.signIn);
-            }
-          });
-        },
-        error: (error, stackTrace) {
-          _showToast(
-            context,
-            error.toString(),
-            Colors.red.shade600,
-            Icons.error,
-          );
-        },
-        loading: () {},
-      );
+      // Only trigger when state changes from non-data to data (successful signup)
+      if (previous != null && previous.hasError == false && next.hasValue == true) {
+        _showToast(
+          context,
+          'auth.signup_success'.tr(),
+          Colors.green.shade600,
+          Icons.check_circle,
+        );
+        Future.delayed(const Duration(milliseconds: 800)).then((_) {
+          if (context.mounted) {
+            context.go(RouteNames.signIn);
+          }
+        });
+      }
+
+      // Show error only if error state changed
+      if (next.hasError) {
+        _showToast(
+          context,
+          next.error.toString(),
+          Colors.red.shade600,
+          Icons.error,
+        );
+      }
     });
 
     return GradientBackground(

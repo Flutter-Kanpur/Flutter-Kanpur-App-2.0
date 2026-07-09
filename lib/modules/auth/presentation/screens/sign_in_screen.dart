@@ -24,30 +24,30 @@ class SignInScreen extends ConsumerWidget {
     final signInState = ref.watch(signInControllerProvider);
 
     ref.listen(signInControllerProvider, (previous, next) {
-      next.when(
-        data: (_) {
-          _showToast(
-            context,
-            'auth.signin_success'.tr(),
-            Colors.green.shade600,
-            Icons.check_circle,
-          );
-          Future.delayed(const Duration(milliseconds: 800)).then((_) {
-            if (context.mounted) {
-              context.go(RouteNames.home);
-            }
-          });
-        },
-        error: (error, stackTrace) {
-          _showToast(
-            context,
-            error.toString(),
-            Colors.red.shade600,
-            Icons.error,
-          );
-        },
-        loading: () {},
-      );
+      // Only trigger when state changes from non-data to data (successful login)
+      if (previous != null && previous.hasError == false && next.hasValue == true) {
+        _showToast(
+          context,
+          'auth.signin_success'.tr(),
+          Colors.green.shade600,
+          Icons.check_circle,
+        );
+        Future.delayed(const Duration(milliseconds: 800)).then((_) {
+          if (context.mounted) {
+            context.go(RouteNames.home);
+          }
+        });
+      }
+
+      // Show error only if error state changed
+      if (next.hasError) {
+        _showToast(
+          context,
+          next.error.toString(),
+          Colors.red.shade600,
+          Icons.error,
+        );
+      }
     });
 
     return GradientBackground(
