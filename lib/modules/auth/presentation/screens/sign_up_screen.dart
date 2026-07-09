@@ -171,6 +171,7 @@ class SignUpScreen extends ConsumerWidget {
       },
     );
   }
+}
 
   Widget _buildPasswordField(TextEditingController controller) {
     return CustomTextField(
