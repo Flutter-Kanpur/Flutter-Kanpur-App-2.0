@@ -100,10 +100,7 @@ class SignUpScreen extends ConsumerWidget {
     return SizedBox(
       width: 110.w,
       height: 110.w,
-      child: Image.asset(
-        AppAssets.dashIcon,
-        fit: BoxFit.contain,
-      ),
+      child: Image.asset(AppAssets.dashIcon, fit: BoxFit.contain),
     );
   }
 
@@ -173,146 +170,147 @@ class SignUpScreen extends ConsumerWidget {
   }
 }
 
-  Widget _buildPasswordField(TextEditingController controller) {
-    return CustomTextField(
-      text: 'auth.password'.tr(),
-      controller: controller,
-      isPassword: true,
-      showBorder: true,
-      borderColor: AppColors.communityBorderColor,
-      fillColor: const Color(0xFFF6F6F6),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'auth.passwordRequired'.tr();
-        }
-        if (value.length < 6) {
-          return 'auth.passwordMin6'.tr();
-        }
-        return null;
-      },
-    );
-  }
+Widget _buildPasswordField(TextEditingController controller) {
+  return CustomTextField(
+    text: 'auth.password'.tr(),
+    controller: controller,
+    isPassword: true,
+    showBorder: true,
+    borderColor: AppColors.communityBorderColor,
+    fillColor: const Color(0xFFF6F6F6),
+    validator: (value) {
+      if (value == null || value.isEmpty) {
+        return 'auth.passwordRequired'.tr();
+      }
+      if (value.length < 6) {
+        return 'auth.passwordMin6'.tr();
+      }
+      return null;
+    },
+  );
+}
 
-  Widget _buildConfirmPasswordField(
-    TextEditingController controller,
-    TextEditingController passwordController,
-  ) {
-    return CustomTextField(
-      text: 'auth.confirmPassword'.tr(),
-      controller: controller,
-      isPassword: true,
-      showBorder: true,
-      borderColor: AppColors.communityBorderColor,
-      fillColor: const Color(0xFFF6F6F6),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'auth.confirmPasswordRequired'.tr();
-        }
-        if (value != passwordController.text) {
-          return 'auth.passwordsDoNotMatch'.tr();
-        }
-        return null;
-      },
-    );
-  }
+Widget _buildConfirmPasswordField(
+  TextEditingController controller,
+  TextEditingController passwordController,
+) {
+  return CustomTextField(
+    text: 'auth.confirmPassword'.tr(),
+    controller: controller,
+    isPassword: true,
+    showBorder: true,
+    borderColor: AppColors.communityBorderColor,
+    fillColor: const Color(0xFFF6F6F6),
+    validator: (value) {
+      if (value == null || value.isEmpty) {
+        return 'auth.confirmPasswordRequired'.tr();
+      }
+      if (value != passwordController.text) {
+        return 'auth.passwordsDoNotMatch'.tr();
+      }
+      return null;
+    },
+  );
+}
 
-  Widget _buildCreateButton(
-    BuildContext context,
-    WidgetRef ref,
-    GlobalKey<FormState> formKey,
-    TextEditingController usernameController,
-    TextEditingController emailController,
-    TextEditingController passwordController,
-    bool isLoading,
-  ) {
-    return SizedBox(
-      width: double.infinity,
-      height: 52.h,
-      child: GradientButton(
-        text: isLoading ? 'auth.creatingAccount'.tr() : 'auth.createAccount'.tr(),
-        textStyle: textStyle_16RegularBlack().copyWith(
-          color: Colors.white,
-          fontWeight: FontWeight.w600,
-        ),
-        onTap: isLoading
-            ? () {}
-            : () {
-                if (!formKey.currentState!.validate()) return;
-                FocusScope.of(context).unfocus();
-
-                final username = usernameController.text.trim();
-                final email = emailController.text.trim();
-                final password = passwordController.text.trim();
-
-                ref.read(signUpControllerProvider.notifier).signUp(
-                      email: email,
-                      password: password,
-                      displayName: username,
-                    );
-              },
+Widget _buildCreateButton(
+  BuildContext context,
+  WidgetRef ref,
+  GlobalKey<FormState> formKey,
+  TextEditingController usernameController,
+  TextEditingController emailController,
+  TextEditingController passwordController,
+  bool isLoading,
+) {
+  return SizedBox(
+    width: double.infinity,
+    height: 52.h,
+    child: GradientButton(
+      text: isLoading ? 'auth.creatingAccount'.tr() : 'auth.createAccount'.tr(),
+      textStyle: textStyle_16RegularBlack().copyWith(
+        color: Colors.white,
+        fontWeight: FontWeight.w600,
       ),
-    );
-  }
+      onTap: isLoading
+          ? () {}
+          : () {
+              if (!formKey.currentState!.validate()) return;
+              FocusScope.of(context).unfocus();
 
-  Widget _buildSignInText(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
-      child: Center(
-        child: Text.rich(
-          TextSpan(
-            text: '${'auth.alreadyHaveAccount'.tr()} ',
-            style: textStyle_14RegularBlack().copyWith(
-              color: AppColors.subtitleTextDarkGrey,
-            ),
-            children: [
-              TextSpan(
-                text: 'auth.login'.tr(),
-                style: textStyle_14RegularBlack().copyWith(
-                  color: AppColors.selectedNavBarIconColor,
-                  fontWeight: FontWeight.w700,
-                ),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () => context.go(RouteNames.signIn),
-              ),
-            ],
+              final username = usernameController.text.trim();
+              final email = emailController.text.trim();
+              final password = passwordController.text.trim();
+
+              ref
+                  .read(signUpControllerProvider.notifier)
+                  .signUp(
+                    email: email,
+                    password: password,
+                    displayName: username,
+                  );
+            },
+    ),
+  );
+}
+
+Widget _buildSignInText(BuildContext context) {
+  return Padding(
+    padding: EdgeInsets.symmetric(horizontal: 16.w),
+    child: Center(
+      child: Text.rich(
+        TextSpan(
+          text: '${'auth.alreadyHaveAccount'.tr()} ',
+          style: textStyle_14RegularBlack().copyWith(
+            color: AppColors.subtitleTextDarkGrey,
           ),
-        ),
-      ),
-    );
-  }
-
-  void _showToast(
-    BuildContext context,
-    String message,
-    Color bgColor,
-    IconData icon,
-  ) {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
           children: [
-            Icon(icon, color: Colors.white, size: 20.sp),
-            12.horizontalSpace,
-            Expanded(
-              child: Text(
-                message,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                ),
+            TextSpan(
+              text: 'auth.login'.tr(),
+              style: textStyle_14RegularBlack().copyWith(
+                color: AppColors.selectedNavBarIconColor,
+                fontWeight: FontWeight.w700,
               ),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () => context.go(RouteNames.signIn),
             ),
           ],
         ),
-        backgroundColor: bgColor,
-        duration: const Duration(seconds: 2),
-        behavior: SnackBarBehavior.floating,
-        margin: EdgeInsets.all(16.w),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
       ),
-    );
-  }
+    ),
+  );
+}
+
+void _showToast(
+  BuildContext context,
+  String message,
+  Color bgColor,
+  IconData icon,
+) {
+  ScaffoldMessenger.of(context).clearSnackBars();
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Row(
+        children: [
+          Icon(icon, color: Colors.white, size: 20.sp),
+          12.horizontalSpace,
+          Expanded(
+            child: Text(
+              message,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      ),
+      backgroundColor: bgColor,
+      duration: const Duration(seconds: 2),
+      behavior: SnackBarBehavior.floating,
+      margin: EdgeInsets.all(16.w),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+    ),
+  );
 }

@@ -7,14 +7,11 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/core/constants/app_assets.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/auth/application/auth_provider.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/auth/application/auth_state.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/custom_textfield.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradient_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../application/auth_provider.dart';
 
 class SignInScreen extends ConsumerWidget {
   const SignInScreen({super.key});
@@ -93,10 +90,7 @@ class SignInScreen extends ConsumerWidget {
     return SizedBox(
       width: 110.w,
       height: 110.w,
-      child: Image.asset(
-        AppAssets.dashIcon,
-        fit: BoxFit.contain,
-      ),
+      child: Image.asset(AppAssets.dashIcon, fit: BoxFit.contain),
     );
   }
 
@@ -125,7 +119,6 @@ class SignInScreen extends ConsumerWidget {
       ],
     );
   }
-}
 
   Widget _buildEmailField(TextEditingController controller) {
     return CustomTextField(
@@ -193,10 +186,9 @@ class SignInScreen extends ConsumerWidget {
                 final email = emailController.text.trim();
                 final password = passwordController.text.trim();
 
-                ref.read(signInControllerProvider.notifier).signIn(
-                      email: email,
-                      password: password,
-                    );
+                ref
+                    .read(signInControllerProvider.notifier)
+                    .signIn(email: email, password: password);
               },
       ),
     );
@@ -258,7 +250,9 @@ class SignInScreen extends ConsumerWidget {
         duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,
         margin: EdgeInsets.all(16.w),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.r),
+        ),
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
       ),
     );

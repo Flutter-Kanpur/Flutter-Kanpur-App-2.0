@@ -54,6 +54,7 @@ abstract class AppColors {
   // ── Warning & Field ─────────────────────────────────────────────────────
   static const Color yellowWarningBackground = Color(0xFFFDF7E9);
   static const Color yellowWarningText = Color(0xFFFEF9F2);
+  static const Color redWarningBackground = Color(0xFFFCE4E4);
   static const Color contributorFieldBorder = Color(0xFFD1D1D1);
   static const Color contributorFocusFieldBorder = primary;
   static const Color contributorFieldHint = Color(0xFFB0B0B0);

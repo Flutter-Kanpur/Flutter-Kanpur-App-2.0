@@ -6,7 +6,6 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
 import 'package:flutter_knp_mobile_app_v2/core/constants/app_assets.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/auth/application/auth_provider.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/auth/application/auth_state.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradient_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,16 +16,13 @@ class EmailVerificationScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authNotifierProvider);
-    final email = authState.verificationEmail ?? '';
+    final isAuthenticated = ref.watch(currentUserProvider);
+    final email = '';
 
-    ref.listen<AppAuthState>(authNotifierProvider, (_, next) {
+    isAuthenticated.whenData((authenticated) {
       if (!context.mounted) return;
-      if (next.status == AuthStatus.authenticated) {
+      if (authenticated) {
         context.go(RouteNames.home);
-      }
-      if (next.status == AuthStatus.unauthenticated) {
-        context.go(RouteNames.authOptions);
       }
     });
 
@@ -80,30 +76,11 @@ class EmailVerificationScreen extends ConsumerWidget {
 
               const Spacer(),
 
-              if (authState.error != null) ...[
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                  decoration: BoxDecoration(
-                    color: Colors.red.shade50,
-                    borderRadius: BorderRadius.circular(10.r),
-                    border: Border.all(color: Colors.red.shade200),
-                  ),
-                  child: Text(
-                    authState.error!,
-                    style: textStyle_14RegularBlack().copyWith(color: Colors.red.shade700),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                16.verticalSpace,
-              ],
-
               GradientButton(
                 height: 50.h,
-                text: authState.isLoading ? 'auth.loading'.tr() : "I've verified my email",
+                text: "I've verified my email",
                 textStyle: textStyle_16RegularBlack().copyWith(color: Colors.white),
-                onTap: authState.isLoading
-                    ? () {}
-                    : () => ref.read(authNotifierProvider.notifier).checkEmailVerified(),
+                onTap: () => context.go(RouteNames.home),
               ),
 
               16.verticalSpace,

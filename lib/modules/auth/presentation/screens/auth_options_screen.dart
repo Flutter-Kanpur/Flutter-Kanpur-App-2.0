@@ -6,7 +6,6 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/core/constants/app_assets.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/auth/application/auth_provider.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/auth/application/auth_state.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradient_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,16 +17,15 @@ class AuthOptionsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authNotifierProvider);
+    final isAuthenticated = ref.watch(currentUserProvider);
 
-    ref.listen<AppAuthState>(authNotifierProvider, (_, next) {
+    isAuthenticated.whenData((authenticated) {
       if (!context.mounted) return;
-      if (next.status == AuthStatus.authenticated) {
+      if (authenticated) {
         context.go(RouteNames.home);
-      } else if (next.status == AuthStatus.verificationSent) {
-        context.go(RouteNames.emailVerification);
       }
     });
+
 
     return GradientBackground(
       child: SafeArea(
@@ -45,15 +43,8 @@ class AuthOptionsScreen extends ConsumerWidget {
               _buildSubtitle(),
               40.verticalSpace,
 
-              if (authState.error != null) ...[
-                _ErrorBanner(message: authState.error!),
-                16.verticalSpace,
-              ],
-
               _AuthOptionButton(
-                onPressed: authState.isLoading
-                    ? () {}
-                    : () => ref.read(authNotifierProvider.notifier).signInWithGoogle(),
+                onPressed: () => context.go(RouteNames.signIn),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -67,7 +58,7 @@ class AuthOptionsScreen extends ConsumerWidget {
               16.verticalSpace,
 
               _AuthOptionButton(
-                onPressed: authState.isLoading ? () {} : () => context.go(RouteNames.signIn),
+                onPressed: () => context.go(RouteNames.signIn),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -95,9 +86,9 @@ class AuthOptionsScreen extends ConsumerWidget {
 
               GradientButton(
                 height: 45.h,
-                text: authState.isLoading ? 'auth.loading'.tr() : 'auth.createAccount'.tr(),
+                text: 'auth.createAccount'.tr(),
                 textStyle: textStyle_16RegularBlack().copyWith(color: Colors.white),
-                onTap: authState.isLoading ? () {} : () => context.go(RouteNames.signUp),
+                onTap: () => context.go(RouteNames.signUp),
               ),
 
               32.verticalSpace,
@@ -184,30 +175,6 @@ class _AuthOptionButton extends StatelessWidget {
             child: Center(child: child),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _ErrorBanner extends StatelessWidget {
-  const _ErrorBanner({required this.message});
-
-  final String message;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      decoration: BoxDecoration(
-        color: Colors.red.shade50,
-        borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(color: Colors.red.shade200),
-      ),
-      child: Text(
-        message,
-        style: textStyle_14RegularBlack().copyWith(color: Colors.red.shade700),
-        textAlign: TextAlign.center,
       ),
     );
   }
