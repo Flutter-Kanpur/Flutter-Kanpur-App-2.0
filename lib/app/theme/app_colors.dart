@@ -63,13 +63,11 @@ abstract class AppColors {
   static const Color profileSectionBackground = Color(0xFFF6F6F6);
   static const Color avatarBorder = Color(0xFFC9C9C9);
   static const Color avatarBackground = Color(0xFFE0E0E0);
-
   // ── Text Colors ──────────────────────────────────────────────────────────
   static const Color textWhite = Colors.white;
   static const Color textGray = Color(0xFFA6A6A6);
   static const Color textGrey = Color(0xFF9E9E9E);
   static const Color borderSecondary = Color(0xFFE3E3E3);
-
   // ── Social Media ─────────────────────────────────────────────────────────
   static const Color githubColor = Color(0xFF333333);
   static const Color linkedinColor = Color(0xFF0077B5);
