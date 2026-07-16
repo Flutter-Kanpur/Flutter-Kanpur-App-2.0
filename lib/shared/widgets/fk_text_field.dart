@@ -9,6 +9,8 @@ class FkTextField extends StatelessWidget {
     this.controller,
     this.maxLines = 1,
     this.focused = false,
+    this.validator,
+    this.autovalidateMode = AutovalidateMode.disabled,
   });
 
   final String label;
@@ -16,6 +18,8 @@ class FkTextField extends StatelessWidget {
   final TextEditingController? controller;
   final int maxLines;
   final bool focused;
+  final String? Function(String?)? validator;
+  final AutovalidateMode autovalidateMode;
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +33,11 @@ class FkTextField extends StatelessWidget {
           ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
         ),
         const SizedBox(height: 10),
-        TextField(
+        TextFormField(
           controller: controller,
           maxLines: maxLines,
+          validator: validator,
+          autovalidateMode: autovalidateMode,
           decoration: InputDecoration(
             hintText: hint,
             filled: true,
