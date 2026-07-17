@@ -346,6 +346,91 @@
     "accepted": "Accepted",
     "attempts": "Attempts"
   },
+  "contributor":{
+    "joinAsContributor": "Join as a Contributor",
+    "joinDescription": "Help shape the Flutter Kanpur community by contributing your skills, ideas, or time.\n\nContributors work closely with the community team on events, content, and products.",
+    "noExperienceRequired": "You don't need prior experience. We value willingness to learn and collaborate.",
+    "applyToContribute": "Apply to contribute",
+    "learnMore": "Learn more about contributors",
+    "applicationTitle": "Contributor Application",
+    "reviewDetails": "Please review your details before submitting.",
+
+    "fullName": "Full Name",
+    "email": "Email",
+    "currentRole": "Current Role",
+    "contributionArea": "What would you like to contribute to?",
+    "relevantSkills": "Relevant Skills",
+    "experienceLevel": "Experience Level",
+    "experienceRequired": "Experience Level is required",
+    "weeklyContributionTime": "How much time can you contribute per week?",
+    "workProfileLinks": "Work / Profile Links",
+    "whyContribute": "Why do you want to contribute?",
+    "submitApplication": "Submit Application",
+    "fullNameHint": "Angelica Singh",
+    "emailHint": "Eg. angie.work@gmail.com",
+    "whyContributeHint": "Tell us why you'd like to contribute...",
+
+    "applicationSummary": "Application summary",
+    "emailAddress": "Email address",
+    "applicationSubmitted": "Application submitted",
+    "applicationSubmittedDescription": "Thanks for your interest in contributing!\nOur team will review your application and\ncontact you soon.",
+
+    "currentStatus": "Current status: Under review",
+    "backToProfile": "Back to Profile",
+
+    "alreadyContributor": "You're already a contributor",
+    "alreadyContributorDescription": "You already have contributor access\nin the community.",
+    "viewContributorResources": "View contributor resources",
+    
+    "applicationAlreadySubmitted": "You've already submitted the\napplication",
+    "applicationReviewMessage": "Our team will review your application\nand get back to you in 24hrs.",
+    "viewApplication": "View application",
+    "time": "Time",
+    "viewApplicationDetails": "View application details",
+    "submittedOn": "Submitted on",
+    "estimatedResponse": "Estimated response",
+    "notifyOnUpdate": "We'll notify you once there's an update.",
+    
+    "applicationNotApproved": "Application not approved",
+    "applicationRejectedDescription": "Thank you for applying. At this time,\nwe're unable to onboard you.",
+    "applyAgainInFuture": "You can apply again in the future.",
+    "myContributions": "My Contributions",
+    "activeContributor": "Active Contributor",
+    "greeting": "Hi {name},",
+    "contributorRole": "{role} Contributor",
+    "contributorSince": "Contributor since {date}",
+
+    "heresWhatYouCanDo": "Here's what you can do",
+
+    "viewBlogs": "View blogs",
+    "viewBlogsDescription": "Lorem ipsum dolor sit amet",
+
+    "viewProjects": "View projects",
+    "viewProjectsDescription": "Lorem ipsum dolor sit amet",
+
+    "yourContributionSummary": "Your contribution summary",
+
+    "tasksCompleted": "Tasks Completed",
+    "eventsContributed": "Events contributed",
+    "activeTasks": "Active tasks",
+
+    "needHelp": "Need help?",
+    "noContributionsYet": "No contributions yet",
+    "noContributionsDescription": "You haven't joined as a contributor\nyet.",
+
+    "reviewYourApplication": "Review your application",
+    "reviewApplicationBanner": "Please review your details before submitting.",
+    "editDetails": "Edit details",
+
+    "githubLink": "GitHub Link",
+    "linkedinLink": "LinkedIn Link",
+    "portfolioWebsite": "Portfolio / Website",
+    "viewContributorGuidelines": "View contributor guidelines",
+    "reportIssue": "Report an issue",
+    "fieldRequired": "{field} is required.",
+    "invalidUrl": "Please enter a valid URL.",
+    "whyContributeTooShort": "Please enter at least 20 characters explaining why you'd like to contribute."
+  },
 
   "common": {
     "lastUpdated": "Last updated: {}",

@@ -24,7 +24,7 @@ class AssetsPath {
   static const String explore = 'assets/icons/explore_icon.svg';
   static const String profile = 'assets/icons/profile_icon.svg';
   static const String success = 'assets/icons/success.svg';
-  static const String applicationSubmitted = 'assets/message_sent.png';
+  static const String applicationSubmitted = 'assets/success_tick.png';
   static const String reviewPage = 'assets/review.png';
   static const String rejectedPage = 'assets/rejected.png';
   static const String contributorApproved = 'assets/contributorSuccess.png';
@@ -70,16 +70,21 @@ class AssetsPath {
   static const String profileLogout = 'assets/profile/logout.svg';
   static const String profileDeleteAccount =
       'assets/profile/delete_account.svg';
+  // community assets
+  static const String contributorPaperPlane =
+      'assets/contributor/paper_plane.png';
+  static const String contributorReviewClock =
+      'assets/contributor/review_clock.png';
   static const String onboardingSuccess = 'assets/icons/sucess.svg';
   static const String importIcon = 'assets/icons/import_icon.svg';
   static const String cameraIcon = 'assets/icons/camera.svg';
   static const String dustbinIcon = 'assets/icons/dustbin.svg';
   static const String emptyImage = 'assets/empty_image.svg';
   static const String greenTick = 'assets/icons/green_tick.svg';
-  static const String githubSvg = 'assets/icons/github_v2.svg';
+  static const String githubSvg = 'assets/icons/github.svg';
   static const String playstoreSvg = 'assets/icons/playstore.svg';
-  static const String linkedinSvg = 'assets/icons/linkedin_v2.svg';
-  static const String websiteSvg = 'assets/icons/website_v2.svg';
+  static const String linkedinSvg = 'assets/icons/linkedin_icon.svg';
+  static const String websiteSvg = 'assets/icons/website_icon.svg';
   static const String notification = 'assets/icons/notification_icon.svg';
   static const String historyIcon = 'assets/icons/history_icon.svg';
   static const String dash = 'assets/dash.png';
@@ -89,4 +94,4 @@ class AssetsPath {
   static const String flutterkanpurcard = 'assets/flutter_kanpur_card.svg';
   static const String fkcard = 'assets/fk_card.png';
   static const String launcheventpng = 'assets/launch_event.png';
-  }
+}

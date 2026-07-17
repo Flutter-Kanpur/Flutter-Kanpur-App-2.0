@@ -93,27 +93,47 @@ abstract class AppColors {
   static const Color avatarBackgroundColor = Color(0xFFE0E0E0);
   static const Color contributorFieldHintColor = contributorFieldHint;
 
+  // ── Contributor Cards & Borders ────────────────────────────────────────────
+  static const Color contributorActionCardBg = Color(0xFFEEF2FF);
+
+  static const Color contributorSummaryCardBorder = Color(0xFFE5E7EB);
+  static const Color contributorApplicationCardBorder = Color(0xFFE8E8E8);
+
+  // ── Generic UI ─────────────────────────────────────────────────────────────
+  static const Color black = Colors.black;
+  static const Color white = Colors.white;
+
+  static const Color divider = Color(0xFFE5E7EB);
+  static const Color cardBackground = Colors.white;
+
+  // ── Subtitle / Secondary Text ──────────────────────────────────────────────
+  static const Color subtitleGrey = Color(0xFF757575);
+
   // ── Helpers ──────────────────────────────────────────────────────────────
 
   /// Returns the status foreground / background pair for a given [status].
   static ({Color fg, Color bg}) statusPair(String status) {
     return switch (status.trim().toLowerCase()) {
-      'open' || 'active' || 'approved' || 'success' => (
-          fg: successFg,
-          bg: successBg,
-        ),
+      'open' ||
+      'active' ||
+      'approved' ||
+      'success' => (fg: successFg, bg: successBg),
       'pending' || 'review' || 'draft' => (fg: warningFg, bg: warningBg),
-      'rejected' || 'closed' || 'cancelled' || 'error' => (
-          fg: errorFg,
-          bg: errorBg,
-        ),
+      'rejected' ||
+      'closed' ||
+      'cancelled' ||
+      'error' => (fg: errorFg, bg: errorBg),
       _ => (fg: neutralFg, bg: neutralBg),
     };
   }
 
   /// Dark-mode aware version of status backgrounds — lightens alpha in dark.
-  static Color statusContainer(Color status,
-      {required bool isDark, double lightAlpha = 0.12, double darkAlpha = 0.22}) {
+  static Color statusContainer(
+    Color status, {
+    required bool isDark,
+    double lightAlpha = 0.12,
+    double darkAlpha = 0.22,
+  }) {
     return status.withValues(alpha: isDark ? darkAlpha : lightAlpha);
   }
 }

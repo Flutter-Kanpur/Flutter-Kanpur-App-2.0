@@ -79,12 +79,13 @@ class MyProfileScreen extends ConsumerWidget {
                         ProfileTile(
                           iconSvgPath: AssetsPath.profileMyContributions,
                           title: 'My Contributions',
-                          onTap: () => context.push('/profile/my-contributions'),
+                          onTap: () =>
+                              context.push(RouteNames.myContributions),
                         ),
                         ProfileTile(
                           iconSvgPath: AssetsPath.profileJoinAsContributor,
                           title: 'Join as a Contributor',
-                          onTap: () => context.push('/profile/join'),
+                          onTap: () => context.push(RouteNames.joinContributor),
                         ),
                         ProfileTile(
                           iconSvgPath: AssetsPath.profileCommunityGuidelines,
