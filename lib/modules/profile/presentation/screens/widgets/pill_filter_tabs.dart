@@ -25,12 +25,12 @@ class PillFilterTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (labels.isEmpty) return const SizedBox.shrink();
+
     final displayOrder = [
       selectedIndex,
-      for (var i = 0; i < labels.length; i++)
-        if (i != selectedIndex) i,
+      for (var i = 0; i < labels.length; i++) if (i != selectedIndex) i,
     ];
-
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       padding: EdgeInsets.symmetric(horizontal: 20.w),
