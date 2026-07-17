@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
+import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/add_role_experience_bottom_sheet.dart';
@@ -105,7 +106,8 @@ class _ManageProfileScreenState extends State<ManageProfileScreen> {
                       ProblemOfDaySection(
                         level: 2,
                         progress: 0.25,
-                        onViewProgress: () {},
+                        onViewProgress: () =>
+                            context.push(RouteNames.problemOfDay),
                       ),
                       SizedBox(height: 24.h),
                       ManageProfileSectionCard(

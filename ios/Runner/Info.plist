@@ -26,6 +26,10 @@
     <string>$(FLUTTER_BUILD_NUMBER)</string>
     <key>LSRequiresIPhoneOS</key>
     <true/>
+    <key>NSCalendarsUsageDescription</key>
+    <string>Flutter Kanpur uses your calendar to add contest schedules you choose to save.</string>
+    <key>NSCalendarsFullAccessUsageDescription</key>
+    <string>Flutter Kanpur uses your calendar to add contest schedules you choose to save.</string>
     <key>UIApplicationSceneManifest</key>
     <dict>
       <key>UIApplicationSupportsMultipleScenes</key>
