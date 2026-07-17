@@ -53,7 +53,7 @@ class CommunityRepository {
           .eq('is_deleted', false)
           .single();
 
-      return CommunityQuestion.fromMap(data as Map<String, dynamic>);
+      return CommunityQuestion.fromMap(data);
     } catch (e) {
       return null;
     }

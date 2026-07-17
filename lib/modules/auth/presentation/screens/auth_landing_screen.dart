@@ -48,58 +48,55 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
         curve: Curves.easeInOut,
       );
     } else {
-      // await OnboardingService.instance.markWelcomeSeen();
       if (!mounted) return;
-      context.go(RouteNames.signUp);
+      context.go(RouteNames.authOptions);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: GradientBackground(
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.all(20.sp),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: TextButton(
-                    onPressed: () {
-                      RouteNames.signUp;
-                    },
-                    child: Text('Skip', style: textStyle_16MediumBlack()),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: PageView.builder(
-                  controller: _pageController,
-                  onPageChanged: (index) {
-                    setState(() {
-                      _currentPage = index;
-                    });
+    return Scaffold(
+      body: GradientBackground(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(20.sp),
+              child: Align(
+                alignment: Alignment.topRight,
+                child: TextButton(
+                  onPressed: () {
+                    context.go(RouteNames.authOptions);
                   },
-                  itemCount: pages.length,
-                  itemBuilder: (context, index) {
-                    return _buildPage(pages[index]);
-                  },
+                  child: Text('Skip', style: textStyle_16MediumBlack()),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.all(20.sp),
-                child: Column(
-                  children: [
-                    _buildPageIndicators(),
-                    32.verticalSpace,
-                    _buildNextButton(),
-                    27.verticalSpace,
-                  ],
-                ),
+            ),
+            Expanded(
+              child: PageView.builder(
+                controller: _pageController,
+                onPageChanged: (index) {
+                  setState(() {
+                    _currentPage = index;
+                  });
+                },
+                itemCount: pages.length,
+                itemBuilder: (context, index) {
+                  return _buildPage(pages[index]);
+                },
               ),
-            ],
-          ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(20.sp),
+              child: Column(
+                children: [
+                  _buildPageIndicators(),
+                  32.verticalSpace,
+                  _buildNextButton(),
+                  27.verticalSpace,
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

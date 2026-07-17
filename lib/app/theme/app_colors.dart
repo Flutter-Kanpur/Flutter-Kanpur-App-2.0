@@ -54,6 +54,7 @@ abstract class AppColors {
   // ── Warning & Field ─────────────────────────────────────────────────────
   static const Color yellowWarningBackground = Color(0xFFFDF7E9);
   static const Color yellowWarningText = Color(0xFFFEF9F2);
+  static const Color redWarningBackground = Color(0xFFFCE4E4);
   static const Color contributorFieldBorder = Color(0xFFD1D1D1);
   static const Color contributorFocusFieldBorder = primary;
   static const Color contributorFieldHint = Color(0xFFB0B0B0);
@@ -63,7 +64,6 @@ abstract class AppColors {
   static const Color profileSectionBackground = Color(0xFFF6F6F6);
   static const Color avatarBorder = Color(0xFFC9C9C9);
   static const Color avatarBackground = Color(0xFFE0E0E0);
-
   // ── Text Colors ──────────────────────────────────────────────────────────
   static const Color textWhite = Colors.white;
   static const Color textBlack = Color(0xFF161616);
@@ -71,7 +71,6 @@ abstract class AppColors {
   static const Color textGrey = Color(0xFF9E9E9E);
   static const Color amberText = Color(0xFFEF9F20);
   static const Color borderSecondary = Color(0xFFE3E3E3);
-
   // ── Social Media ─────────────────────────────────────────────────────────
   static const Color githubColor = Color(0xFF333333);
   static const Color linkedinColor = Color(0xFF0077B5);
@@ -96,27 +95,47 @@ abstract class AppColors {
   static const Color avatarBackgroundColor = Color(0xFFE0E0E0);
   static const Color contributorFieldHintColor = contributorFieldHint;
 
+  // ── Contributor Cards & Borders ────────────────────────────────────────────
+  static const Color contributorActionCardBg = Color(0xFFEEF2FF);
+
+  static const Color contributorSummaryCardBorder = Color(0xFFE5E7EB);
+  static const Color contributorApplicationCardBorder = Color(0xFFE8E8E8);
+
+  // ── Generic UI ─────────────────────────────────────────────────────────────
+  static const Color black = Colors.black;
+  static const Color white = Colors.white;
+
+  static const Color divider = Color(0xFFE5E7EB);
+  static const Color cardBackground = Colors.white;
+
+  // ── Subtitle / Secondary Text ──────────────────────────────────────────────
+  static const Color subtitleGrey = Color(0xFF757575);
+
   // ── Helpers ──────────────────────────────────────────────────────────────
 
   /// Returns the status foreground / background pair for a given [status].
   static ({Color fg, Color bg}) statusPair(String status) {
     return switch (status.trim().toLowerCase()) {
-      'open' || 'active' || 'approved' || 'success' || 'completed' => (
-      fg: successFg,
-      bg: successBg,
-      ),
+      'open' ||
+      'active' ||
+      'approved' ||
+      'success' => (fg: successFg, bg: successBg),
       'pending' || 'review' || 'draft' => (fg: warningFg, bg: warningBg),
-      'rejected' || 'closed' || 'cancelled' || 'error' => (
-      fg: errorFg,
-      bg: errorBg,
-      ),
+      'rejected' ||
+      'closed' ||
+      'cancelled' ||
+      'error' => (fg: errorFg, bg: errorBg),
       _ => (fg: neutralFg, bg: neutralBg),
     };
   }
 
   /// Dark-mode aware version of status backgrounds — lightens alpha in dark.
-  static Color statusContainer(Color status,
-      {required bool isDark, double lightAlpha = 0.12, double darkAlpha = 0.22}) {
+  static Color statusContainer(
+    Color status, {
+    required bool isDark,
+    double lightAlpha = 0.12,
+    double darkAlpha = 0.22,
+  }) {
     return status.withValues(alpha: isDark ? darkAlpha : lightAlpha);
   }
 }

@@ -30,6 +30,17 @@ import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/p
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/my_events_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/problem_of_day_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/screens/app_feedback_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/screens/already_contributor_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/screens/application_submitted_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/screens/application_summary_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/screens/contributor_application_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/screens/contributor_application_submitted_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/screens/contributor_application_under_review_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/screens/contributor_rejected_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/screens/join_as_contributor_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/screens/my_contributions_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/screens/no_contributions_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/screens/review_application_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -44,7 +55,6 @@ final GoRouter appRouter = GoRouter(
         );
       },
       branches: [
-
         /// Home
         StatefulShellBranch(
           routes: [
@@ -60,8 +70,7 @@ final GoRouter appRouter = GoRouter(
           routes: [
             GoRoute(
               path: RouteNames.community,
-              builder: (context, state) =>
-              const CommunityScreen(),
+              builder: (context, state) => const CommunityScreen(),
 
               routes: [
                 GoRoute(
@@ -78,21 +87,19 @@ final GoRouter appRouter = GoRouter(
                   ],
                 ),
                 GoRoute(
-                  path: '${RouteNames.communityDiscussionDetailSegment}/:questionId',
-                  builder: (context, state) =>
-                      DiscussionDetailScreen(
-                        questionId: state.pathParameters['questionId'] ?? '',
-                      ),
+                  path:
+                      '${RouteNames.communityDiscussionDetailSegment}/:questionId',
+                  builder: (context, state) => DiscussionDetailScreen(
+                    questionId: state.pathParameters['questionId'] ?? '',
+                  ),
                 ),
                 GoRoute(
                   path: RouteNames.communityAskQuestionSegment,
-                  builder: (context, state) =>
-                  const AskQuestionScreen(),
+                  builder: (context, state) => const AskQuestionScreen(),
                 ),
                 GoRoute(
                   path: RouteNames.communityMembersSegment,
-                  builder: (context, state) =>
-                  const CommunityMembersScreen(),
+                  builder: (context, state) => const CommunityMembersScreen(),
                 ),
                 GoRoute(
                   path: RouteNames.communityProjectsSegment,
@@ -134,8 +141,7 @@ final GoRouter appRouter = GoRouter(
           routes: [
             GoRoute(
               path: RouteNames.events,
-              builder: (context, state) =>
-              const EventsScreen(),
+              builder: (context, state) => const EventsScreen(),
             ),
           ],
         ),
@@ -145,8 +151,7 @@ final GoRouter appRouter = GoRouter(
           routes: [
             GoRoute(
               path: RouteNames.blogs,
-              builder: (context, state) =>
-              const BlogsScreen(),
+              builder: (context, state) => const BlogsScreen(),
             ),
           ],
         ),
@@ -154,8 +159,7 @@ final GoRouter appRouter = GoRouter(
           routes: [
             GoRoute(
               path: RouteNames.profile,
-              builder: (context, state) =>
-              const MyProfileScreen(),
+              builder: (context, state) => const MyProfileScreen(),
             ),
           ],
         ),
@@ -219,43 +223,37 @@ final GoRouter appRouter = GoRouter(
     /// Auth Landing
     GoRoute(
       path: RouteNames.authLanding,
-      builder: (context, state) =>
-      const AuthLandingScreen(),
+      builder: (context, state) => const AuthLandingScreen(),
     ),
 
     /// Auth Options
     GoRoute(
       path: RouteNames.authOptions,
-      builder: (context, state) =>
-      const AuthOptionsScreen(),
+      builder: (context, state) => const AuthOptionsScreen(),
     ),
 
     /// Sign In
     GoRoute(
       path: RouteNames.signIn,
-      builder: (context, state) =>
-      const SignInScreen(),
+      builder: (context, state) => const SignInScreen(),
     ),
 
     /// Sign Up
     GoRoute(
       path: RouteNames.signUp,
-      builder: (context, state) =>
-      const SignUpScreen(),
+      builder: (context, state) => const SignUpScreen(),
     ),
 
     /// Onboarding
     GoRoute(
       path: RouteNames.onboardingNavigation,
-      builder: (context, state) =>
-      const OnboardingNavigationScreen(),
+      builder: (context, state) => const OnboardingNavigationScreen(),
     ),
 
     /// Onboarding Success
     GoRoute(
       path: RouteNames.onboardingSuccess,
-      builder: (context, state) =>
-      const OnboardingSuccessScreen(),
+      builder: (context, state) => const OnboardingSuccessScreen(),
     ),
 
     /// Shared Feedback Screen
@@ -269,6 +267,74 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) {
         return state.extra as AppFeedbackScreen;
       },
+    ),
+
+    /// Join as Contributor
+    GoRoute(
+      path: RouteNames.joinContributor,
+      builder: (context, state) => const JoinAsContributorScreen(),
+    ),
+
+    /// Contributor Application
+    GoRoute(
+      path: RouteNames.contributorApplication,
+      builder: (context, state) => const ContributorApplicationScreen(),
+    ),
+
+    /// Review Application
+    GoRoute(
+      path: RouteNames.reviewApplication,
+      builder: (context, state) => const ReviewApplicationScreen(),
+    ),
+
+    /// Application Summary
+    GoRoute(
+      path: RouteNames.applicationSummary,
+      builder: (context, state) => const ApplicationSummaryScreen(),
+    ),
+
+    /// Application Submitted
+    GoRoute(
+      path: RouteNames.applicationSubmitted,
+      builder: (context, state) => const ApplicationSubmittedScreen(),
+    ),
+
+    /// My Contributions
+    GoRoute(
+      path: RouteNames.myContributions,
+      builder: (context, state) => const MyContributionsScreen(),
+    ),
+
+    /// No Contributions
+    GoRoute(
+      path: RouteNames.noContributions,
+      builder: (context, state) => const NoContributionsScreen(),
+    ),
+
+    /// Already Contributor
+    GoRoute(
+      path: RouteNames.alreadyContributor,
+      builder: (context, state) => const AlreadyContributorScreen(),
+    ),
+
+    /// Application Already Submitted
+    GoRoute(
+      path: RouteNames.applicationAlreadySubmitted,
+      builder: (context, state) =>
+          const ContributorApplicationSubmittedScreen(),
+    ),
+
+    /// Application Under Review
+    GoRoute(
+      path: RouteNames.applicationUnderReview,
+      builder: (context, state) =>
+          const ContributorApplicationUnderReviewScreen(),
+    ),
+
+    /// Application Rejected
+    GoRoute(
+      path: RouteNames.applicationRejected,
+      builder: (context, state) => const ContributorRejectedScreen(),
     ),
   ],
 );

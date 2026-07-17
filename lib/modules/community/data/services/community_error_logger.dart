@@ -25,7 +25,6 @@ class CommunityErrorLogger {
       });
     } catch (e) {
       // Silently fail — don't block app flow if logging fails
-      print('CommunityErrorLogger: Failed to log success: $e');
     }
   }
 
@@ -51,7 +50,6 @@ class CommunityErrorLogger {
       });
     } catch (e) {
       // Silently fail
-      print('CommunityErrorLogger: Failed to log error: $e');
     }
   }
 
@@ -80,7 +78,7 @@ class CommunityErrorLogger {
         'created_at': DateTime.now().toIso8601String(),
       });
     } catch (e) {
-      print('CommunityErrorLogger: Failed to log API call: $e');
+      // Silently fail
     }
   }
 }
