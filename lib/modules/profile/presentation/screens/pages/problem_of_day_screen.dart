@@ -330,6 +330,8 @@ class _BadgeStack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (badges.isEmpty) return const SizedBox.shrink();
+
     return SizedBox(
       height: 56.h,
       width: (56 + (badges.length - 1) * 34).w,
