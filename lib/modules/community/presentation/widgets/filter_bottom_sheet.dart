@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 
 class FilterBottomSheet extends StatelessWidget {
   final String? activeFilter;
@@ -14,7 +16,7 @@ class FilterBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16.w),
+      padding: AppSpacing.all07,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,7 +27,7 @@ class FilterBottomSheet extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
-          SizedBox(height: 16.h),
+          SizedBox(height: AppSpacing.s07),
           _FilterOption(
             title: 'All',
             icon: Icons.list,
@@ -53,7 +55,7 @@ class FilterBottomSheet extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          SizedBox(height: 8.h),
+          SizedBox(height: AppSpacing.s04),
         ],
       ),
     );
@@ -78,11 +80,11 @@ class _FilterOption extends StatelessWidget {
     return ListTile(
       leading: Icon(
         icon,
-        color: selected ? Colors.blue : Colors.grey,
+        color: selected ? AppColors.primary500 : AppColors.neutral400,
       ),
       title: Text(title),
       trailing: selected
-          ? const Icon(Icons.check_circle, color: Colors.blue)
+          ? const Icon(Icons.check_circle, color: AppColors.primary500)
           : null,
       onTap: onTap,
       selected: selected,

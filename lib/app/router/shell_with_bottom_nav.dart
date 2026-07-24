@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../shared/widgets/gradiant_background.dart';
 import '../../utils/assets_path.dart';
 
-import '../../utils/text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 /// Persistent shell that shows the bottom nav bar on home, community, events, and profile tabs.
 class ShellWithBottomNav extends StatelessWidget {
@@ -35,14 +35,14 @@ class ShellWithBottomNav extends StatelessWidget {
       icon: SvgPicture.asset(
         asset,
         colorFilter: const ColorFilter.mode(
-          AppColors.unselectedNavBarIconColor,
+          AppColors.neutral300,
           BlendMode.srcIn,
         ),
       ),
       activeIcon: SvgPicture.asset(
         asset,
         colorFilter: const ColorFilter.mode(
-          AppColors.selectedNavBarIconColor,
+          AppColors.primary500,
           BlendMode.srcIn,
         ),
       ),
@@ -69,14 +69,14 @@ class ShellWithBottomNav extends StatelessWidget {
                   splashFactory: NoSplash.splashFactory,
                 ),
                 child: BottomNavigationBar(
-                  backgroundColor: AppColors.navBarBackgroundColor,
+                  backgroundColor: AppColors.whiteBase,
                   currentIndex: currentIndex,
                   onTap: (index) => navigationShell.goBranch(index),
                   type: BottomNavigationBarType.fixed,
-                  selectedItemColor: AppColors.selectedNavBarIconColor,
-                  unselectedItemColor: AppColors.unselectedNavBarIconColor,
-                  unselectedLabelStyle: textStyle_12MediumGrey(),
-                  selectedLabelStyle: textStyle_12MediumGrey(),
+                  selectedItemColor: AppColors.primary500,
+                  unselectedItemColor: AppColors.neutral300,
+                  unselectedLabelStyle: AppTextStyles.labelMedium.copyWith(color: AppColors.neutral400),
+                  selectedLabelStyle: AppTextStyles.labelMedium.copyWith(color: AppColors.neutral400),
                   items: [
                     _navItem(asset: AssetsPath.home, label: 'Home'),
                     _navItem(asset: AssetsPath.community, label: 'Community'),

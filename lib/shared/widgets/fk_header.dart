@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 class FkHeader extends StatelessWidget {
   const FkHeader({
@@ -22,7 +23,7 @@ class FkHeader extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (leading != null) ...[leading!, const SizedBox(width: 12)],
+        if (leading != null) ...[leading!, SizedBox(width: AppSpacing.s06)],
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,21 +32,21 @@ class FkHeader extends StatelessWidget {
                 title,
                 style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w800,
-                  color: const Color(0xFF101828),
+                  color: AppColors.blackBase,
                 ),
               ),
-              const SizedBox(height: 6),
+              SizedBox(height: AppSpacing.s03),
               Text(
                 subtitle,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: AppColors.subtitleTextDarkGrey,
+                  color: AppColors.neutral500,
                   height: 1.35,
                 ),
               ),
             ],
           ),
         ),
-        if (trailing != null) ...[const SizedBox(width: 12), trailing!],
+        if (trailing != null) ...[SizedBox(width: AppSpacing.s06), trailing!],
       ],
     );
   }

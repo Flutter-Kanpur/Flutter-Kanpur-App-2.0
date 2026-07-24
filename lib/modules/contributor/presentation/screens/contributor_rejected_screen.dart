@@ -7,6 +7,8 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart'
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 class ContributorRejectedScreen extends StatelessWidget {
   const ContributorRejectedScreen({super.key});
@@ -18,7 +20,7 @@ class ContributorRejectedScreen extends StatelessWidget {
     return GradientBackground(
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
+          padding: EdgeInsets.fromLTRB(AppSpacing.s09, AppSpacing.s08, AppSpacing.s09, 24),
           child: Column(
             children: [
               FkHeader(
@@ -37,7 +39,7 @@ class ContributorRejectedScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 8),
+              SizedBox(height: AppSpacing.s04),
 
               Text(
                 "contributor.applicationRejectedDescription".tr(),
@@ -45,7 +47,7 @@ class ContributorRejectedScreen extends StatelessWidget {
                 style: theme.textTheme.bodyMedium,
               ),
 
-              const SizedBox(height: 24),
+              SizedBox(height: AppSpacing.s10),
 
               FkPrimaryButton(
                 label: "contributor.backToProfile".tr(),
@@ -56,23 +58,23 @@ class ContributorRejectedScreen extends StatelessWidget {
 
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 12,
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSpacing.s07,
+                  vertical: AppSpacing.s06,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFF6E8),
-                  borderRadius: BorderRadius.circular(12),
+                  color: AppColors.pending50,
+                  borderRadius: AppRadius.all03,
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.info, color: AppColors.orange, size: 18),
-                    const SizedBox(width: 8),
+                    const Icon(Icons.info, color: AppColors.pending400, size: 18),
+                    SizedBox(width: AppSpacing.s04),
                     Expanded(
                       child: Text(
                         "contributor.applyAgainInFuture".tr(),
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: AppColors.orange,
+                          color: AppColors.pending400,
                         ),
                       ),
                     ),

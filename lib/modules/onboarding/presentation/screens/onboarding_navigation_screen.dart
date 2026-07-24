@@ -7,6 +7,9 @@ import 'onboarding_links_screen.dart';
 import 'onboarding_profile_screen.dart';
 import 'onboarding_role_screen.dart';
 import 'onboarding_skills_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class OnboardingNavigationScreen extends StatefulWidget {
   const OnboardingNavigationScreen({super.key});
@@ -58,7 +61,7 @@ class _OnboardingNavigationScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.whiteBase,
 
       resizeToAvoidBottomInset: false,
 
@@ -66,13 +69,13 @@ class _OnboardingNavigationScreenState
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s05),
 
               child: OnboardingProgressBar(currentStep: _currentStep),
             ),
 
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07),
 
               child: Column(
                 children: [
@@ -81,11 +84,7 @@ class _OnboardingNavigationScreenState
 
                     textAlign: TextAlign.center,
 
-                    style: TextStyle(
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                    ),
+                    style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w700),
                   ),
 
                   15.verticalSpace,
@@ -95,11 +94,7 @@ class _OnboardingNavigationScreenState
 
                     textAlign: TextAlign.center,
 
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w400,
-                      color: const Color(0xFF7A7A7A),
-                    ),
+                    style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
                   ),
                 ],
               ),

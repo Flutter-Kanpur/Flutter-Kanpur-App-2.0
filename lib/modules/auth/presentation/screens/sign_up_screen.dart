@@ -12,6 +12,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../application/auth_state_manager.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
@@ -52,7 +54,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     return GradientBackground(
       child: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s05),
           child: Form(
             key: formKey,
             child: Column(
@@ -114,19 +116,16 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       children: [
         Text(
           'auth.signUpTitle'.tr(),
-          style: textStyle_18MediumBlack().copyWith(
-            fontSize: 26.sp,
-            fontWeight: FontWeight.w700,
-          ),
+          style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w700),
         ),
         14.verticalSpace,
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          padding: AppSpacing.horizontal(AppSpacing.s07),
           child: Text(
             'auth.signUpSubTitle'.tr(),
             textAlign: TextAlign.center,
-            style: textStyle_14RegularBlack().copyWith(
-              color: AppColors.subtitleTextDarkGrey,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.neutral500,
               height: 1.5,
             ),
           ),
@@ -140,8 +139,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       text: 'auth.username'.tr(),
       controller: controller,
       showBorder: true,
-      borderColor: AppColors.communityBorderColor,
-      fillColor: const Color(0xFFF6F6F6),
+      borderColor: AppColors.neutral100,
+      fillColor: AppColors.neutral50,
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
           return 'auth.usernameRequired'.tr();
@@ -160,8 +159,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       controller: controller,
       keyboardType: TextInputType.emailAddress,
       showBorder: true,
-      borderColor: AppColors.communityBorderColor,
-      fillColor: const Color(0xFFF6F6F6),
+      borderColor: AppColors.neutral100,
+      fillColor: AppColors.neutral50,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'auth.emailRequired'.tr();
@@ -181,8 +180,8 @@ Widget _buildPasswordField(TextEditingController controller) {
     controller: controller,
     isPassword: true,
     showBorder: true,
-    borderColor: AppColors.communityBorderColor,
-    fillColor: const Color(0xFFF6F6F6),
+    borderColor: AppColors.neutral100,
+    fillColor: AppColors.neutral50,
     validator: (value) {
       if (value == null || value.isEmpty) {
         return 'auth.passwordRequired'.tr();
@@ -204,8 +203,8 @@ Widget _buildConfirmPasswordField(
     controller: controller,
     isPassword: true,
     showBorder: true,
-    borderColor: AppColors.communityBorderColor,
-    fillColor: const Color(0xFFF6F6F6),
+    borderColor: AppColors.neutral100,
+    fillColor: AppColors.neutral50,
     validator: (value) {
       if (value == null || value.isEmpty) {
         return 'auth.confirmPasswordRequired'.tr();
@@ -232,8 +231,8 @@ Widget _buildCreateButton(
     height: 52.h,
     child: GradientButton(
       text: isLoading ? 'auth.creatingAccount'.tr() : 'auth.createAccount'.tr(),
-      textStyle: textStyle_16RegularBlack().copyWith(
-        color: Colors.white,
+      textStyle: AppTextStyles.bodyLarge.copyWith(
+        color: AppColors.whiteBase,
         fontWeight: FontWeight.w600,
       ),
       onTap: isLoading
@@ -257,7 +256,7 @@ Widget _buildCreateButton(
                   _showToast(
                     ctx,
                     'auth.signup_success'.tr(),
-                    Colors.green.shade600,
+                    AppColors.success600,
                     Icons.check_circle,
                   );
                   Future.delayed(const Duration(milliseconds: 800)).then((_) {
@@ -271,7 +270,7 @@ Widget _buildCreateButton(
                   _showToast(
                     ctx,
                     e.toString(),
-                    Colors.red.shade600,
+                    AppColors.warning600,
                     Icons.error,
                   );
                 }
@@ -283,19 +282,19 @@ Widget _buildCreateButton(
 
 Widget _buildSignInText(BuildContext context) {
   return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 16.w),
+    padding: AppSpacing.horizontal(AppSpacing.s07),
     child: Center(
       child: Text.rich(
         TextSpan(
           text: '${'auth.alreadyHaveAccount'.tr()} ',
-          style: textStyle_14RegularBlack().copyWith(
-            color: AppColors.subtitleTextDarkGrey,
+          style: AppTextStyles.bodyMedium.copyWith(
+            color: AppColors.neutral500,
           ),
           children: [
             TextSpan(
               text: 'auth.login'.tr(),
-              style: textStyle_14RegularBlack().copyWith(
-                color: AppColors.selectedNavBarIconColor,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.primary500,
                 fontWeight: FontWeight.w700,
               ),
               recognizer: TapGestureRecognizer()
@@ -319,26 +318,22 @@ void _showToast(
     SnackBar(
       content: Row(
         children: [
-          Icon(icon, color: Colors.white, size: 20.sp),
+          Icon(icon, color: AppColors.whiteBase, size: 20.sp),
           12.horizontalSpace,
           Expanded(
             child: Text(
               message,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-              ),
+              style: AppTextStyles.labelLarge.copyWith(color: AppColors.whiteBase),
             ),
           ),
         ],
       ),
       backgroundColor: bgColor,
-      duration: const Duration(seconds: 2),
+      duration: Duration(seconds: 2),
       behavior: SnackBarBehavior.floating,
-      margin: EdgeInsets.all(16.w),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+      margin: AppSpacing.all07,
+      shape: RoundedRectangleBorder(borderRadius: AppRadius.all02),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s07),
     ),
   );
 }

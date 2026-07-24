@@ -1,6 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 
 class ContributorSummaryCard extends StatelessWidget {
   const ContributorSummaryCard({
@@ -19,14 +22,14 @@ class ContributorSummaryCard extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 14),
+      padding: EdgeInsets.symmetric(vertical: AppSpacing.s07),
       decoration: BoxDecoration(
-        color: AppColors.cardBackground,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.contributorSummaryCardBorder),
+        color: AppColors.whiteBase,
+        borderRadius: AppRadius.all04,
+        border: Border.all(color: AppBorders.secondary),
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withValues(alpha: 0.04),
+            color: AppColors.blackBase.withValues(alpha: 0.04),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -80,16 +83,15 @@ class _SummaryItem extends StatelessWidget {
           value,
           style: theme.textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.w700,
-            color: AppColors.black,
+            color: AppColors.blackBase,
           ),
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: AppSpacing.s02),
         Text(
           label.tr(),
           textAlign: TextAlign.center,
           style: theme.textTheme.bodySmall?.copyWith(
-            color: AppColors.subtitleGrey,
-            fontSize: 11,
+            color: AppColors.neutral500,
           ),
         ),
       ],

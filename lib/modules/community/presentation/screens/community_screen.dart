@@ -12,6 +12,8 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_section_title.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 class CommunityScreen extends ConsumerWidget {
   const CommunityScreen({super.key});
@@ -27,7 +29,7 @@ class CommunityScreen extends ConsumerWidget {
         await ref.read(communityMembersProvider.notifier).refresh();
       },
       child: FkScreen(
-        padding: const EdgeInsets.fromLTRB(22, 0, 22, 96),
+        padding: EdgeInsets.fromLTRB(AppSpacing.s10, AppSpacing.s00, AppSpacing.s10, 96),
         children: [
         Row(
           children: [
@@ -36,7 +38,6 @@ class CommunityScreen extends ConsumerWidget {
                 'Community',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w600,
-                      fontSize: 20,
                     ),
               ),
             ),
@@ -50,7 +51,7 @@ class CommunityScreen extends ConsumerWidget {
             ),
           ],
         ),
-        const SizedBox(height: 18),
+        SizedBox(height: AppSpacing.s08),
         CommunityAskBanner(
           onTap: () => context.go(RouteNames.communityAskQuestion),
         ),
@@ -83,7 +84,7 @@ class CommunityScreen extends ConsumerWidget {
                     clipBehavior: Clip.none,
                     itemCount: questions.length,
                     separatorBuilder: (context, index) =>
-                        const SizedBox(width: 12),
+                        SizedBox(width: AppSpacing.s06),
                     itemBuilder: (_, i) => CommunityDiscussionCard(
                       question: questions[i],
                       width: cardWidth,
@@ -97,7 +98,7 @@ class CommunityScreen extends ConsumerWidget {
             );
           },
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: AppSpacing.s10),
         const FkSectionTitle(title: 'Contribute'),
         SizedBox(
           height: 232,
@@ -112,7 +113,7 @@ class CommunityScreen extends ConsumerWidget {
                   onTap: () => context.go(RouteNames.communityUploadProject),
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: AppSpacing.s06),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -125,7 +126,7 @@ class CommunityScreen extends ConsumerWidget {
                         onTap: () => context.go(RouteNames.blogs),
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: AppSpacing.s06),
                     Expanded(
                       flex: 4,
                       child: CommunityContributeCard(
@@ -140,12 +141,12 @@ class CommunityScreen extends ConsumerWidget {
             ],
           ),
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: AppSpacing.s10),
         const FkSectionTitle(title: 'Community Stats'),
         const CommunityStatsPanel(),
-        const SizedBox(height: 12),
+        SizedBox(height: AppSpacing.s06),
         FkPrimaryButton(label: 'Join us on discord', onPressed: () {}),
-        const SizedBox(height: 24),
+        SizedBox(height: AppSpacing.s10),
         const FkSectionTitle(title: 'Our team'),
         membersAsync.when(
           loading: () => const SizedBox(
@@ -155,21 +156,21 @@ class CommunityScreen extends ConsumerWidget {
           error: (_, __) => const SizedBox.shrink(),
           data: (members) => CommunityTeamCarousel(members: members),
         ),
-        const SizedBox(height: 90),
+        SizedBox(height: AppSpacing.s10),
         Text(
           'Built for the\nflutter\ncommunity!',
           style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                color: AppColors.lightGrayText,
+                color: AppColors.neutral200,
                 fontWeight: FontWeight.w800,
                 height: 1.28,
               ),
         ),
-        const SizedBox(height: 18),
+        SizedBox(height: AppSpacing.s08),
         Row(
           children: [
             Text('Crafted with ',
                 style: Theme.of(context).textTheme.bodyMedium),
-            const Icon(Icons.favorite, color: Colors.red, size: 18),
+            const Icon(Icons.favorite, color: AppColors.warning600, size: 18),
             Expanded(
               child: Text(
                 ' by the Flutter Kanpur Community',
@@ -193,21 +194,21 @@ class _ErrorTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: AppSpacing.all07,
       decoration: BoxDecoration(
-        color: Colors.red.shade50,
-        borderRadius: BorderRadius.circular(12),
+        color: AppColors.warning50,
+        borderRadius: AppRadius.all03,
       ),
       child: Row(
         children: [
-          const Icon(Icons.error_outline, color: Colors.red),
-          const SizedBox(width: 10),
+          const Icon(Icons.error_outline, color: AppColors.warning600),
+          SizedBox(width: AppSpacing.s05),
           Expanded(
             child: Text(message,
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium
-                    ?.copyWith(color: Colors.red.shade700)),
+                    ?.copyWith(color: AppColors.warning700)),
           ),
           TextButton(onPressed: onRetry, child: const Text('Retry')),
         ],
@@ -224,13 +225,13 @@ class _EmptyTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 24),
+      padding: EdgeInsets.symmetric(vertical: AppSpacing.s07),
       child: Center(
         child: Text(message,
             style: Theme.of(context)
                 .textTheme
                 .bodyMedium
-                ?.copyWith(color: AppColors.subtitleTextDarkGrey)),
+                ?.copyWith(color: AppColors.neutral500)),
       ),
     );
   }

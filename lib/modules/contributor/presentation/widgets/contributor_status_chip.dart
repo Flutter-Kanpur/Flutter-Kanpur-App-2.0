@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class ContributorStatusChip extends StatelessWidget {
   const ContributorStatusChip({
@@ -15,18 +18,14 @@ class ContributorStatusChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: AppSpacing.symmetric(horizontal: AppSpacing.s06, vertical: AppSpacing.s03),
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: AppRadius.all08,
       ),
       child: Text(
         text,
-        style: TextStyle(
-          color: textColor,
-          fontWeight: FontWeight.w600,
-          fontSize: 12,
-        ),
+        style: AppTextStyles.labelMedium.copyWith(color: textColor),
       ),
     );
   }

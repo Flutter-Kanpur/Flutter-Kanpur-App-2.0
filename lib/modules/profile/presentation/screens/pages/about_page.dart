@@ -4,6 +4,7 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_back_button.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_header.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
@@ -19,11 +20,11 @@ class AboutPage extends StatelessWidget {
             subtitle: '',
             leading: FkBackButton(),
           ),
-          SizedBox(height: 28),
+          SizedBox(height: AppSpacing.s10),
           Text("aboutUs.aboutUs1".tr(), style: usedTextTheme),
-          SizedBox(height: 16),
+          SizedBox(height: AppSpacing.s07),
           Text("aboutUs.aboutUs2".tr(), style: usedTextTheme),
-          SizedBox(height: 16),
+          SizedBox(height: AppSpacing.s07),
           Text("aboutUs.aboutUs3".tr(), style: usedTextTheme),
         ],
       ),

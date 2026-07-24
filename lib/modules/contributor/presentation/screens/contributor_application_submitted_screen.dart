@@ -8,6 +8,10 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dar
 import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class ContributorApplicationSubmittedScreen extends StatelessWidget {
   const ContributorApplicationSubmittedScreen({super.key});
@@ -19,7 +23,7 @@ class ContributorApplicationSubmittedScreen extends StatelessWidget {
     return GradientBackground(
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: AppSpacing.horizontal(AppSpacing.s09),
           child: Column(
             children: [
               FkHeader(
@@ -30,7 +34,7 @@ class ContributorApplicationSubmittedScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 32),
+              SizedBox(height: AppSpacing.s10),
 
               Center(
                 child: Image.asset(
@@ -39,7 +43,7 @@ class ContributorApplicationSubmittedScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 28),
+              SizedBox(height: AppSpacing.s10),
 
               Text(
                 "contributor.applicationAlreadySubmitted".tr(),
@@ -49,7 +53,7 @@ class ContributorApplicationSubmittedScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 12),
+              SizedBox(height: AppSpacing.s06),
 
               Text(
                 "contributor.applicationReviewMessage".tr(),
@@ -57,7 +61,7 @@ class ContributorApplicationSubmittedScreen extends StatelessWidget {
                 style: theme.textTheme.bodyMedium,
               ),
 
-              const SizedBox(height: 24),
+              SizedBox(height: AppSpacing.s10),
 
               FkPrimaryButton(
                 label: "contributor.viewApplication".tr(),
@@ -66,15 +70,15 @@ class ContributorApplicationSubmittedScreen extends StatelessWidget {
               ),
 
               // Pushes the card towards the bottom
-              const Spacer(),
+              Spacer(),
 
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: AppSpacing.all09,
                 decoration: BoxDecoration(
-                  color: AppColors.cardBackground,
-                  borderRadius: BorderRadius.circular(20),
+                  color: AppColors.whiteBase,
+                  borderRadius: AppRadius.all05,
                   border: Border.all(
-                    color: AppColors.contributorApplicationCardBorder,
+                    color: AppBorders.secondary,
                   ),
                 ),
                 child: Column(
@@ -95,7 +99,7 @@ class ContributorApplicationSubmittedScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: AppSpacing.s09),
             ],
           ),
         ),
@@ -105,13 +109,13 @@ class ContributorApplicationSubmittedScreen extends StatelessWidget {
 
   Widget _row(String title, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: AppSpacing.vertical(AppSpacing.s03),
       child: Row(
         children: [
           Expanded(
-            child: Text(title, style: const TextStyle(color: Colors.grey)),
+            child: Text(title, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral400)),
           ),
-          Text(value, style: const TextStyle(fontWeight: FontWeight.w600)),
+          Text(value, style: AppTextStyles.titleSmall),
         ],
       ),
     );

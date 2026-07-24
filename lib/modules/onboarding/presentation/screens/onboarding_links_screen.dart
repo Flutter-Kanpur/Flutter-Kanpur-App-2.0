@@ -2,6 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class OnboardingLinksScreen extends StatelessWidget {
   final VoidCallback onNext;
@@ -20,7 +24,7 @@ class OnboardingLinksScreen extends StatelessWidget {
 
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07),
 
           child: Column(
             children: [
@@ -30,7 +34,7 @@ class OnboardingLinksScreen extends StatelessWidget {
                   hintText: 'onboarding.githubLink'.tr(),
 
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14.r),
+                    borderRadius: AppRadius.all03,
                   ),
                 ),
               ),
@@ -42,7 +46,7 @@ class OnboardingLinksScreen extends StatelessWidget {
                   hintText: 'onboarding.linkedinLink'.tr(),
 
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14.r),
+                    borderRadius: AppRadius.all03,
                   ),
                 ),
               ),
@@ -54,7 +58,7 @@ class OnboardingLinksScreen extends StatelessWidget {
                   hintText: 'onboarding.portfolioLink'.tr(),
 
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14.r),
+                    borderRadius: AppRadius.all03,
                   ),
                 ),
               ),
@@ -67,10 +71,7 @@ class OnboardingLinksScreen extends StatelessWidget {
                 child: Text(
                   'onboarding.editAnytime'.tr(),
 
-                  style: TextStyle(
-                    color: Colors.orange,
-                    fontSize: 14.sp,
-                  ),
+                  style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pending400),
                 ),
               ),
 

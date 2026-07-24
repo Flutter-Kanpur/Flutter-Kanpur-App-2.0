@@ -6,8 +6,12 @@ import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
 
 
 import '../../utils/assets_path.dart';
-import '../../utils/text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+
 import '../../utils/translate.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 // import '../../domain/entities/profile_entity.dart';
 
 
@@ -122,16 +126,16 @@ class _AddRoleExperienceBottomSheetState
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-        left: 20.w,
-        right: 20.w,
-        top: 20.h,
+        left: AppSpacing.s05,
+        right: AppSpacing.s05,
+        top: AppSpacing.s05,
         bottom: MediaQuery.of(context).viewInsets.bottom + 20.h,
       ),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.whiteBase,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24.r),
-          topRight: Radius.circular(24.r),
+          topLeft: Radius.circular(AppRadius.r06),
+          topRight: Radius.circular(AppRadius.r06),
         ),
       ),
       child: SingleChildScrollView(
@@ -144,67 +148,66 @@ class _AddRoleExperienceBottomSheetState
                 width: 40.w,
                 height: 4.h,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE0E0E0),
-                  borderRadius: BorderRadius.circular(2.r),
+                  color: AppBorders.secondary,
+                  borderRadius: AppRadius.all01,
                 ),
               ),
             ),
-            SizedBox(height: 24.h),
+            SizedBox(height: AppSpacing.s10),
             Text(
               translate(context, "profile.roleExperience"),
-              style: textStyle_16MediumBlack().copyWith(fontSize: 18.sp),
+              style: AppTextStyles.titleMedium,
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 24.h),
+            SizedBox(height: AppSpacing.s10),
             _buildExperienceDropdown(),
-            SizedBox(height: 20.h),
+            SizedBox(height: AppSpacing.s09),
             TextField(
               controller: _searchController,
-              style: textStyle_14RegularBlack().copyWith(
-                color: const Color(0xFF3D3D3D),
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.neutral900,
               ),
               decoration: InputDecoration(
                 hintText: translate(context, "profile.searchRolesSkills"),
-                hintStyle: textStyle_14RegularGrey(),
-                prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500, fontWeight: FontWeight.w300),
+                prefixIcon: Icon(Icons.search, color: AppColors.neutral400),
                 filled: true,
-                fillColor: const Color(0xFFF5F5F5),
+                fillColor: AppColors.neutral50,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: AppRadius.all03,
                   borderSide: BorderSide.none,
                 ),
-                contentPadding: EdgeInsets.symmetric(vertical: 12.h),
+                contentPadding: AppSpacing.vertical(AppSpacing.s06),
               ),
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: AppSpacing.s09),
             Wrap(
-              spacing: 8.w,
-              runSpacing: 8.h,
+              spacing: AppSpacing.s04,
+              runSpacing: AppSpacing.s04,
               children: [
                 ..._filteredRoles.map((role) {
                   final isSelected = _selectedRoles.contains(role);
                   return GestureDetector(
                     onTap: () => _toggleRole(role),
                     child: Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 16.w, vertical: 10.h),
+                      padding: AppSpacing.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s05),
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? const Color(0xFF4167F2).withValues(alpha: 0.12)
-                            : Colors.white,
-                        borderRadius: BorderRadius.circular(24.r),
+                            ? AppColors.primary500.withValues(alpha: 0.12)
+                            : AppColors.whiteBase,
+                        borderRadius: AppRadius.all06,
                         border: Border.all(
                           color: isSelected
-                              ? const Color(0xFF4167F2)
-                              : AppColors.communityBorderColor,
+                              ? AppColors.primary500
+                              : AppColors.neutral100,
                         ),
                       ),
                       child: Text(
                         role,
-                        style: textStyle_14RegularBlack().copyWith(
+                        style: AppTextStyles.bodyMedium.copyWith(
                           color: isSelected
-                              ? const Color(0xFF4167F2)
-                              : const Color(0xFF3D3D3D),
+                              ? AppColors.primary500
+                              : AppColors.neutral900,
                           fontWeight:
                               isSelected ? FontWeight.w600 : FontWeight.w400,
                         ),
@@ -216,18 +219,15 @@ class _AddRoleExperienceBottomSheetState
                   _buildInlineAddOtherChip(),
               ],
             ),
-            SizedBox(height: 24.h),
+            SizedBox(height: AppSpacing.s10),
             GestureDetector(
               onTap: _startInlineAddOther,
               child: Text(
                 translate(context, "profile.addOther"),
-                style: textStyle_16BoldLinkBlue().copyWith(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: AppTextStyles.bodyLarge.copyWith(color: AppColors.primary500, fontWeight: FontWeight.w500),
               ),
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: AppSpacing.s09),
             GradientButton(
               onTap: () {
                 widget.onSave(_selectedRoles.toList(), _selectedExperience);
@@ -235,9 +235,9 @@ class _AddRoleExperienceBottomSheetState
               },
               text: translate(context, "profile.saveChanges"),
               textStyle:
-                  textStyle_16MediumBlack().copyWith(color: Colors.white),
+                  AppTextStyles.titleMedium.copyWith(color: AppColors.whiteBase),
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: AppSpacing.s09),
           ],
         ),
       ),
@@ -268,10 +268,10 @@ class _AddRoleExperienceBottomSheetState
             minWidth: size.width,
             maxWidth: size.width,
           ),
-          color: Colors.white,
+          color: AppColors.whiteBase,
           elevation: 6,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24.r),
+            borderRadius: AppRadius.all06,
           ),
           items: experienceList.map((exp) {
             final bool isSelected = _selectedExperience == exp;
@@ -280,21 +280,21 @@ class _AddRoleExperienceBottomSheetState
               padding: EdgeInsets.zero,
               child: Container(
                 width: size.width,
-                margin: EdgeInsets.symmetric(horizontal: 12.sp, vertical: 6.sp),
+                margin: EdgeInsets.symmetric(horizontal: AppSpacing.s06, vertical: AppSpacing.s03),
                 padding:
-                    EdgeInsets.symmetric(horizontal: 16.sp, vertical: 14.sp),
+                    EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s07),
                 decoration: BoxDecoration(
                   color:
-                      isSelected ? const Color(0xFFDCE5FD) : Colors.transparent,
-                  borderRadius: BorderRadius.circular(14.r),
+                      isSelected ? AppColors.primary100 : Colors.transparent,
+                  borderRadius: AppRadius.all03,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       "$exp ${translate(context, "profile.yearsSuffix")}",
-                      style: textStyle_16RegularBlack()
-                          .copyWith(color: const Color(0XFF000000)),
+                      style: AppTextStyles.bodyLarge.copyWith(color: AppColors.blackBase)
+                          .copyWith(color: AppColors.blackBase),
                     ),
                     if (isSelected)
                       SvgPicture.asset(
@@ -317,11 +317,11 @@ class _AddRoleExperienceBottomSheetState
       },
       child: Container(
         key: _dropdownKey,
-        padding: EdgeInsets.symmetric(horizontal: 20.sp, vertical: 18.sp),
+        padding: EdgeInsets.symmetric(horizontal: AppSpacing.s05, vertical: AppSpacing.s08),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(color: const Color(0xFFE0E0E0)),
+          color: AppColors.whiteBase,
+          borderRadius: AppRadius.all04,
+          border: Border.all(color: AppBorders.secondary),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -330,9 +330,7 @@ class _AddRoleExperienceBottomSheetState
               _selectedExperience != null
                   ? "$_selectedExperience ${translate(context, 'profile.yearsSuffix')}"
                   : translate(context, "profile.yearsOfExperience"),
-              style: TextStyle(
-                color: _selectedExperience != null ? Colors.black : Colors.grey,
-              ),
+              style: AppTextStyles.bodyMedium.copyWith(color: _selectedExperience != null ? AppColors.blackBase : AppColors.neutral400),
             ),
             const Icon(Icons.keyboard_arrow_down_rounded),
           ],
@@ -344,12 +342,12 @@ class _AddRoleExperienceBottomSheetState
   Widget _buildInlineAddOtherChip() {
     return Container(
       constraints: BoxConstraints(minWidth: 120.w, maxWidth: 200.w),
-      padding: EdgeInsets.only(left: 14.w, right: 8.w, top: 6.h, bottom: 6.h),
+      padding: EdgeInsets.only(left: AppSpacing.s07, right: AppSpacing.s04, top: AppSpacing.s03, bottom: AppSpacing.s03),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24.r),
+        color: AppColors.whiteBase,
+        borderRadius: AppRadius.all06,
         border: Border.all(
-          color: const Color(0xFF4167F2),
+          color: AppBorders.blue,
           width: 1.5,
         ),
       ),
@@ -361,10 +359,10 @@ class _AddRoleExperienceBottomSheetState
             child: TextField(
               controller: _inlineAddOtherController,
               focusNode: _inlineAddOtherFocusNode,
-              style: textStyle_16RegularBlack().copyWith(fontSize: 14.sp),
+              style: AppTextStyles.bodyLarge,
               decoration: InputDecoration(
                 hintText: translate(context, 'profile.enterRole'),
-                hintStyle: textStyle_16RegularGrey().copyWith(fontSize: 14.sp),
+                hintStyle: AppTextStyles.bodyLarge,
                 isDense: true,
                 contentPadding: EdgeInsets.zero,
                 border: InputBorder.none,
@@ -379,7 +377,7 @@ class _AddRoleExperienceBottomSheetState
             child: Icon(
               Icons.close,
               size: 18.sp,
-              color: Colors.black,
+              color: AppColors.blackBase,
             ),
           ),
         ],

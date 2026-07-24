@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/short_date_format.dart';
-import 'package:flutter_knp_mobile_app_v2/utils/text_styles.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -11,6 +10,10 @@ import 'package:go_router/go_router.dart';
 
 import '../../../application/problem_of_day_provider.dart';
 import '../../../application/problem_of_day_state.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 class ProblemOfDayScreen extends ConsumerWidget {
   const ProblemOfDayScreen({super.key});
@@ -31,42 +34,42 @@ class ProblemOfDayScreen extends ConsumerWidget {
             icon: Icon(
               Icons.arrow_back,
               size: 22.sp,
-              color: AppColors.textBlack,
+              color: AppColors.blackBase,
             ),
           ),
-          title: Text('Problem of the Day', style: textStyle_18BoldBlack()),
+          title: Text('Problem of the Day', style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold)),
         ),
         body: SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(20.w, 8.h, 20.w, 32.h),
+          padding: EdgeInsets.fromLTRB(AppSpacing.s09, AppSpacing.s04, AppSpacing.s09, AppSpacing.s10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _HeroCard(problem: overview.problem, onSolve: () {}),
-              SizedBox(height: 20.h),
+              SizedBox(height: AppSpacing.s09),
               _ProgressCard(progress: overview.progress),
-              SizedBox(height: 16.h),
+              SizedBox(height: AppSpacing.s07),
               _StatsCard(progress: overview.progress),
-              SizedBox(height: 20.h),
-              Text('Details', style: textStyle_16RegularGrey()),
-              SizedBox(height: 8.h),
+              SizedBox(height: AppSpacing.s09),
+              Text('Details', style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500)),
+              SizedBox(height: AppSpacing.s04),
               _DetailsCard(
                 details: overview.details,
                 progress: overview.progress,
               ),
-              SizedBox(height: 24.h),
+              SizedBox(height: AppSpacing.s10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Badges', style: textStyle_16RegularGrey()),
+                  Text('Badges', style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500)),
                   GestureDetector(
                     onTap: () {},
-                    child: Text('View', style: textStyle_16BoldLinkBlue()),
+                    child: Text('View', style: AppTextStyles.titleMedium.copyWith(color: AppColors.primary500, fontWeight: FontWeight.bold)),
                   ),
                 ],
               ),
-              SizedBox(height: 12.h),
+              SizedBox(height: AppSpacing.s06),
               _BadgeStack(badges: overview.badges),
-              SizedBox(height: 16.h),
+              SizedBox(height: AppSpacing.s07),
               _NextBadgeNotice(
                 streakDaysThreshold: overview.nextBadgeStreakThreshold,
               ),
@@ -87,7 +90,7 @@ class _HeroCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(28.r),
+      borderRadius: AppRadius.all06,
       child: Stack(
         children: [
           Positioned.fill(
@@ -97,45 +100,44 @@ class _HeroCard extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(20.w),
+            padding: AppSpacing.all09,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   problem.title,
-                  style: textStyle_18MediumBlack().copyWith(
-                    color: Colors.white,
-                    fontSize: 22.sp,
+                  style: AppTextStyles.headlineSmall.copyWith(
+                    color: AppColors.whiteBase,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                SizedBox(height: 12.h),
+                SizedBox(height: AppSpacing.s06),
                 Text(
                   problem.description,
-                  style: textStyle_16RegularBlack().copyWith(
-                    color: Colors.white,
+                  style: AppTextStyles.bodyLarge.copyWith(
+                    color: AppColors.whiteBase,
                     height: 1.4,
                   ),
                 ),
-                SizedBox(height: 20.h),
+                SizedBox(height: AppSpacing.s09),
                 Material(
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: onSolve,
-                    borderRadius: BorderRadius.circular(999),
+                    borderRadius: AppRadius.all09,
                     child: Container(
                       padding: EdgeInsets.symmetric(
-                        horizontal: 24.w,
-                        vertical: 12.h,
+                        horizontal: AppSpacing.s10,
+                        vertical: AppSpacing.s06,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(999),
+                        color: AppColors.whiteBase,
+                        borderRadius: AppRadius.all09,
                       ),
                       child: Text(
                         'Solve problem',
-                        style: textStyle_16MediumBlack(),
+                        style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase),
                       ),
                     ),
                   ),
@@ -157,14 +159,14 @@ class _ProgressCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16.w),
+      padding: AppSpacing.all07,
       decoration: BoxDecoration(
         // Mostly-white translucent glass — the page's own light-blue
         // GradientBackground tint shows through faintly instead of a
         // manually baked-in blue gradient.
-        color: Colors.white.withValues(alpha: 0.7),
-        borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(color: AppColors.communityBorder),
+        color: AppColors.whiteBase.withValues(alpha: 0.7),
+        borderRadius: AppRadius.all05,
+        border: Border.all(color: AppBorders.primary),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,24 +174,24 @@ class _ProgressCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Progress', style: textStyle_16MediumBlack()),
+              Text('Progress', style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
               Text(
                 '${progress.challengeDaysCompleted} / ${progress.challengeDaysGoal} days',
-                style: textStyle_14RegularGrey(),
+                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500),
               ),
             ],
           ),
-          SizedBox(height: 12.h),
+          SizedBox(height: AppSpacing.s06),
           ClipRRect(
-            borderRadius: BorderRadius.circular(999),
+            borderRadius: AppRadius.all09,
             child: LinearProgressIndicator(
               value: progress.challengeDaysGoal == 0
                   ? 0
                   : (progress.challengeDaysCompleted / progress.challengeDaysGoal)
                       .clamp(0.0, 1.0),
-              backgroundColor: AppColors.bgPrimary,
+              backgroundColor: AppColors.neutral50,
               valueColor: const AlwaysStoppedAnimation<Color>(
-                AppColors.primary,
+                AppColors.primary500,
               ),
               minHeight: 8.h,
             ),
@@ -208,11 +210,11 @@ class _StatsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 20.h),
+      padding: EdgeInsets.symmetric(vertical: AppSpacing.s09),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.7),
-        borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(color: AppColors.communityBorder),
+        color: AppColors.whiteBase.withValues(alpha: 0.7),
+        borderRadius: AppRadius.all05,
+        border: Border.all(color: AppBorders.primary),
       ),
       child: Row(
         children: [
@@ -250,9 +252,9 @@ class _StatColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(value, style: textStyle_24BlackBold().copyWith(fontSize: 28.sp)),
-        SizedBox(height: 4.h),
-        Text(label, style: textStyle_14RegularGrey()),
+        Text(value, style: AppTextStyles.headlineMedium.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold)),
+        SizedBox(height: AppSpacing.s02),
+        Text(label, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500)),
       ],
     );
   }
@@ -273,19 +275,19 @@ class _DetailsCard extends StatelessWidget {
         'Level ${progress.currentLevel} — ${progress.currentLevelName}';
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07),
       decoration: BoxDecoration(
-        color: AppColors.communityGuidelinesBackground,
-        borderRadius: BorderRadius.circular(20.r),
+        color: AppColors.neutral50,
+        borderRadius: AppRadius.all05,
       ),
       child: Column(
         children: [
           _DetailRow(label: 'Frequency', value: details.frequency),
-          Divider(height: 1, color: AppColors.communityBorder),
+          Divider(height: 1, color: AppBorders.primary),
           _DetailRow(label: 'Difficulty', value: details.difficulty),
-          Divider(height: 1, color: AppColors.communityBorder),
+          Divider(height: 1, color: AppBorders.primary),
           _DetailRow(label: 'Level', value: levelLabel),
-          Divider(height: 1, color: AppColors.communityBorder),
+          Divider(height: 1, color: AppBorders.primary),
           _DetailRow(label: 'Started On', value: startedOnLabel),
         ],
       ),
@@ -302,16 +304,16 @@ class _DetailRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.h),
+      padding: EdgeInsets.symmetric(vertical: AppSpacing.s07),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: textStyle_16MediumBlack()),
+          Text(label, style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
           Flexible(
             child: Text(
               value,
               textAlign: TextAlign.right,
-              style: textStyle_16RegularGrey(),
+              style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
             ),
           ),
         ],
@@ -357,22 +359,22 @@ class _BadgeIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final placeholder = Icon(
       Icons.military_tech_rounded,
-      color: Colors.white,
+      color: AppColors.whiteBase,
       size: 26.sp,
     );
 
     return Container(
       width: 56.w,
       height: 56.w,
-      padding: EdgeInsets.all(2.w),
+      padding: AppSpacing.all01,
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.white,
+        color: AppColors.whiteBase,
       ),
       child: Container(
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: badge.isUnlocked ? AppColors.primary : AppColors.textGray,
+          color: badge.isUnlocked ? AppColors.primary500 : AppColors.neutral500,
         ),
         child: badge.iconUrl.isEmpty
             ? Center(child: placeholder)
@@ -396,18 +398,18 @@ class _NextBadgeNotice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s07),
       decoration: BoxDecoration(
-        color: AppColors.yellowWarningBackground,
-        borderRadius: BorderRadius.circular(16.r),
+        color: AppColors.pending50,
+        borderRadius: AppRadius.all04,
       ),
       child: Row(
         children: [
-          Icon(Icons.error, color: AppColors.amberText, size: 18.sp),
-          SizedBox(width: 10.w),
+          Icon(Icons.error, color: AppColors.pending600, size: 18.sp),
+          SizedBox(width: AppSpacing.s05),
           Text(
             'Next badge - $streakDaysThreshold days streak',
-            style: textStyle_14YellowRegular(),
+            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pending600),
           ),
         ],
       ),

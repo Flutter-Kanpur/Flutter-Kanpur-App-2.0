@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 
 class ContributorDisplaySkillChip extends StatelessWidget {
   const ContributorDisplaySkillChip({super.key, required this.label});
@@ -9,11 +12,11 @@ class ContributorDisplaySkillChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: AppSpacing.symmetric(horizontal: AppSpacing.s06, vertical: AppSpacing.s04),
       decoration: BoxDecoration(
-        color: AppColors.textWhite,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.textWhite),
+        color: AppColors.whiteBase,
+        borderRadius: AppRadius.all02,
+        border: Border.all(color: AppBorders.tertiary),
       ),
       child: Text(
         label,

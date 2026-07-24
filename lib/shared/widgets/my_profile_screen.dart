@@ -9,13 +9,15 @@ import 'package:go_router/go_router.dart';
 // import '../../../services/remote_config_service.dart';
 import '../../app/router/route_names.dart';
 import '../../utils/assets_path.dart';
-import '../../utils/text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+
 // import '../../auth/presentation/bloc/auth_bloc.dart';
 // import '../../auth/presentation/bloc/auth_event.dart';
 // import '../../auth/presentation/bloc/auth_state.dart';
 import 'profile_header.dart';
 import 'profile_section_block.dart';
 import 'profile_tile.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 class MyProfileScreen extends StatelessWidget {
   const MyProfileScreen({super.key});
@@ -45,9 +47,7 @@ class MyProfileScreen extends StatelessWidget {
               : null,
           title: Text(
             'My Profile',
-            style: textStyle_16RegularBlack().copyWith(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.w500,
+            style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w500,
             ),
           ),
         ),
@@ -132,20 +132,20 @@ class MyProfileScreen extends StatelessWidget {
                       ProfileTile(
                         iconSvgPath: AssetsPath.profileLogout,
                         title: 'Log out',
-                        textColor: AppColors.errorColor,
-                        iconColor: AppColors.errorColor,
+                        textColor: AppColors.warning600,
+                        iconColor: AppColors.warning600,
                         onTap: () => _showLogoutDialog(context),
                       ),
                       ProfileTile(
                         iconSvgPath: AssetsPath.profileDeleteAccount,
                         title: 'Delete account',
-                        textColor: AppColors.errorColor,
-                        iconColor: AppColors.errorColor,
+                        textColor: AppColors.warning600,
+                        iconColor: AppColors.warning600,
                         onTap: () {},
                       ),
                     ],
                   ),
-                  SizedBox(height: 24.h),
+                  SizedBox(height: AppSpacing.s10),
                 ],
               ),
             ),
@@ -169,7 +169,7 @@ class MyProfileScreen extends StatelessWidget {
               Navigator.of(ctx).pop();
               // context.read<AuthBloc>().add(SignOutRequested());
             },
-            child: const Text('Log out', style: TextStyle(color: AppColors.errorColor)),
+            child:  Text('Log out', style: AppTextStyles.bodyMedium.copyWith(color: AppColors.warning600)),
           ),
         ],
       ),

@@ -5,6 +5,10 @@ import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_text_field.dart';
 import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_primary_button.dart';
 import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_file_upload_box.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/application/community_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 
 class AnswerForm extends ConsumerStatefulWidget {
   final String questionId;
@@ -45,7 +49,7 @@ class _AnswerFormState extends ConsumerState<AnswerForm> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('⚠️ Please enter your answer'),
-          backgroundColor: Colors.orange.shade600,
+          backgroundColor: AppColors.pending500,
         ),
       );
       return;
@@ -55,7 +59,7 @@ class _AnswerFormState extends ConsumerState<AnswerForm> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('⚠️ Answer must be at least 10 characters'),
-          backgroundColor: Colors.orange.shade600,
+          backgroundColor: AppColors.pending500,
         ),
       );
       return;
@@ -83,7 +87,7 @@ class _AnswerFormState extends ConsumerState<AnswerForm> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: const Text('✅ Answer posted successfully'),
-                backgroundColor: Colors.green.shade600,
+                backgroundColor: AppColors.success600,
               ),
             );
             _bodyController.clear();
@@ -96,7 +100,7 @@ class _AnswerFormState extends ConsumerState<AnswerForm> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('❌ Error: ${error.toString()}'),
-                backgroundColor: Colors.red.shade600,
+                backgroundColor: AppColors.warning600,
               ),
             );
           }
@@ -106,11 +110,11 @@ class _AnswerFormState extends ConsumerState<AnswerForm> {
     });
 
     return Container(
-      padding: EdgeInsets.all(12.w),
+      padding: AppSpacing.all06,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(8.r),
-        color: Colors.grey.shade50,
+        border: Border.all(color: AppBorders.primary),
+        borderRadius: AppRadius.all02,
+        color: AppColors.neutral50,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,30 +125,30 @@ class _AnswerFormState extends ConsumerState<AnswerForm> {
               fontWeight: FontWeight.w700,
             ),
           ),
-          SizedBox(height: 12.h),
+          SizedBox(height: AppSpacing.s06),
           FkTextField(
             label: 'Answer',
             hint: 'Write your detailed answer here...',
             controller: _bodyController,
             maxLines: 5,
           ),
-          SizedBox(height: 12.h),
+          SizedBox(height: AppSpacing.s06),
           FkTextField(
             label: 'Code Snippet (Optional)',
             hint: 'Paste your code here if relevant...',
             controller: _codeController,
             maxLines: 4,
           ),
-          SizedBox(height: 12.h),
+          SizedBox(height: AppSpacing.s06),
           Text(
             'Attach file (Optional)',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w600,
             ),
           ),
-          SizedBox(height: 8.h),
+          SizedBox(height: AppSpacing.s04),
           const FkFileUploadBox(),
-          SizedBox(height: 16.h),
+          SizedBox(height: AppSpacing.s07),
           Row(
             children: [
               Expanded(

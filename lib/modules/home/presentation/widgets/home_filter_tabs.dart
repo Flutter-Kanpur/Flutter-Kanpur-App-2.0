@@ -4,6 +4,8 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/border_shadow_container.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 class HomeFilterTabs extends StatefulWidget {
   const HomeFilterTabs({
@@ -38,19 +40,19 @@ class _HomeFilterTabsState extends State<HomeFilterTabs> {
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      padding: AppSpacing.horizontal(AppSpacing.s09),
       child: Row(
         children: List.generate(filters.length, (index) {
           final isFilterChip = index != 0;
           final isSelected =
               isFilterChip && widget.selectedFilterIndex == index;
           return Padding(
-            padding: EdgeInsets.only(right: 8.w),
+            padding: EdgeInsets.only(right: AppSpacing.s04),
             child: InnerShadowContainer(
               borderColor: isSelected
-                  ? AppColors.selectedNavBarIconColor
-                  : AppColors.communityBorderColor,
-              shadowColor: AppColors.selectedNavBarIconColor.withOpacity(0.05),
+                  ? AppColors.primary500
+                  : AppColors.neutral100,
+              shadowColor: AppColors.primary500.withOpacity(0.05),
               isShadowBottomLeft: true,
               isShadowBottomRight: true,
               isShadowTopLeft: true,
@@ -68,7 +70,7 @@ class _HomeFilterTabsState extends State<HomeFilterTabs> {
                     avatar: index == 0
                         ? const Icon(
                             Icons.filter_list_rounded,
-                            color: Colors.black,
+                            color: AppColors.blackBase,
                           )
                         : null,
                     label: Row(
@@ -80,14 +82,14 @@ class _HomeFilterTabsState extends State<HomeFilterTabs> {
                           index == 0 && widget.selectedFiltersCount > 0
                               ? '${filters[index]} (${widget.selectedFiltersCount})'
                               : filters[index],
-                          style: textStyle_14MediumGreyHintStyle().copyWith(
-                            color: Colors.black,
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.blackBase,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                         if (isSelected) ...[
-                          SizedBox(width: 4.w),
-                          Icon(Icons.close, size: 16.sp, color: Colors.black87),
+                          SizedBox(width: AppSpacing.s02),
+                          Icon(Icons.close, size: 16.sp, color: AppColors.blackBase),
                         ],
                       ],
                     ),
@@ -99,14 +101,14 @@ class _HomeFilterTabsState extends State<HomeFilterTabs> {
                         widget.onFilterSelected(index);
                       }
                     },
-                    backgroundColor: Colors.white,
-                    selectedColor: Colors.white,
-                    labelStyle: textStyle_14MediumGreyHintStyle().copyWith(
-                      color: Colors.black,
+                    backgroundColor: AppColors.whiteBase,
+                    selectedColor: AppColors.whiteBase,
+                    labelStyle: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.blackBase,
                       fontWeight: FontWeight.w500,
                     ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.r),
+                      borderRadius: AppRadius.all02,
                       side: const BorderSide(
                         color: Colors.transparent,
                         // width: isSelected ? 1.5 : 0,

@@ -3,6 +3,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_mod
 import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_card.dart';
 import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_status_chip.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 class CommunityProjectCard extends StatelessWidget {
   const CommunityProjectCard({super.key, required this.project});
@@ -28,17 +29,17 @@ class CommunityProjectCard extends StatelessWidget {
               FkStatusChip(
                 label: project.status,
                 color: project.status == 'Active'
-                    ? AppColors.successColor
-                    : AppColors.warningColor,
+                    ? AppColors.success600
+                    : AppColors.pending400,
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: AppSpacing.s04),
           Text(project.summary),
-          const SizedBox(height: 12),
+          SizedBox(height: AppSpacing.s06),
           Wrap(
-            spacing: 8,
-            runSpacing: 8,
+            spacing: AppSpacing.s04,
+            runSpacing: AppSpacing.s04,
             children: project.techStack
                 .map((tech) => FkStatusChip(label: tech))
                 .toList(),

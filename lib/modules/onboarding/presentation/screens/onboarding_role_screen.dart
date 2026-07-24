@@ -2,6 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class OnboardingRoleScreen extends StatelessWidget {
   final VoidCallback onNext;
@@ -20,7 +25,7 @@ class OnboardingRoleScreen extends StatelessWidget {
     ];
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 24.w),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07),
 
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,7 +36,7 @@ class OnboardingRoleScreen extends StatelessWidget {
               hintText: 'onboarding.searchRolesHint'.tr(),
 
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(100.r),
+                borderRadius: AppRadius.all09,
               ),
             ),
           ),
@@ -39,17 +44,17 @@ class OnboardingRoleScreen extends StatelessWidget {
           20.verticalSpace,
 
           Wrap(
-            spacing: 10.w,
-            runSpacing: 10.h,
+            spacing: AppSpacing.s05,
+            runSpacing: AppSpacing.s05,
 
             children: roles.map((role) {
               return Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+                padding: AppSpacing.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s05),
 
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(24.r),
+                  borderRadius: AppRadius.all06,
 
-                  border: Border.all(color: const Color(0xFFE0E0E0)),
+                  border: Border.all(color: AppBorders.secondary),
                 ),
 
                 child: Text(role),
@@ -62,7 +67,7 @@ class OnboardingRoleScreen extends StatelessWidget {
           Text(
             'onboarding.addOther'.tr(),
 
-            style: TextStyle(color: const Color(0xFF4167F2), fontSize: 16.sp),
+            style: AppTextStyles.bodyLarge.copyWith(color: AppColors.primary500),
           ),
 
           const Spacer(),

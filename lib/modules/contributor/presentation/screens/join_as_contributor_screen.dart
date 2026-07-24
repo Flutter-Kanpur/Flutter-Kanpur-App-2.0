@@ -7,6 +7,8 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_back_button.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_header.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 class JoinAsContributorScreen extends StatelessWidget {
   const JoinAsContributorScreen({super.key});
@@ -16,7 +18,7 @@ class JoinAsContributorScreen extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: AppColors.bgPrimary,
+      backgroundColor: AppColors.primary100,
       body: FkScreen(
         children: [
           FkHeader(
@@ -25,15 +27,15 @@ class JoinAsContributorScreen extends StatelessWidget {
             leading: const FkBackButton(fallbackPath: RouteNames.profile),
           ),
 
-          const SizedBox(height: 24),
+          SizedBox(height: AppSpacing.s10),
 
           /// Information Card
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.s05, vertical: AppSpacing.s07),
             decoration: BoxDecoration(
-              color: AppColors.communityGuidelinesBackground,
-              borderRadius: BorderRadius.circular(20),
+              color: AppColors.primary50,
+              borderRadius: AppRadius.all05,
             ),
             child: Text(
               "contributor.joinDescription".tr(),
@@ -42,20 +44,20 @@ class JoinAsContributorScreen extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 16),
+          SizedBox(height: AppSpacing.s07),
 
           /// Green Card
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+            padding: AppSpacing.symmetric(horizontal: AppSpacing.s08, vertical: AppSpacing.s08),
             decoration: BoxDecoration(
-              color: AppColors.contributorGreenContainerBg,
-              borderRadius: BorderRadius.circular(16),
+              color: AppColors.success100,
+              borderRadius: AppRadius.all04,
             ),
             child: Text(
               "contributor.noExperienceRequired".tr(),
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.contributorTextGreen,
+                color: AppColors.success800,
               ),
             ),
           ),
@@ -68,7 +70,7 @@ class JoinAsContributorScreen extends StatelessWidget {
             onPressed: () => context.push(RouteNames.contributorApplication),
           ),
 
-          const SizedBox(height: 12),
+          SizedBox(height: AppSpacing.s06),
 
           Center(
             child: TextButton(
@@ -80,7 +82,7 @@ class JoinAsContributorScreen extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 12),
+          SizedBox(height: AppSpacing.s06),
         ],
       ),
     );

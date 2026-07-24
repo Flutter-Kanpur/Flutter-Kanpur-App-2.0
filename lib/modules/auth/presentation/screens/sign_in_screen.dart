@@ -12,6 +12,8 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradient_background.dar
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
@@ -46,7 +48,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     return GradientBackground(
       child: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s05),
           child: Form(
             key: formKey,
             child: Column(
@@ -100,19 +102,16 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
       children: [
         Text(
           'auth.welcomeBack'.tr(),
-          style: textStyle_18MediumBlack().copyWith(
-            fontSize: 26.sp,
-            fontWeight: FontWeight.w700,
-          ),
+          style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w700),
         ),
         14.verticalSpace,
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          padding: AppSpacing.horizontal(AppSpacing.s07),
           child: Text(
             'auth.welcomeBackSubTitle'.tr(),
             textAlign: TextAlign.center,
-            style: textStyle_14RegularBlack().copyWith(
-              color: AppColors.subtitleTextDarkGrey,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.neutral500,
               height: 1.5,
             ),
           ),
@@ -127,8 +126,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
       controller: controller,
       keyboardType: TextInputType.emailAddress,
       showBorder: true,
-      borderColor: AppColors.communityBorderColor,
-      fillColor: const Color(0xFFF6F6F6),
+      borderColor: AppColors.neutral100,
+      fillColor: AppColors.neutral50,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'auth.emailRequired'.tr();
@@ -147,8 +146,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
       controller: controller,
       isPassword: true,
       showBorder: true,
-      borderColor: AppColors.communityBorderColor,
-      fillColor: const Color(0xFFF6F6F6),
+      borderColor: AppColors.neutral100,
+      fillColor: AppColors.neutral50,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'auth.passwordRequired'.tr();
@@ -174,8 +173,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
       height: 52.h,
       child: GradientButton(
         text: isLoading ? 'auth.signingIn'.tr() : 'auth.login'.tr(),
-        textStyle: textStyle_16RegularBlack().copyWith(
-          color: Colors.white,
+        textStyle: AppTextStyles.bodyLarge.copyWith(
+          color: AppColors.whiteBase,
           fontWeight: FontWeight.w600,
         ),
         onTap: isLoading
@@ -199,7 +198,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                     _showToast(
                       ctx,
                       'auth.signin_success'.tr(),
-                      Colors.green.shade600,
+                      AppColors.success600,
                       Icons.check_circle,
                     );
                     Future.delayed(const Duration(milliseconds: 800)).then((_) {
@@ -213,7 +212,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                     _showToast(
                       ctx,
                       e.toString(),
-                      Colors.red.shade600,
+                      AppColors.warning600,
                       Icons.error,
                     );
                     setState(() => isLoading = false);
@@ -226,19 +225,19 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
 
   Widget _buildSignUpText(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      padding: AppSpacing.horizontal(AppSpacing.s07),
       child: Center(
         child: Text.rich(
           TextSpan(
             text: '${'auth.dontHaveAccount'.tr()} ',
-            style: textStyle_14RegularBlack().copyWith(
-              color: AppColors.subtitleTextDarkGrey,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.neutral500,
             ),
             children: [
               TextSpan(
                 text: 'auth.signUpNow'.tr(),
-                style: textStyle_14RegularBlack().copyWith(
-                  color: AppColors.selectedNavBarIconColor,
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.primary500,
                   fontWeight: FontWeight.w700,
                 ),
                 recognizer: TapGestureRecognizer()
@@ -262,28 +261,24 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
       SnackBar(
         content: Row(
           children: [
-            Icon(icon, color: Colors.white, size: 20.sp),
+            Icon(icon, color: AppColors.whiteBase, size: 20.sp),
             12.horizontalSpace,
             Expanded(
               child: Text(
                 message,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: AppTextStyles.labelLarge.copyWith(color: AppColors.whiteBase),
               ),
             ),
           ],
         ),
         backgroundColor: bgColor,
-        duration: const Duration(seconds: 2),
+        duration: Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,
-        margin: EdgeInsets.all(16.w),
+        margin: AppSpacing.all07,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.r),
+          borderRadius: AppRadius.all02,
         ),
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+        padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s07),
       ),
     );
   }

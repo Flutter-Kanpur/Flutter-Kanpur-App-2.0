@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 class ContributorHelpBottomSheet extends StatelessWidget {
   const ContributorHelpBottomSheet({super.key});
@@ -10,20 +12,20 @@ class ContributorHelpBottomSheet extends StatelessWidget {
     return SafeArea(
       top: false,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
+        padding: EdgeInsets.fromLTRB(24, AppSpacing.s06, 24, 24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
               width: 52,
-              height: 5,
+              height: AppSpacing.s05,
               decoration: BoxDecoration(
-                color: AppColors.textGrey,
-                borderRadius: BorderRadius.circular(100),
+                color: AppColors.neutral400,
+                borderRadius: AppRadius.all09,
               ),
             ),
 
-            const SizedBox(height: 28),
+            SizedBox(height: AppSpacing.s10),
 
             _HelpTile(
               icon: Icons.visibility_outlined,
@@ -33,7 +35,7 @@ class ContributorHelpBottomSheet extends StatelessWidget {
               },
             ),
 
-            const SizedBox(height: 16),
+            SizedBox(height: AppSpacing.s07),
 
             _HelpTile(
               icon: Icons.edit_outlined,
@@ -65,15 +67,15 @@ class _HelpTile extends StatelessWidget {
     final theme = Theme.of(context);
 
     return InkWell(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: AppRadius.all03,
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
+        padding: AppSpacing.vertical(AppSpacing.s06),
         child: Row(
           children: [
             Icon(icon, size: 22),
 
-            const SizedBox(width: 14),
+            SizedBox(width: AppSpacing.s07),
 
             Expanded(child: Text(title, style: theme.textTheme.bodyLarge)),
           ],

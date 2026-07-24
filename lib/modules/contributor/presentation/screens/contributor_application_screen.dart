@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_knp_mobile_app_v2/sandbox/app-colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_back_button.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_header.dart';
@@ -13,6 +13,7 @@ import '../widgets/contributor_dropdown_field.dart';
 import '../widgets/contributor_info_banner.dart';
 import '../widgets/contributor_profile_links.dart';
 import '../widgets/contributor_skill_chip.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 class ContributorApplicationScreen extends StatefulWidget {
   const ContributorApplicationScreen({super.key});
@@ -126,7 +127,7 @@ class _ContributorApplicationScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.bgSecondary,
+      backgroundColor: AppColors.neutral50,
       body: FkScreen(
         children: [
           Form(
@@ -142,10 +143,10 @@ class _ContributorApplicationScreenState
                   ),
                 ),
 
-                const SizedBox(height: 24),
+                SizedBox(height: AppSpacing.s10),
                 ContributorInfoBanner(text: "contributor.reviewDetails".tr()),
 
-                const SizedBox(height: 24),
+                SizedBox(height: AppSpacing.s10),
 
                 FkTextField(
                   controller: fullNameController,
@@ -156,7 +157,7 @@ class _ContributorApplicationScreenState
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
 
-                const SizedBox(height: 18),
+                SizedBox(height: AppSpacing.s08),
 
                 FkTextField(
                   controller: emailController,
@@ -166,7 +167,7 @@ class _ContributorApplicationScreenState
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
 
-                const SizedBox(height: 18),
+                SizedBox(height: AppSpacing.s08),
                 ContributorDropdownField(
                   label: "contributor.currentRole".tr(),
                   value: currentRole,
@@ -182,7 +183,7 @@ class _ContributorApplicationScreenState
                   },
                 ),
 
-                const SizedBox(height: 18),
+                SizedBox(height: AppSpacing.s08),
 
                 ContributorDropdownField(
                   label: "contributor.contributionArea".tr(),
@@ -199,7 +200,7 @@ class _ContributorApplicationScreenState
                   },
                 ),
 
-                const SizedBox(height: 20),
+                SizedBox(height: AppSpacing.s09),
 
                 ContributorDropdownField(
                   label: "contributor.relevantSkills".tr(),
@@ -221,10 +222,10 @@ class _ContributorApplicationScreenState
                   },
                 ),
 
-                const SizedBox(height: 12),
+                SizedBox(height: AppSpacing.s06),
                 Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
+                  spacing: AppSpacing.s04,
+                  runSpacing: AppSpacing.s04,
                   children: selectedSkills.map((skill) {
                     return ContributorSkillChip(
                       label: skill,
@@ -254,18 +255,18 @@ class _ContributorApplicationScreenState
                       return const SizedBox.shrink();
                     }
                     return Padding(
-                      padding: const EdgeInsets.only(top: 8, left: 4),
+                      padding: EdgeInsets.only(top: AppSpacing.s04, left: AppSpacing.s02),
                       child: Text(
                         field.errorText!,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.errorColor,
+                          color: AppColors.warning600,
                         ),
                       ),
                     );
                   },
                 ),
 
-                const SizedBox(height: 20),
+                SizedBox(height: AppSpacing.s09),
                 ContributorDropdownField(
                   label: "contributor.experienceLevel".tr(),
                   value: experience,
@@ -280,7 +281,7 @@ class _ContributorApplicationScreenState
                     });
                   },
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: AppSpacing.s09),
 
                 ContributorDropdownField(
                   label: "contributor.weeklyContributionTime".tr(),
@@ -297,7 +298,7 @@ class _ContributorApplicationScreenState
                   },
                 ),
 
-                const SizedBox(height: 24),
+                SizedBox(height: AppSpacing.s10),
                 Text(
                   "contributor.workProfileLinks".tr(),
                   style: Theme.of(
@@ -312,7 +313,7 @@ class _ContributorApplicationScreenState
                   validator: _urlValidator,
                 ),
 
-                const SizedBox(height: 24),
+                SizedBox(height: AppSpacing.s10),
 
                 FkTextField(
                   controller: whyController,
@@ -323,7 +324,7 @@ class _ContributorApplicationScreenState
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
 
-                const SizedBox(height: 32),
+                SizedBox(height: AppSpacing.s10),
                 FkPrimaryButton(
                   label: "contributor.submitApplication".tr(),
                   icon: Icons.arrow_forward_rounded,
@@ -333,7 +334,7 @@ class _ContributorApplicationScreenState
                     }
                   },
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: AppSpacing.s10),
               ],
             ),
           ),

@@ -11,6 +11,9 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../../application/my_contests_provider.dart';
 import '../../../application/my_contests_state.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 void _shareContest(MyContest contest) {
   final message = [
@@ -42,10 +45,9 @@ class MyContestDetailScreen extends ConsumerWidget {
 
   TextStyle _metaValueStyle(MyContestMetaTone tone) {
     return switch (tone) {
-      MyContestMetaTone.urgent => textStyle_16RedRegular(),
-      MyContestMetaTone.positive => textStyle_16RegularBlack().copyWith(
-        color: AppColors.green,
-      ),
+      MyContestMetaTone.urgent => AppTextStyles.bodyLarge.copyWith(color: AppColors.warning600),
+      MyContestMetaTone.positive =>
+        AppTextStyles.bodyLarge.copyWith(color: AppColors.success600),
     };
   }
 
@@ -65,30 +67,30 @@ class MyContestDetailScreen extends ConsumerWidget {
             icon: Icon(
               Icons.arrow_back,
               size: 22.sp,
-              color: AppColors.textBlack,
+              color: AppColors.blackBase,
             ),
           ),
-          title: Text('Contest details', style: textStyle_18BlackMedium()),
+          title: Text('Contest details', style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w500)),
         ),
         body: contest == null
             ? Center(
                 child: Text(
                   'Contest not found.',
-                  style: textStyle_16RegularGrey(),
+                  style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
                 ),
               )
             : SingleChildScrollView(
-                padding: EdgeInsets.fromLTRB(20.w, 8.h, 20.w, 32.h),
+                padding: EdgeInsets.fromLTRB(AppSpacing.s09, AppSpacing.s04, AppSpacing.s09, AppSpacing.s10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(contest.title, style: textStyle_24BlackBold()),
-                    SizedBox(height: 4.h),
+                    Text(contest.title, style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold)),
+                    SizedBox(height: AppSpacing.s02),
                     Text(
                       contest.categoryLabel,
-                      style: textStyle_16RegularGrey(),
+                      style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
                     ),
-                    SizedBox(height: 16.h),
+                    SizedBox(height: AppSpacing.s07),
                     Row(
                       children: [
                         _OutlinedPillButton(
@@ -96,7 +98,7 @@ class MyContestDetailScreen extends ConsumerWidget {
                           label: 'Share',
                           onTap: () => _shareContest(contest),
                         ),
-                        SizedBox(width: 12.w),
+                        SizedBox(width: AppSpacing.s06),
                         _OutlinedPillButton(
                           icon: contest.isSaved
                               ? Icons.favorite_rounded
@@ -108,62 +110,62 @@ class MyContestDetailScreen extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 16.h),
+                    SizedBox(height: AppSpacing.s07),
                     Text(
                       contest.scheduleLabel,
-                      style: textStyle_16RegularBlack(),
+                      style: AppTextStyles.bodyLarge.copyWith(color: AppColors.blackBase),
                     ),
-                    SizedBox(height: 4.h),
+                    SizedBox(height: AppSpacing.s02),
                     Text(
                       '${contest.metaLabel} ${contest.metaValue}',
                       style: _metaValueStyle(contest.metaTone),
                     ),
-                    SizedBox(height: 16.h),
+                    SizedBox(height: AppSpacing.s07),
                     Wrap(
-                      spacing: 8.w,
-                      runSpacing: 8.h,
+                      spacing: AppSpacing.s04,
+                      runSpacing: AppSpacing.s04,
                       children: contest.tags
                           .map(
                             (tag) => Container(
                               padding: EdgeInsets.symmetric(
-                                horizontal: 16.w,
-                                vertical: 8.h,
+                                horizontal: AppSpacing.s07,
+                                vertical: AppSpacing.s04,
                               ),
                               decoration: BoxDecoration(
-                                color: AppColors.bgPrimary,
-                                borderRadius: BorderRadius.circular(100),
+                                color: AppColors.neutral50,
+                                borderRadius: AppRadius.all09,
                               ),
                               child: Text(
                                 tag,
-                                style: textStyle_14RegularBlack(),
+                                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase),
                               ),
                             ),
                           )
                           .toList(),
                     ),
-                    SizedBox(height: 20.h),
+                    SizedBox(height: AppSpacing.s09),
                     Divider(
                       height: 1,
                       thickness: 1,
-                      color: AppColors.communityBorder,
+                      color: AppBorders.primary,
                     ),
-                    SizedBox(height: 20.h),
-                    Text('What You\'ll Do', style: textStyle_18BlackMedium()),
-                    SizedBox(height: 12.h),
+                    SizedBox(height: AppSpacing.s09),
+                    Text('What You\'ll Do', style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w500)),
+                    SizedBox(height: AppSpacing.s06),
                     _BulletList(items: contest.whatYoullDo),
-                    SizedBox(height: 20.h),
+                    SizedBox(height: AppSpacing.s09),
                     Text(
                       'Rewards & Outcomes',
-                      style: textStyle_18BlackMedium(),
+                      style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w500),
                     ),
-                    SizedBox(height: 12.h),
+                    SizedBox(height: AppSpacing.s06),
                     _BulletList(items: contest.rewardsAndOutcomes),
-                    SizedBox(height: 32.h),
+                    SizedBox(height: AppSpacing.s10),
                     GradientButton(
                       text: 'Add to Calendar',
                       height: 48.h,
                       onTap: () => _addToCalendar(contest),
-                      textStyle: textStyle_14SemiBoldWhite(),
+                      textStyle: AppTextStyles.labelLarge.copyWith(color: AppColors.whiteBase, fontWeight: FontWeight.w600),
                     ),
                   ],
                 ),
@@ -190,20 +192,20 @@ class _OutlinedPillButton extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(100),
+        borderRadius: AppRadius.all09,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 10.h),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.s08, vertical: AppSpacing.s05),
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(100),
-            border: Border.all(color: AppColors.contributorFieldBorder),
+            color: AppColors.whiteBase,
+            borderRadius: AppRadius.all09,
+            border: Border.all(color: AppBorders.primary),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, size: 18.sp, color: AppColors.textBlack),
-              SizedBox(width: 6.w),
-              Text(label, style: textStyle_16MediumBlack()),
+              Icon(icon, size: 18.sp, color: AppColors.blackBase),
+              SizedBox(width: AppSpacing.s03),
+              Text(label, style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
             ],
           ),
         ),
@@ -224,12 +226,12 @@ class _BulletList extends StatelessWidget {
       children: items
           .map(
             (item) => Padding(
-              padding: EdgeInsets.only(bottom: 10.h),
+              padding: EdgeInsets.only(bottom: AppSpacing.s05),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('•  ', style: textStyle_14RegularGrey()),
-                  Expanded(child: Text(item, style: textStyle_14RegularGrey())),
+                  Text('•  ', style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500)),
+                  Expanded(child: Text(item, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500))),
                 ],
               ),
             ),

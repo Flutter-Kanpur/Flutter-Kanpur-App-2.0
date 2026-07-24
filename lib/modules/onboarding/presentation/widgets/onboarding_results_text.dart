@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class OnboardingResultsText extends StatelessWidget {
   final bool hasResults;
@@ -19,11 +21,7 @@ class OnboardingResultsText extends StatelessWidget {
           ? '$resultsCount ${'onboarding.resultsFound'.tr()}'
           : 'onboarding.noRolesFound'.tr(),
 
-      style: TextStyle(
-        fontSize: 14.sp,
-        fontWeight: FontWeight.w400,
-        color: const Color(0xFF7A7A7A),
-      ),
+      style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500),
     );
   }
 }

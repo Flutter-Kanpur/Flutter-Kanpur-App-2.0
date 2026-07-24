@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 class ApplicationDetailTile extends StatelessWidget {
   const ApplicationDetailTile({
@@ -15,7 +16,7 @@ class ApplicationDetailTile extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: AppSpacing.vertical(AppSpacing.s05),
       child: Row(
         children: [
           Expanded(child: Text(title, style: theme.textTheme.bodyMedium)),

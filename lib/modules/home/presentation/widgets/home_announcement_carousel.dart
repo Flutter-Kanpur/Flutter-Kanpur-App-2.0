@@ -4,6 +4,9 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 class HomeAnnouncementCarousel extends StatelessWidget {
   const HomeAnnouncementCarousel({
@@ -23,7 +26,7 @@ class HomeAnnouncementCarousel extends StatelessWidget {
     if (announcements.isEmpty) return const SizedBox.shrink();
 
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 20.h),
+      padding: AppSpacing.vertical(AppSpacing.s09),
       child: Column(
         children: [
           CarouselSlider.builder(
@@ -79,13 +82,13 @@ class _AnnouncementCard extends StatelessWidget {
     final hasImage = bgImage != null && bgImage.isNotEmpty;
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w),
+      margin: AppSpacing.horizontal(AppSpacing.s07),
       decoration: BoxDecoration(
         color: Colors.transparent,
-        borderRadius: BorderRadius.circular(30.r),
+        borderRadius: AppRadius.all07,
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(30.r),
+        borderRadius: AppRadius.all07,
         child: Stack(
           fit: StackFit.expand,
           children: [
@@ -113,22 +116,20 @@ class _AnnouncementCard extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: ()  {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: const Color(0xFF4F46E5),
+                    backgroundColor: AppColors.whiteBase,
+                    foregroundColor: AppColors.primary600,
                     padding: EdgeInsets.symmetric(
-                      horizontal: 24.w,
-                      vertical: 5.h,
+                      horizontal: AppSpacing.s07,
+                      vertical: AppSpacing.s05,
                     ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.r),
+                      borderRadius: AppRadius.all07,
                     ),
                     elevation: 0,
                   ),
                   child: Text(
                     btnText.isNotEmpty ? btnText : 'View Details',
-                    style: textStyle_14MediumGreyHintStyle().copyWith(
-                      fontSize: 14.sp,
-                      color: Colors.black,
+                    style: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -137,7 +138,7 @@ class _AnnouncementCard extends StatelessWidget {
             // Text + button mode
             else
               Padding(
-                padding: EdgeInsets.all(24.w),
+                padding: AppSpacing.all10,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -148,18 +149,15 @@ class _AnnouncementCard extends StatelessWidget {
                         children: [
                           Text(
                             title,
-                            style: textStyle_18MediumBlack().copyWith(
-                              color: Colors.white,
-                              height: 1.2,
-                            ),
+                            style: AppTextStyles.titleLarge.copyWith(color: AppColors.whiteBase, fontWeight: FontWeight.w600, height: 1.2),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                           8.verticalSpace,
                           Text(
                             body,
-                            style: textStyle_14MediumGreyHintStyle().copyWith(
-                              color: Colors.white,
+                            style: AppTextStyles.bodyMedium.copyWith(
+                              color: AppColors.whiteBase,
                               height: 1.2,
                             ),
                             maxLines: 4,
@@ -173,22 +171,20 @@ class _AnnouncementCard extends StatelessWidget {
                       ElevatedButton(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: const Color(0xFF4F46E5),
+                          backgroundColor: AppColors.whiteBase,
+                          foregroundColor: AppColors.primary600,
                           padding: EdgeInsets.symmetric(
-                            horizontal: 24.w,
-                            vertical: 5.h,
+                            horizontal: AppSpacing.s07,
+                            vertical: AppSpacing.s05,
                           ),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.r),
+                            borderRadius: AppRadius.all07,
                           ),
                           elevation: 0,
                         ),
                         child: Text(
                           btnText,
-                          style: textStyle_14MediumGreyHintStyle().copyWith(
-                            fontSize: 14.sp,
-                            color: Colors.black,
+                          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -217,14 +213,14 @@ class _CarouselIndicators extends StatelessWidget {
         final isActive = index == currentPage;
         return AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          margin: EdgeInsets.symmetric(horizontal: 2.w),
+          margin: AppSpacing.horizontal(AppSpacing.s01),
           width: isActive ? 24.w : 8.w,
           height: 8.h,
           decoration: BoxDecoration(
             color: isActive
-                ? const Color(0xFF111827)
-                : const Color(0xFF111827).withOpacity(0.2),
-            borderRadius: BorderRadius.circular(4.r),
+                ? AppColors.blackBase
+                : AppColors.blackBase.withOpacity(0.2),
+            borderRadius: AppRadius.all01,
           ),
         );
       }),

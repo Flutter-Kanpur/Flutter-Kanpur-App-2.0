@@ -1,6 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 
 class OnboardingAddOtherChip extends StatelessWidget {
   final TextEditingController controller;
@@ -18,14 +22,14 @@ class OnboardingAddOtherChip extends StatelessWidget {
       width: 170.w,
 
       padding: EdgeInsets.symmetric(
-        horizontal: 14.w,
+        horizontal: AppSpacing.s07,
       ),
 
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24.r),
+        borderRadius: AppRadius.all06,
 
         border: Border.all(
-          color: Colors.black,
+          color: AppBorders.primary,
         ),
       ),
 

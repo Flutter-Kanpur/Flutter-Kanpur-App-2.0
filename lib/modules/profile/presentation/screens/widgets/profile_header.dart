@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../utils/text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 class ProfileHeader extends StatelessWidget {
   const ProfileHeader({
@@ -18,46 +20,44 @@ class ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(20.w, 16.h, 20.w, 24.h),
+      padding: EdgeInsets.fromLTRB(AppSpacing.s09, AppSpacing.s07, AppSpacing.s09, AppSpacing.s10),
       child: Row(
         children: [
           CircleAvatar(
             radius: 36.r,
-            backgroundColor: AppColors.avatarBackgroundColor,
+            backgroundColor: AppColors.neutral100,
             backgroundImage: photoUrl != null && photoUrl!.isNotEmpty
                 ? NetworkImage(photoUrl!)
                 : null,
             child: photoUrl == null || photoUrl!.isEmpty
                 ? Text(
                     displayName.isNotEmpty ? displayName[0].toUpperCase() : '?',
-                    style: textStyle_18MediumBlack().copyWith(fontSize: 24.sp),
+                    style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w600),
                   )
                 : null,
           ),
-          SizedBox(width: 16.w),
+          SizedBox(width: AppSpacing.s07),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   displayName,
-                  style: textStyle_18MediumBlack(),
+                  style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w600),
                   overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(height: 4.h),
+                SizedBox(height: AppSpacing.s02),
                 Text(
                   username,
-                  style: textStyle_14RegularGrey().copyWith(
-                    color: AppColors.contributorFieldHintColor,
-                  ),
+                  style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral300, fontWeight: FontWeight.w300),
                   overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(height: 6.h),
+                SizedBox(height: AppSpacing.s03),
                 GestureDetector(
                   onTap: () {},
                   child: Text(
                     'Edit profile',
-                    style: textStyle_14RegularLinkBlue(),
+                    style: AppTextStyles.bodyMedium.copyWith(color: AppColors.primary500),
                   ),
                 ),
               ],

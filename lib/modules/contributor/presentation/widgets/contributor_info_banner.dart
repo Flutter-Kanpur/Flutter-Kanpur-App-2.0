@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 class ContributorInfoBanner extends StatelessWidget {
   const ContributorInfoBanner({
     super.key,
     required this.text,
-    this.backgroundColor = AppColors.communityGuidelinesBackground,
-    this.textColor = AppColors.subtitleTextDarkGrey,
+    this.backgroundColor = AppColors.primary50,
+    this.textColor = AppColors.neutral500,
   });
 
   final String text;
@@ -17,10 +19,10 @@ class ContributorInfoBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+      padding: AppSpacing.symmetric(horizontal: AppSpacing.s08, vertical: AppSpacing.s08),
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: AppRadius.all04,
       ),
       child: Text(
         text,

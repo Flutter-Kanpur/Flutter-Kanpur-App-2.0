@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 class OnboardingProgressBar extends StatelessWidget {
   final int currentStep;
@@ -21,16 +24,16 @@ class OnboardingProgressBar extends StatelessWidget {
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 300),
 
-              margin: EdgeInsets.symmetric(horizontal: 4.w),
+              margin: AppSpacing.horizontal(AppSpacing.s02),
 
               height: 6.h,
 
               decoration: BoxDecoration(
                 color: isActive
-                    ? Colors.black
-                    : const Color(0xFFE5E5E5),
+                    ? AppColors.blackBase
+                    : AppColors.neutral100,
 
-                borderRadius: BorderRadius.circular(100.r),
+                borderRadius: AppRadius.all09,
               ),
             ),
           );

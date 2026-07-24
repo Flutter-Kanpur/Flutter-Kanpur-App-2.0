@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 class ContributorWarningBanner extends StatelessWidget {
   const ContributorWarningBanner({
@@ -20,15 +22,15 @@ class ContributorWarningBanner extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s07),
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: AppRadius.all03,
       ),
       child: Row(
         children: [
           Icon(Icons.info, size: 18, color: iconColor),
-          const SizedBox(width: 10),
+          SizedBox(width: AppSpacing.s05),
           Expanded(
             child: Text(
               message,
