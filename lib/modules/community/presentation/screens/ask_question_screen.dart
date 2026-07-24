@@ -9,6 +9,10 @@ import 'package:flutter_knp_mobile_app_v2/modules/community/application/communit
 import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 
 class AskQuestionScreen extends ConsumerStatefulWidget {
   const AskQuestionScreen({super.key});
@@ -62,7 +66,7 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: const Text('✅ Question posted successfully'),
-                backgroundColor: Colors.green.shade600,
+                backgroundColor: AppColors.success600,
               ),
             );
             Future.delayed(const Duration(milliseconds: 800)).then((_) {
@@ -77,7 +81,7 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('❌ Error: ${error.toString()}'),
-                backgroundColor: Colors.red.shade600,
+                backgroundColor: AppColors.warning600,
               ),
             );
           }
@@ -92,20 +96,20 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
           title: 'Ask a question',
           onBack: () => context.pop(),
         ),
-        const SizedBox(height: 26),
+        SizedBox(height: AppSpacing.s10),
         FkTextField(
           label: 'Question title',
           hint: 'Enter title',
           controller: _titleController,
         ),
-        const SizedBox(height: 26),
+        SizedBox(height: AppSpacing.s10),
         FkTextField(
           label: 'Details',
           hint: "Add more context, code snippets, or what you've tried so far.",
           controller: _detailsController,
           maxLines: 5,
         ),
-        const SizedBox(height: 26),
+        SizedBox(height: AppSpacing.s10),
         // Category Dropdown
         Text(
           'Choose a category',
@@ -113,12 +117,12 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
                 fontWeight: FontWeight.w600,
               ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: AppSpacing.s04),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
+          padding: AppSpacing.horizontal(AppSpacing.s06),
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.shade300),
-            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: AppBorders.primary),
+            borderRadius: AppRadius.all02,
           ),
           child: DropdownButton<String>(
             value: _selectedCategory,
@@ -137,38 +141,38 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
             },
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: AppSpacing.s04),
         Align(
           alignment: Alignment.centerLeft,
           child: FkStatusChip(label: '$_selectedCategory  X'),
         ),
-        const SizedBox(height: 26),
+        SizedBox(height: AppSpacing.s10),
         // Tags Input
         FkTextField(
           label: 'Tags',
           hint: 'add tags',
           controller: _tagsController,
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: AppSpacing.s04),
         Align(
           alignment: Alignment.centerLeft,
           child: GestureDetector(
             onTap: _addTag,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              padding: AppSpacing.symmetric(horizontal: AppSpacing.s06, vertical: AppSpacing.s04),
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.blue),
-                borderRadius: BorderRadius.circular(4),
+                border: Border.all(color: AppBorders.blue),
+                borderRadius: AppRadius.all01,
               ),
               child: const Text('+ Add Tag'),
             ),
           ),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: AppSpacing.s06),
         if (_selectedTags.isNotEmpty)
           Wrap(
-            spacing: 8,
-            runSpacing: 8,
+            spacing: AppSpacing.s04,
+            runSpacing: AppSpacing.s04,
             children: _selectedTags
                 .map((tag) => GestureDetector(
                       onTap: () => _removeTag(tag),
@@ -176,7 +180,7 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
                     ))
                 .toList(),
           ),
-        const SizedBox(height: 26),
+        SizedBox(height: AppSpacing.s10),
         // File Upload
         Text(
           'Upload screenshot or file (optional)',
@@ -184,9 +188,9 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
                 fontWeight: FontWeight.w700,
               ),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: AppSpacing.s05),
         const FkFileUploadBox(),
-        const SizedBox(height: 26),
+        SizedBox(height: AppSpacing.s10),
         // Submit Button
         FkPrimaryButton(
           label: 'Post question',
@@ -198,7 +202,7 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: const Text('⚠️ Please fill in title and details'),
-                  backgroundColor: Colors.orange.shade600,
+                  backgroundColor: AppColors.pending500,
                 ),
               );
               return;
@@ -240,7 +244,7 @@ class _TopBar extends StatelessWidget {
                 ),
           ),
         ),
-        const SizedBox(width: 48),
+        SizedBox(width: AppSpacing.s10),
       ],
     );
   }

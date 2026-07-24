@@ -5,6 +5,9 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../application/my_contests_state.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 /// Card for a single contest on the My Contests screen: category label +
 /// favorite heart, title, skill/format tags, and an ends-in/starts-in/ended-on
@@ -29,10 +32,9 @@ class MyContestCard extends StatelessWidget {
 
   TextStyle _metaValueStyle() {
     return switch (contest.metaTone) {
-      MyContestMetaTone.urgent => textStyle_16RedRegular(),
-      MyContestMetaTone.positive => textStyle_16RegularBlack().copyWith(
-        color: AppColors.green,
-      ),
+      MyContestMetaTone.urgent => AppTextStyles.bodyLarge.copyWith(color: AppColors.warning600),
+      MyContestMetaTone.positive =>
+        AppTextStyles.bodyLarge.copyWith(color: AppColors.success600),
     };
   }
 
@@ -42,13 +44,13 @@ class MyContestCard extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: AppRadius.all05,
         child: Container(
-          padding: EdgeInsets.all(16.w),
+          padding: AppSpacing.all07,
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20.r),
-            border: Border.all(color: AppColors.communityBorder),
+            color: AppColors.whiteBase,
+            borderRadius: AppRadius.all05,
+            border: Border.all(color: AppBorders.primary),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,7 +58,7 @@ class MyContestCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(contest.categoryLabel, style: textStyle_14RegularGrey()),
+                  Text(contest.categoryLabel, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500)),
                   IconButton(
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),
@@ -66,42 +68,42 @@ class MyContestCard extends StatelessWidget {
                           ? Icons.favorite_rounded
                           : Icons.favorite_border_rounded,
                       color: contest.isSaved
-                          ? AppColors.primary
-                          : AppColors.textGray,
+                          ? AppColors.primary500
+                          : AppColors.neutral500,
                       size: 24.sp,
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 8.h),
-              Text(contest.title, style: textStyle_18BlackMedium()),
-              SizedBox(height: 12.h),
+              SizedBox(height: AppSpacing.s04),
+              Text(contest.title, style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w500)),
+              SizedBox(height: AppSpacing.s06),
               Wrap(
-                spacing: 8.w,
-                runSpacing: 8.h,
+                spacing: AppSpacing.s04,
+                runSpacing: AppSpacing.s04,
                 children: contest.tags
                     .map(
                       (tag) => Container(
                         padding: EdgeInsets.symmetric(
-                          horizontal: 16.w,
-                          vertical: 8.h,
+                          horizontal: AppSpacing.s07,
+                          vertical: AppSpacing.s04,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.bgPrimary,
-                          borderRadius: BorderRadius.circular(100),
+                          color: AppColors.neutral50,
+                          borderRadius: AppRadius.all09,
                         ),
-                        child: Text(tag, style: textStyle_14RegularBlack()),
+                        child: Text(tag, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase)),
                       ),
                     )
                     .toList(),
               ),
-              SizedBox(height: 16.h),
+              SizedBox(height: AppSpacing.s07),
               Divider(
                 height: 1,
                 thickness: 1,
-                color: AppColors.contributorFieldBorder,
+                color: AppBorders.primary,
               ),
-              SizedBox(height: 16.h),
+              SizedBox(height: AppSpacing.s07),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -111,9 +113,9 @@ class MyContestCard extends StatelessWidget {
                       children: [
                         Text(
                           contest.metaLabel,
-                          style: textStyle_14RegularGrey(),
+                          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500),
                         ),
-                        SizedBox(height: 4.h),
+                        SizedBox(height: AppSpacing.s02),
                         Text(contest.metaValue, style: _metaValueStyle()),
                       ],
                     ),
@@ -124,7 +126,7 @@ class MyContestCard extends StatelessWidget {
                       text: contest.actionLabel,
                       height: 44.h,
                       onTap: onAction,
-                      textStyle: textStyle_14SemiBoldWhite(),
+                      textStyle: AppTextStyles.labelLarge.copyWith(color: AppColors.whiteBase, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ],

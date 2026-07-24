@@ -4,6 +4,7 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_header.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_section_title.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_status_chip.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 class EventsScreen extends StatelessWidget {
   const EventsScreen({super.key});
@@ -17,7 +18,7 @@ class EventsScreen extends StatelessWidget {
           subtitle:
               'Meetups, workshops, registrations, QR tickets, and check-in flow.',
         ),
-        const SizedBox(height: 18),
+        SizedBox(height: AppSpacing.s08),
         const FkSectionTitle(title: 'Event Flow'),
         const _EventFlowStep(
           title: 'Discover events',
@@ -57,7 +58,7 @@ class _EventFlowStep extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Icon(Icons.event_available_rounded),
-          const SizedBox(width: 12),
+          SizedBox(width: AppSpacing.s06),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +69,7 @@ class _EventFlowStep extends StatelessWidget {
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                const SizedBox(height: 6),
+                SizedBox(height: AppSpacing.s03),
                 Text(body),
               ],
             ),

@@ -6,6 +6,7 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart'
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 class AlreadyContributorScreen extends StatelessWidget {
   const AlreadyContributorScreen({super.key});
@@ -17,7 +18,7 @@ class AlreadyContributorScreen extends StatelessWidget {
     return GradientBackground(
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
+          padding: EdgeInsets.fromLTRB(AppSpacing.s09, AppSpacing.s08, AppSpacing.s09, 24),
           child: Column(
             children: [
               FkHeader(
@@ -38,7 +39,7 @@ class AlreadyContributorScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 8),
+              SizedBox(height: AppSpacing.s04),
 
               Text(
                 "contributor.alreadyContributorDescription".tr(),
@@ -46,7 +47,7 @@ class AlreadyContributorScreen extends StatelessWidget {
                 style: theme.textTheme.bodyMedium,
               ),
 
-              const SizedBox(height: 24),
+              SizedBox(height: AppSpacing.s10),
 
               FkPrimaryButton(
                 label: "contributor.viewContributorResources".tr(),

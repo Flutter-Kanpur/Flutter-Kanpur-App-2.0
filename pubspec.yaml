@@ -105,10 +105,16 @@ flutter:
   fonts:
     - family: ProductSans
       fonts:
-        - asset: assets/fonts/Product Sans/ProductSans-Bold.ttf
-          weight: 700
+        - asset: assets/fonts/Product Sans/ProductSans-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Product Sans/ProductSans-Light.ttf
+          weight: 400
         - asset: assets/fonts/Product Sans/ProductSans-Medium.ttf
           weight: 500
+        - asset: assets/fonts/Product Sans/ProductSans-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Product Sans/ProductSans-Black.ttf
+          weight: 900
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

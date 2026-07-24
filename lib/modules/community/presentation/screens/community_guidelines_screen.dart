@@ -5,6 +5,8 @@ import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_back_button.dart';
 import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_header.dart';
 import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradient_background.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 class CommunityGuidelinesScreen extends StatelessWidget {
   const CommunityGuidelinesScreen({super.key});
@@ -20,12 +22,12 @@ class CommunityGuidelinesScreen extends StatelessWidget {
             subtitle: '',
             leading: FkBackButton(),
           ),
-          const SizedBox(height: 18),
+          SizedBox(height: AppSpacing.s08),
           Text(
             "community.communityGuidelines.about".tr(),
             style: theme.textTheme.bodyLarge,
           ),
-          const SizedBox(height: 28),
+          SizedBox(height: AppSpacing.s10),
           SizedBox(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,14 +39,14 @@ class CommunityGuidelinesScreen extends StatelessWidget {
                       "community.communityGuidelines.respectAndConduct.description"
                           .tr(),
                 ),
-                SizedBox(height: 18),
+                SizedBox(height: AppSpacing.s08),
                 _ContainerBackground(
                   title: "community.communityGuidelines.inclusivity.title".tr(),
                   description:
                       "community.communityGuidelines.inclusivity.description"
                           .tr(),
                 ),
-                SizedBox(height: 18),
+                SizedBox(height: AppSpacing.s08),
                 _ContainerBackground(
                   title:
                       "community.communityGuidelines.meaningfulParticipation.title"
@@ -53,7 +55,7 @@ class CommunityGuidelinesScreen extends StatelessWidget {
                       "community.communityGuidelines.meaningfulParticipation.description"
                           .tr(),
                 ),
-                SizedBox(height: 18),
+                SizedBox(height: AppSpacing.s08),
                 _ContainerBackground(
                   title:
                       "community.communityGuidelines.responsibleSharing.title"
@@ -62,7 +64,7 @@ class CommunityGuidelinesScreen extends StatelessWidget {
                       "community.communityGuidelines.responsibleSharing.description"
                           .tr(),
                 ),
-                SizedBox(height: 18),
+                SizedBox(height: AppSpacing.s08),
                 _ContainerBackground(
                   title: "community.communityGuidelines.privacyAndTrust.title"
                       .tr(),
@@ -70,7 +72,7 @@ class CommunityGuidelinesScreen extends StatelessWidget {
                       "community.communityGuidelines.privacyAndTrust.description"
                           .tr(),
                 ),
-                SizedBox(height: 18),
+                SizedBox(height: AppSpacing.s08),
                 Text(
                   "common.lastUpdated".tr(
                     args: ["common.lastUpdatedDate".tr()],
@@ -96,16 +98,16 @@ class _ContainerBackground extends StatelessWidget {
     final theme = Theme.of(context);
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(18),
+      padding: AppSpacing.all08,
       decoration: BoxDecoration(
-        color: AppColors.communityGuidelinesContainerBackground,
-        borderRadius: BorderRadius.circular(8.0),
+        color: AppColors.primary50,
+        borderRadius: AppRadius.all02,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(title, style: theme.textTheme.titleLarge),
-          const SizedBox(height: 10),
+          SizedBox(height: AppSpacing.s05),
           Text(description, style: theme.textTheme.bodyLarge),
         ],
       ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
-import 'package:flutter_knp_mobile_app_v2/utils/text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +10,8 @@ import '../../../application/my_contests_provider.dart';
 import '../../../application/my_contests_state.dart';
 import '../widgets/my_contest_card.dart';
 import '../widgets/pill_filter_tabs.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 class MyContestsScreen extends ConsumerWidget {
   const MyContestsScreen({super.key});
@@ -28,7 +29,7 @@ class MyContestsScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(20.w, 8.h, 20.w, 0),
+                padding: EdgeInsets.fromLTRB(AppSpacing.s09, AppSpacing.s04, AppSpacing.s09, AppSpacing.s00),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -39,20 +40,20 @@ class MyContestsScreen extends ConsumerWidget {
                       icon: Icon(
                         Icons.arrow_back,
                         size: 22.sp,
-                        color: AppColors.textBlack,
+                        color: AppColors.blackBase,
                       ),
                     ),
-                    SizedBox(height: 16.h),
-                    Text('My Contests', style: textStyle_24BlackBold()),
-                    SizedBox(height: 8.h),
+                    SizedBox(height: AppSpacing.s07),
+                    Text('My Contests', style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold)),
+                    SizedBox(height: AppSpacing.s04),
                     Text(
                       "Contests you've participated in or registered for.",
-                      style: textStyle_16RegularGrey(),
+                      style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: AppSpacing.s09),
               PillFilterTabs(
                 labels: MyContestsTab.values.map((tab) => tab.label).toList(),
                 selectedIndex: selectedTab.index,
@@ -60,34 +61,34 @@ class MyContestsScreen extends ConsumerWidget {
                     .read(myContestsSelectedTabProvider.notifier)
                     .select(MyContestsTab.values[index]),
               ),
-              SizedBox(height: 16.h),
+              SizedBox(height: AppSpacing.s07),
               Expanded(
                 child: contests.isEmpty
                     ? Center(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 32.w),
+                          padding: EdgeInsets.symmetric(horizontal: AppSpacing.s10),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
                                 'No contests yet',
-                                style: textStyle_18BoldBlack(),
+                                style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(height: 8.h),
+                              SizedBox(height: AppSpacing.s04),
                               Text(
                                 "You haven't participated in any contests yet. "
                                 'Join one to get started.',
                                 textAlign: TextAlign.center,
-                                style: textStyle_16RegularGrey(),
+                                style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
                               ),
                             ],
                           ),
                         ),
                       )
                     : ListView.separated(
-                        padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 24.h),
+                        padding: EdgeInsets.fromLTRB(AppSpacing.s09, AppSpacing.s00, AppSpacing.s09, AppSpacing.s10),
                         itemCount: contests.length,
-                        separatorBuilder: (_, __) => SizedBox(height: 16.h),
+                        separatorBuilder: (_, __) => SizedBox(height: AppSpacing.s07),
                         itemBuilder: (context, index) {
                           final contest = contests[index];
                           return MyContestCard(

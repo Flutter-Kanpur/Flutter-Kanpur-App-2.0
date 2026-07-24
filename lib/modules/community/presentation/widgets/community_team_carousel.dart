@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_models.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class CommunityTeamCarousel extends StatelessWidget {
   const CommunityTeamCarousel({super.key, required this.members});
@@ -31,7 +34,7 @@ class CommunityTeamCarousel extends StatelessWidget {
           height: 72,
           child: _AutoScrollRow(members: row1, leftToRight: true),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: AppSpacing.s05),
         SizedBox(
           height: 72,
           child: _AutoScrollRow(members: row2, leftToRight: false),
@@ -118,7 +121,7 @@ class _AutoScrollRowState extends State<_AutoScrollRow> {
       physics: const NeverScrollableScrollPhysics(),
       clipBehavior: Clip.none,
       itemCount: repeated.length,
-      separatorBuilder: (_, _) => const SizedBox(width: 10),
+      separatorBuilder: (_, _) => SizedBox(width: AppSpacing.s05),
       itemBuilder: (_, i) => SizedBox(
         width: 206,
         child: _MemberPill(member: repeated[i]),
@@ -135,28 +138,27 @@ class _MemberPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      padding: AppSpacing.symmetric(horizontal: AppSpacing.s05, vertical: AppSpacing.s04),
       decoration: BoxDecoration(
-        color: const Color(0xFFF6F6F6),
-        borderRadius: BorderRadius.circular(999),
+        color: AppColors.neutral50,
+        borderRadius: AppRadius.all09,
       ),
       child: Row(
         children: [
           CircleAvatar(
             radius: 24,
-            backgroundColor: AppColors.primary.withValues(alpha: 0.15),
+            backgroundColor: AppColors.primary500.withValues(alpha: 0.15),
             backgroundImage: member.photoUrl != null
                 ? NetworkImage(member.photoUrl!)
                 : null,
             child: member.photoUrl == null
                 ? Text(
                     member.name.isNotEmpty ? member.name[0].toUpperCase() : '?',
-                    style: const TextStyle(
-                        color: AppColors.primary, fontWeight: FontWeight.w700),
+                    style: AppTextStyles.titleMedium.copyWith(color: AppColors.primary500),
                   )
                 : null,
           ),
-          const SizedBox(width: 10),
+          SizedBox(width: AppSpacing.s05),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -171,13 +173,13 @@ class _MemberPill extends StatelessWidget {
                       .titleSmall
                       ?.copyWith(fontWeight: FontWeight.w600),
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: AppSpacing.s01),
                 Text(
                   member.role,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.subtitleTextDarkGrey,
+                        color: AppColors.neutral500,
                       ),
                 ),
               ],

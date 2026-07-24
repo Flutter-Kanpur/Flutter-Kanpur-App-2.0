@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 
 class CachedImageWidget extends StatelessWidget {
   final String imageUrl;
@@ -24,10 +26,10 @@ class CachedImageWidget extends StatelessWidget {
         width: width,
         height: height,
         decoration: BoxDecoration(
-          color: Colors.grey[300],
+          color: AppBorders.primary,
           borderRadius: borderRadius,
         ),
-        child: Icon(Icons.image_not_supported, color: Colors.grey[600]),
+        child: Icon(Icons.image_not_supported, color: AppColors.neutral500),
       );
     }
 
@@ -39,12 +41,12 @@ class CachedImageWidget extends StatelessWidget {
         height: height,
         fit: fit,
         placeholder: (context, url) => Container(
-          color: Colors.grey[300],
+          color: AppBorders.primary,
           child: const Center(child: CircularProgressIndicator()),
         ),
         errorWidget: (context, url, error) => Container(
-          color: Colors.grey[300],
-          child: Icon(Icons.error, color: Colors.red[400]),
+          color: AppBorders.primary,
+          child: Icon(Icons.error, color: AppColors.warning400),
         ),
         fadeInDuration: const Duration(milliseconds: 300),
         fadeOutDuration: const Duration(milliseconds: 300),

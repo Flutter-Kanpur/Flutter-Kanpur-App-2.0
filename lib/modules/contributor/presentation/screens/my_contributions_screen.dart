@@ -10,6 +10,8 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradient_background.dar
 import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
 import '../widgets/contributor_help_bottom_sheet.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 class MyContributionsScreen extends StatelessWidget {
   const MyContributionsScreen({super.key});
@@ -17,10 +19,10 @@ class MyContributionsScreen extends StatelessWidget {
   void _showHelpBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.whiteBase,
       isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.r06)),
       ),
       builder: (_) => const ContributorHelpBottomSheet(),
     );
@@ -39,27 +41,27 @@ class MyContributionsScreen extends StatelessWidget {
             leading: const FkBackButton(fallbackPath: RouteNames.profile),
           ),
 
-          const SizedBox(height: 24),
+          SizedBox(height: AppSpacing.s10),
 
           Align(
             alignment: Alignment.topLeft,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              padding: AppSpacing.symmetric(horizontal: AppSpacing.s06, vertical: AppSpacing.s03),
               decoration: BoxDecoration(
-                color: AppColors.contributorGreenContainerBg,
-                borderRadius: BorderRadius.circular(30),
+                color: AppColors.success100,
+                borderRadius: AppRadius.all07,
               ),
               child: Text(
                 "contributor.activeContributor".tr(),
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: AppColors.contributorTextGreen,
+                  color: AppColors.success800,
                   fontWeight: FontWeight.w600,
                 ),
               ),
             ),
           ),
 
-          const SizedBox(height: 16),
+          SizedBox(height: AppSpacing.s07),
 
           Text(
             "contributor.greeting".tr(namedArgs: {"name": "Angelica Singh"}),
@@ -68,25 +70,25 @@ class MyContributionsScreen extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 8),
+          SizedBox(height: AppSpacing.s04),
 
           Text(
             "contributor.contributorRole".tr(namedArgs: {"role": "Design"}),
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: AppColors.textGrey,
+              color: AppColors.neutral400,
             ),
           ),
 
-          const SizedBox(height: 2),
+          SizedBox(height: AppSpacing.s01),
 
           Text(
             "contributor.contributorSince".tr(namedArgs: {"date": "Mar 2026"}),
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: AppColors.textGrey,
+              color: AppColors.neutral400,
             ),
           ),
 
-          const SizedBox(height: 28),
+          SizedBox(height: AppSpacing.s10),
 
           Text(
             "contributor.heresWhatYouCanDo".tr(),
@@ -95,7 +97,7 @@ class MyContributionsScreen extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 16),
+          SizedBox(height: AppSpacing.s07),
 
           Row(
             children: [
@@ -108,7 +110,7 @@ class MyContributionsScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(width: 12),
+              SizedBox(width: AppSpacing.s06),
 
               Expanded(
                 child: ContributorActionCard(
@@ -121,7 +123,7 @@ class MyContributionsScreen extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: 28),
+          SizedBox(height: AppSpacing.s10),
 
           Text(
             "contributor.yourContributionSummary".tr(),
@@ -130,7 +132,7 @@ class MyContributionsScreen extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 14),
+          SizedBox(height: AppSpacing.s07),
 
           const ContributorSummaryCard(
             tasksCompleted: "06",
@@ -138,14 +140,14 @@ class MyContributionsScreen extends StatelessWidget {
             activeTasks: "24",
           ),
 
-          const SizedBox(height: 20),
+          SizedBox(height: AppSpacing.s09),
 
           GestureDetector(
             onTap: () => _showHelpBottomSheet(context),
             child: Text(
               "contributor.needHelp".tr(),
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.blue,
+                color: AppColors.primary400,
                 fontWeight: FontWeight.w600,
               ),
             ),

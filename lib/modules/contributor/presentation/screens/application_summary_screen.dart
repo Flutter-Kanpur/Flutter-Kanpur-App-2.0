@@ -10,6 +10,7 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 class ApplicationSummaryScreen extends StatelessWidget {
   const ApplicationSummaryScreen({super.key});
@@ -29,48 +30,48 @@ class ApplicationSummaryScreen extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 28),
+          SizedBox(height: AppSpacing.s10),
 
           ApplicationInfoTile(
             title: "contributor.fullName".tr(),
             value: "Angelica Singh",
           ),
 
-          const SizedBox(height: 18),
+          SizedBox(height: AppSpacing.s08),
 
           ApplicationInfoTile(
             title: "contributor.emailAddress".tr(),
             value: "angie.work@gmail.com",
           ),
 
-          const SizedBox(height: 18),
+          SizedBox(height: AppSpacing.s08),
 
           ApplicationInfoTile(
             title: "contributor.currentRole".tr(),
             value: "UI UX Designer",
           ),
 
-          const SizedBox(height: 18),
+          SizedBox(height: AppSpacing.s08),
 
           ApplicationInfoTile(
             title: "contributor.contributionArea".tr(),
             value: "Design System",
           ),
 
-          const SizedBox(height: 18),
+          SizedBox(height: AppSpacing.s08),
 
           Text(
             "contributor.relevantSkills".tr(),
             style: theme.textTheme.bodySmall?.copyWith(
-              color: AppColors.textGrey,
+              color: AppColors.neutral400,
             ),
           ),
 
-          const SizedBox(height: 8),
+          SizedBox(height: AppSpacing.s04),
 
-          const Wrap(
-            spacing: 8,
-            runSpacing: 8,
+          Wrap(
+            spacing: AppSpacing.s04,
+            runSpacing: AppSpacing.s04,
             children: [
               ContributorDisplaySkillChip(label: "Figma"),
               ContributorDisplaySkillChip(label: "UI/UX Designer"),
@@ -78,51 +79,51 @@ class ApplicationSummaryScreen extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: 18),
+          SizedBox(height: AppSpacing.s08),
 
           ApplicationInfoTile(
             title: "contributor.experienceLevel".tr(),
             value: "2 years",
           ),
 
-          const SizedBox(height: 18),
+          SizedBox(height: AppSpacing.s08),
 
           ApplicationInfoTile(
             title: "contributor.weeklyContributionTime".tr(),
             value: "2–4 hours",
           ),
 
-          const SizedBox(height: 18),
+          SizedBox(height: AppSpacing.s08),
 
           Text(
             "contributor.workProfileLinks".tr(),
             style: theme.textTheme.bodySmall?.copyWith(
-              color: AppColors.textGrey,
+              color: AppColors.neutral400,
             ),
           ),
 
-          const SizedBox(height: 10),
+          SizedBox(height: AppSpacing.s05),
 
           const ApplicationLinksTile(
             icon: AssetsPath.githubSvg,
             text: "https://github.com/angelica-singh-04",
           ),
 
-          const SizedBox(height: 10),
+          SizedBox(height: AppSpacing.s05),
 
           const ApplicationLinksTile(
             icon: AssetsPath.websiteSvg,
             text: "https://angelica.works",
           ),
 
-          const SizedBox(height: 10),
+          SizedBox(height: AppSpacing.s05),
 
           const ApplicationLinksTile(
             icon: AssetsPath.linkedinSvg,
             text: "https://linkedin.com/angelica.works",
           ),
 
-          const SizedBox(height: 24),
+          SizedBox(height: AppSpacing.s10),
         ],
       ),
     );

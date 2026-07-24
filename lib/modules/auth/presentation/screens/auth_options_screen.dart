@@ -11,6 +11,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 
 class AuthOptionsScreen extends ConsumerWidget {
   const AuthOptionsScreen({super.key});
@@ -28,7 +31,7 @@ class AuthOptionsScreen extends ConsumerWidget {
     return GradientBackground(
       child: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.end,
@@ -51,7 +54,7 @@ class AuthOptionsScreen extends ConsumerWidget {
                   children: [
                     SvgPicture.asset(AppAssets.googleIcon, width: 20.w, height: 20.h),
                     12.horizontalSpace,
-                    Text('auth.continueWithGoogle'.tr(), style: textStyle_16MediumBlack()),
+                    Text('auth.continueWithGoogle'.tr(), style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
                   ],
                 ),
               ),
@@ -63,9 +66,9 @@ class AuthOptionsScreen extends ConsumerWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.mail_outline_rounded, size: 22.sp, color: Colors.black87),
+                    Icon(Icons.mail_outline_rounded, size: 22.sp, color: AppColors.blackBase),
                     12.horizontalSpace,
-                    Text('auth.signInWithEmail'.tr(), style: textStyle_16MediumBlack()),
+                    Text('auth.signInWithEmail'.tr(), style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
                   ],
                 ),
               ),
@@ -74,12 +77,12 @@ class AuthOptionsScreen extends ConsumerWidget {
 
               Row(
                 children: [
-                  Expanded(child: Divider(color: Colors.grey.shade300, thickness: 1)),
+                  Expanded(child: Divider(color: AppBorders.primary, thickness: 1)),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    child: Text('onboarding.or'.tr(), style: textStyle_16MediumBlack()),
+                    padding: AppSpacing.horizontal(AppSpacing.s06),
+                    child: Text('onboarding.or'.tr(), style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
                   ),
-                  Expanded(child: Divider(color: Colors.grey.shade300, thickness: 1)),
+                  Expanded(child: Divider(color: AppBorders.primary, thickness: 1)),
                 ],
               ),
 
@@ -88,7 +91,7 @@ class AuthOptionsScreen extends ConsumerWidget {
               GradientButton(
                 height: 45.h,
                 text: 'auth.createAccount'.tr(),
-                textStyle: textStyle_16RegularBlack().copyWith(color: Colors.white),
+                textStyle: AppTextStyles.bodyLarge.copyWith(color: AppColors.whiteBase),
                 onTap: () => context.push(RouteNames.signUp),
               ),
 
@@ -110,17 +113,17 @@ class AuthOptionsScreen extends ConsumerWidget {
           fit: BoxFit.contain,
           errorBuilder: (_, _, _) => Container(
             decoration: BoxDecoration(
-              color: const Color(0xFFE8F0FE),
+              color: AppColors.primary100,
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.06),
+                  color: AppColors.blackBase.withValues(alpha: 0.06),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
               ],
             ),
-            child: Icon(Icons.person_rounded, size: 72.sp, color: const Color(0xFF4373E2)),
+            child: Icon(Icons.person_rounded, size: 72.sp, color: AppColors.primary500),
           ),
         ),
       ),
@@ -131,19 +134,19 @@ class AuthOptionsScreen extends ConsumerWidget {
     return Text(
       'auth.signInTitle'.tr(),
       textAlign: TextAlign.center,
-      style: textStyle_18MediumBlack().copyWith(fontSize: 24.sp),
+      style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w600),
     );
   }
 
   Widget _buildSubtitle() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 24.w),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07),
       child: Text(
         'auth.signInSubTitle'.tr(),
         textAlign: TextAlign.center,
-        style: textStyle_16RegularBlack().copyWith(
+        style: AppTextStyles.bodyLarge.copyWith(
           height: 1.5,
-          color: AppColors.subtitleTextDarkGrey,
+          color: AppColors.neutral500,
         ),
       ),
     );
@@ -162,17 +165,17 @@ class _AuthOptionButton extends StatelessWidget {
       width: double.infinity,
       height: 52.h,
       child: Material(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12.r),
+        color: AppColors.whiteBase,
+        borderRadius: AppRadius.all03,
         child: InkWell(
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: AppRadius.all03,
           onTap: onPressed,
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12.r),
-              border: Border.all(color: Colors.grey.shade300, width: 1),
+              borderRadius: AppRadius.all03,
+              border: Border.all(color: AppBorders.primary, width: AppSpacing.s01),
             ),
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: AppSpacing.horizontal(AppSpacing.s07),
             child: Center(child: child),
           ),
         ),

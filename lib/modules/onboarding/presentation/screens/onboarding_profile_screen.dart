@@ -5,10 +5,14 @@ import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/custom_textfield.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
-import 'package:flutter_knp_mobile_app_v2/utils/text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 
 
 class OnboardingProfileScreen extends StatefulWidget {
@@ -130,11 +134,11 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
         return Align(
           alignment: Alignment.bottomCenter,
           child: Container(
-            padding: EdgeInsets.all(20.sp),
+            padding: AppSpacing.all09,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.whiteBase,
               borderRadius: BorderRadius.vertical(
-                top: Radius.circular(35.r),
+                top: Radius.circular(AppRadius.r07),
               ),
             ),
             child: Column(
@@ -142,10 +146,10 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
               children: [
                 Container(
                   width: 75.w,
-                  height: 7.h,
+                  height: AppSpacing.s07,
                   decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(10.r),
+                    color: AppColors.blackBase,
+                    borderRadius: AppRadius.all02,
                   ),
                 ),
                 20.verticalSpace,
@@ -157,7 +161,7 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
                   ),
                   title: Text(
                     "Import from gallery",
-                    style: textStyle_18BlackRegular(),
+                    style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase),
                   ),
                   onTap: () {
                     Navigator.pop(context);
@@ -172,7 +176,7 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
                   ),
                   title: Text(
                     "Take Photo",
-                    style: textStyle_18BlackRegular(),
+                    style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase),
                   ),
                   onTap: () {
                     Navigator.pop(context);
@@ -187,7 +191,7 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
                   ),
                   title: Text(
                     "Remove current picture",
-                    style: textStyle_18RedRegular(),
+                    style: AppTextStyles.titleLarge.copyWith(color: AppColors.warning600),
                   ),
                   onTap: () {
                     Navigator.pop(context);
@@ -240,25 +244,25 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
       barrierDismissible: false,
       builder: (context) {
         return Dialog(
-          backgroundColor: Colors.white,
+          backgroundColor: AppColors.whiteBase,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.r),
+            borderRadius: AppRadius.all07,
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.sp, vertical: 28.sp),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s08),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("Remove?", style: textStyle_24BlackBold()),
+                Text("Remove?", style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w700)),
                 12.verticalSpace,
                 Text(
                   "Are you sure want to remove the profile photo?",
                   textAlign: TextAlign.center,
-                  style: textStyle_16RegularGrey(),
+                  style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
                 ),
                 24.verticalSpace,
                 GradientButton(
-                  color: AppColors.redBgText,
+                  color: AppColors.warning600,
                   onTap: () async {
                     Navigator.pop(context);
                     await _removeProfileImage();
@@ -268,7 +272,7 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
                 14.verticalSpace,
                 GestureDetector(
                   onTap: () => Navigator.pop(context),
-                  child: Text("Cancel", style: textStyle_16RedRegular()),
+                  child: Text("Cancel", style: AppTextStyles.bodyLarge.copyWith(color: AppColors.warning600)),
                 ),
               ],
             ),
@@ -319,7 +323,7 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
                           isLoading: _isLoading,
                           onTap: _goToNextScreen,
                           text: "Continue",
-                          textStyle: textStyle_16RegularWhite(),
+                          textStyle: AppTextStyles.bodyLarge.copyWith(color: AppBorders.tertiary),
                           height: _Layout.buttonHeight(context),
                           width: double.infinity,
                         ),
@@ -341,7 +345,7 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
       children: [
         CircleAvatar(
           radius: _Layout.avatarRadius(context),
-          backgroundColor: AppColors.bgSecondary,
+          backgroundColor: AppColors.neutral50,
           backgroundImage: _localFilePath != null
               ? FileImage(File(_localFilePath!))
               : (_localPhotoUrl != null
@@ -350,7 +354,7 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
           child: (_localFilePath == null && _localPhotoUrl == null)
               ? SvgPicture.asset(
             AssetsPath.emptyImage,
-            color: Colors.black,
+            color: AppColors.blackBase,
             height: _Layout.avatarIconSize(context),
           )
               : null,
@@ -362,11 +366,11 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
             onTap: _showImagePickerSheet,
             child: CircleAvatar(
               radius: _Layout.addButtonRadius(context),
-              backgroundColor: const Color(0xFF4167F2),
+              backgroundColor: AppColors.primary500,
               child: Icon(
                 Icons.add,
                 size: _Layout.addButtonIconSize(context),
-                color: Colors.white,
+                color: AppColors.whiteBase,
               ),
             ),
           ),
@@ -393,30 +397,30 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
               showBorder:
               nameFocusNode.hasFocus || nameController.text.isNotEmpty,
               borderColor: nameFocusNode.hasFocus
-                  ? AppColors.selectedNavBarIconColor
+                  ? AppColors.primary500
                   : nameController.text.isNotEmpty
-                  ? AppColors.communityBorderColor
-                  : const Color(0xFFF6F6F6),
+                  ? AppColors.neutral100
+                  : AppColors.neutral50,
               fillColor:
               nameFocusNode.hasFocus || nameController.text.isNotEmpty
                   ? Colors.transparent
-                  : const Color(0xFFF6F6F6),
+                  : AppColors.neutral50,
             ),
           ),
           if (_hasError)
             Padding(
-              padding: EdgeInsets.only(top: 8.h),
+              padding: EdgeInsets.only(top: AppSpacing.s04),
               child: Row(
                 children: [
                   Icon(
                     Icons.warning_rounded,
-                    color: AppColors.redBgText,
+                    color: AppColors.warning600,
                     size: 18.sp,
                   ),
                   6.horizontalSpace,
                   Text(
                     "Please enter your name.",
-                    style: textStyle_16RedRegular().copyWith(fontSize: 14.sp),
+                    style: AppTextStyles.bodyLarge,
                   ),
                 ],
               ),

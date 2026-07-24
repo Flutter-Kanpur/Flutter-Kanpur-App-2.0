@@ -11,7 +11,11 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../../utils/translate.dart';
 
 import '../../../../../shared/widgets/gradiant_background.dart';
-import '../../../../../utils/text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -79,22 +83,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   InputDecoration _decoration(String hint, {Widget? prefixIcon}) {
     return InputDecoration(
       hintText: hint,
-      hintStyle: textStyle_hintText(),
+      hintStyle: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral300),
       filled: true,
-      fillColor: Colors.white,
-      contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+      fillColor: AppColors.whiteBase,
+      contentPadding: EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s07),
       prefixIcon: prefixIcon,
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12.r),
-        borderSide: const BorderSide(color: AppColors.communityBorderColorV2),
+        borderRadius: AppRadius.all03,
+        borderSide: BorderSide(color: AppBorders.secondary),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12.r),
-        borderSide: const BorderSide(color: AppColors.communityBorderColorV2),
+        borderRadius: AppRadius.all03,
+        borderSide: BorderSide(color: AppBorders.secondary),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12.r),
-        borderSide: const BorderSide(color: AppColors.selectedNavBarIconColor),
+        borderRadius: AppRadius.all03,
+        borderSide: const BorderSide(color: AppBorders.blue),
       ),
     );
   }
@@ -124,11 +128,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       enableDrag: true,
       builder: (context) {
         return Container(
-          padding: EdgeInsets.all(20.sp),
+          padding: AppSpacing.all09,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.whiteBase,
             borderRadius: BorderRadius.vertical(
-              top: Radius.circular(35.r),
+              top: Radius.circular(AppRadius.r07),
             ),
           ),
           child: Column(
@@ -136,10 +140,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             children: [
               Container(
                 width: 75.w,
-                height: 7.h,
+                height: AppSpacing.s07,
                 decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(10.r),
+                  color: AppColors.blackBase,
+                  borderRadius: AppRadius.all02,
                 ),
               ),
               20.verticalSpace,
@@ -151,7 +155,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
                 title: Text(
                   translate(context, "editProfile.importGallery"),
-                  style: textStyle_18BlackRegular(),
+                  style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase),
                 ),
                 onTap: () {
                   Navigator.pop(context);
@@ -166,7 +170,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
                 title: Text(
                   translate(context, "editProfile.takePhoto"),
-                  style: textStyle_18BlackRegular(),
+                  style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase),
                 ),
                 onTap: () {
                   Navigator.pop(context);
@@ -181,7 +185,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
                 title: Text(
                   translate(context, "editProfile.removeCurrentPicture"),
-                  style: textStyle_18RedRegular(),
+                  style: AppTextStyles.titleLarge.copyWith(color: AppColors.warning600),
                 ),
                 onTap: () {
                   Navigator.pop(context);
@@ -215,22 +219,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       barrierDismissible: false,
       builder: (context) {
         return Dialog(
-          backgroundColor: Colors.white,
+          backgroundColor: AppColors.whiteBase,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.r),
+            borderRadius: AppRadius.all07,
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.sp, vertical: 28.sp),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s08),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(translate(context, "editProfile.removePhoto"),
-                    style: textStyle_24BlackBold()),
+                    style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w700)),
                 12.verticalSpace,
                 Text(
                   translate(context, "editProfile.removeConfirmation"),
                   textAlign: TextAlign.center,
-                  style: textStyle_16RegularGrey(),
+                  style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
                 ),
                 24.verticalSpace,
                 GestureDetector(
@@ -243,12 +247,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     height: 48.h,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: AppColors.redBgText,
-                      borderRadius: BorderRadius.circular(25.r),
+                      color: AppColors.warning600,
+                      borderRadius: AppRadius.all06,
                     ),
                     child: Text(
                       translate(context, "editProfile.delete"),
-                      style: textStyle_16RegularWhite(),
+                      style: AppTextStyles.bodyLarge.copyWith(color: AppBorders.tertiary),
                     ),
                   ),
                 ),
@@ -256,7 +260,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 GestureDetector(
                   onTap: () => Navigator.pop(context),
                   child: Text(translate(context, "editProfile.cancel"),
-                      style: textStyle_16RedRegular()),
+                      style: AppTextStyles.bodyLarge.copyWith(color: AppColors.warning600)),
                 ),
               ],
             ),
@@ -341,16 +345,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           leading: IconButton(
             onPressed: () => context.pop(),
             icon: Icon(Icons.arrow_back,
-                size: 24.sp, color: const Color(0xFF000000)),
+                size: 24.sp, color: AppColors.blackBase),
           ),
           title: Text(
             translate(context, "editProfile.title"),
-            style: textStyle_20BlackMedium(),
+            style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w500),
           ),
         ),
         body: SingleChildScrollView(
                   padding:
-                      EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+                      EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s07),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -358,27 +362,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(24.r),
+                          color: AppColors.whiteBase,
+                          borderRadius: AppRadius.all06,
                           border: Border.all(
-                            color: AppColors.communityBorderColorV2,
+                            color: AppBorders.secondary,
                           ),
                         ),
-                        padding: EdgeInsets.all(20.w),
+                        padding: AppSpacing.all09,
                         child: Row(
                           children: [
                             Container(
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  color: AppColors.primary,
+                                  color: AppBorders.blue,
                                   width: 2.0,
                                 ),
                               ),
                               child: CircleAvatar(
                                 radius: 35.r,
                                 backgroundColor:
-                                    AppColors.avatarBackgroundColor,
+                                    AppColors.neutral100,
                                 backgroundImage: _imageFile != null
                                     ? FileImage(_imageFile!)
                                     : (photoUrl != null && photoUrl.isNotEmpty
@@ -390,28 +394,28 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                         displayName.isNotEmpty
                                             ? displayName[0].toUpperCase()
                                             : '?',
-                                        style: textStyle_20BlackMedium(),
+                                        style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w500),
                                       )
                                     : null,
                               ),
                             ),
-                            SizedBox(width: 16.w),
+                            SizedBox(width: AppSpacing.s07),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     displayName,
-                                    style: textStyle_24BoldBlack()
-                                        .copyWith(fontSize: 20.sp),
+                                    style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold)
+                                        ,
                                   ),
-                                  SizedBox(height: 4.h),
+                                  SizedBox(height: AppSpacing.s02),
                                   GestureDetector(
                                     onTap: _showImagePickerSheet,
                                     child: Text(
                                       translate(
                                           context, "editProfile.changePhoto"),
-                                      style: textStyle_14RegularLinkBlue(),
+                                      style: AppTextStyles.bodyMedium.copyWith(color: AppColors.primary500),
                                     ),
                                   ),
                                 ],
@@ -420,40 +424,40 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 24.h),
+                      SizedBox(height: AppSpacing.s10),
 
                       // Username
                       Text(translate(context, "editProfile.username"),
-                          style: textStyle_16RegularBlack()
+                          style: AppTextStyles.bodyLarge.copyWith(color: AppColors.blackBase)
                               .copyWith(fontWeight: FontWeight.w500)),
-                      SizedBox(height: 8.h),
+                      SizedBox(height: AppSpacing.s04),
                       TextFormField(
                         controller: _usernameController,
-                        style: textStyle_16MediumBlack(),
+                        style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase),
                         decoration: _decoration(
                             translate(context, "editProfile.username")),
                       ),
-                      SizedBox(height: 24.h),
+                      SizedBox(height: AppSpacing.s10),
 
                       // About me
                       Text(translate(context, "editProfile.aboutMe"),
-                          style: textStyle_16RegularBlack()
+                          style: AppTextStyles.bodyLarge.copyWith(color: AppColors.blackBase)
                               .copyWith(fontWeight: FontWeight.w500)),
-                      SizedBox(height: 8.h),
+                      SizedBox(height: AppSpacing.s04),
                       Stack(
                         children: [
                           TextFormField(
                             controller: _aboutController,
                             maxLines: 4,
                             maxLength: _aboutMaxLength,
-                            style: textStyle_16MediumBlack(),
+                            style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase),
                             onChanged: (_) => setState(() {}),
                             decoration: _decoration(
                                     translate(context, "editProfile.addBio"))
                                 .copyWith(
                               counterText: '',
                               contentPadding:
-                                  EdgeInsets.fromLTRB(16.w, 14.h, 16.w, 30.h),
+                                  EdgeInsets.fromLTRB(AppSpacing.s07, AppSpacing.s07, AppSpacing.s07, AppSpacing.s10),
                             ),
                           ),
                           Positioned(
@@ -461,84 +465,84 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             right: 16.w,
                             child: Text(
                               '${_aboutController.text.length}/$_aboutMaxLength',
-                              style: textStyle_12RegularGrey(),
+                              style: AppTextStyles.bodySmall.copyWith(color: AppColors.neutral500),
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 16.h),
+                      SizedBox(height: AppSpacing.s07),
 
                       // Years of Experience
                       Text(translate(context, "editProfile.yearsOfExperience"),
-                          style: textStyle_16RegularBlack()
+                          style: AppTextStyles.bodyLarge.copyWith(color: AppColors.blackBase)
                               .copyWith(fontWeight: FontWeight.w500)),
-                      SizedBox(height: 8.h),
+                      SizedBox(height: AppSpacing.s04),
                       GestureDetector(
                         onTap: () => _showYearsOfExperienceBottomSheet(context),
                         child: Container(
                           width: double.infinity,
                           padding: EdgeInsets.symmetric(
-                              horizontal: 16.w, vertical: 14.h),
+                              horizontal: AppSpacing.s07, vertical: AppSpacing.s07),
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12.r),
+                            color: AppColors.whiteBase,
+                            borderRadius: AppRadius.all03,
                             border: Border.all(
-                                color: AppColors.communityBorderColorV2),
+                                color: AppBorders.secondary),
                           ),
                           child: Row(
                             children: [
                               Expanded(
                                 child: Text(
                                   _yearsOfExperience,
-                                  style: textStyle_16MediumBlack(),
+                                  style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase),
                                 ),
                               ),
                               Icon(
                                 Icons.keyboard_arrow_down,
                                 size: 24.sp,
-                                color: Colors.black,
+                                color: AppColors.blackBase,
                               ),
                             ],
                           ),
                         ),
                       ),
-                      SizedBox(height: 24.h),
+                      SizedBox(height: AppSpacing.s10),
 
                       // Work & social links
                       Text(translate(context, "editProfile.workSocialLinks"),
-                          style: textStyle_16RegularBlack()
+                          style: AppTextStyles.bodyLarge.copyWith(color: AppColors.blackBase)
                               .copyWith(fontWeight: FontWeight.w500)),
-                      SizedBox(height: 12.h),
+                      SizedBox(height: AppSpacing.s06),
                       _LinkField(
                         icon: AssetsPath.githubSvg,
                         controller: _githubController,
                         hint: translate(context, "editProfile.githubHint"),
                       ),
-                      SizedBox(height: 12.h),
+                      SizedBox(height: AppSpacing.s06),
                       _LinkField(
                         icon: AssetsPath.linkedinSvg,
                         controller: _linkedInController,
                         hint: translate(context, "editProfile.linkedinHint"),
                       ),
-                      SizedBox(height: 12.h),
+                      SizedBox(height: AppSpacing.s06),
                       _LinkField(
                         icon: AssetsPath.websiteSvg,
                         controller: _websiteController,
                         hint: translate(context, "editProfile.websiteHint"),
                       ),
 
-                      SizedBox(height: 24.h),
+                      SizedBox(height: AppSpacing.s10),
                       Center(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10.w),
+                          padding: AppSpacing.horizontal(AppSpacing.s05),
                           child: Text(
                             translate(context, "editProfile.privacyDisclaimer"),
                             textAlign: TextAlign.center,
-                            style: textStyle_14FooterText(),
+                            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral400),
                           ),
                         ),
                       ),
-                      SizedBox(height: 32.h),
+                      SizedBox(height: AppSpacing.s10),
 
                       // Buttons
                       Row(
@@ -550,7 +554,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               // onTap: () => _submit(context),
                               onTap: (){},
                               text: translate(context, "editProfile.submit"),
-                              textStyle: textStyle_16RegularWhite(),
+                              textStyle: AppTextStyles.bodyLarge.copyWith(color: AppBorders.tertiary),
                               height: 50.h,
                               width: double.infinity,
                             ),
@@ -560,13 +564,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               onPressed: () => context.pop(),
                               child: Text(
                                 translate(context, "editProfile.cancel"),
-                                style: textStyle_16RegularBlack(),
+                                style: AppTextStyles.bodyLarge.copyWith(color: AppColors.blackBase),
                               ),
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 40.h),
+                      SizedBox(height: AppSpacing.s10),
                     ],
                   ),
                 ),
@@ -577,7 +581,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _showSuccessOverlay(BuildContext context) {
     showDialog(
       context: context,
-      barrierColor: Colors.black.withOpacity(0.7),
+      barrierColor: AppColors.blackBase.withOpacity(0.7),
       barrierDismissible: false,
       builder: (context) => Material(
         type: MaterialType.transparency,
@@ -619,16 +623,16 @@ Future<void> showCustomDropdown({
     backgroundColor: Colors.transparent,
     builder: (context) {
       return Container(
-        margin: const EdgeInsets.all(16),
-        padding: const EdgeInsets.symmetric(vertical: 12),
+        margin: AppSpacing.all07,
+        padding: AppSpacing.vertical(AppSpacing.s06),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(28),
+          color: AppColors.whiteBase,
+          borderRadius: AppRadius.all06,
         ),
         child: ListView.separated(
           shrinkWrap: true,
           itemCount: items.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 6),
+          separatorBuilder: (_, __) => SizedBox(height: AppSpacing.s03),
           itemBuilder: (context, index) {
             final item = items[index];
             final isSelected = item == selectedValue;
@@ -639,26 +643,26 @@ Future<void> showCustomDropdown({
                 onSelected(item);
               },
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 12),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 16,
+                margin: AppSpacing.horizontal(AppSpacing.s06),
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSpacing.s07,
+                  vertical: AppSpacing.s07,
                 ),
                 decoration: BoxDecoration(
                   color:
-                      isSelected ? const Color(0xFFE2E6F3) : Colors.transparent,
-                  borderRadius: BorderRadius.circular(16),
+                      isSelected ? AppColors.primary100 : Colors.transparent,
+                  borderRadius: AppRadius.all04,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       item,
-                      style: textStyle_16MediumBlack(),
+                      style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase),
                     ),
                     if (isSelected)
                       const Icon(Icons.check,
-                          size: 20, color: AppColors.primary),
+                          size: 20, color: AppColors.primary500),
                   ],
                 ),
               ),
@@ -681,26 +685,26 @@ class _LinkField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: AppColors.communityBorderColorV2),
+        color: AppColors.whiteBase,
+        borderRadius: AppRadius.all03,
+        border: Border.all(color: AppBorders.secondary),
       ),
       child: TextFormField(
         controller: controller,
-        style: textStyle_16MediumBlack(),
+        style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: textStyle_hintText(),
+          hintStyle: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral300),
           border: InputBorder.none,
           contentPadding:
-              EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+              EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s07),
           prefixIcon: Padding(
-            padding: EdgeInsets.all(12.w),
+            padding: AppSpacing.all06,
             child: SvgPicture.asset(
               icon,
               height: 20.sp,
               colorFilter:
-                  const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                  const ColorFilter.mode(AppColors.blackBase, BlendMode.srcIn),
             ),
           ),
         ),

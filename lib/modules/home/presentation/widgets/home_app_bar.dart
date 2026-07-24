@@ -5,6 +5,8 @@ import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/date_extensions.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 
 /// Scrollable header for home screen (date, greeting, actions). Use as first child in scroll view.
 class HomeAppBar extends StatelessWidget {
@@ -22,7 +24,7 @@ class HomeAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(24.w, 20.h, 8.w, 25.h),
+      padding: EdgeInsets.fromLTRB(AppSpacing.s10, AppSpacing.s09, AppSpacing.s04, AppSpacing.s10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -33,15 +35,13 @@ class HomeAppBar extends StatelessWidget {
               children: [
                 Text(
                   _getFormattedDate(),
-                  style: textStyle_14MediumGreyHintStyle(),
+                  style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500),
                 ),
                 4.verticalSpace,
                 Text(
                   _getGreeting(context),
-                  style: textStyle_16RegularBlack().copyWith(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
+                  style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w600,
+                    color: AppColors.blackBase,
                   ),
                 ),
               ],
@@ -51,7 +51,7 @@ class HomeAppBar extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.more_vert),
             onPressed: () {},
-            color: const Color(0xFF111827),
+            color: AppColors.blackBase,
           ),
         ],
       ),

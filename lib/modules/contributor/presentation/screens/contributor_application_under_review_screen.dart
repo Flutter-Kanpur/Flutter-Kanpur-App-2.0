@@ -8,6 +8,9 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dar
 import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class ContributorApplicationUnderReviewScreen extends StatelessWidget {
   const ContributorApplicationUnderReviewScreen({super.key});
@@ -19,7 +22,7 @@ class ContributorApplicationUnderReviewScreen extends StatelessWidget {
     return GradientBackground(
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
+          padding: EdgeInsets.fromLTRB(AppSpacing.s09, AppSpacing.s08, AppSpacing.s09, 24),
           child: Column(
             children: [
               FkHeader(
@@ -36,7 +39,7 @@ class ContributorApplicationUnderReviewScreen extends StatelessWidget {
                   children: [
                     Image.asset(AssetsPath.contributorReviewClock, width: 120),
 
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppSpacing.s10),
 
                     Text(
                       "contributor.applicationUnderReview".tr(),
@@ -46,7 +49,7 @@ class ContributorApplicationUnderReviewScreen extends StatelessWidget {
                       ),
                     ),
 
-                    const SizedBox(height: 12),
+                    SizedBox(height: AppSpacing.s06),
 
                     Text(
                       "contributor.thanksForApplying".tr(),
@@ -54,7 +57,7 @@ class ContributorApplicationUnderReviewScreen extends StatelessWidget {
                       style: theme.textTheme.bodyMedium,
                     ),
 
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppSpacing.s10),
 
                     FkPrimaryButton(
                       label: "contributor.viewApplicationDetails".tr(),
@@ -62,15 +65,15 @@ class ContributorApplicationUnderReviewScreen extends StatelessWidget {
                           context.push(RouteNames.reviewApplication),
                     ),
 
-                    const SizedBox(height: 40),
+                    SizedBox(height: AppSpacing.s10),
 
                     _item(
                       "contributor.status".tr(),
                       "contributor.underReview".tr(),
                     ),
-                    const SizedBox(height: 18),
+                    SizedBox(height: AppSpacing.s08),
                     _item("contributor.submittedOn".tr(), "Apr 12, 2026"),
-                    const SizedBox(height: 18),
+                    SizedBox(height: AppSpacing.s08),
                     _item(
                       "contributor.estimatedResponse".tr(),
                       "contributor.withinFiveToSevenDays".tr(),
@@ -81,23 +84,23 @@ class ContributorApplicationUnderReviewScreen extends StatelessWidget {
 
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 14,
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSpacing.s07,
+                  vertical: AppSpacing.s07,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.yellowWarningBackground,
-                  borderRadius: BorderRadius.circular(12),
+                  color: AppColors.pending50,
+                  borderRadius: AppRadius.all03,
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.info, size: 18, color: AppColors.orange),
-                    const SizedBox(width: 8),
+                    const Icon(Icons.info, size: 18, color: AppColors.pending400),
+                    SizedBox(width: AppSpacing.s04),
                     Expanded(
                       child: Text(
                         "contributor.notifyOnUpdate".tr(),
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: AppColors.orange,
+                          color: AppColors.pending400,
                         ),
                       ),
                     ),
@@ -114,11 +117,11 @@ class ContributorApplicationUnderReviewScreen extends StatelessWidget {
   Widget _item(String title, String value) {
     return Column(
       children: [
-        Text(title, style: const TextStyle(color: Colors.grey)),
-        const SizedBox(height: 4),
+        Text(title, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral400)),
+        SizedBox(height: AppSpacing.s02),
         Text(
           value,
-          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+          style: AppTextStyles.titleMedium,
         ),
       ],
     );

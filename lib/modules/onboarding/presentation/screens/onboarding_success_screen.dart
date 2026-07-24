@@ -4,6 +4,9 @@ import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
 import 'package:flutter_knp_mobile_app_v2/core/constants/app_assets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class OnboardingSuccessScreen extends StatelessWidget {
   const OnboardingSuccessScreen({super.key});
@@ -11,11 +14,11 @@ class OnboardingSuccessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.whiteBase,
 
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07),
 
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -36,11 +39,7 @@ class OnboardingSuccessScreen extends StatelessWidget {
 
                 textAlign: TextAlign.center,
 
-                style: TextStyle(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                ),
+                style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w700),
               ),
 
               12.verticalSpace,
@@ -50,12 +49,7 @@ class OnboardingSuccessScreen extends StatelessWidget {
 
                 textAlign: TextAlign.center,
 
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w400,
-                  color: const Color(0xFF7A7A7A),
-                  height: 1.5,
-                ),
+                style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500, height: 1.5),
               ),
 
               48.verticalSpace,

@@ -7,6 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../application/my_events_provider.dart';
 import '../../../application/my_events_state.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 /// Card for a single event on the My Events screen: status pill + bookmark,
 /// title, date/location, a truncatable description, and a CTA row.
@@ -29,11 +32,15 @@ class MyEventCard extends ConsumerWidget {
   final VoidCallback onViewDetails;
   final VoidCallback onPreview;
 
-  /// "Live" is the app's brand blue rather than a generic status color, so
-  /// it's special-cased; everything else defers to AppColors.statusPair().
+  /// Status colors mapped to design-system tokens.
   Color _statusColor(String label) {
-    if (label == 'Live') return AppColors.primary;
-    return AppColors.statusPair(label).fg;
+    return switch (label) {
+      'Live' => AppColors.primary500,
+      'Upcoming' => AppColors.pending400,
+      'Ongoing' => AppColors.success600,
+      'Missed' || 'Cancelled' => AppColors.warning600,
+      _ => AppColors.neutral500,
+    };
   }
 
   @override
@@ -43,11 +50,11 @@ class MyEventCard extends ConsumerWidget {
     final isPast = event.category == MyEventCategory.past;
 
     return Container(
-      padding: EdgeInsets.all(16.w),
+      padding: AppSpacing.all07,
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(color: AppColors.communityBorder),
+        color: AppColors.whiteBase,
+        borderRadius: AppRadius.all05,
+        border: Border.all(color: AppBorders.primary),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,10 +63,10 @@ class MyEventCard extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s03),
                 decoration: BoxDecoration(
                   color: statusColor.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(100),
+                  borderRadius: AppRadius.all09,
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -72,12 +79,10 @@ class MyEventCard extends ConsumerWidget {
                         shape: BoxShape.circle,
                       ),
                     ),
-                    SizedBox(width: 6.w),
+                    SizedBox(width: AppSpacing.s03),
                     Text(
                       event.statusLabel,
-                      style: textStyle_14RegularBlack().copyWith(
-                        color: statusColor,
-                      ),
+                      style: AppTextStyles.bodyMedium.copyWith(color: statusColor),
                     ),
                   ],
                 ),
@@ -92,26 +97,26 @@ class MyEventCard extends ConsumerWidget {
                         ? Icons.bookmark_rounded
                         : Icons.bookmark_border_rounded,
                     color: event.isSaved
-                        ? AppColors.primary
-                        : AppColors.textGray,
+                        ? AppColors.primary500
+                        : AppColors.neutral500,
                     size: 24.sp,
                   ),
                 ),
             ],
           ),
-          SizedBox(height: 12.h),
-          Text(event.title, style: textStyle_18BlackMedium()),
-          SizedBox(height: 8.h),
+          SizedBox(height: AppSpacing.s06),
+          Text(event.title, style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w500)),
+          SizedBox(height: AppSpacing.s04),
           Text(
             event.dateTimeLocation,
-            style: textStyle_14RegularBlack().copyWith(color: AppColors.green),
+            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.success600),
           ),
-          SizedBox(height: 8.h),
+          SizedBox(height: AppSpacing.s04),
           Text(
             event.description,
             maxLines: expanded ? null : 2,
             overflow: expanded ? TextOverflow.visible : TextOverflow.ellipsis,
-            style: textStyle_13RegularGrey(),
+            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500),
           ),
           if (!expanded)
             GestureDetector(
@@ -119,11 +124,11 @@ class MyEventCard extends ConsumerWidget {
                   .read(myEventCardExpandedProvider(event.id).notifier)
                   .toggle(),
               child: Padding(
-                padding: EdgeInsets.only(top: 2.h),
-                child: Text('see more', style: textStyle_14RegularLinkBlue()),
+                padding: EdgeInsets.only(top: AppSpacing.s01),
+                child: Text('see more', style: AppTextStyles.bodyMedium.copyWith(color: AppColors.primary500)),
               ),
             ),
-          SizedBox(height: 16.h),
+          SizedBox(height: AppSpacing.s07),
           Row(
             children: [
               Expanded(
@@ -131,29 +136,29 @@ class MyEventCard extends ConsumerWidget {
                   text: isPast ? 'Give feedback' : 'View Details',
                   height: 48.h,
                   onTap: onViewDetails,
-                  textStyle: textStyle_14SemiBoldWhite(),
+                  textStyle: AppTextStyles.labelLarge.copyWith(color: AppColors.whiteBase, fontWeight: FontWeight.w600),
                 ),
               ),
               if (isPast) ...[
-                SizedBox(width: 12.w),
+                SizedBox(width: AppSpacing.s06),
                 Material(
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: onPreview,
-                    borderRadius: BorderRadius.circular(999),
+                    borderRadius: AppRadius.all09,
                     child: Container(
                       width: 48.w,
                       height: 48.h,
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: AppColors.contributorFieldBorder,
+                          color: AppBorders.primary,
                         ),
-                        borderRadius: BorderRadius.circular(999),
+                        borderRadius: AppRadius.all09,
                       ),
                       child: Icon(
                         Icons.visibility_outlined,
                         size: 20.sp,
-                        color: AppColors.textGray,
+                        color: AppColors.neutral500,
                       ),
                     ),
                   ),

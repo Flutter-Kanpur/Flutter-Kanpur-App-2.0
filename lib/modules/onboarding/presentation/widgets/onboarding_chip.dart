@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class OnboardingChip extends StatelessWidget {
   final String title;
@@ -22,34 +27,29 @@ class OnboardingChip extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
 
         padding: EdgeInsets.symmetric(
-          horizontal: 16.w,
-          vertical: 10.h,
+          horizontal: AppSpacing.s07,
+          vertical: AppSpacing.s05,
         ),
 
         decoration: BoxDecoration(
           color: isSelected
-              ? Colors.black
-              : Colors.white,
+              ? AppColors.blackBase
+              : AppColors.whiteBase,
 
-          borderRadius: BorderRadius.circular(24.r),
+          borderRadius: AppRadius.all06,
 
           border: Border.all(
             color: isSelected
-                ? Colors.black
-                : const Color(0xFFE0E0E0),
+                ? AppColors.blackBase
+                : AppBorders.secondary,
           ),
         ),
 
         child: Text(
           title,
 
-          style: TextStyle(
-            color: isSelected
-                ? Colors.white
-                : Colors.black,
-
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w500,
+          style: AppTextStyles.labelLarge.copyWith(
+            color: isSelected ? AppColors.whiteBase : AppColors.blackBase,
           ),
         ),
       ),

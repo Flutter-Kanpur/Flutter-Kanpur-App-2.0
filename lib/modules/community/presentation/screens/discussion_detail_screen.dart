@@ -9,6 +9,8 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_status_chip.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class DiscussionDetailScreen extends ConsumerStatefulWidget {
   final String questionId;
@@ -101,13 +103,13 @@ class _DetailBody extends ConsumerWidget {
     final repliesAsync = ref.watch(repliesProvider(question.id));
 
     return FkScreen(
-      padding: const EdgeInsets.fromLTRB(22, 12, 22, 96),
+      padding: EdgeInsets.fromLTRB(AppSpacing.s10, AppSpacing.s06, AppSpacing.s10, 96),
       children: [
         _TopBar(
           title: 'Discussion',
           onBack: () => context.go(RouteNames.communityDiscussions),
         ),
-        const SizedBox(height: 28),
+        SizedBox(height: AppSpacing.s10),
         Text(
           question.title,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -115,22 +117,22 @@ class _DetailBody extends ConsumerWidget {
             height: 1.25,
           ),
         ),
-        const SizedBox(height: 14),
+        SizedBox(height: AppSpacing.s07),
         if (question.tag.isNotEmpty)
           Wrap(
-            spacing: 8,
-            runSpacing: 8,
+            spacing: AppSpacing.s04,
+            runSpacing: AppSpacing.s04,
             children: [FkStatusChip(label: question.tag)],
           ),
-        const SizedBox(height: 18),
+        SizedBox(height: AppSpacing.s08),
         Text(
           question.body,
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: AppColors.subtitleTextDarkGrey,
+            color: AppColors.neutral500,
             height: 1.45,
           ),
         ),
-        const SizedBox(height: 18),
+        SizedBox(height: AppSpacing.s08),
         _AuthorRow(
           name: question.authorName,
           subtitle: question.createdLabel,
@@ -155,7 +157,7 @@ class _DetailBody extends ConsumerWidget {
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: AppSpacing.s07),
 
         // Answer Form
         if (showAnswerForm) ...[
@@ -163,7 +165,7 @@ class _DetailBody extends ConsumerWidget {
             questionId: question.id,
             onSubmitted: onToggleAnswerForm,
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: AppSpacing.s10),
         ],
 
         // Answers List
@@ -175,7 +177,7 @@ class _DetailBody extends ConsumerWidget {
           data: (replies) {
             if (replies.isEmpty) {
               return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 32),
+                padding: EdgeInsets.symmetric(vertical: AppSpacing.s10),
                 child: Center(
                   child: Text('No answers yet. Be the first to answer!'),
                 ),
@@ -193,10 +195,10 @@ class _DetailBody extends ConsumerWidget {
                 Text(
                   'Responses ${replies.length}',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.subtitleTextDarkGrey,
+                    color: AppColors.neutral500,
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: AppSpacing.s07),
                 ...pageReplies.map((reply) => AnswerCard(
                   answerId: reply.id,
                   authorName: reply.authorName,
@@ -220,7 +222,7 @@ class _DetailBody extends ConsumerWidget {
                 )),
 
                 if (totalPages > 1) ...[
-                  const SizedBox(height: 24),
+                  SizedBox(height: AppSpacing.s10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -229,9 +231,9 @@ class _DetailBody extends ConsumerWidget {
                           onPressed: () => onPageChanged(currentPage - 1),
                           child: const Text('← Previous'),
                         ),
-                      const SizedBox(width: 16),
+                      SizedBox(width: AppSpacing.s07),
                       Text('Page ${currentPage + 1} of $totalPages'),
-                      const SizedBox(width: 16),
+                      SizedBox(width: AppSpacing.s07),
                       if (currentPage < totalPages - 1)
                         ElevatedButton(
                           onPressed: () => onPageChanged(currentPage + 1),
@@ -292,15 +294,15 @@ class _AuthorRow extends StatelessWidget {
     return Row(
       children: [
         CircleAvatar(
-          backgroundColor: const Color(0xFFFFB5C8),
+          backgroundColor: AppColors.warning300,
           backgroundImage:
               photoUrl != null ? NetworkImage(photoUrl!) : null,
           child: photoUrl == null
               ? Text(name.isNotEmpty ? name[0].toUpperCase() : '?',
-                  style: const TextStyle(color: Colors.white))
+                  style: AppTextStyles.bodyMedium.copyWith(color: AppColors.whiteBase))
               : null,
         ),
-        const SizedBox(width: 12),
+        SizedBox(width: AppSpacing.s06),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -316,7 +318,7 @@ class _AuthorRow extends StatelessWidget {
               style: Theme.of(context)
                   .textTheme
                   .bodySmall
-                  ?.copyWith(color: Colors.grey),
+                  ?.copyWith(color: AppColors.neutral400),
             ),
           ],
         ),

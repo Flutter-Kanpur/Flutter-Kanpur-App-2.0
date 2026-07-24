@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 class ApplicationInfoTile extends StatelessWidget {
   const ApplicationInfoTile({
@@ -16,17 +17,17 @@ class ApplicationInfoTile extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 24),
+      padding: EdgeInsets.only(bottom: AppSpacing.s07),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             title,
             style: theme.textTheme.bodySmall?.copyWith(
-              color: AppColors.textGrey,
+              color: AppColors.neutral400,
             ),
           ),
-          const SizedBox(height: 6),
+          SizedBox(height: AppSpacing.s03),
           Text(
             value,
             style: theme.textTheme.bodyLarge?.copyWith(

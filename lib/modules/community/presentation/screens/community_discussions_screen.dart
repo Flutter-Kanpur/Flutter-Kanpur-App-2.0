@@ -8,6 +8,7 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 // Local filter state for the discussions screen.
 final _discussionFilterProvider =
@@ -60,7 +61,7 @@ class _CommunityDiscussionsScreenState
     final activeFilter = ref.watch(_discussionFilterProvider);
 
     return FkScreen(
-      padding: const EdgeInsets.fromLTRB(22, 12, 22, 96),
+      padding: EdgeInsets.fromLTRB(AppSpacing.s10, AppSpacing.s06, AppSpacing.s10, 96),
       children: [
         // Top bar
         Row(
@@ -85,12 +86,12 @@ class _CommunityDiscussionsScreenState
             ),
           ],
         ),
-        const SizedBox(height: 28),
+        SizedBox(height: AppSpacing.s10),
         FkPrimaryButton(
           label: 'Start a new discussion',
           onPressed: () => context.go(RouteNames.communityAskQuestion),
         ),
-        const SizedBox(height: 18),
+        SizedBox(height: AppSpacing.s08),
         CommunityFilterRow(
           selected: activeFilter,
           onSelected: (filter) {
@@ -98,10 +99,10 @@ class _CommunityDiscussionsScreenState
             ref.read(questionsProvider.notifier).setFilter(filter);
           },
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: AppSpacing.s07),
         questionsAsync.when(
-          loading: () => const Padding(
-            padding: EdgeInsets.symmetric(vertical: 48),
+          loading: () =>  Padding(
+            padding: EdgeInsets.symmetric(vertical: AppSpacing.s10),
             child: Center(child: CircularProgressIndicator()),
           ),
           error: (e, _) => _ErrorView(
@@ -124,10 +125,10 @@ class _CommunityDiscussionsScreenState
                     Text(
                       '${questions.length} discussions',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: AppColors.subtitleTextDarkGrey,
+                            color: AppColors.neutral500,
                           ),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: AppSpacing.s07),
                     ...questions.map(
                       (q) => DiscussionListItem(
                         question: q,
@@ -135,7 +136,7 @@ class _CommunityDiscussionsScreenState
                             context.push('${RouteNames.communityDiscussions}/${q.id}'),
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppSpacing.s10),
                   ],
                 ),
               ),
@@ -155,19 +156,19 @@ class _ErrorView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 48),
+      padding: EdgeInsets.symmetric(vertical: AppSpacing.s10),
       child: Column(
         children: [
-          const Icon(Icons.wifi_off_rounded, size: 48, color: Colors.grey),
-          const SizedBox(height: 12),
+          const Icon(Icons.wifi_off_rounded, size: 48, color: AppColors.neutral400),
+          SizedBox(height: AppSpacing.s06),
           Text(
             'Could not load discussions',
             style: Theme.of(context)
                 .textTheme
                 .bodyLarge
-                ?.copyWith(color: AppColors.subtitleTextDarkGrey),
+                ?.copyWith(color: AppColors.neutral500),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: AppSpacing.s07),
           TextButton(onPressed: onRetry, child: const Text('Try again')),
         ],
       ),
@@ -181,7 +182,7 @@ class _EmptyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 48),
+      padding: EdgeInsets.symmetric(vertical: AppSpacing.s10),
       child: Center(
         child: Text(
           'No discussions yet.\nBe the first to start one!',
@@ -189,7 +190,7 @@ class _EmptyView extends StatelessWidget {
           style: Theme.of(context)
               .textTheme
               .bodyLarge
-              ?.copyWith(color: AppColors.subtitleTextDarkGrey),
+              ?.copyWith(color: AppColors.neutral500),
         ),
       ),
     );

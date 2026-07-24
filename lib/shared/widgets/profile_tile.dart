@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../utils/text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 
 class ProfileTile extends StatelessWidget {
   const ProfileTile({
@@ -24,8 +27,8 @@ class ProfileTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fg = textColor ?? Colors.black87;
-    final iconClr = iconColor ?? Colors.black87;
+    final fg = textColor ?? AppColors.blackBase;
+    final iconClr = iconColor ?? AppColors.blackBase;
     final size = 24.sp;
 
     Widget iconWidget;
@@ -45,15 +48,15 @@ class ProfileTile extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+          padding: AppSpacing.symmetric(horizontal: AppSpacing.s09, vertical: AppSpacing.s06),
           child: Row(
             children: [
               iconWidget,
-              SizedBox(width: 8.w),
+              SizedBox(width: AppSpacing.s04),
               Expanded(
                 child: Text(
                   title,
-                  style: textStyle_16RegularBlack().copyWith(color: fg),
+                  style: AppTextStyles.bodyLarge.copyWith(color: fg),
                 ),
               ),
               Icon(Icons.chevron_right_rounded, size: 24.sp, color: iconClr),

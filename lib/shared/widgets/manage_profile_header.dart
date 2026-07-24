@@ -7,7 +7,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../utils/text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 
 class ManageProfileHeader extends StatelessWidget {
   const ManageProfileHeader({
@@ -43,66 +46,64 @@ class ManageProfileHeader extends StatelessWidget {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.all(3.r),
+          padding: AppSpacing.all01,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
-              color: AppColors.primary,
+              color: AppBorders.blue,
               width: 2.5.r,
             ),
           ),
           child: CircleAvatar(
             radius: 48.r,
-            backgroundColor: AppColors.avatarBackgroundColor,
+            backgroundColor: AppColors.neutral100,
             backgroundImage: photoUrl != null && photoUrl!.isNotEmpty
                 ? NetworkImage(photoUrl!)
                 : null,
             child: photoUrl == null || photoUrl!.isEmpty
                 ? Text(
                     displayName.isNotEmpty ? displayName[0].toUpperCase() : '?',
-                    style: textStyle_18MediumBlack().copyWith(fontSize: 32.sp),
+                    style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w600),
                   )
                 : null,
           ),
         ),
-        SizedBox(height: 12.h),
+        SizedBox(height: AppSpacing.s06),
         Text(
           displayName,
-          style: textStyle_24BoldBlack(),
+          style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
-        SizedBox(height: 8.h),
+        SizedBox(height: AppSpacing.s04),
         Text(
           designation,
-          style: textStyle_14RegularBlack().copyWith(
-            color: const Color(0xFF666666),
-            fontSize: 18.sp,
+          style: AppTextStyles.bodyMedium.copyWith(
+            color: AppColors.neutral500,
           ),
           textAlign: TextAlign.center,
         ),
-        SizedBox(height: 4.h),
+        SizedBox(height: AppSpacing.s02),
         Text(
           username,
-          style: textStyle_14RegularBlack().copyWith(
-            color: const Color(0xFFAAAAAA),
-            fontSize: 16.sp,
+          style: AppTextStyles.bodyMedium.copyWith(
+            color: AppColors.neutral300,
           ),
           textAlign: TextAlign.center,
         ),
-        SizedBox(height: 12.h),
+        SizedBox(height: AppSpacing.s06),
         TextButton(
           onPressed: onEditProfile,
           style: TextButton.styleFrom(
-            padding: EdgeInsets.symmetric(vertical: 8.h),
+            padding: AppSpacing.vertical(AppSpacing.s04),
             minimumSize: Size.zero,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           child: Text(
             translate(context, "profile.editProfile"),
-            style: textStyle_16RegularLinkBlue(),
+            style: AppTextStyles.bodyLarge.copyWith(color: AppColors.primary500),
           ),
         ),
-        SizedBox(height: 16.h),
+        SizedBox(height: AppSpacing.s07),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -112,14 +113,14 @@ class ManageProfileHeader extends StatelessWidget {
                   ? () => _launchURL(githubUrl!)
                   : null,
             ),
-            SizedBox(width: 16.w),
+            SizedBox(width: AppSpacing.s07),
             ProfileSocialIcon(
               svgAsset: AssetsPath.websiteSvg,
               onTap: websiteUrl != null && websiteUrl!.isNotEmpty
                   ? () => _launchURL(websiteUrl!)
                   : null,
             ),
-            SizedBox(width: 16.w),
+            SizedBox(width: AppSpacing.s07),
             ProfileSocialIcon(
               svgAsset: AssetsPath.linkedinSvg,
               onTap: linkedinUrl != null && linkedinUrl!.isNotEmpty
@@ -150,7 +151,7 @@ class ProfileSocialIcon extends StatelessWidget {
       child: Opacity(
         opacity: onTap == null ? 0.4 : 1.0,
         child: InnerShadowContainer(
-          shadowColor: const Color(0XFFB3C4FF).withOpacity(0.08),
+          shadowColor: AppColors.primary200.withOpacity(0.08),
           isShadowBottomLeft: true,
           isShadowBottomRight: true,
           isShadowTopLeft: true,
@@ -159,10 +160,10 @@ class ProfileSocialIcon extends StatelessWidget {
           height: 44.w,
           borderRadius: 22.r,
           child: Padding(
-            padding: EdgeInsets.all(10.sp),
+            padding: AppSpacing.all05,
             child: SvgPicture.asset(
               svgAsset,
-              colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+              colorFilter: const ColorFilter.mode(AppColors.blackBase, BlendMode.srcIn),
             ),
           ),
         ),

@@ -3,7 +3,8 @@ import '../../utils/translate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/gradiants.dart';
-import '../../utils/text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 
 class BackgroundContainer extends StatelessWidget {
   const BackgroundContainer({super.key});
@@ -35,19 +36,19 @@ class BackgroundContainer extends StatelessWidget {
 
 Widget _buildTitle(BuildContext context) {
   return Text(translate(context, 'community.title'),
-      textAlign: TextAlign.center, style: textStyle_45Bold());
+      textAlign: TextAlign.center, style: AppTextStyles.displayMedium.copyWith(color: AppColors.primary200));
 }
 
 Widget _buildSubTitle(BuildContext context) {
   return Text(translate(context, 'community.subtitle'),
-      textAlign: TextAlign.center, style: textStyle_14());
+      textAlign: TextAlign.center, style: AppTextStyles.labelLarge.copyWith(color: AppColors.neutral100));
 }
 
 Widget _buildDashboardTitle(BuildContext context) {
   return Column(
     children: [
       Text(translate(context, 'community.communityDashboard'),
-          style: textStyle_16Bold()),
+          style: AppTextStyles.bodyLarge.copyWith(color: AppColors.primary200, fontWeight: FontWeight.bold)),
     ],
   );
 }

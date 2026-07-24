@@ -22,6 +22,9 @@ import 'package:flutter_knp_mobile_app_v2/modules/events/presentation/screens/ev
 import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/screens/home_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/onboarding/presentation/screens/onboarding_navigation_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/onboarding/presentation/screens/onboarding_success_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/legal/presentation/about.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/legal/presentation/privacy_policy.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/legal/presentation/terms_of_use.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/my_profile_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/edit_profile_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/manage_profile_screen.dart';
@@ -29,6 +32,9 @@ import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/p
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/my_contests_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/my_events_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/problem_of_day_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/support/presentation/screens/contactTeam.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/support/presentation/screens/helpCenter.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/support/presentation/screens/reportIssue.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/screens/app_feedback_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/screens/already_contributor_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/screens/application_submitted_screen.dart';
@@ -335,6 +341,42 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: RouteNames.applicationRejected,
       builder: (context, state) => const ContributorRejectedScreen(),
+    ),
+
+    /// About Flutter Kanpur
+    GoRoute(
+      path: RouteNames.aboutFlutterKanpur,
+      builder: (context, state) => const AboutFlutterKanpur(),
+    ),
+
+    /// Privacy Policy
+    GoRoute(
+      path: RouteNames.privacyPolicy,
+      builder: (context, state) => const PrivacyPolicy(),
+    ),
+
+    /// Terms of Use
+    GoRoute(
+      path: RouteNames.termsOfUse,
+      builder: (context, state) => const TermsOfUse(),
+    ),
+
+    /// Help Center
+    GoRoute(
+      path: RouteNames.helpCenter,
+      builder: (context, state) => const HelpCenterScreen(),
+    ),
+
+    /// Contact Community Team
+    GoRoute(
+      path: RouteNames.contactCommunityTeam,
+      builder: (context, state) => const ContactCommunityTeamScreen(),
+    ),
+
+    /// Report an Issue
+    GoRoute(
+      path: RouteNames.reportAnIssue,
+      builder: (context, state) => const ReportAnIssueScreen(),
     ),
   ],
 );

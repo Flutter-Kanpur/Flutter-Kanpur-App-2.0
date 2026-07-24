@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 class ContributorActionCard extends StatelessWidget {
   const ContributorActionCard({
@@ -20,24 +22,24 @@ class ContributorActionCard extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Material(
-      color: AppColors.bgSecondary,
-      borderRadius: BorderRadius.circular(18),
+      color: AppColors.neutral50,
+      borderRadius: AppRadius.all04,
       child: InkWell(
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: AppRadius.all04,
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.all(18),
+          padding: AppSpacing.all08,
           decoration: BoxDecoration(
-            color: AppColors.contributorActionCardBg,
-            borderRadius: BorderRadius.circular(18),
+            color: AppColors.primary50,
+            borderRadius: AppRadius.all04,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CircleAvatar(radius: 18, child: Icon(icon, size: 18)),
-              const SizedBox(height: 20),
+              SizedBox(height: AppSpacing.s09),
               Text(title, style: theme.textTheme.titleMedium),
-              const SizedBox(height: 6),
+              SizedBox(height: AppSpacing.s03),
               Text(subtitle, style: theme.textTheme.bodySmall),
             ],
           ),

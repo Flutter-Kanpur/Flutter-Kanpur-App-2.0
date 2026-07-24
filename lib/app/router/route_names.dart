@@ -51,6 +51,16 @@ class RouteNames {
   static const myContests = '/profile/my-contests';
   static const problemOfDay = '/profile/problem-of-day';
 
+  /// Legal
+  static const aboutFlutterKanpur = '/profile/about-flutter-kanpur';
+  static const privacyPolicy = '/profile/privacy-policy';
+  static const termsOfUse = '/profile/terms-of-use';
+
+  /// Support
+  static const helpCenter = '/profile/help-center';
+  static const contactCommunityTeam = '/profile/contact-community-team';
+  static const reportAnIssue = '/profile/report-an-issue';
+
   /// Onboarding Segments
   static const onboardingProfileSegment = 'profile';
   static const onboardingRoleSegment = 'role';

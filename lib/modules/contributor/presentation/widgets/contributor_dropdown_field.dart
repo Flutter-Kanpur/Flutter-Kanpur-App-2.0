@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class ContributorDropdownField extends StatelessWidget {
   const ContributorDropdownField({
@@ -33,53 +37,53 @@ class ContributorDropdownField extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: 10),
+        SizedBox(height: AppSpacing.s05),
 
         DropdownButtonFormField<String>(
           initialValue: value,
           isExpanded: true,
-          dropdownColor: AppColors.cardBackground,
+          dropdownColor: AppColors.whiteBase,
           validator: validator,
           autovalidateMode: AutovalidateMode.onUserInteraction,
 
           hint: Text(
             hint,
-            style: const TextStyle(color: AppColors.contributorFieldHint),
+            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral300),
           ),
 
           decoration: InputDecoration(
             filled: true,
-            fillColor: AppColors.cardBackground,
+            fillColor: AppColors.whiteBase,
 
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 18,
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: AppSpacing.s07,
+              vertical: AppSpacing.s08,
             ),
 
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(
-                color: AppColors.contributorFieldBorder,
+              borderRadius: AppRadius.all03,
+              borderSide: BorderSide(
+                color: AppBorders.primary,
               ),
             ),
 
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(
-                color: AppColors.contributorFocusFieldBorder,
+              borderRadius: AppRadius.all03,
+              borderSide: BorderSide(
+                color: AppBorders.blue,
                 width: 1.5,
               ),
             ),
 
             errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(color: AppColors.errorColor),
+              borderRadius: AppRadius.all03,
+              borderSide: BorderSide(color: AppBorders.blue),
             ),
 
             focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: AppRadius.all03,
               borderSide: const BorderSide(
-                color: AppColors.errorColor,
+                color: AppColors.warning600,
                 width: 1.5,
               ),
             ),
@@ -98,7 +102,7 @@ class ContributorDropdownField extends StatelessWidget {
 
           icon: const Icon(
             Icons.keyboard_arrow_down_rounded,
-            color: AppColors.textGrey,
+            color: AppColors.neutral400,
           ),
         ),
       ],

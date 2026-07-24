@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import '../../../utils/translate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../utils/text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 
 class ManageProfileSectionCard extends StatelessWidget {
   const ManageProfileSectionCard({
@@ -27,40 +31,37 @@ class ManageProfileSectionCard extends StatelessWidget {
       children: [
         Text(
           title,
-          style: textStyle_16BoldBlack().copyWith(fontSize: 16.sp),
+          style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w800),
         ),
         if (value != null) ...[
-          SizedBox(height: 8.h),
+          SizedBox(height: AppSpacing.s04),
           Text(
             value!,
-            style: textStyle_16RegularBlack().copyWith(
-              color: AppColors.subtitleTextDarkGrey,
-              fontSize: 14.sp,
+            style: AppTextStyles.bodyLarge.copyWith(
+              color: AppColors.neutral500,
             ),
           ),
         ],
         if (child != null) ...[
-          SizedBox(height: 8.h),
+          SizedBox(height: AppSpacing.s04),
           child!,
         ],
         if (tags != null && tags!.isNotEmpty) ...[
-          SizedBox(height: 12.h),
+          SizedBox(height: AppSpacing.s06),
           Wrap(
-            spacing: 8.w,
-            runSpacing: 8.h,
+            spacing: AppSpacing.s04,
+            runSpacing: AppSpacing.s04,
             children: tags!.map((t) => _SectionPill(label: t)).toList(),
           ),
         ],
         if (onEdit != null) ...[
-          SizedBox(height: 10.h),
+          SizedBox(height: AppSpacing.s05),
           GestureDetector(
             onTap: onEdit,
             child: Text(
               translate(context, "profile.edit"),
-              style: textStyle_14RegularBlack().copyWith(
-                color: AppColors.selectedNavBarIconColor,
-                fontWeight: FontWeight.w500,
-                fontSize: 14.sp,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.primary500,
               ),
             ),
           ),
@@ -78,16 +79,16 @@ class _SectionPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+      padding: AppSpacing.symmetric(horizontal: AppSpacing.s09, vertical: AppSpacing.s05),
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: AppColors.communityBorderColorV2),
-        borderRadius: BorderRadius.circular(100),
+        color: AppColors.whiteBase,
+        border: Border.all(color: AppBorders.secondary),
+        borderRadius: AppRadius.all09,
       ),
       child: Text(
         label,
-        style: textStyle_14RegularBlack().copyWith(
-          color: const Color(0xFF3D3D3D),
+        style: AppTextStyles.bodyMedium.copyWith(
+          color: AppColors.neutral900,
         ),
       ),
     );

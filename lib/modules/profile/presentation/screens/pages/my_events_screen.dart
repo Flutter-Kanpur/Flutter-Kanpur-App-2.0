@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
-import 'package:flutter_knp_mobile_app_v2/utils/text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +10,8 @@ import '../../../application/my_events_provider.dart';
 import '../../../application/my_events_state.dart';
 import '../widgets/my_event_card.dart';
 import '../widgets/pill_filter_tabs.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 class MyEventsScreen extends ConsumerWidget {
   const MyEventsScreen({super.key});
@@ -28,7 +29,7 @@ class MyEventsScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(20.w, 8.h, 20.w, 0),
+                padding: EdgeInsets.fromLTRB(AppSpacing.s09, AppSpacing.s04, AppSpacing.s09, AppSpacing.s00),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -39,20 +40,20 @@ class MyEventsScreen extends ConsumerWidget {
                       icon: Icon(
                         Icons.arrow_back,
                         size: 22.sp,
-                        color: AppColors.textBlack,
+                        color: AppColors.blackBase,
                       ),
                     ),
-                    SizedBox(height: 16.h),
-                    Text('My Events', style: textStyle_24BlackBold()),
-                    SizedBox(height: 8.h),
+                    SizedBox(height: AppSpacing.s07),
+                    Text('My Events', style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold)),
+                    SizedBox(height: AppSpacing.s04),
                     Text(
                       "Events you've registered for and attended.",
-                      style: textStyle_16RegularGrey(),
+                      style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: AppSpacing.s09),
               PillFilterTabs(
                 labels: MyEventsTab.values.map((tab) => tab.label).toList(),
                 selectedIndex: selectedTab.index,
@@ -60,27 +61,27 @@ class MyEventsScreen extends ConsumerWidget {
                     .read(myEventsSelectedTabProvider.notifier)
                     .select(MyEventsTab.values[index]),
               ),
-              SizedBox(height: 16.h),
+              SizedBox(height: AppSpacing.s07),
               Expanded(
                 child: events.isEmpty
                     ? Center(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 32.w),
+                          padding: EdgeInsets.symmetric(horizontal: AppSpacing.s10),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
                                 selectedTab.emptyHeading,
                                 textAlign: TextAlign.center,
-                                style: textStyle_18BoldBlack(),
+                                style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(height: 8.h),
+                              SizedBox(height: AppSpacing.s04),
                               Text(
                                 selectedTab.emptySubheading,
                                 textAlign: TextAlign.center,
-                                style: textStyle_16RegularGrey(),
+                                style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
                               ),
-                              SizedBox(height: 20.h),
+                              SizedBox(height: AppSpacing.s09),
                               SizedBox(
                                 width: 220.w,
                                 child: GradientButton(
@@ -98,9 +99,9 @@ class MyEventsScreen extends ConsumerWidget {
                         ),
                       )
                     : ListView.separated(
-                        padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 24.h),
+                        padding: EdgeInsets.fromLTRB(AppSpacing.s09, AppSpacing.s00, AppSpacing.s09, AppSpacing.s10),
                         itemCount: events.length,
-                        separatorBuilder: (_, __) => SizedBox(height: 16.h),
+                        separatorBuilder: (_, __) => SizedBox(height: AppSpacing.s07),
                         itemBuilder: (context, index) {
                           final event = events[index];
                           return MyEventCard(

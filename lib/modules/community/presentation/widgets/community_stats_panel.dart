@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 class CommunityStatsPanel extends StatelessWidget {
   const CommunityStatsPanel({
@@ -17,10 +19,10 @@ class CommunityStatsPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+      padding: AppSpacing.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s09),
       decoration: BoxDecoration(
-        color: AppColors.communityGuidelinesContainerBackground,
-        borderRadius: BorderRadius.circular(20),
+        color: AppColors.primary50,
+        borderRadius: AppRadius.all05,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -47,16 +49,16 @@ class _StatItem extends StatelessWidget {
         Text(
           value,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: Colors.black,
+                color: AppColors.blackBase,
                 fontWeight: FontWeight.w500,
               ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: AppSpacing.s03),
         Text(
           label,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.subtitleTextDarkGrey,
+                color: AppColors.neutral500,
               ),
         ),
       ],

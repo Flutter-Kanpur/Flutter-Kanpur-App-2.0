@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_knp_mobile_app_v2/sandbox/app-colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class ContributorSkillChip extends StatelessWidget {
   const ContributorSkillChip({
@@ -14,10 +16,10 @@ class ContributorSkillChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Chip(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      backgroundColor: AppColors.appBackgroundV2,
-      label: Text(label, style: TextStyle(color: AppColors.textWhite)),
-      deleteIcon: const Icon(Icons.close, size: 18, color: AppColors.textWhite),
+      shape: RoundedRectangleBorder(borderRadius: AppRadius.all05),
+      backgroundColor: AppColors.whiteBase,
+      label: Text(label, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.whiteBase)),
+      deleteIcon: const Icon(Icons.close, size: 18, color: AppColors.whiteBase),
       onDeleted: onDeleted,
     );
   }

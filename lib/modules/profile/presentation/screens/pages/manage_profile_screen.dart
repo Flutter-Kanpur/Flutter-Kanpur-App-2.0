@@ -13,6 +13,7 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/problem_of_day_section.
 import 'package:flutter_knp_mobile_app_v2/utils/translate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 
 
@@ -78,16 +79,16 @@ class _ManageProfileScreenState extends State<ManageProfileScreen> {
             icon: Icon(
               Icons.arrow_back,
               size: 22.sp,
-              color: const Color(0xFF161616),
+              color: AppColors.blackBase,
             ),
           ),
           title: Text(
             translate(context, "profile.manageProfile"),
-            style: textStyle_16MediumBlack().copyWith(fontSize: 18.sp),
+            style: AppTextStyles.titleMedium,
           ),
         ),
         body: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  padding: AppSpacing.horizontal(AppSpacing.s09),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -102,26 +103,25 @@ class _ManageProfileScreenState extends State<ManageProfileScreen> {
                         onEditProfile: () =>
                             context.push('/profile/edit-profile'),
                       ),
-                      SizedBox(height: 24.h),
+                      SizedBox(height: AppSpacing.s10),
                       ProblemOfDaySection(
                         level: 2,
                         progress: 0.25,
                         onViewProgress: () =>
                             context.push(RouteNames.problemOfDay),
                       ),
-                      SizedBox(height: 24.h),
+                      SizedBox(height: AppSpacing.s10),
                       ManageProfileSectionCard(
                         title: translate(context, "profile.aboutMe"),
                         child: Text(
                           about ?? '',
-                          style: textStyle_16RegularBlack().copyWith(
-                            color: AppColors.subtitleTextDarkGrey,
-                            height: 1.5,
-                            fontSize: 14.sp,
+                          style: AppTextStyles.bodyLarge.copyWith(
+                            color: AppColors.neutral500,
+                            height: 1.5.sp,
                           ),
                         ),
                       ),
-                      SizedBox(height: 24.h),
+                      SizedBox(height: AppSpacing.s10),
                       ManageProfileSectionCard(
                         title: translate(context, "profile.roleExperience"),
                         value: yearsOfExp,
@@ -130,7 +130,7 @@ class _ManageProfileScreenState extends State<ManageProfileScreen> {
                             ? _showAddRoleExperienceBottomSheet(context, profile)
                             : null,
                       ),
-                      SizedBox(height: 24.h),
+                      SizedBox(height: AppSpacing.s10),
                       ManageProfileSectionCard(
                         title: translate(context, "profile.skills"),
                         tags: skills,
@@ -138,7 +138,7 @@ class _ManageProfileScreenState extends State<ManageProfileScreen> {
                             ? _showAddSkillsBottomSheet(context, profile)
                             : null,
                       ),
-                      SizedBox(height: 32.h),
+                      SizedBox(height: AppSpacing.s10),
                       Row(
                         children: [
                           Expanded(
@@ -156,9 +156,8 @@ class _ManageProfileScreenState extends State<ManageProfileScreen> {
                               },
                               isLoading: isLoading,
                               text: translate(context, "profile.saveChanges"),
-                              textStyle: textStyle_16MediumBlack().copyWith(
-                                color: Colors.white,
-                                fontSize: 14.sp,
+                              textStyle: AppTextStyles.titleMedium.copyWith(
+                                color: AppColors.whiteBase,
                               ),
                             ),
                           ),
@@ -167,16 +166,14 @@ class _ManageProfileScreenState extends State<ManageProfileScreen> {
                               onPressed: () => context.pop(),
                               child: Text(
                                 translate(context, "profile.cancel"),
-                                style: textStyle_16MediumBlack().copyWith(
-                                  fontSize: 14.sp,
-                                  color: const Color(0xFF161616),
+                                style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase,
                                 ),
                               ),
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 40.h),
+                      SizedBox(height: AppSpacing.s10),
                     ],
                   ),
                 ),

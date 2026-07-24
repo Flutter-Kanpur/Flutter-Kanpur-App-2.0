@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 
 class ContributorInfoCard extends StatelessWidget {
   const ContributorInfoCard({
     super.key,
     required this.text,
     required this.backgroundColor,
-    this.textColor = Colors.black87,
+    this.textColor = AppColors.blackBase,
   });
 
   final String text;
@@ -18,10 +21,10 @@ class ContributorInfoCard extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+      padding: AppSpacing.symmetric(horizontal: AppSpacing.s09, vertical: AppSpacing.s08),
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: AppRadius.all04,
       ),
       child: Text(
         text,
