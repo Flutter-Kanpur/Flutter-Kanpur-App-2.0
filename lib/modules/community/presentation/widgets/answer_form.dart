@@ -110,7 +110,7 @@ class _AnswerFormState extends ConsumerState<AnswerForm> {
     });
 
     return Container(
-      padding: AppSpacing.all06,
+      padding: AppSpacing.all(AppSpacing.h12),
       decoration: BoxDecoration(
         border: Border.all(color: AppBorders.primary),
         borderRadius: AppRadius.all02,
@@ -125,30 +125,30 @@ class _AnswerFormState extends ConsumerState<AnswerForm> {
               fontWeight: FontWeight.w700,
             ),
           ),
-          SizedBox(height: AppSpacing.s06),
+          SizedBox(height: AppSpacing.v12),
           FkTextField(
             label: 'Answer',
             hint: 'Write your detailed answer here...',
             controller: _bodyController,
             maxLines: 5,
           ),
-          SizedBox(height: AppSpacing.s06),
+          SizedBox(height: AppSpacing.v12),
           FkTextField(
             label: 'Code Snippet (Optional)',
             hint: 'Paste your code here if relevant...',
             controller: _codeController,
             maxLines: 4,
           ),
-          SizedBox(height: AppSpacing.s06),
+          SizedBox(height: AppSpacing.v12),
           Text(
             'Attach file (Optional)',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w600,
             ),
           ),
-          SizedBox(height: AppSpacing.s04),
+          SizedBox(height: AppSpacing.v8),
           const FkFileUploadBox(),
-          SizedBox(height: AppSpacing.s07),
+          SizedBox(height: AppSpacing.v16),
           Row(
             children: [
               Expanded(

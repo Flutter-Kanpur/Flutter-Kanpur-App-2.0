@@ -22,17 +22,17 @@ class TermsOfService extends StatelessWidget {
             subtitle: '',
             leading: FkBackButton(),
           ),
-          SizedBox(height: AppSpacing.s10),
+          SizedBox(height: AppSpacing.v22),
           Text("termsOfServices.termsOfServices1".tr(), style: usedTextTheme),
-          SizedBox(height: AppSpacing.s10),
+          SizedBox(height: AppSpacing.v22),
           Text("termsOfServices.termsOfServices2".tr(), style: usedTextTheme),
-          SizedBox(height: AppSpacing.s10),
+          SizedBox(height: AppSpacing.v22),
           Text("termsOfServices.termsOfServices3".tr(), style: usedTextTheme),
-          SizedBox(height: AppSpacing.s10),
+          SizedBox(height: AppSpacing.v22),
           Text("termsOfServices.termsOfServices4".tr(), style: usedTextTheme),
-          SizedBox(height: AppSpacing.s10),
+          SizedBox(height: AppSpacing.v22),
           Container(
-            padding: AppSpacing.all04,
+            padding: AppSpacing.all(AppSpacing.h8),
             width: double.infinity,
             decoration: BoxDecoration(
               color: AppColors.warning100,
@@ -42,13 +42,13 @@ class TermsOfService extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(top: AppSpacing.s01),
+                  padding: EdgeInsets.only(top: AppSpacing.v2),
                   child: Icon(
                     Icons.warning_rounded,
                     color: AppColors.warning600,
                   ),
                 ),
-                SizedBox(width: AppSpacing.s07),
+                SizedBox(width: AppSpacing.h16),
                 Expanded(
                   child: Text(
                     "termsOfServices.termsOfServicesWarning".tr(),

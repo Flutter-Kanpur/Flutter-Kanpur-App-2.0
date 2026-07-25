@@ -73,7 +73,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     return Container(
       height: 56,
-      padding: AppSpacing.horizontal(AppSpacing.s07),
+      padding: AppSpacing.horizontal(AppSpacing.h16),
       decoration: BoxDecoration(
         color: widget.fillColor,
         border: widget.showBorder
@@ -96,8 +96,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
           hintText: widget.text,
           hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500),
           contentPadding: EdgeInsets.symmetric(
-            horizontal: AppSpacing.s00,
-            vertical: AppSpacing.s08,
+            horizontal: 0,
+            vertical: AppSpacing.v18,
           ),
           suffixIcon: widget.isPassword && widget.enablePasswordToggle
               ? IconButton(
@@ -114,7 +114,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 )
               : widget.showTickIcon
               ? Padding(
-                  padding: AppSpacing.all06,
+                  padding: AppSpacing.all(AppSpacing.h12),
                   child: SvgPicture.asset(AppAssets.greenTickIcon),
                 )
               : const SizedBox.shrink(),

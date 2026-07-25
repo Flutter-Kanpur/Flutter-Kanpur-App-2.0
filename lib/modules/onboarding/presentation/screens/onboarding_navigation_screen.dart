@@ -69,13 +69,13 @@ class _OnboardingNavigationScreenState
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s05),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v10),
 
               child: OnboardingProgressBar(currentStep: _currentStep),
             ),
 
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16),
 
               child: Column(
                 children: [

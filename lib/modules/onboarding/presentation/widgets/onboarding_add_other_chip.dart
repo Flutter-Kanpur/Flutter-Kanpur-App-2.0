@@ -22,7 +22,7 @@ class OnboardingAddOtherChip extends StatelessWidget {
       width: 170.w,
 
       padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.s07,
+        horizontal: AppSpacing.h16,
       ),
 
       decoration: BoxDecoration(

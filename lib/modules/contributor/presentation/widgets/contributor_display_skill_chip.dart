@@ -12,7 +12,7 @@ class ContributorDisplaySkillChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: AppSpacing.symmetric(horizontal: AppSpacing.s06, vertical: AppSpacing.s04),
+      padding: AppSpacing.symmetric(horizontal: AppSpacing.h12, vertical: AppSpacing.v8),
       decoration: BoxDecoration(
         color: AppColors.whiteBase,
         borderRadius: AppRadius.all02,

@@ -34,7 +34,7 @@ class ManageProfileSectionCard extends StatelessWidget {
           style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w800),
         ),
         if (value != null) ...[
-          SizedBox(height: AppSpacing.s04),
+          SizedBox(height: AppSpacing.v8),
           Text(
             value!,
             style: AppTextStyles.bodyLarge.copyWith(
@@ -43,19 +43,19 @@ class ManageProfileSectionCard extends StatelessWidget {
           ),
         ],
         if (child != null) ...[
-          SizedBox(height: AppSpacing.s04),
+          SizedBox(height: AppSpacing.v8),
           child!,
         ],
         if (tags != null && tags!.isNotEmpty) ...[
-          SizedBox(height: AppSpacing.s06),
+          SizedBox(height: AppSpacing.v12),
           Wrap(
-            spacing: AppSpacing.s04,
-            runSpacing: AppSpacing.s04,
+            spacing: AppSpacing.h8,
+            runSpacing: AppSpacing.v8,
             children: tags!.map((t) => _SectionPill(label: t)).toList(),
           ),
         ],
         if (onEdit != null) ...[
-          SizedBox(height: AppSpacing.s05),
+          SizedBox(height: AppSpacing.v10),
           GestureDetector(
             onTap: onEdit,
             child: Text(
@@ -79,7 +79,7 @@ class _SectionPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: AppSpacing.symmetric(horizontal: AppSpacing.s09, vertical: AppSpacing.s05),
+      padding: AppSpacing.symmetric(horizontal: AppSpacing.h20, vertical: AppSpacing.v10),
       decoration: BoxDecoration(
         color: AppColors.whiteBase,
         border: Border.all(color: AppBorders.secondary),

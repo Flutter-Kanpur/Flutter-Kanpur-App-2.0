@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/application/community_provider.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_ask_banner.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_contribute_section.dart';
@@ -29,16 +30,14 @@ class CommunityScreen extends ConsumerWidget {
         await ref.read(communityMembersProvider.notifier).refresh();
       },
       child: FkScreen(
-        padding: EdgeInsets.fromLTRB(AppSpacing.s10, AppSpacing.s00, AppSpacing.s10, 96),
+        padding: EdgeInsets.fromLTRB(AppSpacing.h22, 0, AppSpacing.h22, 96),
         children: [
         Row(
           children: [
             Expanded(
               child: Text(
                 'Community',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                style: AppTextStyles.titleLarge
               ),
             ),
             IconButton(
@@ -51,7 +50,7 @@ class CommunityScreen extends ConsumerWidget {
             ),
           ],
         ),
-        SizedBox(height: AppSpacing.s08),
+        SizedBox(height: AppSpacing.v18),
         CommunityAskBanner(
           onTap: () => context.go(RouteNames.communityAskQuestion),
         ),
@@ -76,7 +75,7 @@ class CommunityScreen extends ConsumerWidget {
             return LayoutBuilder(
               builder: (context, constraints) {
                 final cardWidth =
-                    (constraints.maxWidth * 0.86).clamp(272.0, 300.0);
+                    (constraints.maxWidth * 0.90);
                 return SizedBox(
                   height: 280,
                   child: ListView.separated(
@@ -84,7 +83,7 @@ class CommunityScreen extends ConsumerWidget {
                     clipBehavior: Clip.none,
                     itemCount: questions.length,
                     separatorBuilder: (context, index) =>
-                        SizedBox(width: AppSpacing.s06),
+                        SizedBox(width: AppSpacing.h12),
                     itemBuilder: (_, i) => CommunityDiscussionCard(
                       question: questions[i],
                       width: cardWidth,
@@ -98,14 +97,15 @@ class CommunityScreen extends ConsumerWidget {
             );
           },
         ),
-        SizedBox(height: AppSpacing.s10),
+        SizedBox(height: AppSpacing.v22),
         const FkSectionTitle(title: 'Contribute'),
         SizedBox(
-          height: 232,
+          height: 300,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
+                flex: 3,
                 child: CommunityContributeCard(
                   label: 'Open to all',
                   title: 'Upload Your Projects',
@@ -113,8 +113,9 @@ class CommunityScreen extends ConsumerWidget {
                   onTap: () => context.go(RouteNames.communityUploadProject),
                 ),
               ),
-              SizedBox(width: AppSpacing.s06),
+              SizedBox(width: AppSpacing.h12),
               Expanded(
+                flex: 4,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -126,7 +127,7 @@ class CommunityScreen extends ConsumerWidget {
                         onTap: () => context.go(RouteNames.blogs),
                       ),
                     ),
-                    SizedBox(height: AppSpacing.s06),
+                    SizedBox(height: AppSpacing.v12),
                     Expanded(
                       flex: 4,
                       child: CommunityContributeCard(
@@ -141,12 +142,12 @@ class CommunityScreen extends ConsumerWidget {
             ],
           ),
         ),
-        SizedBox(height: AppSpacing.s10),
+        SizedBox(height: AppSpacing.v22),
         const FkSectionTitle(title: 'Community Stats'),
         const CommunityStatsPanel(),
-        SizedBox(height: AppSpacing.s06),
+        SizedBox(height: AppSpacing.v12),
         FkPrimaryButton(label: 'Join us on discord', onPressed: () {}),
-        SizedBox(height: AppSpacing.s10),
+        SizedBox(height: AppSpacing.v22),
         const FkSectionTitle(title: 'Our team'),
         membersAsync.when(
           loading: () => const SizedBox(
@@ -156,25 +157,24 @@ class CommunityScreen extends ConsumerWidget {
           error: (_, __) => const SizedBox.shrink(),
           data: (members) => CommunityTeamCarousel(members: members),
         ),
-        SizedBox(height: AppSpacing.s10),
+        SizedBox(height: 4*AppSpacing.v22),
         Text(
           'Built for the\nflutter\ncommunity!',
-          style: Theme.of(context).textTheme.displaySmall?.copyWith(
+          style: AppTextStyles.displayMedium.copyWith(
                 color: AppColors.neutral200,
-                fontWeight: FontWeight.w800,
-                height: 1.28,
+
               ),
         ),
-        SizedBox(height: AppSpacing.s08),
+        SizedBox(height: AppSpacing.v18),
         Row(
           children: [
             Text('Crafted with ',
-                style: Theme.of(context).textTheme.bodyMedium),
-            const Icon(Icons.favorite, color: AppColors.warning600, size: 18),
+                style: AppTextStyles.bodyMedium),
+            const Icon(Icons.favorite, color: AppColors.warning600,),
             Expanded(
               child: Text(
                 ' by the Flutter Kanpur Community',
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: AppTextStyles.bodyMedium,
               ),
             ),
           ],
@@ -194,7 +194,7 @@ class _ErrorTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: AppSpacing.all07,
+      padding: AppSpacing.all(AppSpacing.h16),
       decoration: BoxDecoration(
         color: AppColors.warning50,
         borderRadius: AppRadius.all03,
@@ -202,7 +202,7 @@ class _ErrorTile extends StatelessWidget {
       child: Row(
         children: [
           const Icon(Icons.error_outline, color: AppColors.warning600),
-          SizedBox(width: AppSpacing.s05),
+          SizedBox(width: AppSpacing.h10),
           Expanded(
             child: Text(message,
                 style: Theme.of(context)
@@ -225,7 +225,7 @@ class _EmptyTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: AppSpacing.s07),
+      padding: EdgeInsets.symmetric(vertical: AppSpacing.v16),
       child: Center(
         child: Text(message,
             style: Theme.of(context)

@@ -145,7 +145,7 @@ class MyProfileScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: AppSpacing.s10),
+                  SizedBox(height: AppSpacing.v22),
                 ],
               ),
             ),

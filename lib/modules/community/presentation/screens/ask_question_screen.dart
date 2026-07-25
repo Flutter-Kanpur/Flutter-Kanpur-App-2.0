@@ -96,20 +96,20 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
           title: 'Ask a question',
           onBack: () => context.pop(),
         ),
-        SizedBox(height: AppSpacing.s10),
+        SizedBox(height: AppSpacing.v22),
         FkTextField(
           label: 'Question title',
           hint: 'Enter title',
           controller: _titleController,
         ),
-        SizedBox(height: AppSpacing.s10),
+        SizedBox(height: AppSpacing.v22),
         FkTextField(
           label: 'Details',
           hint: "Add more context, code snippets, or what you've tried so far.",
           controller: _detailsController,
           maxLines: 5,
         ),
-        SizedBox(height: AppSpacing.s10),
+        SizedBox(height: AppSpacing.v22),
         // Category Dropdown
         Text(
           'Choose a category',
@@ -117,9 +117,9 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
                 fontWeight: FontWeight.w600,
               ),
         ),
-        SizedBox(height: AppSpacing.s04),
+        SizedBox(height: AppSpacing.v8),
         Container(
-          padding: AppSpacing.horizontal(AppSpacing.s06),
+          padding: AppSpacing.horizontal(AppSpacing.h12),
           decoration: BoxDecoration(
             border: Border.all(color: AppBorders.primary),
             borderRadius: AppRadius.all02,
@@ -141,25 +141,25 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
             },
           ),
         ),
-        SizedBox(height: AppSpacing.s04),
+        SizedBox(height: AppSpacing.v8),
         Align(
           alignment: Alignment.centerLeft,
           child: FkStatusChip(label: '$_selectedCategory  X'),
         ),
-        SizedBox(height: AppSpacing.s10),
+        SizedBox(height: AppSpacing.v22),
         // Tags Input
         FkTextField(
           label: 'Tags',
           hint: 'add tags',
           controller: _tagsController,
         ),
-        SizedBox(height: AppSpacing.s04),
+        SizedBox(height: AppSpacing.v8),
         Align(
           alignment: Alignment.centerLeft,
           child: GestureDetector(
             onTap: _addTag,
             child: Container(
-              padding: AppSpacing.symmetric(horizontal: AppSpacing.s06, vertical: AppSpacing.s04),
+              padding: AppSpacing.symmetric(horizontal: AppSpacing.h12, vertical: AppSpacing.v8),
               decoration: BoxDecoration(
                 border: Border.all(color: AppBorders.blue),
                 borderRadius: AppRadius.all01,
@@ -168,11 +168,11 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
             ),
           ),
         ),
-        SizedBox(height: AppSpacing.s06),
+        SizedBox(height: AppSpacing.v12),
         if (_selectedTags.isNotEmpty)
           Wrap(
-            spacing: AppSpacing.s04,
-            runSpacing: AppSpacing.s04,
+            spacing: AppSpacing.h8,
+            runSpacing: AppSpacing.v8,
             children: _selectedTags
                 .map((tag) => GestureDetector(
                       onTap: () => _removeTag(tag),
@@ -180,7 +180,7 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
                     ))
                 .toList(),
           ),
-        SizedBox(height: AppSpacing.s10),
+        SizedBox(height: AppSpacing.v22),
         // File Upload
         Text(
           'Upload screenshot or file (optional)',
@@ -188,9 +188,9 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
                 fontWeight: FontWeight.w700,
               ),
         ),
-        SizedBox(height: AppSpacing.s05),
+        SizedBox(height: AppSpacing.v10),
         const FkFileUploadBox(),
-        SizedBox(height: AppSpacing.s10),
+        SizedBox(height: AppSpacing.v22),
         // Submit Button
         FkPrimaryButton(
           label: 'Post question',
@@ -244,7 +244,7 @@ class _TopBar extends StatelessWidget {
                 ),
           ),
         ),
-        SizedBox(width: AppSpacing.s10),
+        SizedBox(width: AppSpacing.h22),
       ],
     );
   }

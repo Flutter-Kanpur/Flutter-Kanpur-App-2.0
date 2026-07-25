@@ -18,7 +18,7 @@ class NoContributionsScreen extends StatelessWidget {
     return GradientBackground(
       child: SafeArea(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(AppSpacing.s09, AppSpacing.s08, AppSpacing.s09, 24),
+          padding: EdgeInsets.fromLTRB(AppSpacing.h20, AppSpacing.h18, AppSpacing.h20, 24),
           child: Column(
             children: [
               FkHeader(
@@ -39,7 +39,7 @@ class NoContributionsScreen extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: AppSpacing.s04),
+              SizedBox(height: AppSpacing.v8),
 
               Text(
                 "contributor.noContributionsDescription".tr(),
@@ -47,7 +47,7 @@ class NoContributionsScreen extends StatelessWidget {
                 style: theme.textTheme.bodyMedium,
               ),
 
-              SizedBox(height: AppSpacing.s10),
+              SizedBox(height: AppSpacing.v22),
 
               FkPrimaryButton(
                 label: "contributor.joinAsContributor".tr(),

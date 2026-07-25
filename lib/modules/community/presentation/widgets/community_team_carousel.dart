@@ -1,6 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_models.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
@@ -34,7 +33,7 @@ class CommunityTeamCarousel extends StatelessWidget {
           height: 72,
           child: _AutoScrollRow(members: row1, leftToRight: true),
         ),
-        SizedBox(height: AppSpacing.s05),
+        SizedBox(height: AppSpacing.v10),
         SizedBox(
           height: 72,
           child: _AutoScrollRow(members: row2, leftToRight: false),
@@ -44,7 +43,7 @@ class CommunityTeamCarousel extends StatelessWidget {
   }
 }
 
-// StatefulWidget is required here for ScrollController + Timer (animation only, no data state).
+// StatefulWidget is required here for ScrollController + Ticker (animation only, no data state).
 class _AutoScrollRow extends StatefulWidget {
   const _AutoScrollRow({required this.members, required this.leftToRight});
 
@@ -55,76 +54,76 @@ class _AutoScrollRow extends StatefulWidget {
   State<_AutoScrollRow> createState() => _AutoScrollRowState();
 }
 
-class _AutoScrollRowState extends State<_AutoScrollRow> {
-  static const _tick = Duration(milliseconds: 32);
-  static const _step = 0.7;
+class _AutoScrollRowState extends State<_AutoScrollRow>
+    with SingleTickerProviderStateMixin {
+  /// Scroll speed in logical pixels per second.
+  static const _pixelsPerSecond = 22.0;
+  static const _pillWidth = 206.0;
+
+  /// The list renders three copies of [members], so scrolling exactly one
+  /// copy's width lands on a pixel-identical frame — the wrap is invisible.
+  static const _copies = 3;
 
   final _controller = ScrollController();
-  Timer? _timer;
-  bool _rtlInit = false;
+  late final Ticker _ticker;
+  Duration _lastElapsed = Duration.zero;
+  double _offset = 0;
+
+  double get _gap => AppSpacing.h10;
+  double get _itemExtent => _pillWidth + _gap;
+  double get _cycle => widget.members.length * _itemExtent;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _start());
+    _ticker = createTicker(_onTick)..start();
   }
 
-  void _start() {
-    _timer?.cancel();
-    _timer = Timer.periodic(_tick, (_) {
-      if (!mounted || !_controller.hasClients) return;
-      final max = _controller.position.maxScrollExtent;
-      if (max <= 0) return;
+  void _onTick(Duration elapsed) {
+    final dt = (elapsed - _lastElapsed).inMicroseconds / 1000000;
+    _lastElapsed = elapsed;
 
-      if (!widget.leftToRight && !_rtlInit) {
-        _rtlInit = true;
-        _controller.jumpTo(max);
-        return;
-      }
+    if (!_controller.hasClients) return;
+    final max = _controller.position.maxScrollExtent;
+    if (max <= 0 || _cycle <= 0) return;
 
-      final next = widget.leftToRight
-          ? _controller.offset + _step
-          : _controller.offset - _step;
+    _offset += _pixelsPerSecond * dt * (widget.leftToRight ? 1 : -1);
+    if (_offset >= _cycle) _offset -= _cycle;
+    if (_offset < 0) _offset += _cycle;
 
-      if (next > max) {
-        _controller.jumpTo(0);
-      } else if (next < 0) {
-        _controller.jumpTo(max);
-      } else {
-        _controller.jumpTo(next);
-      }
-    });
+    _controller.jumpTo(_offset.clamp(0, max));
   }
 
   @override
   void didUpdateWidget(covariant _AutoScrollRow old) {
     super.didUpdateWidget(old);
     if (old.members != widget.members || old.leftToRight != widget.leftToRight) {
-      _rtlInit = false;
-      WidgetsBinding.instance.addPostFrameCallback((_) => _start());
+      _offset = 0;
     }
   }
 
   @override
   void dispose() {
-    _timer?.cancel();
+    _ticker.dispose();
     _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final repeated = [...widget.members, ...widget.members, ...widget.members];
-    return ListView.separated(
+    final members = widget.members;
+    if (members.isEmpty) return const SizedBox.shrink();
+
+    return ListView.builder(
       controller: _controller,
       scrollDirection: Axis.horizontal,
       physics: const NeverScrollableScrollPhysics(),
       clipBehavior: Clip.none,
-      itemCount: repeated.length,
-      separatorBuilder: (_, _) => SizedBox(width: AppSpacing.s05),
-      itemBuilder: (_, i) => SizedBox(
-        width: 206,
-        child: _MemberPill(member: repeated[i]),
+      itemExtent: _itemExtent,
+      itemCount: members.length * _copies,
+      itemBuilder: (_, i) => Padding(
+        padding: EdgeInsets.only(right: _gap),
+        child: _MemberPill(member: members[i % members.length]),
       ),
     );
   }
@@ -138,7 +137,7 @@ class _MemberPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: AppSpacing.symmetric(horizontal: AppSpacing.s05, vertical: AppSpacing.s04),
+      padding: AppSpacing.symmetric(horizontal: AppSpacing.h10, vertical: AppSpacing.v8),
       decoration: BoxDecoration(
         color: AppColors.neutral50,
         borderRadius: AppRadius.all09,
@@ -158,7 +157,7 @@ class _MemberPill extends StatelessWidget {
                   )
                 : null,
           ),
-          SizedBox(width: AppSpacing.s05),
+          SizedBox(width: AppSpacing.h10),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -173,7 +172,7 @@ class _MemberPill extends StatelessWidget {
                       .titleSmall
                       ?.copyWith(fontWeight: FontWeight.w600),
                 ),
-                SizedBox(height: AppSpacing.s01),
+                SizedBox(height: AppSpacing.v2),
                 Text(
                   member.role,
                   maxLines: 1,

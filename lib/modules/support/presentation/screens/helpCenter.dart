@@ -63,7 +63,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: AppSpacing.s05),
+                SizedBox(height: AppSpacing.v10),
 
                 CommonSearchBar(
                   controller: _searchController,
@@ -77,53 +77,53 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                   },
                 ),
 
-                SizedBox(height: AppSpacing.s10),
+                SizedBox(height: AppSpacing.v22),
 
                 // 🔹 FAQ
                 ..._buildFaqItems(),
 
-                SizedBox(height: AppSpacing.s06),
+                SizedBox(height: AppSpacing.v12),
 
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.s05),
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.h10),
                   child: Text(
                     translate(context, 'helpCenter.quickHelpTitle'),
                     style: AppTextStyles.titleSmall.copyWith(color: AppColors.primary500),
                   ),
                 ),
 
-                SizedBox(height: AppSpacing.s07),
+                SizedBox(height: AppSpacing.v16),
 
                 SizedBox(
                   height: 120.h,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
-                    padding: AppSpacing.horizontal(AppSpacing.s09),
+                    padding: AppSpacing.horizontal(AppSpacing.h20),
                     children: [
                       CategoryCard(
                         title: translate(context, 'helpCenter.category1.title'),
                         description:
                         translate(context, 'helpCenter.category1.desc'),
                       ),
-                      SizedBox(width: AppSpacing.s06),
+                      SizedBox(width: AppSpacing.h12),
                       CategoryCard(
                         title: translate(context, 'helpCenter.category2.title'),
                         description:
                         translate(context, 'helpCenter.category2.desc'),
                       ),
-                      SizedBox(width: AppSpacing.s06),
+                      SizedBox(width: AppSpacing.h12),
                       CategoryCard(
                         title: translate(context, 'helpCenter.category3.title'),
                         description:
                         translate(context, 'helpCenter.category3.desc'),
                       ),
-                      SizedBox(width: AppSpacing.s06),
+                      SizedBox(width: AppSpacing.h12),
                       CategoryCard(
                         title: translate(context, 'helpCenter.category4.title'),
                         description:
                         translate(context, 'helpCenter.category4.desc'),
                       ),
-                      SizedBox(width: AppSpacing.s06),
+                      SizedBox(width: AppSpacing.h12),
                       CategoryCard(
                         title: translate(context, 'helpCenter.category5.title'),
                         description:
@@ -133,7 +133,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                   ),
                 ),
 
-                SizedBox(height: AppSpacing.s10),
+                SizedBox(height: AppSpacing.v22),
 
                 Center(
                   child: Column(
@@ -142,13 +142,13 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                         translate(context, 'helpCenter.stillNeedHelp'),
                         style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w800),
                       ),
-                      SizedBox(height: AppSpacing.s06),
+                      SizedBox(height: AppSpacing.v12),
                       Text(
                         translate(context, 'helpCenter.cantFind'),
                         style: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase)
                             .apply(color: AppColors.neutral300),
                       ),
-                      SizedBox(height: AppSpacing.s07),
+                      SizedBox(height: AppSpacing.v16),
                       GradientButton(
                         height: 45.h,
                         width: 230.w,
@@ -162,7 +162,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                   ),
                 ),
 
-                SizedBox(height: AppSpacing.s10),
+                SizedBox(height: AppSpacing.v22),
               ],
             ),
           ),
@@ -205,7 +205,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
       final isExpanded = expandedIndex == index;
 
       return Container(
-        margin: EdgeInsets.only(bottom: AppSpacing.s06),
+        margin: EdgeInsets.only(bottom: AppSpacing.v12),
         decoration: BoxDecoration(
           color: AppColors.whiteBase,
           borderRadius: AppRadius.all03,
@@ -231,14 +231,14 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
             if (isExpanded)
               Container(
                 width: double.infinity,
-                padding: AppSpacing.only(left: AppSpacing.s07, top: AppSpacing.s00, right: AppSpacing.s07, bottom: AppSpacing.s07),
+                padding: AppSpacing.only(left: AppSpacing.h16, top: 0, right: AppSpacing.h16, bottom: AppSpacing.v16),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      width: AppSpacing.s03,
+                      width: AppSpacing.h6,
                       height: 40.h,
-                      margin: EdgeInsets.only(right: AppSpacing.s05),
+                      margin: EdgeInsets.only(right: AppSpacing.h10),
                       decoration: BoxDecoration(
                         color: AppColors.primary500,
                         borderRadius: AppRadius.all01,

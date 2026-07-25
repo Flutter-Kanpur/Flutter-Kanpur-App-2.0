@@ -25,15 +25,15 @@ class CommunityProjectsScreen extends ConsumerWidget {
           subtitle: 'Community projects, tech stack, and status.',
           leading: FkBackButton(),
         ),
-        SizedBox(height: AppSpacing.s08),
+        SizedBox(height: AppSpacing.v18),
         FkPrimaryButton(
           label: 'Upload your project',
           onPressed: () => context.go(RouteNames.communityUploadProject),
         ),
-        SizedBox(height: AppSpacing.s09),
+        SizedBox(height: AppSpacing.v20),
         projectsAsync.when(
           loading: () =>  Padding(
-            padding: EdgeInsets.symmetric(vertical: AppSpacing.s10),
+            padding: EdgeInsets.symmetric(vertical: AppSpacing.v22),
             child: Center(child: CircularProgressIndicator()),
           ),
           error: (e, _) => _ErrorView(
@@ -50,7 +50,7 @@ class CommunityProjectsScreen extends ConsumerWidget {
               children: [
                 for (final project in projects)
                   Padding(
-                    padding: EdgeInsets.only(bottom: AppSpacing.s06),
+                    padding: EdgeInsets.only(bottom: AppSpacing.v12),
                     child: CommunityProjectCard(project: project),
                   ),
               ],
@@ -70,11 +70,11 @@ class _ErrorView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: AppSpacing.s10),
+      padding: EdgeInsets.symmetric(vertical: AppSpacing.v22),
       child: Column(
         children: [
           const Icon(Icons.wifi_off_rounded, size: 48, color: AppColors.neutral400),
-          SizedBox(height: AppSpacing.s06),
+          SizedBox(height: AppSpacing.v12),
           Text(
             'Could not load projects',
             style: Theme.of(context)
@@ -82,7 +82,7 @@ class _ErrorView extends StatelessWidget {
                 .bodyLarge
                 ?.copyWith(color: AppColors.neutral500),
           ),
-          SizedBox(height: AppSpacing.s07),
+          SizedBox(height: AppSpacing.v16),
           TextButton(onPressed: onRetry, child: const Text('Try again')),
         ],
       ),
@@ -98,7 +98,7 @@ class _EmptyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: AppSpacing.s10),
+      padding: EdgeInsets.symmetric(vertical: AppSpacing.v22),
       child: Center(
         child: Text(
           message,

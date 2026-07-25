@@ -20,7 +20,7 @@ class CommunityMemberCard extends StatelessWidget {
             backgroundColor: AppColors.primary500.withValues(alpha: 0.12),
             child: Text(member.name.substring(0, 1)),
           ),
-          SizedBox(width: AppSpacing.s06),
+          SizedBox(width: AppSpacing.h12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,12 +31,12 @@ class CommunityMemberCard extends StatelessWidget {
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                SizedBox(height: AppSpacing.s02),
+                SizedBox(height: AppSpacing.v4),
                 Text(member.role),
-                SizedBox(height: AppSpacing.s05),
+                SizedBox(height: AppSpacing.v10),
                 Wrap(
-                  spacing: AppSpacing.s04,
-                  runSpacing: AppSpacing.s04,
+                  spacing: AppSpacing.h8,
+                  runSpacing: AppSpacing.v8,
                   children: member.skills
                       .map((skill) => FkStatusChip(label: skill))
                       .toList(),

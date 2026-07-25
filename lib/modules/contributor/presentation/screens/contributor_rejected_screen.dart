@@ -20,7 +20,7 @@ class ContributorRejectedScreen extends StatelessWidget {
     return GradientBackground(
       child: SafeArea(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(AppSpacing.s09, AppSpacing.s08, AppSpacing.s09, 24),
+          padding: EdgeInsets.fromLTRB(AppSpacing.h20, AppSpacing.h18, AppSpacing.h20, 24),
           child: Column(
             children: [
               FkHeader(
@@ -39,7 +39,7 @@ class ContributorRejectedScreen extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: AppSpacing.s04),
+              SizedBox(height: AppSpacing.v8),
 
               Text(
                 "contributor.applicationRejectedDescription".tr(),
@@ -47,7 +47,7 @@ class ContributorRejectedScreen extends StatelessWidget {
                 style: theme.textTheme.bodyMedium,
               ),
 
-              SizedBox(height: AppSpacing.s10),
+              SizedBox(height: AppSpacing.v22),
 
               FkPrimaryButton(
                 label: "contributor.backToProfile".tr(),
@@ -59,8 +59,8 @@ class ContributorRejectedScreen extends StatelessWidget {
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(
-                  horizontal: AppSpacing.s07,
-                  vertical: AppSpacing.s06,
+                  horizontal: AppSpacing.h16,
+                  vertical: AppSpacing.v12,
                 ),
                 decoration: BoxDecoration(
                   color: AppColors.pending50,
@@ -69,7 +69,7 @@ class ContributorRejectedScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     const Icon(Icons.info, color: AppColors.pending400, size: 18),
-                    SizedBox(width: AppSpacing.s04),
+                    SizedBox(width: AppSpacing.h8),
                     Expanded(
                       child: Text(
                         "contributor.applyAgainInFuture".tr(),

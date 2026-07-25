@@ -18,7 +18,7 @@ class ContributorStatusChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: AppSpacing.symmetric(horizontal: AppSpacing.s06, vertical: AppSpacing.s03),
+      padding: AppSpacing.symmetric(horizontal: AppSpacing.h12, vertical: AppSpacing.v6),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: AppRadius.all08,

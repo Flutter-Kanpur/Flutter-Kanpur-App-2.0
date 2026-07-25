@@ -24,7 +24,7 @@ class HomeAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(AppSpacing.s10, AppSpacing.s09, AppSpacing.s04, AppSpacing.s10),
+      padding: EdgeInsets.fromLTRB(AppSpacing.h22, AppSpacing.h20, AppSpacing.h8, AppSpacing.h22),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -40,7 +40,7 @@ class HomeAppBar extends StatelessWidget {
                 4.verticalSpace,
                 Text(
                   _getGreeting(context),
-                  style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w600,
+                  style: AppTextStyles.titleMedium.copyWith(
                     color: AppColors.blackBase,
                   ),
                 ),

@@ -24,7 +24,7 @@ class OnboardingProgressBar extends StatelessWidget {
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 300),
 
-              margin: AppSpacing.horizontal(AppSpacing.s02),
+              margin: AppSpacing.horizontal(AppSpacing.h4),
 
               height: 6.h,
 

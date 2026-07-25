@@ -80,17 +80,17 @@ class MyContestDetailScreen extends ConsumerWidget {
                 ),
               )
             : SingleChildScrollView(
-                padding: EdgeInsets.fromLTRB(AppSpacing.s09, AppSpacing.s04, AppSpacing.s09, AppSpacing.s10),
+                padding: EdgeInsets.fromLTRB(AppSpacing.h20, AppSpacing.h8, AppSpacing.h20, AppSpacing.h22),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(contest.title, style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold)),
-                    SizedBox(height: AppSpacing.s02),
+                    SizedBox(height: AppSpacing.v4),
                     Text(
                       contest.categoryLabel,
                       style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
                     ),
-                    SizedBox(height: AppSpacing.s07),
+                    SizedBox(height: AppSpacing.v16),
                     Row(
                       children: [
                         _OutlinedPillButton(
@@ -98,7 +98,7 @@ class MyContestDetailScreen extends ConsumerWidget {
                           label: 'Share',
                           onTap: () => _shareContest(contest),
                         ),
-                        SizedBox(width: AppSpacing.s06),
+                        SizedBox(width: AppSpacing.h12),
                         _OutlinedPillButton(
                           icon: contest.isSaved
                               ? Icons.favorite_rounded
@@ -110,26 +110,26 @@ class MyContestDetailScreen extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: AppSpacing.s07),
+                    SizedBox(height: AppSpacing.v16),
                     Text(
                       contest.scheduleLabel,
                       style: AppTextStyles.bodyLarge.copyWith(color: AppColors.blackBase),
                     ),
-                    SizedBox(height: AppSpacing.s02),
+                    SizedBox(height: AppSpacing.v4),
                     Text(
                       '${contest.metaLabel} ${contest.metaValue}',
                       style: _metaValueStyle(contest.metaTone),
                     ),
-                    SizedBox(height: AppSpacing.s07),
+                    SizedBox(height: AppSpacing.v16),
                     Wrap(
-                      spacing: AppSpacing.s04,
-                      runSpacing: AppSpacing.s04,
+                      spacing: AppSpacing.h8,
+                      runSpacing: AppSpacing.v8,
                       children: contest.tags
                           .map(
                             (tag) => Container(
                               padding: EdgeInsets.symmetric(
-                                horizontal: AppSpacing.s07,
-                                vertical: AppSpacing.s04,
+                                horizontal: AppSpacing.h16,
+                                vertical: AppSpacing.v8,
                               ),
                               decoration: BoxDecoration(
                                 color: AppColors.neutral50,
@@ -143,24 +143,24 @@ class MyContestDetailScreen extends ConsumerWidget {
                           )
                           .toList(),
                     ),
-                    SizedBox(height: AppSpacing.s09),
+                    SizedBox(height: AppSpacing.v20),
                     Divider(
                       height: 1,
                       thickness: 1,
                       color: AppBorders.primary,
                     ),
-                    SizedBox(height: AppSpacing.s09),
+                    SizedBox(height: AppSpacing.v20),
                     Text('What You\'ll Do', style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w500)),
-                    SizedBox(height: AppSpacing.s06),
+                    SizedBox(height: AppSpacing.v12),
                     _BulletList(items: contest.whatYoullDo),
-                    SizedBox(height: AppSpacing.s09),
+                    SizedBox(height: AppSpacing.v20),
                     Text(
                       'Rewards & Outcomes',
                       style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w500),
                     ),
-                    SizedBox(height: AppSpacing.s06),
+                    SizedBox(height: AppSpacing.v12),
                     _BulletList(items: contest.rewardsAndOutcomes),
-                    SizedBox(height: AppSpacing.s10),
+                    SizedBox(height: AppSpacing.v22),
                     GradientButton(
                       text: 'Add to Calendar',
                       height: 48.h,
@@ -194,7 +194,7 @@ class _OutlinedPillButton extends StatelessWidget {
         onTap: onTap,
         borderRadius: AppRadius.all09,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.s08, vertical: AppSpacing.s05),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.h18, vertical: AppSpacing.v10),
           decoration: BoxDecoration(
             color: AppColors.whiteBase,
             borderRadius: AppRadius.all09,
@@ -204,7 +204,7 @@ class _OutlinedPillButton extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(icon, size: 18.sp, color: AppColors.blackBase),
-              SizedBox(width: AppSpacing.s03),
+              SizedBox(width: AppSpacing.h6),
               Text(label, style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
             ],
           ),
@@ -226,7 +226,7 @@ class _BulletList extends StatelessWidget {
       children: items
           .map(
             (item) => Padding(
-              padding: EdgeInsets.only(bottom: AppSpacing.s05),
+              padding: EdgeInsets.only(bottom: AppSpacing.v10),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

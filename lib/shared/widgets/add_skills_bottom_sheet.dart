@@ -119,9 +119,9 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
         ),
       ),
       padding: EdgeInsets.only(
-        left: AppSpacing.s05,
-        right: AppSpacing.s05,
-        top: AppSpacing.s05,
+        left: AppSpacing.h10,
+        right: AppSpacing.h10,
+        top: AppSpacing.v10,
         bottom: MediaQuery.of(context).viewInsets.bottom + 20.h,
       ),
       child: SingleChildScrollView(
@@ -139,7 +139,7 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
                 ),
               ),
             ),
-            SizedBox(height: AppSpacing.s09),
+            SizedBox(height: AppSpacing.v20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -156,7 +156,7 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
                 ),
               ],
             ),
-            SizedBox(height: AppSpacing.s07),
+            SizedBox(height: AppSpacing.v16),
             Container(
               height: 48.h,
               decoration: BoxDecoration(
@@ -173,11 +173,11 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
                   hintStyle: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(
-                    horizontal: AppSpacing.s07,
-                    vertical: AppSpacing.s07,
+                    horizontal: AppSpacing.h16,
+                    vertical: AppSpacing.v16,
                   ),
                   suffixIcon: Padding(
-                    padding: EdgeInsets.only(right: AppSpacing.s06, top: AppSpacing.s07, bottom: AppSpacing.s07),
+                    padding: EdgeInsets.only(right: AppSpacing.h12, top: AppSpacing.v16, bottom: AppSpacing.v16),
                     child: SizedBox(
                       height: 20.h,
                       width: 20.w,
@@ -191,10 +191,10 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
                 ),
               ),
             ),
-            SizedBox(height: AppSpacing.s09),
+            SizedBox(height: AppSpacing.v20),
             Wrap(
-              spacing: AppSpacing.s05,
-              runSpacing: AppSpacing.s05,
+              spacing: AppSpacing.h10,
+              runSpacing: AppSpacing.v10,
               children: [
                 ..._filteredSkills.map((skill) {
                   final isSelected = _selectedSkills.contains(skill);
@@ -210,7 +210,7 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
                     },
                     child: AnimatedContainer(
                       duration: Duration(milliseconds: 150),
-                      padding: AppSpacing.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s04),
+                      padding: AppSpacing.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v8),
                       decoration: BoxDecoration(
                         color: isSelected
                             ? AppColors.primary500.withValues(alpha: 0.12)
@@ -240,7 +240,7 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
                   _buildInlineAddOtherChip(),
               ],
             ),
-            SizedBox(height: AppSpacing.s10),
+            SizedBox(height: AppSpacing.v22),
             GestureDetector(
               onTap: _startInlineAddOther,
               child: Text(
@@ -248,7 +248,7 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
                 style: AppTextStyles.bodyLarge.copyWith(color: AppColors.primary500, fontWeight: FontWeight.w500),
               ),
             ),
-            SizedBox(height: AppSpacing.s09),
+            SizedBox(height: AppSpacing.v20),
             GradientButton(
               onTap: () {
                 widget.onSave(_selectedSkills.toList());
@@ -258,7 +258,7 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
               textStyle:
                   AppTextStyles.titleMedium.copyWith(color: AppColors.whiteBase),
             ),
-            SizedBox(height: AppSpacing.s09),
+            SizedBox(height: AppSpacing.v20),
           ],
         ),
       ),
@@ -268,7 +268,7 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
   Widget _buildInlineAddOtherChip() {
     return Container(
       constraints: BoxConstraints(minWidth: 120.w, maxWidth: 200.w),
-      padding: EdgeInsets.only(left: AppSpacing.s07, right: AppSpacing.s04, top: AppSpacing.s03, bottom: AppSpacing.s03),
+      padding: EdgeInsets.only(left: AppSpacing.h16, right: AppSpacing.h8, top: AppSpacing.v6, bottom: AppSpacing.v6),
       decoration: BoxDecoration(
         color: AppColors.whiteBase,
         borderRadius: AppRadius.all06,

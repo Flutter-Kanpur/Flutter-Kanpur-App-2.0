@@ -54,7 +54,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     return GradientBackground(
       child: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s05),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v10),
           child: Form(
             key: formKey,
             child: Column(
@@ -120,7 +120,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         ),
         14.verticalSpace,
         Padding(
-          padding: AppSpacing.horizontal(AppSpacing.s07),
+          padding: AppSpacing.horizontal(AppSpacing.h16),
           child: Text(
             'auth.signUpSubTitle'.tr(),
             textAlign: TextAlign.center,
@@ -282,7 +282,7 @@ Widget _buildCreateButton(
 
 Widget _buildSignInText(BuildContext context) {
   return Padding(
-    padding: AppSpacing.horizontal(AppSpacing.s07),
+    padding: AppSpacing.horizontal(AppSpacing.h16),
     child: Center(
       child: Text.rich(
         TextSpan(
@@ -331,9 +331,9 @@ void _showToast(
       backgroundColor: bgColor,
       duration: Duration(seconds: 2),
       behavior: SnackBarBehavior.floating,
-      margin: AppSpacing.all07,
+      margin: AppSpacing.all(AppSpacing.h16),
       shape: RoundedRectangleBorder(borderRadius: AppRadius.all02),
-      padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s07),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v16),
     ),
   );
 }

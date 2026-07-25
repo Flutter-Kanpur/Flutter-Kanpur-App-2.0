@@ -126,9 +126,9 @@ class _AddRoleExperienceBottomSheetState
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-        left: AppSpacing.s05,
-        right: AppSpacing.s05,
-        top: AppSpacing.s05,
+        left: AppSpacing.h10,
+        right: AppSpacing.h10,
+        top: AppSpacing.v10,
         bottom: MediaQuery.of(context).viewInsets.bottom + 20.h,
       ),
       decoration: BoxDecoration(
@@ -153,15 +153,15 @@ class _AddRoleExperienceBottomSheetState
                 ),
               ),
             ),
-            SizedBox(height: AppSpacing.s10),
+            SizedBox(height: AppSpacing.v22),
             Text(
               translate(context, "profile.roleExperience"),
               style: AppTextStyles.titleMedium,
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: AppSpacing.s10),
+            SizedBox(height: AppSpacing.v22),
             _buildExperienceDropdown(),
-            SizedBox(height: AppSpacing.s09),
+            SizedBox(height: AppSpacing.v20),
             TextField(
               controller: _searchController,
               style: AppTextStyles.bodyMedium.copyWith(
@@ -177,20 +177,20 @@ class _AddRoleExperienceBottomSheetState
                   borderRadius: AppRadius.all03,
                   borderSide: BorderSide.none,
                 ),
-                contentPadding: AppSpacing.vertical(AppSpacing.s06),
+                contentPadding: AppSpacing.vertical(AppSpacing.v12),
               ),
             ),
-            SizedBox(height: AppSpacing.s09),
+            SizedBox(height: AppSpacing.v20),
             Wrap(
-              spacing: AppSpacing.s04,
-              runSpacing: AppSpacing.s04,
+              spacing: AppSpacing.h8,
+              runSpacing: AppSpacing.v8,
               children: [
                 ..._filteredRoles.map((role) {
                   final isSelected = _selectedRoles.contains(role);
                   return GestureDetector(
                     onTap: () => _toggleRole(role),
                     child: Container(
-                      padding: AppSpacing.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s05),
+                      padding: AppSpacing.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v10),
                       decoration: BoxDecoration(
                         color: isSelected
                             ? AppColors.primary500.withValues(alpha: 0.12)
@@ -219,7 +219,7 @@ class _AddRoleExperienceBottomSheetState
                   _buildInlineAddOtherChip(),
               ],
             ),
-            SizedBox(height: AppSpacing.s10),
+            SizedBox(height: AppSpacing.v22),
             GestureDetector(
               onTap: _startInlineAddOther,
               child: Text(
@@ -227,7 +227,7 @@ class _AddRoleExperienceBottomSheetState
                 style: AppTextStyles.bodyLarge.copyWith(color: AppColors.primary500, fontWeight: FontWeight.w500),
               ),
             ),
-            SizedBox(height: AppSpacing.s09),
+            SizedBox(height: AppSpacing.v20),
             GradientButton(
               onTap: () {
                 widget.onSave(_selectedRoles.toList(), _selectedExperience);
@@ -237,7 +237,7 @@ class _AddRoleExperienceBottomSheetState
               textStyle:
                   AppTextStyles.titleMedium.copyWith(color: AppColors.whiteBase),
             ),
-            SizedBox(height: AppSpacing.s09),
+            SizedBox(height: AppSpacing.v20),
           ],
         ),
       ),
@@ -280,9 +280,9 @@ class _AddRoleExperienceBottomSheetState
               padding: EdgeInsets.zero,
               child: Container(
                 width: size.width,
-                margin: EdgeInsets.symmetric(horizontal: AppSpacing.s06, vertical: AppSpacing.s03),
+                margin: EdgeInsets.symmetric(horizontal: AppSpacing.h12, vertical: AppSpacing.v6),
                 padding:
-                    EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s07),
+                    EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v16),
                 decoration: BoxDecoration(
                   color:
                       isSelected ? AppColors.primary100 : Colors.transparent,
@@ -317,7 +317,7 @@ class _AddRoleExperienceBottomSheetState
       },
       child: Container(
         key: _dropdownKey,
-        padding: EdgeInsets.symmetric(horizontal: AppSpacing.s05, vertical: AppSpacing.s08),
+        padding: EdgeInsets.symmetric(horizontal: AppSpacing.h10, vertical: AppSpacing.v18),
         decoration: BoxDecoration(
           color: AppColors.whiteBase,
           borderRadius: AppRadius.all04,
@@ -342,7 +342,7 @@ class _AddRoleExperienceBottomSheetState
   Widget _buildInlineAddOtherChip() {
     return Container(
       constraints: BoxConstraints(minWidth: 120.w, maxWidth: 200.w),
-      padding: EdgeInsets.only(left: AppSpacing.s07, right: AppSpacing.s04, top: AppSpacing.s03, bottom: AppSpacing.s03),
+      padding: EdgeInsets.only(left: AppSpacing.h16, right: AppSpacing.h8, top: AppSpacing.v6, bottom: AppSpacing.v6),
       decoration: BoxDecoration(
         color: AppColors.whiteBase,
         borderRadius: AppRadius.all06,

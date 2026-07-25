@@ -103,13 +103,13 @@ class _DetailBody extends ConsumerWidget {
     final repliesAsync = ref.watch(repliesProvider(question.id));
 
     return FkScreen(
-      padding: EdgeInsets.fromLTRB(AppSpacing.s10, AppSpacing.s06, AppSpacing.s10, 96),
+      padding: EdgeInsets.fromLTRB(AppSpacing.h22, AppSpacing.h12, AppSpacing.h22, 96),
       children: [
         _TopBar(
           title: 'Discussion',
           onBack: () => context.go(RouteNames.communityDiscussions),
         ),
-        SizedBox(height: AppSpacing.s10),
+        SizedBox(height: AppSpacing.v22),
         Text(
           question.title,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -117,14 +117,14 @@ class _DetailBody extends ConsumerWidget {
             height: 1.25,
           ),
         ),
-        SizedBox(height: AppSpacing.s07),
+        SizedBox(height: AppSpacing.v16),
         if (question.tag.isNotEmpty)
           Wrap(
-            spacing: AppSpacing.s04,
-            runSpacing: AppSpacing.s04,
+            spacing: AppSpacing.h8,
+            runSpacing: AppSpacing.v8,
             children: [FkStatusChip(label: question.tag)],
           ),
-        SizedBox(height: AppSpacing.s08),
+        SizedBox(height: AppSpacing.v18),
         Text(
           question.body,
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -132,7 +132,7 @@ class _DetailBody extends ConsumerWidget {
             height: 1.45,
           ),
         ),
-        SizedBox(height: AppSpacing.s08),
+        SizedBox(height: AppSpacing.v18),
         _AuthorRow(
           name: question.authorName,
           subtitle: question.createdLabel,
@@ -157,7 +157,7 @@ class _DetailBody extends ConsumerWidget {
             ),
           ],
         ),
-        SizedBox(height: AppSpacing.s07),
+        SizedBox(height: AppSpacing.v16),
 
         // Answer Form
         if (showAnswerForm) ...[
@@ -165,7 +165,7 @@ class _DetailBody extends ConsumerWidget {
             questionId: question.id,
             onSubmitted: onToggleAnswerForm,
           ),
-          SizedBox(height: AppSpacing.s10),
+          SizedBox(height: AppSpacing.v22),
         ],
 
         // Answers List
@@ -177,7 +177,7 @@ class _DetailBody extends ConsumerWidget {
           data: (replies) {
             if (replies.isEmpty) {
               return Padding(
-                padding: EdgeInsets.symmetric(vertical: AppSpacing.s10),
+                padding: EdgeInsets.symmetric(vertical: AppSpacing.v22),
                 child: Center(
                   child: Text('No answers yet. Be the first to answer!'),
                 ),
@@ -198,7 +198,7 @@ class _DetailBody extends ConsumerWidget {
                     color: AppColors.neutral500,
                   ),
                 ),
-                SizedBox(height: AppSpacing.s07),
+                SizedBox(height: AppSpacing.v16),
                 ...pageReplies.map((reply) => AnswerCard(
                   answerId: reply.id,
                   authorName: reply.authorName,
@@ -222,7 +222,7 @@ class _DetailBody extends ConsumerWidget {
                 )),
 
                 if (totalPages > 1) ...[
-                  SizedBox(height: AppSpacing.s10),
+                  SizedBox(height: AppSpacing.v22),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -231,9 +231,9 @@ class _DetailBody extends ConsumerWidget {
                           onPressed: () => onPageChanged(currentPage - 1),
                           child: const Text('← Previous'),
                         ),
-                      SizedBox(width: AppSpacing.s07),
+                      SizedBox(width: AppSpacing.h16),
                       Text('Page ${currentPage + 1} of $totalPages'),
-                      SizedBox(width: AppSpacing.s07),
+                      SizedBox(width: AppSpacing.h16),
                       if (currentPage < totalPages - 1)
                         ElevatedButton(
                           onPressed: () => onPageChanged(currentPage + 1),
@@ -302,7 +302,7 @@ class _AuthorRow extends StatelessWidget {
                   style: AppTextStyles.bodyMedium.copyWith(color: AppColors.whiteBase))
               : null,
         ),
-        SizedBox(width: AppSpacing.s06),
+        SizedBox(width: AppSpacing.h12),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

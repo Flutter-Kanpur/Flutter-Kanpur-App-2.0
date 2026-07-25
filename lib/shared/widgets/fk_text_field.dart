@@ -35,7 +35,7 @@ class FkTextField extends StatelessWidget {
             context,
           ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
         ),
-        SizedBox(height: AppSpacing.s05),
+        SizedBox(height: AppSpacing.v10),
         TextFormField(
           controller: controller,
           maxLines: maxLines,
@@ -46,8 +46,8 @@ class FkTextField extends StatelessWidget {
             filled: true,
             fillColor: AppColors.whiteBase,
             contentPadding: EdgeInsets.symmetric(
-              horizontal: AppSpacing.s07,
-              vertical: AppSpacing.s07,
+              horizontal: AppSpacing.h16,
+              vertical: AppSpacing.v16,
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: AppRadius.all03,

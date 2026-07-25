@@ -64,7 +64,7 @@ class AppUpdateService {
                   'A new version (${status.storeVersion}) is available. Please update the app to enjoy the latest features and bug fixes.',
                   style: AppTextStyles.bodyMedium.copyWith(color: AppColors.whiteBase.withValues(alpha: 0.70)),
                 ),
-                SizedBox(height: AppSpacing.s04),
+                SizedBox(height: AppSpacing.v8),
                 Text(
                   'Current Version: ${status.localVersion}',
                   style: AppTextStyles.bodySmall.copyWith(color: AppColors.whiteBase.withValues(alpha: 0.38)),

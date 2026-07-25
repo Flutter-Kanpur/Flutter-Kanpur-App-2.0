@@ -17,7 +17,7 @@ class ApplicationInfoTile extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: EdgeInsets.only(bottom: AppSpacing.s07),
+      padding: EdgeInsets.only(bottom: AppSpacing.v16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -27,7 +27,7 @@ class ApplicationInfoTile extends StatelessWidget {
               color: AppColors.neutral400,
             ),
           ),
-          SizedBox(height: AppSpacing.s03),
+          SizedBox(height: AppSpacing.v6),
           Text(
             value,
             style: theme.textTheme.bodyLarge?.copyWith(

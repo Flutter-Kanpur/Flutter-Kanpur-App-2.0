@@ -21,14 +21,14 @@ class ApplicationSubmittedScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         body: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16),
             child: Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Image.asset(AssetsPath.applicationSubmitted, width: 300),
 
-                  SizedBox(height: AppSpacing.s10),
+                  SizedBox(height: AppSpacing.v22),
 
                   Text(
                     "contributor.applicationSubmitted".tr(),
@@ -38,7 +38,7 @@ class ApplicationSubmittedScreen extends StatelessWidget {
                     ),
                   ),
 
-                  SizedBox(height: AppSpacing.s07),
+                  SizedBox(height: AppSpacing.v16),
 
                   Text(
                     "contributor.applicationSubmittedDescription".tr(),
@@ -46,7 +46,7 @@ class ApplicationSubmittedScreen extends StatelessWidget {
                     style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
                   ),
 
-                  SizedBox(height: AppSpacing.s10),
+                  SizedBox(height: AppSpacing.v22),
 
                   Text(
                     "contributor.currentStatus".tr(),
@@ -56,7 +56,7 @@ class ApplicationSubmittedScreen extends StatelessWidget {
                     ),
                   ),
 
-                  SizedBox(height: AppSpacing.s10),
+                  SizedBox(height: AppSpacing.v22),
 
                   SizedBox(
                     width: double.infinity,

@@ -16,7 +16,7 @@ class FkSectionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: AppSpacing.s04, bottom: AppSpacing.s06),
+      padding: EdgeInsets.only(top: AppSpacing.v8, bottom: AppSpacing.v12),
       child: Row(
         children: [
           Expanded(

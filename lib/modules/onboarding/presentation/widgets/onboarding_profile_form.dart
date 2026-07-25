@@ -19,8 +19,8 @@ class OnboardingProfileForm extends StatelessWidget {
         fillColor: AppColors.neutral50,
 
         contentPadding: EdgeInsets.symmetric(
-          horizontal: AppSpacing.s07,
-          vertical: AppSpacing.s08,
+          horizontal: AppSpacing.h16,
+          vertical: AppSpacing.v18,
         ),
 
         border: OutlineInputBorder(

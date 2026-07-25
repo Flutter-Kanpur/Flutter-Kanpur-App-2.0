@@ -48,11 +48,11 @@ class ProfileTile extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: AppSpacing.symmetric(horizontal: AppSpacing.s09, vertical: AppSpacing.s06),
+          padding: AppSpacing.symmetric(horizontal: AppSpacing.h20, vertical: AppSpacing.v12),
           child: Row(
             children: [
               iconWidget,
-              SizedBox(width: AppSpacing.s04),
+              SizedBox(width: AppSpacing.h8),
               Expanded(
                 child: Text(
                   title,

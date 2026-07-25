@@ -88,7 +88,7 @@ class _ManageProfileScreenState extends State<ManageProfileScreen> {
           ),
         ),
         body: SingleChildScrollView(
-                  padding: AppSpacing.horizontal(AppSpacing.s09),
+                  padding: AppSpacing.horizontal(AppSpacing.h20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -103,14 +103,14 @@ class _ManageProfileScreenState extends State<ManageProfileScreen> {
                         onEditProfile: () =>
                             context.push('/profile/edit-profile'),
                       ),
-                      SizedBox(height: AppSpacing.s10),
+                      SizedBox(height: AppSpacing.v22),
                       ProblemOfDaySection(
                         level: 2,
                         progress: 0.25,
                         onViewProgress: () =>
                             context.push(RouteNames.problemOfDay),
                       ),
-                      SizedBox(height: AppSpacing.s10),
+                      SizedBox(height: AppSpacing.v22),
                       ManageProfileSectionCard(
                         title: translate(context, "profile.aboutMe"),
                         child: Text(
@@ -121,7 +121,7 @@ class _ManageProfileScreenState extends State<ManageProfileScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: AppSpacing.s10),
+                      SizedBox(height: AppSpacing.v22),
                       ManageProfileSectionCard(
                         title: translate(context, "profile.roleExperience"),
                         value: yearsOfExp,
@@ -130,7 +130,7 @@ class _ManageProfileScreenState extends State<ManageProfileScreen> {
                             ? _showAddRoleExperienceBottomSheet(context, profile)
                             : null,
                       ),
-                      SizedBox(height: AppSpacing.s10),
+                      SizedBox(height: AppSpacing.v22),
                       ManageProfileSectionCard(
                         title: translate(context, "profile.skills"),
                         tags: skills,
@@ -138,7 +138,7 @@ class _ManageProfileScreenState extends State<ManageProfileScreen> {
                             ? _showAddSkillsBottomSheet(context, profile)
                             : null,
                       ),
-                      SizedBox(height: AppSpacing.s10),
+                      SizedBox(height: AppSpacing.v22),
                       Row(
                         children: [
                           Expanded(
@@ -173,7 +173,7 @@ class _ManageProfileScreenState extends State<ManageProfileScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(height: AppSpacing.s10),
+                      SizedBox(height: AppSpacing.v22),
                     ],
                   ),
                 ),

@@ -23,7 +23,7 @@ class FkHeader extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (leading != null) ...[leading!, SizedBox(width: AppSpacing.s06)],
+        if (leading != null) ...[leading!, SizedBox(width: AppSpacing.h12)],
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,7 +35,7 @@ class FkHeader extends StatelessWidget {
                   color: AppColors.blackBase,
                 ),
               ),
-              SizedBox(height: AppSpacing.s03),
+              SizedBox(height: AppSpacing.v6),
               Text(
                 subtitle,
                 style: theme.textTheme.bodyMedium?.copyWith(
@@ -46,7 +46,7 @@ class FkHeader extends StatelessWidget {
             ],
           ),
         ),
-        if (trailing != null) ...[SizedBox(width: AppSpacing.s06), trailing!],
+        if (trailing != null) ...[SizedBox(width: AppSpacing.h12), trailing!],
       ],
     );
   }

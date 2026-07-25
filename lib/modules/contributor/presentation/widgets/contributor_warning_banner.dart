@@ -22,7 +22,7 @@ class ContributorWarningBanner extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s07),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v16),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: AppRadius.all03,
@@ -30,7 +30,7 @@ class ContributorWarningBanner extends StatelessWidget {
       child: Row(
         children: [
           Icon(Icons.info, size: 18, color: iconColor),
-          SizedBox(width: AppSpacing.s05),
+          SizedBox(width: AppSpacing.h10),
           Expanded(
             child: Text(
               message,

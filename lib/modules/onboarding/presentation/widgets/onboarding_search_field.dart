@@ -23,7 +23,7 @@ class OnboardingSearchField extends StatelessWidget {
         fillColor: AppColors.neutral50,
 
         contentPadding: EdgeInsets.symmetric(
-          vertical: AppSpacing.s07,
+          vertical: AppSpacing.v16,
         ),
 
         border: OutlineInputBorder(

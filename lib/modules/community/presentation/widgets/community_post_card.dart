@@ -26,7 +26,7 @@ class CommunityPostCard extends StatelessWidget {
                 backgroundColor: AppColors.primary500.withValues(alpha: 0.12),
                 child: Text(post.authorName.substring(0, 1)),
               ),
-              SizedBox(width: AppSpacing.s05),
+              SizedBox(width: AppSpacing.h10),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,31 +52,31 @@ class CommunityPostCard extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: AppSpacing.s07),
+          SizedBox(height: AppSpacing.v16),
           Text(
             post.title,
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w800,
             ),
           ),
-          SizedBox(height: AppSpacing.s04),
+          SizedBox(height: AppSpacing.v8),
           Text(post.body, style: theme.textTheme.bodyMedium),
-          SizedBox(height: AppSpacing.s06),
+          SizedBox(height: AppSpacing.v12),
           Wrap(
-            spacing: AppSpacing.s04,
-            runSpacing: AppSpacing.s04,
+            spacing: AppSpacing.h8,
+            runSpacing: AppSpacing.v8,
             children: post.tags
                 .map((tag) => FkStatusChip(label: '#$tag'))
                 .toList(),
           ),
-          SizedBox(height: AppSpacing.s07),
+          SizedBox(height: AppSpacing.v16),
           Row(
             children: [
               _Metric(
                 icon: Icons.chat_bubble_outline,
                 label: '${post.replyCount} replies',
               ),
-              SizedBox(width: AppSpacing.s07),
+              SizedBox(width: AppSpacing.h16),
               _Metric(
                 icon: Icons.favorite_border_rounded,
                 label: '${post.likeCount} likes',
@@ -119,7 +119,7 @@ class _Metric extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Icon(icon, size: 16, color: AppColors.neutral500),
-        SizedBox(width: AppSpacing.s02),
+        SizedBox(width: AppSpacing.h4),
         Text(label),
       ],
     );

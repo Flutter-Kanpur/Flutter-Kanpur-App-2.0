@@ -29,7 +29,7 @@ class MyEventsScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(AppSpacing.s09, AppSpacing.s04, AppSpacing.s09, AppSpacing.s00),
+                padding: EdgeInsets.fromLTRB(AppSpacing.h20, AppSpacing.h8, AppSpacing.h20, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -43,9 +43,9 @@ class MyEventsScreen extends ConsumerWidget {
                         color: AppColors.blackBase,
                       ),
                     ),
-                    SizedBox(height: AppSpacing.s07),
+                    SizedBox(height: AppSpacing.v16),
                     Text('My Events', style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold)),
-                    SizedBox(height: AppSpacing.s04),
+                    SizedBox(height: AppSpacing.v8),
                     Text(
                       "Events you've registered for and attended.",
                       style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
@@ -53,7 +53,7 @@ class MyEventsScreen extends ConsumerWidget {
                   ],
                 ),
               ),
-              SizedBox(height: AppSpacing.s09),
+              SizedBox(height: AppSpacing.v20),
               PillFilterTabs(
                 labels: MyEventsTab.values.map((tab) => tab.label).toList(),
                 selectedIndex: selectedTab.index,
@@ -61,12 +61,12 @@ class MyEventsScreen extends ConsumerWidget {
                     .read(myEventsSelectedTabProvider.notifier)
                     .select(MyEventsTab.values[index]),
               ),
-              SizedBox(height: AppSpacing.s07),
+              SizedBox(height: AppSpacing.v16),
               Expanded(
                 child: events.isEmpty
                     ? Center(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: AppSpacing.s10),
+                          padding: EdgeInsets.symmetric(horizontal: AppSpacing.h22),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -75,13 +75,13 @@ class MyEventsScreen extends ConsumerWidget {
                                 textAlign: TextAlign.center,
                                 style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(height: AppSpacing.s04),
+                              SizedBox(height: AppSpacing.v8),
                               Text(
                                 selectedTab.emptySubheading,
                                 textAlign: TextAlign.center,
                                 style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
                               ),
-                              SizedBox(height: AppSpacing.s09),
+                              SizedBox(height: AppSpacing.v20),
                               SizedBox(
                                 width: 220.w,
                                 child: GradientButton(
@@ -99,9 +99,9 @@ class MyEventsScreen extends ConsumerWidget {
                         ),
                       )
                     : ListView.separated(
-                        padding: EdgeInsets.fromLTRB(AppSpacing.s09, AppSpacing.s00, AppSpacing.s09, AppSpacing.s10),
+                        padding: EdgeInsets.fromLTRB(AppSpacing.h20, 0, AppSpacing.h20, AppSpacing.h22),
                         itemCount: events.length,
-                        separatorBuilder: (_, __) => SizedBox(height: AppSpacing.s07),
+                        separatorBuilder: (_, __) => SizedBox(height: AppSpacing.v16),
                         itemBuilder: (context, index) {
                           final event = events[index];
                           return MyEventCard(

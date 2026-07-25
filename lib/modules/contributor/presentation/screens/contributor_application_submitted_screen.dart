@@ -23,7 +23,7 @@ class ContributorApplicationSubmittedScreen extends StatelessWidget {
     return GradientBackground(
       child: SafeArea(
         child: Padding(
-          padding: AppSpacing.horizontal(AppSpacing.s09),
+          padding: AppSpacing.horizontal(AppSpacing.h20),
           child: Column(
             children: [
               FkHeader(
@@ -34,7 +34,7 @@ class ContributorApplicationSubmittedScreen extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: AppSpacing.s10),
+              SizedBox(height: AppSpacing.v22),
 
               Center(
                 child: Image.asset(
@@ -43,7 +43,7 @@ class ContributorApplicationSubmittedScreen extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: AppSpacing.s10),
+              SizedBox(height: AppSpacing.v22),
 
               Text(
                 "contributor.applicationAlreadySubmitted".tr(),
@@ -53,7 +53,7 @@ class ContributorApplicationSubmittedScreen extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: AppSpacing.s06),
+              SizedBox(height: AppSpacing.v12),
 
               Text(
                 "contributor.applicationReviewMessage".tr(),
@@ -61,7 +61,7 @@ class ContributorApplicationSubmittedScreen extends StatelessWidget {
                 style: theme.textTheme.bodyMedium,
               ),
 
-              SizedBox(height: AppSpacing.s10),
+              SizedBox(height: AppSpacing.v22),
 
               FkPrimaryButton(
                 label: "contributor.viewApplication".tr(),
@@ -73,7 +73,7 @@ class ContributorApplicationSubmittedScreen extends StatelessWidget {
               Spacer(),
 
               Container(
-                padding: AppSpacing.all09,
+                padding: AppSpacing.all(AppSpacing.h20),
                 decoration: BoxDecoration(
                   color: AppColors.whiteBase,
                   borderRadius: AppRadius.all05,
@@ -99,7 +99,7 @@ class ContributorApplicationSubmittedScreen extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: AppSpacing.s09),
+              SizedBox(height: AppSpacing.v20),
             ],
           ),
         ),
@@ -109,7 +109,7 @@ class ContributorApplicationSubmittedScreen extends StatelessWidget {
 
   Widget _row(String title, String value) {
     return Padding(
-      padding: AppSpacing.vertical(AppSpacing.s03),
+      padding: AppSpacing.vertical(AppSpacing.v6),
       child: Row(
         children: [
           Expanded(

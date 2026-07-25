@@ -26,7 +26,7 @@ class HomeAnnouncementCarousel extends StatelessWidget {
     if (announcements.isEmpty) return const SizedBox.shrink();
 
     return Padding(
-      padding: AppSpacing.vertical(AppSpacing.s09),
+      padding: AppSpacing.vertical(AppSpacing.v20),
       child: Column(
         children: [
           CarouselSlider.builder(
@@ -82,7 +82,7 @@ class _AnnouncementCard extends StatelessWidget {
     final hasImage = bgImage != null && bgImage.isNotEmpty;
 
     return Container(
-      margin: AppSpacing.horizontal(AppSpacing.s07),
+      margin: AppSpacing.horizontal(AppSpacing.h16),
       decoration: BoxDecoration(
         color: Colors.transparent,
         borderRadius: AppRadius.all07,
@@ -119,8 +119,8 @@ class _AnnouncementCard extends StatelessWidget {
                     backgroundColor: AppColors.whiteBase,
                     foregroundColor: AppColors.primary600,
                     padding: EdgeInsets.symmetric(
-                      horizontal: AppSpacing.s07,
-                      vertical: AppSpacing.s05,
+                      horizontal: AppSpacing.h16,
+                      vertical: AppSpacing.v10,
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: AppRadius.all07,
@@ -138,7 +138,7 @@ class _AnnouncementCard extends StatelessWidget {
             // Text + button mode
             else
               Padding(
-                padding: AppSpacing.all10,
+                padding: AppSpacing.all(AppSpacing.h22),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -174,8 +174,8 @@ class _AnnouncementCard extends StatelessWidget {
                           backgroundColor: AppColors.whiteBase,
                           foregroundColor: AppColors.primary600,
                           padding: EdgeInsets.symmetric(
-                            horizontal: AppSpacing.s07,
-                            vertical: AppSpacing.s05,
+                            horizontal: AppSpacing.h16,
+                            vertical: AppSpacing.v10,
                           ),
                           shape: RoundedRectangleBorder(
                             borderRadius: AppRadius.all07,
@@ -213,7 +213,7 @@ class _CarouselIndicators extends StatelessWidget {
         final isActive = index == currentPage;
         return AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          margin: AppSpacing.horizontal(AppSpacing.s01),
+          margin: AppSpacing.horizontal(AppSpacing.h2),
           width: isActive ? 24.w : 8.w,
           height: 8.h,
           decoration: BoxDecoration(

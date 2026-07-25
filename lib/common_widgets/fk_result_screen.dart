@@ -24,7 +24,7 @@ class FkResultScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: AppSpacing.all10,
+        padding: AppSpacing.all(AppSpacing.h22),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -48,7 +48,7 @@ class FkResultScreen extends StatelessWidget {
               ),
               child: Icon(icon, size: 70, color: AppColors.whiteBase),
             ),
-            SizedBox(height: AppSpacing.s10),
+            SizedBox(height: AppSpacing.v22),
             Text(
               title,
               style: Theme.of(
@@ -56,7 +56,7 @@ class FkResultScreen extends StatelessWidget {
               ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: AppSpacing.s06),
+            SizedBox(height: AppSpacing.v12),
             Text(
               message,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -64,7 +64,7 @@ class FkResultScreen extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: AppSpacing.s10),
+            SizedBox(height: AppSpacing.v22),
             SizedBox(
               width: 220,
               child: OutlinedButton(

@@ -34,41 +34,41 @@ class ReviewApplicationScreen extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: AppSpacing.s10),
+          SizedBox(height: AppSpacing.v22),
 
           ContributorInfoBanner(
             text: "contributor.reviewApplicationBanner".tr(),
           ),
 
-          SizedBox(height: AppSpacing.s10),
+          SizedBox(height: AppSpacing.v22),
 
           ApplicationInfoTile(
             title: "contributor.fullName".tr(),
             value: "Angelica Singh",
           ),
 
-          SizedBox(height: AppSpacing.s08),
+          SizedBox(height: AppSpacing.v18),
 
           ApplicationInfoTile(
             title: "contributor.emailAddress".tr(),
             value: "angie.work@gmail.com",
           ),
 
-          SizedBox(height: AppSpacing.s08),
+          SizedBox(height: AppSpacing.v18),
 
           ApplicationInfoTile(
             title: "contributor.currentRole".tr(),
             value: "UI UX Designer",
           ),
 
-          SizedBox(height: AppSpacing.s08),
+          SizedBox(height: AppSpacing.v18),
 
           ApplicationInfoTile(
             title: "contributor.contributionArea".tr(),
             value: "Design System",
           ),
 
-          SizedBox(height: AppSpacing.s08),
+          SizedBox(height: AppSpacing.v18),
 
           Text(
             "contributor.relevantSkills".tr(),
@@ -77,11 +77,11 @@ class ReviewApplicationScreen extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: AppSpacing.s04),
+          SizedBox(height: AppSpacing.v8),
 
           Wrap(
-            spacing: AppSpacing.s04,
-            runSpacing: AppSpacing.s04,
+            spacing: AppSpacing.h8,
+            runSpacing: AppSpacing.v8,
             children: [
               ContributorDisplaySkillChip(label: "Figma"),
               ContributorDisplaySkillChip(label: "UI/UX Designer"),
@@ -89,21 +89,21 @@ class ReviewApplicationScreen extends StatelessWidget {
             ],
           ),
 
-          SizedBox(height: AppSpacing.s08),
+          SizedBox(height: AppSpacing.v18),
 
           ApplicationInfoTile(
             title: "contributor.experienceLevel".tr(),
             value: "2 years",
           ),
 
-          SizedBox(height: AppSpacing.s08),
+          SizedBox(height: AppSpacing.v18),
 
           ApplicationInfoTile(
             title: "contributor.weeklyContributionTime".tr(),
             value: "2-4 hours",
           ),
 
-          SizedBox(height: AppSpacing.s08),
+          SizedBox(height: AppSpacing.v18),
 
           Text(
             "contributor.workProfileLinks".tr(),
@@ -112,28 +112,28 @@ class ReviewApplicationScreen extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: AppSpacing.s05),
+          SizedBox(height: AppSpacing.v10),
 
           const ApplicationLinksTile(
             icon: AssetsPath.githubSvg,
             text: "https://github.com/angelica-singh-04",
           ),
 
-          SizedBox(height: AppSpacing.s05),
+          SizedBox(height: AppSpacing.v10),
 
           const ApplicationLinksTile(
             icon: AssetsPath.websiteSvg,
             text: "https://angelica.works",
           ),
 
-          SizedBox(height: AppSpacing.s05),
+          SizedBox(height: AppSpacing.v10),
 
           const ApplicationLinksTile(
             icon: AssetsPath.linkedinSvg,
             text: "https://linkedin.com/angelica.works",
           ),
 
-          SizedBox(height: AppSpacing.s10),
+          SizedBox(height: AppSpacing.v22),
 
           FkPrimaryButton(
             label: "contributor.submitApplication".tr(),
@@ -141,7 +141,7 @@ class ReviewApplicationScreen extends StatelessWidget {
                 context.push(RouteNames.applicationAlreadySubmitted),
           ),
 
-          SizedBox(height: AppSpacing.s06),
+          SizedBox(height: AppSpacing.v12),
 
           Center(
             child: TextButton(
@@ -156,7 +156,7 @@ class ReviewApplicationScreen extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: AppSpacing.s10),
+          SizedBox(height: AppSpacing.v22),
         ],
       ),
     );

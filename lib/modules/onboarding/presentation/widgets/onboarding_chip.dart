@@ -27,8 +27,8 @@ class OnboardingChip extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
 
         padding: EdgeInsets.symmetric(
-          horizontal: AppSpacing.s07,
-          vertical: AppSpacing.s05,
+          horizontal: AppSpacing.h16,
+          vertical: AppSpacing.v10,
         ),
 
         decoration: BoxDecoration(

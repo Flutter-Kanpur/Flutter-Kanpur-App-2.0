@@ -46,7 +46,7 @@ class MyContestCard extends StatelessWidget {
         onTap: onTap,
         borderRadius: AppRadius.all05,
         child: Container(
-          padding: AppSpacing.all07,
+          padding: AppSpacing.all(AppSpacing.h16),
           decoration: BoxDecoration(
             color: AppColors.whiteBase,
             borderRadius: AppRadius.all05,
@@ -75,18 +75,18 @@ class MyContestCard extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: AppSpacing.s04),
+              SizedBox(height: AppSpacing.v8),
               Text(contest.title, style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w500)),
-              SizedBox(height: AppSpacing.s06),
+              SizedBox(height: AppSpacing.v12),
               Wrap(
-                spacing: AppSpacing.s04,
-                runSpacing: AppSpacing.s04,
+                spacing: AppSpacing.h8,
+                runSpacing: AppSpacing.v8,
                 children: contest.tags
                     .map(
                       (tag) => Container(
                         padding: EdgeInsets.symmetric(
-                          horizontal: AppSpacing.s07,
-                          vertical: AppSpacing.s04,
+                          horizontal: AppSpacing.h16,
+                          vertical: AppSpacing.v8,
                         ),
                         decoration: BoxDecoration(
                           color: AppColors.neutral50,
@@ -97,13 +97,13 @@ class MyContestCard extends StatelessWidget {
                     )
                     .toList(),
               ),
-              SizedBox(height: AppSpacing.s07),
+              SizedBox(height: AppSpacing.v16),
               Divider(
                 height: 1,
                 thickness: 1,
                 color: AppBorders.primary,
               ),
-              SizedBox(height: AppSpacing.s07),
+              SizedBox(height: AppSpacing.v16),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -115,7 +115,7 @@ class MyContestCard extends StatelessWidget {
                           contest.metaLabel,
                           style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500),
                         ),
-                        SizedBox(height: AppSpacing.s02),
+                        SizedBox(height: AppSpacing.v4),
                         Text(contest.metaValue, style: _metaValueStyle()),
                       ],
                     ),

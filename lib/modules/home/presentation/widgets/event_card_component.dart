@@ -69,7 +69,7 @@ class EventCardComponent extends StatelessWidget {
         children: [
           // Hero image with overlay status badge
           Padding(
-            padding: AppSpacing.only(left: AppSpacing.s07, top: AppSpacing.s07, right: AppSpacing.s07, bottom: AppSpacing.s06),
+            padding: AppSpacing.only(left: AppSpacing.h16, top: AppSpacing.v16, right: AppSpacing.h16, bottom: AppSpacing.v12),
             child: ClipRRect(
               borderRadius: AppRadius.all05,
               child: Stack(
@@ -91,7 +91,7 @@ class EventCardComponent extends StatelessWidget {
                   Container(
                     width: double.infinity,
                     height: 180.h,
-                    //padding: AppSpacing.symmetric(horizontal: AppSpacing.s02, vertical: AppSpacing.s01),
+                    //padding: AppSpacing.symmetric(horizontal: AppSpacing.h4, vertical: AppSpacing.v2),
                     child: Image.asset(
                       assetPath,
                       fit: BoxFit.cover,
@@ -103,8 +103,8 @@ class EventCardComponent extends StatelessWidget {
                     left: 10.w,
                     child: Container(
                       padding: EdgeInsets.symmetric(
-                        horizontal: AppSpacing.s07,
-                        vertical: AppSpacing.s07,
+                        horizontal: AppSpacing.h16,
+                        vertical: AppSpacing.v16,
                       ),
                       decoration: BoxDecoration(
                         color: statusColor,
@@ -120,7 +120,7 @@ class EventCardComponent extends StatelessWidget {
          
           // Organization section
           Padding(
-            padding: AppSpacing.horizontal(AppSpacing.s09),
+            padding: AppSpacing.horizontal(AppSpacing.h20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [10.verticalSpace],
@@ -128,19 +128,19 @@ class EventCardComponent extends StatelessWidget {
           ),
           // Title
           Padding(
-            padding: AppSpacing.horizontal(AppSpacing.s07),
+            padding: AppSpacing.horizontal(AppSpacing.h16),
             child: Text(title, style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w500)),
           ),
           10.verticalSpace,
           // Date/Time
           Padding(
-            padding: AppSpacing.horizontal(AppSpacing.s07),
+            padding: AppSpacing.horizontal(AppSpacing.h16),
             child: Text(dateTime, style: AppTextStyles.labelLarge.copyWith(color: AppColors.primary500, fontWeight: FontWeight.w600)),
           ),
           10.verticalSpace,
           // Description
           Padding(
-            padding: AppSpacing.horizontal(AppSpacing.s07),
+            padding: AppSpacing.horizontal(AppSpacing.h16),
             child: Text(
               description,
               style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral400),
@@ -151,7 +151,7 @@ class EventCardComponent extends StatelessWidget {
           18.verticalSpace,
           // Button section
           Padding(
-            padding: AppSpacing.horizontal(AppSpacing.s07),
+            padding: AppSpacing.horizontal(AppSpacing.h16),
             child: Row(
               children: [
                 Expanded(

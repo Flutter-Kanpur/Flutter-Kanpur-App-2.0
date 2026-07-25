@@ -9,8 +9,8 @@ class FkCard extends StatelessWidget {
     super.key,
     required this.child,
     this.onTap,
-    this.padding = const EdgeInsets.all(AppSpacing.space07),
-    this.margin = const EdgeInsets.only(bottom: AppSpacing.space06),
+    this.padding = const EdgeInsets.all(AppSpacing.raw16),
+    this.margin = const EdgeInsets.only(bottom: AppSpacing.raw12),
   });
 
   final Widget child;

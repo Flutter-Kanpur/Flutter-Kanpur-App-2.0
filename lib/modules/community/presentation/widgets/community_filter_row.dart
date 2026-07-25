@@ -60,8 +60,8 @@ class _Chip extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.only(right: AppSpacing.s04),
-        padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07),
+        margin: EdgeInsets.only(right: AppSpacing.h8),
+        padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16),
         decoration: BoxDecoration(
           color: selected ? primary.withValues(alpha: 0.1) : AppColors.whiteBase,
           borderRadius: AppRadius.all02,
@@ -73,7 +73,7 @@ class _Chip extends StatelessWidget {
           children: [
             if (icon != null) ...[
               Icon(icon, size: 16, color: selected ? primary : null),
-              SizedBox(width: AppSpacing.s03),
+              SizedBox(width: AppSpacing.h6),
             ],
             Text(
               label,

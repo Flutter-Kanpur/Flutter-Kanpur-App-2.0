@@ -29,7 +29,7 @@ class PrivacyPolicy extends StatelessWidget {
           ),
           body: SingleChildScrollView(
             child: Column(
-              spacing: AppSpacing.s05,
+              spacing: AppSpacing.h10,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildContentContainer(
@@ -76,10 +76,10 @@ Widget _buildContentContainer(
     width: double.infinity,
     padding: !showBackground
         ? EdgeInsets.zero
-        : EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s05),
-    margin: EdgeInsets.only(left: AppSpacing.s05, right: AppSpacing.s05),
+        : EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v10),
+    margin: EdgeInsets.only(left: AppSpacing.h10, right: AppSpacing.h10),
     child: Column(
-      spacing: AppSpacing.s04,
+      spacing: AppSpacing.h8,
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -100,8 +100,8 @@ Widget _buildContentContainer(
 
 Widget _buildLastUpdatedWidget(BuildContext context) {
   return Container(
-    margin: EdgeInsets.only(left: AppSpacing.s05, right: AppSpacing.s05),
-    padding: EdgeInsets.only(bottom: AppSpacing.s05),
+    margin: EdgeInsets.only(left: AppSpacing.h10, right: AppSpacing.h10),
+    padding: EdgeInsets.only(bottom: AppSpacing.v10),
     child: Text(
       translate(context, "profile_privacy_policy.last_updated"),
       style: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase)

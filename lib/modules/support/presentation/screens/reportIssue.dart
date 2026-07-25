@@ -47,8 +47,8 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
             builder: (context, constraints) {
               return SingleChildScrollView(
                 padding: EdgeInsets.only(
-                  left: AppSpacing.s07,
-                  right: AppSpacing.s07,
+                  left: AppSpacing.h16,
+                  right: AppSpacing.h16,
                   bottom: MediaQuery.of(context).viewInsets.bottom + 24.h,
                 ),
                 child: ConstrainedBox(
@@ -74,21 +74,21 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: AppSpacing.s05),
+        SizedBox(height: AppSpacing.v10),
         _buildSubtitle(),
-        SizedBox(height: AppSpacing.s10),
+        SizedBox(height: AppSpacing.v22),
         _buildIssueField(),
-        SizedBox(height: AppSpacing.s10),
+        SizedBox(height: AppSpacing.v22),
         _buildDescriptionField(),
-        SizedBox(height: AppSpacing.s10),
+        SizedBox(height: AppSpacing.v22),
         _buildUploadSection(),
-        SizedBox(height: AppSpacing.s09),
+        SizedBox(height: AppSpacing.v20),
         _buildUploadCards(),
-        SizedBox(height: AppSpacing.s05),
+        SizedBox(height: AppSpacing.v10),
         _buildSubmitButton(),
-        SizedBox(height: AppSpacing.s01),
+        SizedBox(height: AppSpacing.v2),
         _buildCancelButton(),
-        SizedBox(height: AppSpacing.s03),
+        SizedBox(height: AppSpacing.v6),
       ],
     );
   }
@@ -106,7 +106,7 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
       children: [
         Text(translate(context, "profile_support.issue_type"),
             style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
-        SizedBox(height: AppSpacing.s05),
+        SizedBox(height: AppSpacing.v10),
         GestureDetector(
           onTap: () {
             showCustomDropdown(
@@ -124,7 +124,7 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
             );
           },
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s07),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v16),
             decoration: BoxDecoration(
               color: AppColors.whiteBase.withOpacity(0.9),
               borderRadius: AppRadius.all04,
@@ -158,7 +158,7 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
       children: [
         Text(translate(context, "profile_support.describe_issue"),
             style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
-        SizedBox(height: AppSpacing.s05),
+        SizedBox(height: AppSpacing.v10),
         TextFormField(
           maxLines: 5,
           decoration: InputDecoration(
@@ -168,7 +168,7 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
             filled: true,
             fillColor: AppColors.whiteBase.withOpacity(0.9),
             contentPadding:
-            AppSpacing.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s03),
+            AppSpacing.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v6),
             border: OutlineInputBorder(
               borderRadius: AppRadius.all04,
               borderSide:
@@ -196,14 +196,14 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
       children: [
         Text(translate(context, "profile_support.upload_optional"),
             style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
-        SizedBox(height: AppSpacing.s05),
+        SizedBox(height: AppSpacing.v10),
         Container(
           width: double.infinity,
           child: DottedRoundedRect(
             radius: 14.r,
             strokeWidth: 1.2,
             color: AppColors.neutral100,
-            padding: EdgeInsets.symmetric(horizontal: AppSpacing.s05, vertical: AppSpacing.s07),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.h10, vertical: AppSpacing.v16),
             child: Column(
               children: [
                 SvgPicture.asset(
@@ -212,13 +212,13 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
                   height: 18.w,
                   color: AppColors.neutral300,
                 ),
-                SizedBox(height: AppSpacing.s05),
+                SizedBox(height: AppSpacing.v10),
                 Text(
                   translate(context, "profile_support.choose_file_hint"),
                   style: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase)
                       .copyWith(color: AppColors.neutral300),
                 ),
-                SizedBox(height: AppSpacing.s06),
+                SizedBox(height: AppSpacing.v12),
                 OutlinedButton(
                   onPressed: _pickFile,
                   style: OutlinedButton.styleFrom(
@@ -229,7 +229,7 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
                     shape: RoundedRectangleBorder(
                         borderRadius: AppRadius.all02),
                     padding:
-                    AppSpacing.symmetric(horizontal: AppSpacing.s08, vertical: AppSpacing.s04),
+                    AppSpacing.symmetric(horizontal: AppSpacing.h18, vertical: AppSpacing.v8),
                   ),
                   child:
                   Text(translate(context, "profile_support.browse_files")),
@@ -245,7 +245,7 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
   Widget _buildUploadCards() {
     return Column(children: [
       if (pickedFile != null) ...[
-        SizedBox(height: AppSpacing.s05),
+        SizedBox(height: AppSpacing.v10),
         Row(
           children: [
             Expanded(
@@ -255,7 +255,7 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            SizedBox(width: AppSpacing.s06),
+            SizedBox(width: AppSpacing.h12),
             isUploading
                 ? SizedBox(
                 width: 24.w,
@@ -268,7 +268,7 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
                 shape: RoundedRectangleBorder(
                     borderRadius: AppRadius.all02),
                 padding:
-                AppSpacing.symmetric(horizontal: AppSpacing.s06, vertical: AppSpacing.s04),
+                AppSpacing.symmetric(horizontal: AppSpacing.h12, vertical: AppSpacing.v8),
               ),
               child: Text(translate(context, "profile_support.upload"),
                   style: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase)
@@ -282,7 +282,7 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
 
   Widget _buildSubmitButton() {
     return Container(
-      margin: EdgeInsets.only(left: AppSpacing.s05, right: AppSpacing.s05, bottom: AppSpacing.s05),
+      margin: EdgeInsets.only(left: AppSpacing.h10, right: AppSpacing.h10, bottom: AppSpacing.v10),
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -295,7 +295,7 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
           Positioned(
             right: 60.w,
             child: Container(
-              padding: EdgeInsets.only(left: AppSpacing.s03),
+              padding: EdgeInsets.only(left: AppSpacing.h6),
               child: const Icon(Icons.arrow_forward, color: AppColors.whiteBase),
             ),
           ),
@@ -364,8 +364,8 @@ Future<void> showCustomDropdown({
     backgroundColor: Colors.transparent,
     builder: (context) {
       return Container(
-        margin: AppSpacing.all07,
-        padding: AppSpacing.vertical(AppSpacing.s06),
+        margin: AppSpacing.all(AppSpacing.h16),
+        padding: AppSpacing.vertical(AppSpacing.v12),
         decoration: BoxDecoration(
           color: AppColors.whiteBase,
           borderRadius: AppRadius.all06,
@@ -373,7 +373,7 @@ Future<void> showCustomDropdown({
         child: ListView.separated(
           shrinkWrap: true,
           itemCount: items.length,
-          separatorBuilder: (_, __) => SizedBox(height: AppSpacing.s03),
+          separatorBuilder: (_, __) => SizedBox(height: AppSpacing.v6),
           itemBuilder: (context, index) {
             final item = items[index];
             final isSelected = item == selectedValue;
@@ -384,10 +384,10 @@ Future<void> showCustomDropdown({
                 onSelected(item);
               },
               child: Container(
-                margin: AppSpacing.horizontal(AppSpacing.s06),
+                margin: AppSpacing.horizontal(AppSpacing.h12),
                 padding: EdgeInsets.symmetric(
-                  horizontal: AppSpacing.s07,
-                  vertical: AppSpacing.s07,
+                  horizontal: AppSpacing.h16,
+                  vertical: AppSpacing.v16,
                 ),
                 decoration: BoxDecoration(
                   color:

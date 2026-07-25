@@ -27,12 +27,12 @@ class JoinAsContributorScreen extends StatelessWidget {
             leading: const FkBackButton(fallbackPath: RouteNames.profile),
           ),
 
-          SizedBox(height: AppSpacing.s10),
+          SizedBox(height: AppSpacing.v22),
 
           /// Information Card
           Container(
             width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: AppSpacing.s05, vertical: AppSpacing.s07),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.h10, vertical: AppSpacing.v16),
             decoration: BoxDecoration(
               color: AppColors.primary50,
               borderRadius: AppRadius.all05,
@@ -44,12 +44,12 @@ class JoinAsContributorScreen extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: AppSpacing.s07),
+          SizedBox(height: AppSpacing.v16),
 
           /// Green Card
           Container(
             width: double.infinity,
-            padding: AppSpacing.symmetric(horizontal: AppSpacing.s08, vertical: AppSpacing.s08),
+            padding: AppSpacing.symmetric(horizontal: AppSpacing.h18, vertical: AppSpacing.v18),
             decoration: BoxDecoration(
               color: AppColors.success100,
               borderRadius: AppRadius.all04,
@@ -70,7 +70,7 @@ class JoinAsContributorScreen extends StatelessWidget {
             onPressed: () => context.push(RouteNames.contributorApplication),
           ),
 
-          SizedBox(height: AppSpacing.s06),
+          SizedBox(height: AppSpacing.v12),
 
           Center(
             child: TextButton(
@@ -82,7 +82,7 @@ class JoinAsContributorScreen extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: AppSpacing.s06),
+          SizedBox(height: AppSpacing.v12),
         ],
       ),
     );

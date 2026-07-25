@@ -134,7 +134,7 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
         return Align(
           alignment: Alignment.bottomCenter,
           child: Container(
-            padding: AppSpacing.all09,
+            padding: AppSpacing.all(AppSpacing.h20),
             decoration: BoxDecoration(
               color: AppColors.whiteBase,
               borderRadius: BorderRadius.vertical(
@@ -146,7 +146,7 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
               children: [
                 Container(
                   width: 75.w,
-                  height: AppSpacing.s07,
+                  height: AppSpacing.v16,
                   decoration: BoxDecoration(
                     color: AppColors.blackBase,
                     borderRadius: AppRadius.all02,
@@ -249,7 +249,7 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
             borderRadius: AppRadius.all07,
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s08),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v18),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -409,7 +409,7 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
           ),
           if (_hasError)
             Padding(
-              padding: EdgeInsets.only(top: AppSpacing.s04),
+              padding: EdgeInsets.only(top: AppSpacing.v8),
               child: Row(
                 children: [
                   Icon(

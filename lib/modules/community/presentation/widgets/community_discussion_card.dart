@@ -24,7 +24,7 @@ class CommunityDiscussionCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: width,
-        padding: AppSpacing.all07,
+        padding: AppSpacing.all(AppSpacing.h16),
         decoration: BoxDecoration(
           color: AppColors.whiteBase,
           borderRadius: AppRadius.all06,
@@ -38,40 +38,42 @@ class CommunityDiscussionCard extends StatelessWidget {
               time: question.createdLabel,
               photoUrl: question.authorPhotoUrl,
             ),
-            SizedBox(height: AppSpacing.s08),
+            SizedBox(height: AppSpacing.v18),
             Text(
               question.title,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(context)
-                  .textTheme
+              style: AppTextStyles
                   .titleMedium
-                  ?.copyWith(fontWeight: FontWeight.w700),
+                  .copyWith(fontWeight: FontWeight.w700),
             ),
-            SizedBox(height: AppSpacing.s05),
+            SizedBox(height: AppSpacing.v10),
             Expanded(
               child: Text(
                 question.body,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                style: AppTextStyles.bodyMedium.copyWith(
                       color: AppColors.neutral500,
-                      height: 1.42,
                     ),
               ),
             ),
-            SizedBox(height: AppSpacing.s06),
+            SizedBox(height: AppSpacing.v12),
             if (question.tag.isNotEmpty)
               Text(
                 '#${question.tag}',
                 style: AppTextStyles.bodyMedium.copyWith(color: AppColors.primary500),
               ),
-            SizedBox(height: AppSpacing.s05),
+            SizedBox(height: AppSpacing.v10),
             const Divider(),
             Row(
               children: [
+                const Icon(Icons.favorite_border_outlined, size: 18),
+                SizedBox(width: AppSpacing.h4),
+                Text('${question.answerCount}'),
+                SizedBox(width: AppSpacing.h10),
                 const Icon(Icons.chat_bubble_outline, size: 18),
-                SizedBox(width: AppSpacing.s02),
+                SizedBox(width: AppSpacing.h4),
                 Text('${question.answerCount}'),
                 const Spacer(),
                 const Icon(Icons.bookmark_outline,
@@ -112,7 +114,7 @@ class _AuthorRow extends StatelessWidget {
                 )
               : null,
         ),
-        SizedBox(width: AppSpacing.s05),
+        SizedBox(width: AppSpacing.h10),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

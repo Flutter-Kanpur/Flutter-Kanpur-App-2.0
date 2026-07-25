@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class FkSectionTitle extends StatelessWidget {
   const FkSectionTitle({
@@ -16,19 +18,17 @@ class FkSectionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: AppSpacing.s04, bottom: AppSpacing.s06),
+      padding: EdgeInsets.only(top: AppSpacing.v8, bottom: AppSpacing.v8),
       child: Row(
         children: [
           Expanded(
             child: Text(
               title,
-              style: Theme.of(
-                context,
-              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
+              style: AppTextStyles.titleMedium,
             ),
           ),
           if (actionLabel != null)
-            TextButton(onPressed: onActionTap, child: Text(actionLabel!)),
+            TextButton(onPressed: onActionTap, child: Text(actionLabel!,style: AppTextStyles.bodyMedium.copyWith(color: AppColors.primary500))),
         ],
       ),
     );

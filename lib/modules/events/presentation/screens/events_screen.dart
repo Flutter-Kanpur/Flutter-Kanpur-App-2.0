@@ -18,7 +18,7 @@ class EventsScreen extends StatelessWidget {
           subtitle:
               'Meetups, workshops, registrations, QR tickets, and check-in flow.',
         ),
-        SizedBox(height: AppSpacing.s08),
+        SizedBox(height: AppSpacing.v18),
         const FkSectionTitle(title: 'Event Flow'),
         const _EventFlowStep(
           title: 'Discover events',
@@ -58,7 +58,7 @@ class _EventFlowStep extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Icon(Icons.event_available_rounded),
-          SizedBox(width: AppSpacing.s06),
+          SizedBox(width: AppSpacing.h12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,7 +69,7 @@ class _EventFlowStep extends StatelessWidget {
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                SizedBox(height: AppSpacing.s03),
+                SizedBox(height: AppSpacing.v6),
                 Text(body),
               ],
             ),

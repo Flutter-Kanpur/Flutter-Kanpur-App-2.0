@@ -16,9 +16,9 @@ class FkScreen extends StatelessWidget {
     return SafeArea(
       child: ListView(
         padding: padding ??
-            EdgeInsets.fromLTRB(AppSpacing.s09,
-              AppSpacing.s08,
-              AppSpacing.s09,
+            EdgeInsets.fromLTRB(AppSpacing.h20,
+              AppSpacing.h18,
+              AppSpacing.h20,
               24,
             ),
         children: children,
