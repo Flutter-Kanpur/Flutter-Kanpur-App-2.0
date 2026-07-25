@@ -24,7 +24,7 @@ class OnboardingLinksScreen extends StatelessWidget {
 
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16),
 
           child: Column(
             children: [

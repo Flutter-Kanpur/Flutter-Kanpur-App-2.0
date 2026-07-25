@@ -17,7 +17,7 @@ class ApplicationLinksTile extends StatelessWidget {
     return Row(
       children: [
         SvgPicture.asset(icon, width: 18, height: 18),
-        SizedBox(width: AppSpacing.s04),
+        SizedBox(width: AppSpacing.h8),
         Expanded(child: Text(text)),
       ],
     );

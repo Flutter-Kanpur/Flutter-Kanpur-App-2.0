@@ -31,7 +31,7 @@ class CommonSearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16),
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.whiteBase,
@@ -45,7 +45,7 @@ class CommonSearchBar extends StatelessWidget {
           ],
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s07),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v16),
           child: Row(
             children: [
               Icon(Icons.search_rounded, size: 20.sp, color: AppColors.blackBase),
@@ -71,7 +71,7 @@ class CommonSearchBar extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(color: AppColors.blackBase, width: AppSpacing.s01, height: 25),
+              Container(color: AppColors.blackBase, width: AppSpacing.v2, height: 25),
               8.horizontalSpace,
               GestureDetector(
                 onTap: onMicTap,

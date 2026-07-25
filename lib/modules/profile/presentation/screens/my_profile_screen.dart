@@ -142,7 +142,7 @@ class MyProfileScreen extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: AppSpacing.s10),
+                  SizedBox(height: AppSpacing.v22),
                 ],
               ),
             ),
@@ -253,7 +253,7 @@ class MyProfileScreen extends ConsumerWidget {
         //               ),
         //             ],
         //           ),
-        //           SizedBox(height: AppSpacing.s10),
+        //           SizedBox(height: AppSpacing.v22),
         //         ],
         //       ),
         //     );

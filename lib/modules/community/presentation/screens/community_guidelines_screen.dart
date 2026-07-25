@@ -22,12 +22,12 @@ class CommunityGuidelinesScreen extends StatelessWidget {
             subtitle: '',
             leading: FkBackButton(),
           ),
-          SizedBox(height: AppSpacing.s08),
+          SizedBox(height: AppSpacing.v18),
           Text(
             "community.communityGuidelines.about".tr(),
             style: theme.textTheme.bodyLarge,
           ),
-          SizedBox(height: AppSpacing.s10),
+          SizedBox(height: AppSpacing.v22),
           SizedBox(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,14 +39,14 @@ class CommunityGuidelinesScreen extends StatelessWidget {
                       "community.communityGuidelines.respectAndConduct.description"
                           .tr(),
                 ),
-                SizedBox(height: AppSpacing.s08),
+                SizedBox(height: AppSpacing.v18),
                 _ContainerBackground(
                   title: "community.communityGuidelines.inclusivity.title".tr(),
                   description:
                       "community.communityGuidelines.inclusivity.description"
                           .tr(),
                 ),
-                SizedBox(height: AppSpacing.s08),
+                SizedBox(height: AppSpacing.v18),
                 _ContainerBackground(
                   title:
                       "community.communityGuidelines.meaningfulParticipation.title"
@@ -55,7 +55,7 @@ class CommunityGuidelinesScreen extends StatelessWidget {
                       "community.communityGuidelines.meaningfulParticipation.description"
                           .tr(),
                 ),
-                SizedBox(height: AppSpacing.s08),
+                SizedBox(height: AppSpacing.v18),
                 _ContainerBackground(
                   title:
                       "community.communityGuidelines.responsibleSharing.title"
@@ -64,7 +64,7 @@ class CommunityGuidelinesScreen extends StatelessWidget {
                       "community.communityGuidelines.responsibleSharing.description"
                           .tr(),
                 ),
-                SizedBox(height: AppSpacing.s08),
+                SizedBox(height: AppSpacing.v18),
                 _ContainerBackground(
                   title: "community.communityGuidelines.privacyAndTrust.title"
                       .tr(),
@@ -72,7 +72,7 @@ class CommunityGuidelinesScreen extends StatelessWidget {
                       "community.communityGuidelines.privacyAndTrust.description"
                           .tr(),
                 ),
-                SizedBox(height: AppSpacing.s08),
+                SizedBox(height: AppSpacing.v18),
                 Text(
                   "common.lastUpdated".tr(
                     args: ["common.lastUpdatedDate".tr()],
@@ -98,7 +98,7 @@ class _ContainerBackground extends StatelessWidget {
     final theme = Theme.of(context);
     return Container(
       width: double.infinity,
-      padding: AppSpacing.all08,
+      padding: AppSpacing.all(AppSpacing.h18),
       decoration: BoxDecoration(
         color: AppColors.primary50,
         borderRadius: AppRadius.all02,
@@ -107,7 +107,7 @@ class _ContainerBackground extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(title, style: theme.textTheme.titleLarge),
-          SizedBox(height: AppSpacing.s05),
+          SizedBox(height: AppSpacing.v10),
           Text(description, style: theme.textTheme.bodyLarge),
         ],
       ),

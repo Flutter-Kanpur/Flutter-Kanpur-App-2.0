@@ -143,10 +143,10 @@ class _ContributorApplicationScreenState
                   ),
                 ),
 
-                SizedBox(height: AppSpacing.s10),
+                SizedBox(height: AppSpacing.v22),
                 ContributorInfoBanner(text: "contributor.reviewDetails".tr()),
 
-                SizedBox(height: AppSpacing.s10),
+                SizedBox(height: AppSpacing.v22),
 
                 FkTextField(
                   controller: fullNameController,
@@ -157,7 +157,7 @@ class _ContributorApplicationScreenState
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
 
-                SizedBox(height: AppSpacing.s08),
+                SizedBox(height: AppSpacing.v18),
 
                 FkTextField(
                   controller: emailController,
@@ -167,7 +167,7 @@ class _ContributorApplicationScreenState
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
 
-                SizedBox(height: AppSpacing.s08),
+                SizedBox(height: AppSpacing.v18),
                 ContributorDropdownField(
                   label: "contributor.currentRole".tr(),
                   value: currentRole,
@@ -183,7 +183,7 @@ class _ContributorApplicationScreenState
                   },
                 ),
 
-                SizedBox(height: AppSpacing.s08),
+                SizedBox(height: AppSpacing.v18),
 
                 ContributorDropdownField(
                   label: "contributor.contributionArea".tr(),
@@ -200,7 +200,7 @@ class _ContributorApplicationScreenState
                   },
                 ),
 
-                SizedBox(height: AppSpacing.s09),
+                SizedBox(height: AppSpacing.v20),
 
                 ContributorDropdownField(
                   label: "contributor.relevantSkills".tr(),
@@ -222,10 +222,10 @@ class _ContributorApplicationScreenState
                   },
                 ),
 
-                SizedBox(height: AppSpacing.s06),
+                SizedBox(height: AppSpacing.v12),
                 Wrap(
-                  spacing: AppSpacing.s04,
-                  runSpacing: AppSpacing.s04,
+                  spacing: AppSpacing.h8,
+                  runSpacing: AppSpacing.v8,
                   children: selectedSkills.map((skill) {
                     return ContributorSkillChip(
                       label: skill,
@@ -255,7 +255,7 @@ class _ContributorApplicationScreenState
                       return const SizedBox.shrink();
                     }
                     return Padding(
-                      padding: EdgeInsets.only(top: AppSpacing.s04, left: AppSpacing.s02),
+                      padding: EdgeInsets.only(top: AppSpacing.v8, left: AppSpacing.h4),
                       child: Text(
                         field.errorText!,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -266,7 +266,7 @@ class _ContributorApplicationScreenState
                   },
                 ),
 
-                SizedBox(height: AppSpacing.s09),
+                SizedBox(height: AppSpacing.v20),
                 ContributorDropdownField(
                   label: "contributor.experienceLevel".tr(),
                   value: experience,
@@ -281,7 +281,7 @@ class _ContributorApplicationScreenState
                     });
                   },
                 ),
-                SizedBox(height: AppSpacing.s09),
+                SizedBox(height: AppSpacing.v20),
 
                 ContributorDropdownField(
                   label: "contributor.weeklyContributionTime".tr(),
@@ -298,7 +298,7 @@ class _ContributorApplicationScreenState
                   },
                 ),
 
-                SizedBox(height: AppSpacing.s10),
+                SizedBox(height: AppSpacing.v22),
                 Text(
                   "contributor.workProfileLinks".tr(),
                   style: Theme.of(
@@ -313,7 +313,7 @@ class _ContributorApplicationScreenState
                   validator: _urlValidator,
                 ),
 
-                SizedBox(height: AppSpacing.s10),
+                SizedBox(height: AppSpacing.v22),
 
                 FkTextField(
                   controller: whyController,
@@ -324,7 +324,7 @@ class _ContributorApplicationScreenState
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                 ),
 
-                SizedBox(height: AppSpacing.s10),
+                SizedBox(height: AppSpacing.v22),
                 FkPrimaryButton(
                   label: "contributor.submitApplication".tr(),
                   icon: Icons.arrow_forward_rounded,
@@ -334,7 +334,7 @@ class _ContributorApplicationScreenState
                     }
                   },
                 ),
-                SizedBox(height: AppSpacing.s10),
+                SizedBox(height: AppSpacing.v22),
               ],
             ),
           ),

@@ -50,7 +50,7 @@ class MyEventCard extends ConsumerWidget {
     final isPast = event.category == MyEventCategory.past;
 
     return Container(
-      padding: AppSpacing.all07,
+      padding: AppSpacing.all(AppSpacing.h16),
       decoration: BoxDecoration(
         color: AppColors.whiteBase,
         borderRadius: AppRadius.all05,
@@ -63,7 +63,7 @@ class MyEventCard extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s03),
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v6),
                 decoration: BoxDecoration(
                   color: statusColor.withValues(alpha: 0.2),
                   borderRadius: AppRadius.all09,
@@ -79,7 +79,7 @@ class MyEventCard extends ConsumerWidget {
                         shape: BoxShape.circle,
                       ),
                     ),
-                    SizedBox(width: AppSpacing.s03),
+                    SizedBox(width: AppSpacing.h6),
                     Text(
                       event.statusLabel,
                       style: AppTextStyles.bodyMedium.copyWith(color: statusColor),
@@ -104,14 +104,14 @@ class MyEventCard extends ConsumerWidget {
                 ),
             ],
           ),
-          SizedBox(height: AppSpacing.s06),
+          SizedBox(height: AppSpacing.v12),
           Text(event.title, style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w500)),
-          SizedBox(height: AppSpacing.s04),
+          SizedBox(height: AppSpacing.v8),
           Text(
             event.dateTimeLocation,
             style: AppTextStyles.bodyMedium.copyWith(color: AppColors.success600),
           ),
-          SizedBox(height: AppSpacing.s04),
+          SizedBox(height: AppSpacing.v8),
           Text(
             event.description,
             maxLines: expanded ? null : 2,
@@ -124,11 +124,11 @@ class MyEventCard extends ConsumerWidget {
                   .read(myEventCardExpandedProvider(event.id).notifier)
                   .toggle(),
               child: Padding(
-                padding: EdgeInsets.only(top: AppSpacing.s01),
+                padding: EdgeInsets.only(top: AppSpacing.v2),
                 child: Text('see more', style: AppTextStyles.bodyMedium.copyWith(color: AppColors.primary500)),
               ),
             ),
-          SizedBox(height: AppSpacing.s07),
+          SizedBox(height: AppSpacing.v16),
           Row(
             children: [
               Expanded(
@@ -140,7 +140,7 @@ class MyEventCard extends ConsumerWidget {
                 ),
               ),
               if (isPast) ...[
-                SizedBox(width: AppSpacing.s06),
+                SizedBox(width: AppSpacing.h12),
                 Material(
                   color: Colors.transparent,
                   child: InkWell(

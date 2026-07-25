@@ -20,12 +20,12 @@ class ProfileSectionBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: AppSpacing.only(left: AppSpacing.s09, top: AppSpacing.s00, right: AppSpacing.s09, bottom: AppSpacing.s09),
+      padding: AppSpacing.only(left: AppSpacing.h20, top: 0, right: AppSpacing.h20, bottom: AppSpacing.v20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: EdgeInsets.only(bottom: AppSpacing.s02),
+            padding: EdgeInsets.only(bottom: AppSpacing.v4),
             child: Text(
               title,
               style: AppTextStyles.bodyLarge.copyWith(
@@ -33,7 +33,7 @@ class ProfileSectionBlock extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: AppSpacing.s04),
+          SizedBox(height: AppSpacing.v8),
           Container(
             decoration: BoxDecoration(
               color: AppColors.neutral50,
@@ -44,7 +44,7 @@ class ProfileSectionBlock extends StatelessWidget {
                 for (int i = 0; i < tiles.length; i++) ...[
                   if (i > 0)
                     Padding(
-                      padding: AppSpacing.horizontal(AppSpacing.s09),
+                      padding: AppSpacing.horizontal(AppSpacing.h20),
                       child: const Divider(
                         height: 1,
                         thickness: 1,

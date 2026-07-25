@@ -28,7 +28,7 @@ class ContributorActionCard extends StatelessWidget {
         borderRadius: AppRadius.all04,
         onTap: onTap,
         child: Container(
-          padding: AppSpacing.all08,
+          padding: AppSpacing.all(AppSpacing.h18),
           decoration: BoxDecoration(
             color: AppColors.primary50,
             borderRadius: AppRadius.all04,
@@ -37,9 +37,9 @@ class ContributorActionCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CircleAvatar(radius: 18, child: Icon(icon, size: 18)),
-              SizedBox(height: AppSpacing.s09),
+              SizedBox(height: AppSpacing.v20),
               Text(title, style: theme.textTheme.titleMedium),
-              SizedBox(height: AppSpacing.s03),
+              SizedBox(height: AppSpacing.v6),
               Text(subtitle, style: theme.textTheme.bodySmall),
             ],
           ),

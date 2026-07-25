@@ -18,7 +18,7 @@ class FkStatusChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: AppSpacing.symmetric(horizontal: AppSpacing.s05, vertical: AppSpacing.s03),
+      padding: AppSpacing.symmetric(horizontal: AppSpacing.h10, vertical: AppSpacing.v6),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
         borderRadius: AppRadius.all09,
@@ -28,7 +28,7 @@ class FkStatusChip extends StatelessWidget {
         children: [
           if (icon != null) ...[
             Icon(icon, size: 14, color: color),
-            SizedBox(width: AppSpacing.s02),
+            SizedBox(width: AppSpacing.h4),
           ],
           Text(
             label,

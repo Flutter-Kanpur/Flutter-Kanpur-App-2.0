@@ -17,15 +17,15 @@ class BlogsScreen extends StatelessWidget {
           subtitle:
               'Dedicated blog product integrated into Flutter Kanpur ecosystem.',
         ),
-        SizedBox(height: AppSpacing.s08),
+        SizedBox(height: AppSpacing.v18),
         FkCard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               FkStatusChip(label: 'Modular'),
-              SizedBox(height: AppSpacing.s06),
+              SizedBox(height: AppSpacing.v12),
               Text('Shared auth/profile identity'),
-              SizedBox(height: AppSpacing.s04),
+              SizedBox(height: AppSpacing.v8),
               Text(
                 'Blog feed, editor, drafts, tags, notifications, and analytics should stay independent from community feed logic.',
               ),

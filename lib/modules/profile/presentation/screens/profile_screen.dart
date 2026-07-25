@@ -17,18 +17,18 @@ class ProfileScreen extends StatelessWidget {
           subtitle:
               'Default profile state while auth/session restore is pending.',
         ),
-        SizedBox(height: AppSpacing.s08),
+        SizedBox(height: AppSpacing.v18),
         FkCard(
           child: Row(
             children: [
               CircleAvatar(radius: 28, child: Icon(Icons.person_rounded)),
-              SizedBox(width: AppSpacing.s07),
+              SizedBox(width: AppSpacing.h16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Flutter Kanpur Developer'),
-                    SizedBox(height: AppSpacing.s03),
+                    SizedBox(height: AppSpacing.v6),
                     FkStatusChip(label: 'Guest mode'),
                   ],
                 ),

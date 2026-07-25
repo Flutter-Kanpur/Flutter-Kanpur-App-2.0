@@ -37,7 +37,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       backgroundColor: AppColors.primary500,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.s10),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.h22),
           child: Column(
             children: [
               const Spacer(),
@@ -51,7 +51,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
               ),
               const Spacer(),
               Padding(
-                padding: EdgeInsets.only(bottom: AppSpacing.s09),
+                padding: EdgeInsets.only(bottom: AppSpacing.v20),
                 child: const CircularProgressIndicator(
                   color: AppColors.whiteBase,
                   strokeWidth: 2,

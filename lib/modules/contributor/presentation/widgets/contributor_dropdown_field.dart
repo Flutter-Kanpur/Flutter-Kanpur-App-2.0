@@ -37,7 +37,7 @@ class ContributorDropdownField extends StatelessWidget {
           ),
         ),
 
-        SizedBox(height: AppSpacing.s05),
+        SizedBox(height: AppSpacing.v10),
 
         DropdownButtonFormField<String>(
           initialValue: value,
@@ -56,8 +56,8 @@ class ContributorDropdownField extends StatelessWidget {
             fillColor: AppColors.whiteBase,
 
             contentPadding: EdgeInsets.symmetric(
-              horizontal: AppSpacing.s07,
-              vertical: AppSpacing.s08,
+              horizontal: AppSpacing.h16,
+              vertical: AppSpacing.v18,
             ),
 
             enabledBorder: OutlineInputBorder(

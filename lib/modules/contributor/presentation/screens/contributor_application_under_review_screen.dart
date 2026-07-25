@@ -22,7 +22,7 @@ class ContributorApplicationUnderReviewScreen extends StatelessWidget {
     return GradientBackground(
       child: SafeArea(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(AppSpacing.s09, AppSpacing.s08, AppSpacing.s09, 24),
+          padding: EdgeInsets.fromLTRB(AppSpacing.h20, AppSpacing.h18, AppSpacing.h20, 24),
           child: Column(
             children: [
               FkHeader(
@@ -39,7 +39,7 @@ class ContributorApplicationUnderReviewScreen extends StatelessWidget {
                   children: [
                     Image.asset(AssetsPath.contributorReviewClock, width: 120),
 
-                    SizedBox(height: AppSpacing.s10),
+                    SizedBox(height: AppSpacing.v22),
 
                     Text(
                       "contributor.applicationUnderReview".tr(),
@@ -49,7 +49,7 @@ class ContributorApplicationUnderReviewScreen extends StatelessWidget {
                       ),
                     ),
 
-                    SizedBox(height: AppSpacing.s06),
+                    SizedBox(height: AppSpacing.v12),
 
                     Text(
                       "contributor.thanksForApplying".tr(),
@@ -57,7 +57,7 @@ class ContributorApplicationUnderReviewScreen extends StatelessWidget {
                       style: theme.textTheme.bodyMedium,
                     ),
 
-                    SizedBox(height: AppSpacing.s10),
+                    SizedBox(height: AppSpacing.v22),
 
                     FkPrimaryButton(
                       label: "contributor.viewApplicationDetails".tr(),
@@ -65,15 +65,15 @@ class ContributorApplicationUnderReviewScreen extends StatelessWidget {
                           context.push(RouteNames.reviewApplication),
                     ),
 
-                    SizedBox(height: AppSpacing.s10),
+                    SizedBox(height: AppSpacing.v22),
 
                     _item(
                       "contributor.status".tr(),
                       "contributor.underReview".tr(),
                     ),
-                    SizedBox(height: AppSpacing.s08),
+                    SizedBox(height: AppSpacing.v18),
                     _item("contributor.submittedOn".tr(), "Apr 12, 2026"),
-                    SizedBox(height: AppSpacing.s08),
+                    SizedBox(height: AppSpacing.v18),
                     _item(
                       "contributor.estimatedResponse".tr(),
                       "contributor.withinFiveToSevenDays".tr(),
@@ -85,8 +85,8 @@ class ContributorApplicationUnderReviewScreen extends StatelessWidget {
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(
-                  horizontal: AppSpacing.s07,
-                  vertical: AppSpacing.s07,
+                  horizontal: AppSpacing.h16,
+                  vertical: AppSpacing.v16,
                 ),
                 decoration: BoxDecoration(
                   color: AppColors.pending50,
@@ -95,7 +95,7 @@ class ContributorApplicationUnderReviewScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     const Icon(Icons.info, size: 18, color: AppColors.pending400),
-                    SizedBox(width: AppSpacing.s04),
+                    SizedBox(width: AppSpacing.h8),
                     Expanded(
                       child: Text(
                         "contributor.notifyOnUpdate".tr(),
@@ -118,7 +118,7 @@ class ContributorApplicationUnderReviewScreen extends StatelessWidget {
     return Column(
       children: [
         Text(title, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral400)),
-        SizedBox(height: AppSpacing.s02),
+        SizedBox(height: AppSpacing.v4),
         Text(
           value,
           style: AppTextStyles.titleMedium,

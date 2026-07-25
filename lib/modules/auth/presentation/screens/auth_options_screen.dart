@@ -31,7 +31,7 @@ class AuthOptionsScreen extends ConsumerWidget {
     return GradientBackground(
       child: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.end,
@@ -79,7 +79,7 @@ class AuthOptionsScreen extends ConsumerWidget {
                 children: [
                   Expanded(child: Divider(color: AppBorders.primary, thickness: 1)),
                   Padding(
-                    padding: AppSpacing.horizontal(AppSpacing.s06),
+                    padding: AppSpacing.horizontal(AppSpacing.h12),
                     child: Text('onboarding.or'.tr(), style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
                   ),
                   Expanded(child: Divider(color: AppBorders.primary, thickness: 1)),
@@ -140,7 +140,7 @@ class AuthOptionsScreen extends ConsumerWidget {
 
   Widget _buildSubtitle() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16),
       child: Text(
         'auth.signInSubTitle'.tr(),
         textAlign: TextAlign.center,
@@ -173,9 +173,9 @@ class _AuthOptionButton extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: AppRadius.all03,
-              border: Border.all(color: AppBorders.primary, width: AppSpacing.s01),
+              border: Border.all(color: AppBorders.primary, width: AppSpacing.h2),
             ),
-            padding: AppSpacing.horizontal(AppSpacing.s07),
+            padding: AppSpacing.horizontal(AppSpacing.h16),
             child: Center(child: child),
           ),
         ),

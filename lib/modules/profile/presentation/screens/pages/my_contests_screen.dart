@@ -29,7 +29,7 @@ class MyContestsScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(AppSpacing.s09, AppSpacing.s04, AppSpacing.s09, AppSpacing.s00),
+                padding: EdgeInsets.fromLTRB(AppSpacing.h20, AppSpacing.h8, AppSpacing.h20, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -43,9 +43,9 @@ class MyContestsScreen extends ConsumerWidget {
                         color: AppColors.blackBase,
                       ),
                     ),
-                    SizedBox(height: AppSpacing.s07),
+                    SizedBox(height: AppSpacing.v16),
                     Text('My Contests', style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold)),
-                    SizedBox(height: AppSpacing.s04),
+                    SizedBox(height: AppSpacing.v8),
                     Text(
                       "Contests you've participated in or registered for.",
                       style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
@@ -53,7 +53,7 @@ class MyContestsScreen extends ConsumerWidget {
                   ],
                 ),
               ),
-              SizedBox(height: AppSpacing.s09),
+              SizedBox(height: AppSpacing.v20),
               PillFilterTabs(
                 labels: MyContestsTab.values.map((tab) => tab.label).toList(),
                 selectedIndex: selectedTab.index,
@@ -61,12 +61,12 @@ class MyContestsScreen extends ConsumerWidget {
                     .read(myContestsSelectedTabProvider.notifier)
                     .select(MyContestsTab.values[index]),
               ),
-              SizedBox(height: AppSpacing.s07),
+              SizedBox(height: AppSpacing.v16),
               Expanded(
                 child: contests.isEmpty
                     ? Center(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: AppSpacing.s10),
+                          padding: EdgeInsets.symmetric(horizontal: AppSpacing.h22),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -74,7 +74,7 @@ class MyContestsScreen extends ConsumerWidget {
                                 'No contests yet',
                                 style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(height: AppSpacing.s04),
+                              SizedBox(height: AppSpacing.v8),
                               Text(
                                 "You haven't participated in any contests yet. "
                                 'Join one to get started.',
@@ -86,9 +86,9 @@ class MyContestsScreen extends ConsumerWidget {
                         ),
                       )
                     : ListView.separated(
-                        padding: EdgeInsets.fromLTRB(AppSpacing.s09, AppSpacing.s00, AppSpacing.s09, AppSpacing.s10),
+                        padding: EdgeInsets.fromLTRB(AppSpacing.h20, 0, AppSpacing.h20, AppSpacing.h22),
                         itemCount: contests.length,
-                        separatorBuilder: (_, __) => SizedBox(height: AppSpacing.s07),
+                        separatorBuilder: (_, __) => SizedBox(height: AppSpacing.v16),
                         itemBuilder: (context, index) {
                           final contest = contests[index];
                           return MyContestCard(

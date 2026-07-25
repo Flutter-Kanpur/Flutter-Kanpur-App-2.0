@@ -25,7 +25,7 @@ class OnboardingRoleScreen extends StatelessWidget {
     ];
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16),
 
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,12 +44,12 @@ class OnboardingRoleScreen extends StatelessWidget {
           20.verticalSpace,
 
           Wrap(
-            spacing: AppSpacing.s05,
-            runSpacing: AppSpacing.s05,
+            spacing: AppSpacing.h10,
+            runSpacing: AppSpacing.v10,
 
             children: roles.map((role) {
               return Container(
-                padding: AppSpacing.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s05),
+                padding: AppSpacing.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v10),
 
                 decoration: BoxDecoration(
                   borderRadius: AppRadius.all06,

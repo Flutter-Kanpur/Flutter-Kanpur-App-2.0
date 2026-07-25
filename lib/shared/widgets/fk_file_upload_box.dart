@@ -11,7 +11,7 @@ class FkFileUploadBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: AppSpacing.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s09),
+      padding: AppSpacing.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v20),
       decoration: BoxDecoration(
         color: AppColors.whiteBase,
         borderRadius: AppRadius.all04,
@@ -23,7 +23,7 @@ class FkFileUploadBox extends StatelessWidget {
       child: Column(
         children: [
           const Icon(Icons.cloud_upload_outlined, color: AppColors.neutral400),
-          SizedBox(height: AppSpacing.s05),
+          SizedBox(height: AppSpacing.v10),
           Text(
             'Choose a file or drag & drop it here.',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -31,7 +31,7 @@ class FkFileUploadBox extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: AppSpacing.s06),
+          SizedBox(height: AppSpacing.v12),
           OutlinedButton(onPressed: () {}, child: const Text('Browse files')),
         ],
       ),

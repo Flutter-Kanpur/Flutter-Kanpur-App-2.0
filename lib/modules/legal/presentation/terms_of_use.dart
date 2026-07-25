@@ -29,7 +29,7 @@ class TermsOfUse extends StatelessWidget {
           ),
           body: SingleChildScrollView(
             child: Column(
-              spacing: AppSpacing.s05,
+              spacing: AppSpacing.h10,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildContentContainer(
@@ -75,10 +75,10 @@ Widget _buildContentContainer(
     width: double.infinity,
     padding: !showBackground
         ? EdgeInsets.zero
-        : EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s05),
-    margin: EdgeInsets.only(left: AppSpacing.s05, right: AppSpacing.s05),
+        : EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v10),
+    margin: EdgeInsets.only(left: AppSpacing.h10, right: AppSpacing.h10),
     child: Column(
-      spacing: AppSpacing.s04,
+      spacing: AppSpacing.h8,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (title != null && title.isNotEmpty)
@@ -98,8 +98,8 @@ Widget _buildContentContainer(
 
 Widget _buildWarningContainer({required String body}) {
   return Container(
-    margin: EdgeInsets.only(left: AppSpacing.s05, right: AppSpacing.s05),
-    padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s07),
+    margin: EdgeInsets.only(left: AppSpacing.h10, right: AppSpacing.h10),
+    padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v16),
     decoration: BoxDecoration(
       color: AppColors.warning600.withValues(alpha: 0.1),
       borderRadius: AppRadius.all03,
@@ -109,7 +109,7 @@ Widget _buildWarningContainer({required String body}) {
       children: [
         Icon(Icons.warning_rounded,
             color: AppColors.warning600, size: 22.sp),
-        SizedBox(width: AppSpacing.s04),
+        SizedBox(width: AppSpacing.h8),
         Expanded(
           child: Text(
             body,
@@ -124,8 +124,8 @@ Widget _buildWarningContainer({required String body}) {
 
 Widget _buildLastUpdatedWidget(BuildContext context) {
   return Container(
-    margin: EdgeInsets.only(left: AppSpacing.s05, right: AppSpacing.s05),
-    padding: EdgeInsets.only(bottom: AppSpacing.s05),
+    margin: EdgeInsets.only(left: AppSpacing.h10, right: AppSpacing.h10),
+    padding: EdgeInsets.only(bottom: AppSpacing.v10),
     child: Text(
       translate(context, "profile_terms_of_use.last_updated"),
       style: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase)

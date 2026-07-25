@@ -46,7 +46,7 @@ class ManageProfileHeader extends StatelessWidget {
     return Column(
       children: [
         Container(
-          padding: AppSpacing.all01,
+          padding: AppSpacing.all(AppSpacing.h2),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
@@ -68,13 +68,13 @@ class ManageProfileHeader extends StatelessWidget {
                 : null,
           ),
         ),
-        SizedBox(height: AppSpacing.s06),
+        SizedBox(height: AppSpacing.v12),
         Text(
           displayName,
           style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
-        SizedBox(height: AppSpacing.s04),
+        SizedBox(height: AppSpacing.v8),
         Text(
           designation,
           style: AppTextStyles.bodyMedium.copyWith(
@@ -82,7 +82,7 @@ class ManageProfileHeader extends StatelessWidget {
           ),
           textAlign: TextAlign.center,
         ),
-        SizedBox(height: AppSpacing.s02),
+        SizedBox(height: AppSpacing.v4),
         Text(
           username,
           style: AppTextStyles.bodyMedium.copyWith(
@@ -90,11 +90,11 @@ class ManageProfileHeader extends StatelessWidget {
           ),
           textAlign: TextAlign.center,
         ),
-        SizedBox(height: AppSpacing.s06),
+        SizedBox(height: AppSpacing.v12),
         TextButton(
           onPressed: onEditProfile,
           style: TextButton.styleFrom(
-            padding: AppSpacing.vertical(AppSpacing.s04),
+            padding: AppSpacing.vertical(AppSpacing.v8),
             minimumSize: Size.zero,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
@@ -103,7 +103,7 @@ class ManageProfileHeader extends StatelessWidget {
             style: AppTextStyles.bodyLarge.copyWith(color: AppColors.primary500),
           ),
         ),
-        SizedBox(height: AppSpacing.s07),
+        SizedBox(height: AppSpacing.v16),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -113,14 +113,14 @@ class ManageProfileHeader extends StatelessWidget {
                   ? () => _launchURL(githubUrl!)
                   : null,
             ),
-            SizedBox(width: AppSpacing.s07),
+            SizedBox(width: AppSpacing.h16),
             ProfileSocialIcon(
               svgAsset: AssetsPath.websiteSvg,
               onTap: websiteUrl != null && websiteUrl!.isNotEmpty
                   ? () => _launchURL(websiteUrl!)
                   : null,
             ),
-            SizedBox(width: AppSpacing.s07),
+            SizedBox(width: AppSpacing.h16),
             ProfileSocialIcon(
               svgAsset: AssetsPath.linkedinSvg,
               onTap: linkedinUrl != null && linkedinUrl!.isNotEmpty
@@ -160,7 +160,7 @@ class ProfileSocialIcon extends StatelessWidget {
           height: 44.w,
           borderRadius: 22.r,
           child: Padding(
-            padding: AppSpacing.all05,
+            padding: AppSpacing.all(AppSpacing.h10),
             child: SvgPicture.asset(
               svgAsset,
               colorFilter: const ColorFilter.mode(AppColors.blackBase, BlendMode.srcIn),

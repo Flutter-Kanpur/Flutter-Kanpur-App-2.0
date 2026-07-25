@@ -22,8 +22,8 @@ class OnboardingImagePickerSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.s07,
-        vertical: AppSpacing.s07,
+        horizontal: AppSpacing.h16,
+        vertical: AppSpacing.v16,
       ),
 
       decoration: BoxDecoration(

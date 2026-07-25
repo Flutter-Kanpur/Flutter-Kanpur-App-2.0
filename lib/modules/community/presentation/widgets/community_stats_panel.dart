@@ -19,7 +19,7 @@ class CommunityStatsPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: AppSpacing.symmetric(horizontal: AppSpacing.s07, vertical: AppSpacing.s09),
+      padding: AppSpacing.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v20),
       decoration: BoxDecoration(
         color: AppColors.primary50,
         borderRadius: AppRadius.all05,
@@ -53,7 +53,7 @@ class _StatItem extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
         ),
-        SizedBox(height: AppSpacing.s03),
+        SizedBox(height: AppSpacing.v6),
         Text(
           label,
           textAlign: TextAlign.center,

@@ -31,18 +31,18 @@ class _SupabaseHealthScreenState extends State<SupabaseHealthScreen> {
           final status = snapshot.data;
 
           return ListView(
-            padding: AppSpacing.all07,
+            padding: AppSpacing.all(AppSpacing.h16),
             children: [
               _StatusPanel(
                 loading: snapshot.connectionState != ConnectionState.done,
                 status: status,
               ),
-              SizedBox(height: AppSpacing.s07),
+              SizedBox(height: AppSpacing.v16),
               Text(
                 'Supabase Tables',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              SizedBox(height: AppSpacing.s04),
+              SizedBox(height: AppSpacing.v8),
               for (final table in appTableSchemas)
                 Card(
                   child: ListTile(
@@ -77,7 +77,7 @@ class _StatusPanel extends StatelessWidget {
           ? AppColors.success50
           : AppColors.pending50,
       child: Padding(
-        padding: AppSpacing.all07,
+        padding: AppSpacing.all(AppSpacing.h16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -89,7 +89,7 @@ class _StatusPanel extends StatelessWidget {
                   : 'Supabase needs attention',
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            SizedBox(height: AppSpacing.s04),
+            SizedBox(height: AppSpacing.v8),
             Text(status?.message ?? 'Please wait.'),
           ],
         ),

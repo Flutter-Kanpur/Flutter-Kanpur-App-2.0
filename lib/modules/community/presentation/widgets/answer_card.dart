@@ -42,8 +42,8 @@ class AnswerCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      margin: EdgeInsets.only(bottom: AppSpacing.s07),
-      padding: AppSpacing.all06,
+      margin: EdgeInsets.only(bottom: AppSpacing.v16),
+      padding: AppSpacing.all(AppSpacing.h12),
       decoration: BoxDecoration(
         border: Border.all(color: AppBorders.primary),
         borderRadius: AppRadius.all02,
@@ -66,7 +66,7 @@ class AnswerCard extends ConsumerWidget {
                 )
                     : null,
               ),
-              SizedBox(width: AppSpacing.s06),
+              SizedBox(width: AppSpacing.h12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,14 +98,14 @@ class AnswerCard extends ConsumerWidget {
                 ),
             ],
           ),
-          SizedBox(height: AppSpacing.s06),
+          SizedBox(height: AppSpacing.v12),
 
           // Answer Body
           Text(
             body,
             style: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase, height: 1.5),
           ),
-          SizedBox(height: AppSpacing.s06),
+          SizedBox(height: AppSpacing.v12),
 
           // Bottom Stats
           Row(
@@ -116,7 +116,7 @@ class AnswerCard extends ConsumerWidget {
                 icon: const Icon(Icons.thumb_up_outlined, size: 16),
                 label: Text('$likeCount'),
                 style: TextButton.styleFrom(
-                  padding: AppSpacing.horizontal(AppSpacing.s04),
+                  padding: AppSpacing.horizontal(AppSpacing.h8),
                 ),
               ),
             ],

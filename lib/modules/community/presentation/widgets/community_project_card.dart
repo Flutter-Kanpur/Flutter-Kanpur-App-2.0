@@ -34,12 +34,12 @@ class CommunityProjectCard extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: AppSpacing.s04),
+          SizedBox(height: AppSpacing.v8),
           Text(project.summary),
-          SizedBox(height: AppSpacing.s06),
+          SizedBox(height: AppSpacing.v12),
           Wrap(
-            spacing: AppSpacing.s04,
-            runSpacing: AppSpacing.s04,
+            spacing: AppSpacing.h8,
+            runSpacing: AppSpacing.v8,
             children: project.techStack
                 .map((tech) => FkStatusChip(label: tech))
                 .toList(),

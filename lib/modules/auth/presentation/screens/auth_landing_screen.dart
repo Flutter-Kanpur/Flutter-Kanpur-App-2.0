@@ -62,7 +62,7 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
         child: Column(
           children: [
             Padding(
-              padding: AppSpacing.all09,
+              padding: AppSpacing.all(AppSpacing.h20),
               child: Align(
                 alignment: Alignment.topRight,
                 child: TextButton(
@@ -88,7 +88,7 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
               ),
             ),
             Padding(
-              padding: AppSpacing.all09,
+              padding: AppSpacing.all(AppSpacing.h20),
               child: Column(
                 children: [
                   _buildPageIndicators(),
@@ -106,7 +106,7 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
 
   Widget _buildPage(AuthLandingScreenData pageData) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: AppSpacing.s05),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.h10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -120,7 +120,7 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
           16.verticalSpace,
 
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppSpacing.s05),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.h10),
             child: Text(
               pageData.description,
               textAlign: TextAlign.center,
@@ -139,7 +139,7 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
       children: List.generate(
         pages.length,
         (index) => Container(
-          margin: EdgeInsets.symmetric(horizontal: AppSpacing.s01),
+          margin: EdgeInsets.symmetric(horizontal: AppSpacing.h2),
           width: _currentPage == index ? 32.w : 8.w,
           height: 8,
           decoration: BoxDecoration(

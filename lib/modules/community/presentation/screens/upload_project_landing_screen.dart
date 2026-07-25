@@ -21,7 +21,7 @@ class UploadProjectLandingScreen extends StatelessWidget {
             icon: const Icon(Icons.close_rounded),
           ),
         ),
-        SizedBox(height: AppSpacing.s10),
+        SizedBox(height: AppSpacing.v22),
         Text(
           'Showcase your work and inspire other community members.',
           textAlign: TextAlign.center,
@@ -29,7 +29,7 @@ class UploadProjectLandingScreen extends StatelessWidget {
             context,
           ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
         ),
-        SizedBox(height: AppSpacing.s10),
+        SizedBox(height: AppSpacing.v22),
         const _TimelineStep(
           title: 'Submit your project',
           body:
@@ -47,9 +47,9 @@ class UploadProjectLandingScreen extends StatelessWidget {
               'Once approved, your project is published and visible to the community.',
           isLast: true,
         ),
-        SizedBox(height: AppSpacing.s10),
+        SizedBox(height: AppSpacing.v22),
         Container(
-          padding: AppSpacing.all10,
+          padding: AppSpacing.all(AppSpacing.h22),
           decoration: BoxDecoration(
             color: AppColors.primary50,
             borderRadius: AppRadius.all04,
@@ -62,12 +62,12 @@ class UploadProjectLandingScreen extends StatelessWidget {
                   context,
                 ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
               ),
-              SizedBox(height: AppSpacing.s05),
+              SizedBox(height: AppSpacing.v10),
               const Text(
                 'Upload your project and let the community inspired by your work.',
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: AppSpacing.s08),
+              SizedBox(height: AppSpacing.v18),
               SizedBox(
                 width: 200,
                 child: FkPrimaryButton(
@@ -116,13 +116,13 @@ class _TimelineStep extends StatelessWidget {
                 child: const Icon(Icons.check, color: AppColors.whiteBase, size: 18),
               ),
               if (!isLast)
-                Expanded(child: Container(width: AppSpacing.s03, color: AppColors.primary500)),
+                Expanded(child: Container(width: AppSpacing.h6, color: AppColors.primary500)),
             ],
           ),
-          SizedBox(width: AppSpacing.s07),
+          SizedBox(width: AppSpacing.h16),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.only(bottom: AppSpacing.s10),
+              padding: EdgeInsets.only(bottom: AppSpacing.v22),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -132,7 +132,7 @@ class _TimelineStep extends StatelessWidget {
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  SizedBox(height: AppSpacing.s03),
+                  SizedBox(height: AppSpacing.v6),
                   Text(body),
                 ],
               ),

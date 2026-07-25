@@ -20,7 +20,7 @@ class ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(AppSpacing.s09, AppSpacing.s07, AppSpacing.s09, AppSpacing.s10),
+      padding: EdgeInsets.fromLTRB(AppSpacing.h20, AppSpacing.h16, AppSpacing.h20, AppSpacing.h22),
       child: Row(
         children: [
           CircleAvatar(
@@ -36,7 +36,7 @@ class ProfileHeader extends StatelessWidget {
                   )
                 : null,
           ),
-          SizedBox(width: AppSpacing.s07),
+          SizedBox(width: AppSpacing.h16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,13 +46,13 @@ class ProfileHeader extends StatelessWidget {
                   style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w600),
                   overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(height: AppSpacing.s02),
+                SizedBox(height: AppSpacing.v4),
                 Text(
                   username,
                   style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral300, fontWeight: FontWeight.w300),
                   overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(height: AppSpacing.s03),
+                SizedBox(height: AppSpacing.v6),
                 GestureDetector(
                   onTap: () {},
                   child: Text(

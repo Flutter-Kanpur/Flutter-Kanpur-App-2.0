@@ -36,16 +36,16 @@ class PillFilterTabs extends StatelessWidget {
     ];
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      padding: EdgeInsets.symmetric(horizontal: AppSpacing.s09),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.h20),
       child: Row(
         children: displayOrder.map((index) {
           final isSelected = index == selectedIndex;
           return Padding(
-            padding: EdgeInsets.only(right: AppSpacing.s04),
+            padding: EdgeInsets.only(right: AppSpacing.h8),
             child: GestureDetector(
               onTap: () => onChanged(index),
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: AppSpacing.s08, vertical: AppSpacing.s05),
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.h18, vertical: AppSpacing.v10),
                 decoration: BoxDecoration(
                   color: isSelected ? AppColors.primary500 : AppColors.whiteBase,
                   borderRadius: AppRadius.all09,

@@ -16,7 +16,7 @@ class FilterBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: AppSpacing.all07,
+      padding: AppSpacing.all(AppSpacing.h16),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,7 +27,7 @@ class FilterBottomSheet extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
-          SizedBox(height: AppSpacing.s07),
+          SizedBox(height: AppSpacing.v16),
           _FilterOption(
             title: 'All',
             icon: Icons.list,
@@ -55,7 +55,7 @@ class FilterBottomSheet extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          SizedBox(height: AppSpacing.s04),
+          SizedBox(height: AppSpacing.v8),
         ],
       ),
     );

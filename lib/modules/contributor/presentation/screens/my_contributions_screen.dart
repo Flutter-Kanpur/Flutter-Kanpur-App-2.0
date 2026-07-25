@@ -41,12 +41,12 @@ class MyContributionsScreen extends StatelessWidget {
             leading: const FkBackButton(fallbackPath: RouteNames.profile),
           ),
 
-          SizedBox(height: AppSpacing.s10),
+          SizedBox(height: AppSpacing.v22),
 
           Align(
             alignment: Alignment.topLeft,
             child: Container(
-              padding: AppSpacing.symmetric(horizontal: AppSpacing.s06, vertical: AppSpacing.s03),
+              padding: AppSpacing.symmetric(horizontal: AppSpacing.h12, vertical: AppSpacing.v6),
               decoration: BoxDecoration(
                 color: AppColors.success100,
                 borderRadius: AppRadius.all07,
@@ -61,7 +61,7 @@ class MyContributionsScreen extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: AppSpacing.s07),
+          SizedBox(height: AppSpacing.v16),
 
           Text(
             "contributor.greeting".tr(namedArgs: {"name": "Angelica Singh"}),
@@ -70,7 +70,7 @@ class MyContributionsScreen extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: AppSpacing.s04),
+          SizedBox(height: AppSpacing.v8),
 
           Text(
             "contributor.contributorRole".tr(namedArgs: {"role": "Design"}),
@@ -79,7 +79,7 @@ class MyContributionsScreen extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: AppSpacing.s01),
+          SizedBox(height: AppSpacing.v2),
 
           Text(
             "contributor.contributorSince".tr(namedArgs: {"date": "Mar 2026"}),
@@ -88,7 +88,7 @@ class MyContributionsScreen extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: AppSpacing.s10),
+          SizedBox(height: AppSpacing.v22),
 
           Text(
             "contributor.heresWhatYouCanDo".tr(),
@@ -97,7 +97,7 @@ class MyContributionsScreen extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: AppSpacing.s07),
+          SizedBox(height: AppSpacing.v16),
 
           Row(
             children: [
@@ -110,7 +110,7 @@ class MyContributionsScreen extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(width: AppSpacing.s06),
+              SizedBox(width: AppSpacing.h12),
 
               Expanded(
                 child: ContributorActionCard(
@@ -123,7 +123,7 @@ class MyContributionsScreen extends StatelessWidget {
             ],
           ),
 
-          SizedBox(height: AppSpacing.s10),
+          SizedBox(height: AppSpacing.v22),
 
           Text(
             "contributor.yourContributionSummary".tr(),
@@ -132,7 +132,7 @@ class MyContributionsScreen extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: AppSpacing.s07),
+          SizedBox(height: AppSpacing.v16),
 
           const ContributorSummaryCard(
             tasksCompleted: "06",
@@ -140,7 +140,7 @@ class MyContributionsScreen extends StatelessWidget {
             activeTasks: "24",
           ),
 
-          SizedBox(height: AppSpacing.s09),
+          SizedBox(height: AppSpacing.v20),
 
           GestureDetector(
             onTap: () => _showHelpBottomSheet(context),

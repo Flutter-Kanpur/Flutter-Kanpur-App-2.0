@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   selectedFiltersCount: 0,
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(AppSpacing.s10, AppSpacing.s10, AppSpacing.s10, AppSpacing.s07),
+                  padding: EdgeInsets.fromLTRB(AppSpacing.h22, AppSpacing.h22, AppSpacing.h22, AppSpacing.h16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -113,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               'home.seeAll'.tr(),
                               style: AppTextStyles.titleMedium.copyWith(color: AppColors.neutral500),
                             ),
-                            SizedBox(width: AppSpacing.s01),
+                            SizedBox(width: AppSpacing.h2),
                             Icon(
                               Icons.chevron_right,
                               size: 20.sp,
@@ -126,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07),
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16),
                   child: Column(
                     children: [
                       EventCardComponent(

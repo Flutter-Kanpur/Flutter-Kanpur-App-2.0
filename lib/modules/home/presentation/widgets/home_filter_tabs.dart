@@ -40,14 +40,14 @@ class _HomeFilterTabsState extends State<HomeFilterTabs> {
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      padding: AppSpacing.horizontal(AppSpacing.s09),
+      padding: AppSpacing.horizontal(AppSpacing.h20),
       child: Row(
         children: List.generate(filters.length, (index) {
           final isFilterChip = index != 0;
           final isSelected =
               isFilterChip && widget.selectedFilterIndex == index;
           return Padding(
-            padding: EdgeInsets.only(right: AppSpacing.s04),
+            padding: EdgeInsets.only(right: AppSpacing.h8),
             child: InnerShadowContainer(
               borderColor: isSelected
                   ? AppColors.primary500
@@ -88,7 +88,7 @@ class _HomeFilterTabsState extends State<HomeFilterTabs> {
                           ),
                         ),
                         if (isSelected) ...[
-                          SizedBox(width: AppSpacing.s02),
+                          SizedBox(width: AppSpacing.h4),
                           Icon(Icons.close, size: 16.sp, color: AppColors.blackBase),
                         ],
                       ],

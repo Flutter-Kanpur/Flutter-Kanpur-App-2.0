@@ -16,7 +16,7 @@ class ApplicationDetailTile extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: AppSpacing.vertical(AppSpacing.s05),
+      padding: AppSpacing.vertical(AppSpacing.v10),
       child: Row(
         children: [
           Expanded(child: Text(title, style: theme.textTheme.bodyMedium)),

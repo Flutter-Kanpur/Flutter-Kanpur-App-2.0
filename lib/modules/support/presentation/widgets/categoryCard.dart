@@ -25,7 +25,7 @@ class CategoryCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: 200.w,
-        padding: AppSpacing.all07,
+        padding: AppSpacing.all(AppSpacing.h16),
         decoration: BoxDecoration(
           color: AppColors.primary50,
           borderRadius: AppRadius.all04,
@@ -37,7 +37,7 @@ class CategoryCard extends StatelessWidget {
               title,
               style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase),
             ),
-            SizedBox(height: AppSpacing.s03),
+            SizedBox(height: AppSpacing.v6),
             Text(
               description,
               style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral400),

@@ -4,6 +4,7 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/border_shadow_container.dart';
 
 class CommunityContributeCard extends StatelessWidget {
   const CommunityContributeCard({
@@ -23,64 +24,64 @@ class CommunityContributeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        padding: AppSpacing.all07,
-        decoration: BoxDecoration(
-          color: AppColors.whiteBase,
-          borderRadius: AppRadius.all04,
-          border: Border.all(color: AppBorders.tertiary),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.primary500.withValues(alpha: 0.12),
-              blurRadius: 16,
-              offset: const Offset(0, 8),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding:
-                  EdgeInsets.symmetric(horizontal: AppSpacing.s06, vertical: AppSpacing.s07),
-              decoration: BoxDecoration(
-                color: AppColors.primary500,
-                borderRadius: AppRadius.all09,
-              ),
-              child: Text(
-                label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context)
-                    .textTheme
-                    .labelMedium
-                    ?.copyWith(color: AppColors.whiteBase),
-              ),
-            ),
-            if (title != null) ...[
-              SizedBox(height: AppSpacing.s07),
-              Text(
-                title!,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.titleLarge.copyWith(color: AppColors.whiteBase, fontWeight: FontWeight.w500),
-              ),
-            ],
-            SizedBox(height: AppSpacing.s06),
-            Expanded(
-              child: Text(
-                body,
-                overflow: TextOverflow.ellipsis,
-                maxLines: title == null ? 4 : 5,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      height: 1.36,
-                      color: title == null
-                          ? AppColors.blackBase
-                          : AppColors.neutral500,
+      child: InnerShadowContainer(
+        alignment: Alignment.topLeft,
+        shadowColor: const Color(0XFFB3C4FF).withOpacity(0.08),
+        isShadowBottomLeft: true,
+        isShadowBottomRight: true,
+        isShadowTopLeft: true,
+        isShadowTopRight: true,
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: SizedBox(
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.h12, vertical: AppSpacing.v4),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary500,
+                    borderRadius: AppRadius.all09,
+                  ),
+                  child: Text(
+                    label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.left,
+                    style: AppTextStyles.titleSmall.copyWith(color: AppColors.whiteBase),
+                  ),
+                ),
+                if (title != null && title!.isNotEmpty) ...[
+                  SizedBox(height: AppSpacing.v16),
+                  Text(
+                    title!,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.left,
+                    style: AppTextStyles.titleSmall.copyWith(
+                      color: AppColors.blackBase,
                     ),
-              ),
+                  ),
+                ],
+                SizedBox(height: title == null ? AppSpacing.v6 : AppSpacing.v16),
+                Expanded(
+                  child: Text(
+                    body,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: title == null ? 4 : 5,
+                    textAlign: TextAlign.left,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          height: 1.30,
+                          color: title == null
+                              ? AppColors.blackBase
+                              : AppColors.neutral500,
+                        ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

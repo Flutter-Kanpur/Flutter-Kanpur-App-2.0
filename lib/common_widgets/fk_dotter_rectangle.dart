@@ -15,7 +15,7 @@ class DottedRoundedRect extends StatelessWidget {
     this.radius = 12.0,
     this.strokeWidth = 1.0,
     this.color = AppColors.neutral400,
-    this.padding = const EdgeInsets.all(AppSpacing.space07),
+    this.padding = const EdgeInsets.all(AppSpacing.raw16),
   }) : super(key: key);
 
   @override

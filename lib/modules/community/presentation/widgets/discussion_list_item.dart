@@ -21,8 +21,8 @@ class DiscussionListItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.only(bottom: AppSpacing.s06),
-        padding: AppSpacing.all07,
+        margin: EdgeInsets.only(bottom: AppSpacing.v12),
+        padding: AppSpacing.all(AppSpacing.h16),
         decoration: BoxDecoration(
           color: AppColors.whiteBase,
           borderRadius: AppRadius.all04,
@@ -38,7 +38,7 @@ class DiscussionListItem extends StatelessWidget {
                     height: 1.4,
                   ),
             ),
-            SizedBox(height: AppSpacing.s08),
+            SizedBox(height: AppSpacing.v18),
             Row(
               children: [
                 CircleAvatar(
@@ -56,7 +56,7 @@ class DiscussionListItem extends StatelessWidget {
                         )
                       : null,
                 ),
-                SizedBox(width: AppSpacing.s05),
+                SizedBox(width: AppSpacing.h10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

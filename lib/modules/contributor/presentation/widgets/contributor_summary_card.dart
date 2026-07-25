@@ -22,7 +22,7 @@ class ContributorSummaryCard extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      padding: EdgeInsets.symmetric(vertical: AppSpacing.s07),
+      padding: EdgeInsets.symmetric(vertical: AppSpacing.v16),
       decoration: BoxDecoration(
         color: AppColors.whiteBase,
         borderRadius: AppRadius.all04,
@@ -86,7 +86,7 @@ class _SummaryItem extends StatelessWidget {
             color: AppColors.blackBase,
           ),
         ),
-        SizedBox(height: AppSpacing.s02),
+        SizedBox(height: AppSpacing.v4),
         Text(
           label.tr(),
           textAlign: TextAlign.center,

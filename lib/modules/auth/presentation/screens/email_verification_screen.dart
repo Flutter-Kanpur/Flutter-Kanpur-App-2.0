@@ -30,7 +30,7 @@ class EmailVerificationScreen extends ConsumerWidget {
     return GradientBackground(
       child: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.s07),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16),
           child: Column(
             children: [
               const Spacer(),
