@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/navigation_provider.dart';
@@ -43,109 +42,164 @@ class MyProfileScreen extends ConsumerWidget {
               : null,
           title: Text(
             'My Profile',
-            style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w500,
+            style: AppTextStyles.bodyLarge.copyWith(
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),
         body: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  ProfileHeader(
-                    displayName: displayName,
-                    username: username,
-                    // photoUrl: photoUrl,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ProfileHeader(
+                displayName: displayName,
+                username: username,
+                // photoUrl: photoUrl,
+              ),
+              ProfileSectionBlock(
+                title: 'Account',
+                tiles: [
+                  ProfileTile(
+                    iconSvgPath: AssetsPath.profileManageProfile,
+                    title: 'Manage Profile',
+                    onTap: () => context.push('/profile/manage-profile'),
                   ),
-                  ProfileSectionBlock(
-                    title: 'Account',
-                    tiles: [
-                      ProfileTile(iconSvgPath: AssetsPath.profileManageProfile, title: 'Manage Profile', onTap: () => context.push('/profile/manage-profile')),
-                      ProfileTile(iconSvgPath: AssetsPath.profileLoginSecurity, title: 'Login & Security', onTap: () {}),
-                      ProfileTile(iconSvgPath: AssetsPath.profileNotifications, title: 'Notifications', onTap: () {}),
-                    ],
+                  ProfileTile(
+                    iconSvgPath: AssetsPath.profileLoginSecurity,
+                    title: 'Login & Security',
+                    onTap: () {},
                   ),
-                  ProfileSectionBlock(
-                    title: 'My Activity',
-                    tiles: [
-                      ProfileTile(iconSvgPath: AssetsPath.profileMyEvents, title: 'My Events', onTap: () {}),
-                      ProfileTile(iconSvgPath: AssetsPath.profileMyContests, title: 'My Contests', onTap: () {}),
-                      ProfileTile(iconSvgPath: AssetsPath.profileProblemOfDay, title: 'Problem of the Day', onTap: () {}),
-                    ],
+                  ProfileTile(
+                    iconSvgPath: AssetsPath.profileNotifications,
+                    title: 'Notifications',
+                    onTap: () {},
                   ),
-                  // if (showCommunitySection)
-                    ProfileSectionBlock(
-                      title: 'Community',
-                      tiles: [
-                        ProfileTile(
-                          iconSvgPath: AssetsPath.profileMyContributions,
-                          title: 'My Contributions',
-                          onTap: () =>
-                              context.push(RouteNames.myContributions),
-                        ),
-                        ProfileTile(
-                          iconSvgPath: AssetsPath.profileJoinAsContributor,
-                          title: 'Join as a Contributor',
-                          onTap: () => context.push(RouteNames.joinContributor),
-                        ),
-                        ProfileTile(
-                          iconSvgPath: AssetsPath.profileCommunityGuidelines,
-                          title: 'Community Guidelines',
-                          onTap: () => context.push('/profile/community-guidelines'),
-                        ),
-                      ],
-                    ),
-                  ProfileSectionBlock(
-                    title: 'Achievements',
-                    tiles: [
-                      ProfileTile(iconSvgPath: AssetsPath.profileYourBadges, title: 'Your Badges', onTap: () {}),
-                      ProfileTile(iconSvgPath: AssetsPath.profileYourRank, title: 'Your Rank', onTap: () {}),
-                      ProfileTile(iconSvgPath: AssetsPath.profileLeaderboard, title: 'Leaderboard', onTap: () {}),
-                    ],
-                  ),
-                  ProfileSectionBlock(
-                    title: 'Support',
-                    tiles: [
-                      ProfileTile(iconSvgPath: AssetsPath.profileHelpCenter, title: 'Help Center', onTap: () => context.push(RouteNames.helpCenter)),
-                      ProfileTile(
-                        iconSvgPath: AssetsPath.profileContactCommunity,
-                        title: 'Contact Community Team',
-                        onTap: () =>
-                            context.push(RouteNames.contactCommunityTeam),
-                      ),
-                      ProfileTile(iconSvgPath: AssetsPath.profileReportIssue, title: 'Report an Issue', onTap: () => context.push(RouteNames.reportAnIssue)),
-                    ],
-                  ),
-                  ProfileSectionBlock(
-                    title: 'About & Legal',
-                    tiles: [
-                      ProfileTile(iconSvgPath: AssetsPath.profileAboutFlutterKanpur, title: 'About Flutter Kanpur', onTap: () => context.push(RouteNames.aboutFlutterKanpur)),
-                      ProfileTile(iconSvgPath: AssetsPath.profilePrivacyPolicy, title: 'Privacy Policy', onTap: () => context.push(RouteNames.privacyPolicy)),
-                      ProfileTile(iconSvgPath: AssetsPath.profileTermsOfUse, title: 'Terms of Use', onTap: () => context.push(RouteNames.termsOfUse)),
-                    ],
-                  ),
-                  ProfileSectionBlock(
-                    title: 'Account Actions',
-                    tiles: [
-                      ProfileTile(
-                        iconSvgPath: AssetsPath.profileLogout,
-                        title: 'Log out',
-                        textColor: AppColors.warning600,
-                        iconColor: AppColors.warning600,
-                        onTap: () => _showLogoutDialog(context, ref),
-                      ),
-                      ProfileTile(
-                        iconSvgPath: AssetsPath.profileDeleteAccount,
-                        title: 'Delete account',
-                        textColor: AppColors.warning600,
-                        iconColor: AppColors.warning600,
-                        onTap: () {},
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: AppSpacing.v22),
                 ],
               ),
-            ),
+              ProfileSectionBlock(
+                title: 'My Activity',
+                tiles: [
+                  ProfileTile(
+                    iconSvgPath: AssetsPath.profileMyEvents,
+                    title: 'My Events',
+                    onTap: () {},
+                  ),
+                  ProfileTile(
+                    iconSvgPath: AssetsPath.profileMyContests,
+                    title: 'My Contests',
+                    onTap: () {},
+                  ),
+                  ProfileTile(
+                    iconSvgPath: AssetsPath.profileProblemOfDay,
+                    title: 'Problem of the Day',
+                    onTap: () {},
+                  ),
+                ],
+              ),
+              // if (showCommunitySection)
+              ProfileSectionBlock(
+                title: 'Community',
+                tiles: [
+                  ProfileTile(
+                    iconSvgPath: AssetsPath.profileMyContributions,
+                    title: 'My Contributions',
+                    onTap: () => context.push(RouteNames.myContributions),
+                  ),
+                  ProfileTile(
+                    iconSvgPath: AssetsPath.profileJoinAsContributor,
+                    title: 'Join as a Contributor',
+                    onTap: () => context.push(RouteNames.joinContributor),
+                  ),
+                  ProfileTile(
+                    iconSvgPath: AssetsPath.profileCommunityGuidelines,
+                    title: 'Community Guidelines',
+                    onTap: () => context.push('/profile/community-guidelines'),
+                  ),
+                ],
+              ),
+              ProfileSectionBlock(
+                title: 'Achievements',
+                tiles: [
+                  ProfileTile(
+                    iconSvgPath: AssetsPath.profileYourBadges,
+                    title: 'Your Badges',
+                    onTap: () {},
+                  ),
+                  ProfileTile(
+                    iconSvgPath: AssetsPath.profileYourRank,
+                    title: 'Your Rank',
+                    onTap: () {},
+                  ),
+                  ProfileTile(
+                    iconSvgPath: AssetsPath.profileLeaderboard,
+                    title: 'Leaderboard',
+                    onTap: () {},
+                  ),
+                ],
+              ),
+              ProfileSectionBlock(
+                title: 'Support',
+                tiles: [
+                  ProfileTile(
+                    iconSvgPath: AssetsPath.profileHelpCenter,
+                    title: 'Help Center',
+                    onTap: () => context.push(RouteNames.helpCenter),
+                  ),
+                  ProfileTile(
+                    iconSvgPath: AssetsPath.profileContactCommunity,
+                    title: 'Contact Community Team',
+                    onTap: () => context.push(RouteNames.contactCommunityTeam),
+                  ),
+                  ProfileTile(
+                    iconSvgPath: AssetsPath.profileReportIssue,
+                    title: 'Report an Issue',
+                    onTap: () => context.push(RouteNames.reportAnIssue),
+                  ),
+                ],
+              ),
+              ProfileSectionBlock(
+                title: 'About & Legal',
+                tiles: [
+                  ProfileTile(
+                    iconSvgPath: AssetsPath.profileAboutFlutterKanpur,
+                    title: 'About Flutter Kanpur',
+                    onTap: () => context.push(RouteNames.aboutFlutterKanpur),
+                  ),
+                  ProfileTile(
+                    iconSvgPath: AssetsPath.profilePrivacyPolicy,
+                    title: 'Privacy Policy',
+                    onTap: () => context.push(RouteNames.privacyPolicy),
+                  ),
+                  ProfileTile(
+                    iconSvgPath: AssetsPath.profileTermsOfUse,
+                    title: 'Terms of Use',
+                    onTap: () => context.push(RouteNames.termsOfUse),
+                  ),
+                ],
+              ),
+              ProfileSectionBlock(
+                title: 'Account Actions',
+                tiles: [
+                  ProfileTile(
+                    iconSvgPath: AssetsPath.profileLogout,
+                    title: 'Log out',
+                    textColor: AppColors.warning600,
+                    iconColor: AppColors.warning600,
+                    onTap: () => _showLogoutDialog(context, ref),
+                  ),
+                  ProfileTile(
+                    iconSvgPath: AssetsPath.profileDeleteAccount,
+                    title: 'Delete account',
+                    textColor: AppColors.warning600,
+                    iconColor: AppColors.warning600,
+                    onTap: () {},
+                  ),
+                ],
+              ),
+              SizedBox(height: AppSpacing.v22),
+            ],
+          ),
+        ),
         // body: BlocBuilder<AuthBloc, AuthState>(
         //   builder: (context, authState) {
         //     final displayName = authState is Authenticated
@@ -284,9 +338,11 @@ class MyProfileScreen extends ConsumerWidget {
               if (!context.mounted) return;
 
               if (logoutSuccess) {
-                print('✅ [ProfileScreen] Logout successful, redirecting to splash');
+                print(
+                  '✅ [ProfileScreen] Logout successful, redirecting to splash',
+                );
                 // Clear route stack and go to splash
-                context.go(RouteNames.authLanding);
+                context.go(RouteNames.signIn);
               } else {
                 print('❌ [ProfileScreen] Logout failed');
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -297,7 +353,12 @@ class MyProfileScreen extends ConsumerWidget {
                 );
               }
             },
-            child:  Text('Log out', style: AppTextStyles.bodyMedium.copyWith(color: AppColors.warning600)),
+            child: Text(
+              'Log out',
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.warning600,
+              ),
+            ),
           ),
         ],
       ),
@@ -316,4 +377,3 @@ class MyProfileScreen extends ConsumerWidget {
     }
   }
 }
-

@@ -14,6 +14,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/auth/data/services/user_service.dart';
 
 class AuthOptionsScreen extends ConsumerWidget {
   const AuthOptionsScreen({super.key});
@@ -21,10 +22,11 @@ class AuthOptionsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(currentUserProvider, (previous, next) {
-      next.whenData((user) {
-        if (context.mounted && user != null) {
-          context.go(RouteNames.home);
-        }
+      next.whenData((user) async {
+        if (!context.mounted || user == null) return;
+        final done = await UserService().isOnboardingCompleted();
+        if (!context.mounted) return;
+        context.go(done ? RouteNames.home : RouteNames.onboardingNavigation);
       });
     });
 
@@ -52,9 +54,18 @@ class AuthOptionsScreen extends ConsumerWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SvgPicture.asset(AppAssets.googleIcon, width: 20.w, height: 20.h),
+                    SvgPicture.asset(
+                      AppAssets.googleIcon,
+                      width: 20.w,
+                      height: 20.h,
+                    ),
                     12.horizontalSpace,
-                    Text('auth.continueWithGoogle'.tr(), style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
+                    Text(
+                      'auth.continueWithGoogle'.tr(),
+                      style: AppTextStyles.titleMedium.copyWith(
+                        color: AppColors.blackBase,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -66,9 +77,18 @@ class AuthOptionsScreen extends ConsumerWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.mail_outline_rounded, size: 22.sp, color: AppColors.blackBase),
+                    Icon(
+                      Icons.mail_outline_rounded,
+                      size: 22.sp,
+                      color: AppColors.blackBase,
+                    ),
                     12.horizontalSpace,
-                    Text('auth.signInWithEmail'.tr(), style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
+                    Text(
+                      'auth.signInWithEmail'.tr(),
+                      style: AppTextStyles.titleMedium.copyWith(
+                        color: AppColors.blackBase,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -77,12 +97,21 @@ class AuthOptionsScreen extends ConsumerWidget {
 
               Row(
                 children: [
-                  Expanded(child: Divider(color: AppBorders.primary, thickness: 1)),
+                  Expanded(
+                    child: Divider(color: AppBorders.primary, thickness: 1),
+                  ),
                   Padding(
                     padding: AppSpacing.horizontal(AppSpacing.h12),
-                    child: Text('onboarding.or'.tr(), style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
+                    child: Text(
+                      'onboarding.or'.tr(),
+                      style: AppTextStyles.titleMedium.copyWith(
+                        color: AppColors.blackBase,
+                      ),
+                    ),
                   ),
-                  Expanded(child: Divider(color: AppBorders.primary, thickness: 1)),
+                  Expanded(
+                    child: Divider(color: AppBorders.primary, thickness: 1),
+                  ),
                 ],
               ),
 
@@ -91,7 +120,9 @@ class AuthOptionsScreen extends ConsumerWidget {
               GradientButton(
                 height: 45.h,
                 text: 'auth.createAccount'.tr(),
-                textStyle: AppTextStyles.bodyLarge.copyWith(color: AppColors.whiteBase),
+                textStyle: AppTextStyles.bodyLarge.copyWith(
+                  color: AppColors.whiteBase,
+                ),
                 onTap: () => context.push(RouteNames.signUp),
               ),
 
@@ -123,7 +154,11 @@ class AuthOptionsScreen extends ConsumerWidget {
                 ),
               ],
             ),
-            child: Icon(Icons.person_rounded, size: 72.sp, color: AppColors.primary500),
+            child: Icon(
+              Icons.person_rounded,
+              size: 72.sp,
+              color: AppColors.primary500,
+            ),
           ),
         ),
       ),
@@ -134,7 +169,10 @@ class AuthOptionsScreen extends ConsumerWidget {
     return Text(
       'auth.signInTitle'.tr(),
       textAlign: TextAlign.center,
-      style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w600),
+      style: AppTextStyles.titleLarge.copyWith(
+        color: AppColors.blackBase,
+        fontWeight: FontWeight.w600,
+      ),
     );
   }
 
@@ -173,7 +211,10 @@ class _AuthOptionButton extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: AppRadius.all03,
-              border: Border.all(color: AppBorders.primary, width: AppSpacing.h2),
+              border: Border.all(
+                color: AppBorders.primary,
+                width: AppSpacing.h2,
+              ),
             ),
             padding: AppSpacing.horizontal(AppSpacing.h16),
             child: Center(child: child),

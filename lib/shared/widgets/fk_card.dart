@@ -40,10 +40,6 @@ class FkCard extends StatelessWidget {
 
     if (onTap == null) return content;
 
-    return InkWell(
-      onTap: onTap,
-      borderRadius: AppRadius.all05,
-      child: content,
-    );
+    return InkWell(onTap: onTap, borderRadius: AppRadius.all05, child: content);
   }
 }

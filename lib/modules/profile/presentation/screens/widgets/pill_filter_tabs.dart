@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
@@ -32,7 +31,8 @@ class PillFilterTabs extends StatelessWidget {
 
     final displayOrder = [
       selectedIndex,
-      for (var i = 0; i < labels.length; i++) if (i != selectedIndex) i,
+      for (var i = 0; i < labels.length; i++)
+        if (i != selectedIndex) i,
     ];
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -45,9 +45,14 @@ class PillFilterTabs extends StatelessWidget {
             child: GestureDetector(
               onTap: () => onChanged(index),
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: AppSpacing.h18, vertical: AppSpacing.v10),
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSpacing.h18,
+                  vertical: AppSpacing.v10,
+                ),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppColors.primary500 : AppColors.whiteBase,
+                  color: isSelected
+                      ? AppColors.primary500
+                      : AppColors.whiteBase,
                   borderRadius: AppRadius.all09,
                   border: isSelected
                       ? null

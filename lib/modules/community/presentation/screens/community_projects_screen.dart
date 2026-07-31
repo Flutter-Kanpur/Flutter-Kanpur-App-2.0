@@ -32,7 +32,7 @@ class CommunityProjectsScreen extends ConsumerWidget {
         ),
         SizedBox(height: AppSpacing.v20),
         projectsAsync.when(
-          loading: () =>  Padding(
+          loading: () => Padding(
             padding: EdgeInsets.symmetric(vertical: AppSpacing.v22),
             child: Center(child: CircularProgressIndicator()),
           ),
@@ -73,14 +73,17 @@ class _ErrorView extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: AppSpacing.v22),
       child: Column(
         children: [
-          const Icon(Icons.wifi_off_rounded, size: 48, color: AppColors.neutral400),
+          const Icon(
+            Icons.wifi_off_rounded,
+            size: 48,
+            color: AppColors.neutral400,
+          ),
           SizedBox(height: AppSpacing.v12),
           Text(
             'Could not load projects',
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge
-                ?.copyWith(color: AppColors.neutral500),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyLarge?.copyWith(color: AppColors.neutral500),
           ),
           SizedBox(height: AppSpacing.v16),
           TextButton(onPressed: onRetry, child: const Text('Try again')),
@@ -103,10 +106,9 @@ class _EmptyView extends StatelessWidget {
         child: Text(
           message,
           textAlign: TextAlign.center,
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge
-              ?.copyWith(color: AppColors.neutral500),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyLarge?.copyWith(color: AppColors.neutral500),
         ),
       ),
     );

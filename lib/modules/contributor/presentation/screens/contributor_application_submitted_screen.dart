@@ -77,9 +77,7 @@ class ContributorApplicationSubmittedScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: AppColors.whiteBase,
                   borderRadius: AppRadius.all05,
-                  border: Border.all(
-                    color: AppBorders.secondary,
-                  ),
+                  border: Border.all(color: AppBorders.secondary),
                 ),
                 child: Column(
                   children: [
@@ -113,7 +111,12 @@ class ContributorApplicationSubmittedScreen extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: Text(title, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral400)),
+            child: Text(
+              title,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.neutral400,
+              ),
+            ),
           ),
           Text(value, style: AppTextStyles.titleSmall),
         ],

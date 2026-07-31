@@ -1,7 +1,14 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/auth/domain/entities/auth_user.dart';
 
-enum AuthStatus { initial, loading, authenticated, unauthenticated, verificationSent, error }
+enum AuthStatus {
+  initial,
+  loading,
+  authenticated,
+  unauthenticated,
+  verificationSent,
+  error,
+}
 
 class AppAuthState extends Equatable {
   const AppAuthState({

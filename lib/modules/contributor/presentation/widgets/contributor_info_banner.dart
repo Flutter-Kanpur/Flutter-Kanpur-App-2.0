@@ -19,7 +19,10 @@ class ContributorInfoBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: AppSpacing.symmetric(horizontal: AppSpacing.h18, vertical: AppSpacing.v18),
+      padding: AppSpacing.symmetric(
+        horizontal: AppSpacing.h18,
+        vertical: AppSpacing.v18,
+      ),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: AppRadius.all04,

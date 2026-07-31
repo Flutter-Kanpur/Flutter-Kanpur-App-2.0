@@ -77,7 +77,8 @@ class InnerShadowContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hasShadow = isShadowTopLeft ||
+    final hasShadow =
+        isShadowTopLeft ||
         isShadowTopRight ||
         isShadowBottomRight ||
         isShadowBottomLeft;
@@ -90,7 +91,7 @@ class InnerShadowContainer extends StatelessWidget {
           alignment: alignment,
           decoration: BoxDecoration(
             color: backgroundColor,
-            border: Border.all(color: borderColor,width: 2),
+            border: Border.all(color: borderColor, width: 2),
             borderRadius: BorderRadius.circular(borderRadius),
           ),
           child: child,
@@ -152,8 +153,14 @@ class InnerShadowPainter extends CustomPainter {
     final rrect = RRect.fromRectAndRadius(rect, Radius.circular(borderRadius));
 
     final outer = Path()
-      ..addRect(Rect.fromLTRB(
-          -size.width, -size.height, size.width * 2, size.height * 2));
+      ..addRect(
+        Rect.fromLTRB(
+          -size.width,
+          -size.height,
+          size.width * 2,
+          size.height * 2,
+        ),
+      );
 
     final inner = Path()
       ..addRRect(rrect)

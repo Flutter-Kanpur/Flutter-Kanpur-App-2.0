@@ -27,7 +27,13 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
   final _tagsController = TextEditingController();
 
   String _selectedCategory = 'general';
-  final List<String> _categories = ['general', 'flutter', 'dart', 'widgets', 'state-management'];
+  final List<String> _categories = [
+    'general',
+    'flutter',
+    'dart',
+    'widgets',
+    'state-management',
+  ];
   List<String> _selectedTags = [];
   String? _selectedImageUrl;
 
@@ -92,10 +98,7 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
 
     return FkScreen(
       children: [
-        _TopBar(
-          title: 'Ask a question',
-          onBack: () => context.pop(),
-        ),
+        _TopBar(title: 'Ask a question', onBack: () => context.pop()),
         SizedBox(height: AppSpacing.v22),
         FkTextField(
           label: 'Question title',
@@ -113,9 +116,9 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
         // Category Dropdown
         Text(
           'Choose a category',
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
         ),
         SizedBox(height: AppSpacing.v8),
         Container(
@@ -129,10 +132,10 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
             isExpanded: true,
             underline: const SizedBox(),
             items: _categories
-                .map((category) => DropdownMenuItem(
-                      value: category,
-                      child: Text(category),
-                    ))
+                .map(
+                  (category) =>
+                      DropdownMenuItem(value: category, child: Text(category)),
+                )
                 .toList(),
             onChanged: (value) {
               if (value != null) {
@@ -159,7 +162,10 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
           child: GestureDetector(
             onTap: _addTag,
             child: Container(
-              padding: AppSpacing.symmetric(horizontal: AppSpacing.h12, vertical: AppSpacing.v8),
+              padding: AppSpacing.symmetric(
+                horizontal: AppSpacing.h12,
+                vertical: AppSpacing.v8,
+              ),
               decoration: BoxDecoration(
                 border: Border.all(color: AppBorders.blue),
                 borderRadius: AppRadius.all01,
@@ -174,19 +180,21 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
             spacing: AppSpacing.h8,
             runSpacing: AppSpacing.v8,
             children: _selectedTags
-                .map((tag) => GestureDetector(
-                      onTap: () => _removeTag(tag),
-                      child: FkStatusChip(label: '#$tag  X'),
-                    ))
+                .map(
+                  (tag) => GestureDetector(
+                    onTap: () => _removeTag(tag),
+                    child: FkStatusChip(label: '#$tag  X'),
+                  ),
+                )
                 .toList(),
           ),
         SizedBox(height: AppSpacing.v22),
         // File Upload
         Text(
           'Upload screenshot or file (optional)',
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
         ),
         SizedBox(height: AppSpacing.v10),
         const FkFileUploadBox(),
@@ -216,7 +224,9 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
               imageUrl: _selectedImageUrl,
             );
 
-            ref.read(communityActionControllerProvider.notifier).submitQuestion(draft);
+            ref
+                .read(communityActionControllerProvider.notifier)
+                .submitQuestion(draft);
           },
         ),
       ],
@@ -239,9 +249,9 @@ class _TopBar extends StatelessWidget {
           child: Text(
             title,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
           ),
         ),
         SizedBox(width: AppSpacing.h22),

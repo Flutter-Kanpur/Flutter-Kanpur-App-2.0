@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
 
-
 import '../../utils/assets_path.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
@@ -13,7 +12,6 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 // import '../../domain/entities/profile_entity.dart';
-
 
 class AddRoleExperienceBottomSheet extends StatefulWidget {
   // final ProfileEntity profile;
@@ -169,7 +167,10 @@ class _AddRoleExperienceBottomSheetState
               ),
               decoration: InputDecoration(
                 hintText: translate(context, "profile.searchRolesSkills"),
-                hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500, fontWeight: FontWeight.w300),
+                hintStyle: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.neutral500,
+                  fontWeight: FontWeight.w300,
+                ),
                 prefixIcon: Icon(Icons.search, color: AppColors.neutral400),
                 filled: true,
                 fillColor: AppColors.neutral50,
@@ -190,7 +191,10 @@ class _AddRoleExperienceBottomSheetState
                   return GestureDetector(
                     onTap: () => _toggleRole(role),
                     child: Container(
-                      padding: AppSpacing.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v10),
+                      padding: AppSpacing.symmetric(
+                        horizontal: AppSpacing.h16,
+                        vertical: AppSpacing.v10,
+                      ),
                       decoration: BoxDecoration(
                         color: isSelected
                             ? AppColors.primary500.withValues(alpha: 0.12)
@@ -208,8 +212,9 @@ class _AddRoleExperienceBottomSheetState
                           color: isSelected
                               ? AppColors.primary500
                               : AppColors.neutral900,
-                          fontWeight:
-                              isSelected ? FontWeight.w600 : FontWeight.w400,
+                          fontWeight: isSelected
+                              ? FontWeight.w600
+                              : FontWeight.w400,
                         ),
                       ),
                     ),
@@ -224,7 +229,10 @@ class _AddRoleExperienceBottomSheetState
               onTap: _startInlineAddOther,
               child: Text(
                 translate(context, "profile.addOther"),
-                style: AppTextStyles.bodyLarge.copyWith(color: AppColors.primary500, fontWeight: FontWeight.w500),
+                style: AppTextStyles.bodyLarge.copyWith(
+                  color: AppColors.primary500,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
             SizedBox(height: AppSpacing.v20),
@@ -234,8 +242,9 @@ class _AddRoleExperienceBottomSheetState
                 Navigator.of(context).pop();
               },
               text: translate(context, "profile.saveChanges"),
-              textStyle:
-                  AppTextStyles.titleMedium.copyWith(color: AppColors.whiteBase),
+              textStyle: AppTextStyles.titleMedium.copyWith(
+                color: AppColors.whiteBase,
+              ),
             ),
             SizedBox(height: AppSpacing.v20),
           ],
@@ -255,8 +264,12 @@ class _AddRoleExperienceBottomSheetState
         final Offset offset = renderBox.localToGlobal(Offset.zero);
         final Size size = renderBox.size;
 
-        final Rect rect =
-            Rect.fromLTWH(offset.dx, offset.dy, size.width, size.height);
+        final Rect rect = Rect.fromLTWH(
+          offset.dx,
+          offset.dy,
+          size.width,
+          size.height,
+        );
 
         final selected = await showMenu<String>(
           context: context,
@@ -270,9 +283,7 @@ class _AddRoleExperienceBottomSheetState
           ),
           color: AppColors.whiteBase,
           elevation: 6,
-          shape: RoundedRectangleBorder(
-            borderRadius: AppRadius.all06,
-          ),
+          shape: RoundedRectangleBorder(borderRadius: AppRadius.all06),
           items: experienceList.map((exp) {
             final bool isSelected = _selectedExperience == exp;
             return PopupMenuItem<String>(
@@ -280,12 +291,16 @@ class _AddRoleExperienceBottomSheetState
               padding: EdgeInsets.zero,
               child: Container(
                 width: size.width,
-                margin: EdgeInsets.symmetric(horizontal: AppSpacing.h12, vertical: AppSpacing.v6),
-                padding:
-                    EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v16),
+                margin: EdgeInsets.symmetric(
+                  horizontal: AppSpacing.h12,
+                  vertical: AppSpacing.v6,
+                ),
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSpacing.h16,
+                  vertical: AppSpacing.v16,
+                ),
                 decoration: BoxDecoration(
-                  color:
-                      isSelected ? AppColors.primary100 : Colors.transparent,
+                  color: isSelected ? AppColors.primary100 : Colors.transparent,
                   borderRadius: AppRadius.all03,
                 ),
                 child: Row(
@@ -293,7 +308,8 @@ class _AddRoleExperienceBottomSheetState
                   children: [
                     Text(
                       "$exp ${translate(context, "profile.yearsSuffix")}",
-                      style: AppTextStyles.bodyLarge.copyWith(color: AppColors.blackBase)
+                      style: AppTextStyles.bodyLarge
+                          .copyWith(color: AppColors.blackBase)
                           .copyWith(color: AppColors.blackBase),
                     ),
                     if (isSelected)
@@ -317,7 +333,10 @@ class _AddRoleExperienceBottomSheetState
       },
       child: Container(
         key: _dropdownKey,
-        padding: EdgeInsets.symmetric(horizontal: AppSpacing.h10, vertical: AppSpacing.v18),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppSpacing.h10,
+          vertical: AppSpacing.v18,
+        ),
         decoration: BoxDecoration(
           color: AppColors.whiteBase,
           borderRadius: AppRadius.all04,
@@ -330,7 +349,11 @@ class _AddRoleExperienceBottomSheetState
               _selectedExperience != null
                   ? "$_selectedExperience ${translate(context, 'profile.yearsSuffix')}"
                   : translate(context, "profile.yearsOfExperience"),
-              style: AppTextStyles.bodyMedium.copyWith(color: _selectedExperience != null ? AppColors.blackBase : AppColors.neutral400),
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: _selectedExperience != null
+                    ? AppColors.blackBase
+                    : AppColors.neutral400,
+              ),
             ),
             const Icon(Icons.keyboard_arrow_down_rounded),
           ],
@@ -342,14 +365,16 @@ class _AddRoleExperienceBottomSheetState
   Widget _buildInlineAddOtherChip() {
     return Container(
       constraints: BoxConstraints(minWidth: 120.w, maxWidth: 200.w),
-      padding: EdgeInsets.only(left: AppSpacing.h16, right: AppSpacing.h8, top: AppSpacing.v6, bottom: AppSpacing.v6),
+      padding: EdgeInsets.only(
+        left: AppSpacing.h16,
+        right: AppSpacing.h8,
+        top: AppSpacing.v6,
+        bottom: AppSpacing.v6,
+      ),
       decoration: BoxDecoration(
         color: AppColors.whiteBase,
         borderRadius: AppRadius.all06,
-        border: Border.all(
-          color: AppBorders.blue,
-          width: 1.5,
-        ),
+        border: Border.all(color: AppBorders.blue, width: 1.5),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -374,11 +399,7 @@ class _AddRoleExperienceBottomSheetState
           ),
           GestureDetector(
             onTap: _cancelInlineAddOther,
-            child: Icon(
-              Icons.close,
-              size: 18.sp,
-              color: AppColors.blackBase,
-            ),
+            child: Icon(Icons.close, size: 18.sp, color: AppColors.blackBase),
           ),
         ],
       ),

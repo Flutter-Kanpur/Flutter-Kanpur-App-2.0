@@ -33,11 +33,12 @@ class OnboardingCustomChip extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
 
         children: [
-
           Text(
             title,
 
-            style: AppTextStyles.labelLarge.copyWith(color: AppColors.whiteBase),
+            style: AppTextStyles.labelLarge.copyWith(
+              color: AppColors.whiteBase,
+            ),
           ),
 
           8.horizontalSpace,
@@ -45,11 +46,7 @@ class OnboardingCustomChip extends StatelessWidget {
           GestureDetector(
             onTap: onRemove,
 
-            child: Icon(
-              Icons.close,
-              color: AppColors.whiteBase,
-              size: 18.sp,
-            ),
+            child: Icon(Icons.close, color: AppColors.whiteBase, size: 18.sp),
           ),
         ],
       ),

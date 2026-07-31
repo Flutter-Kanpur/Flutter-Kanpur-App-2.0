@@ -11,7 +11,11 @@ void navigateTo(BuildContext context, String path, {Object? arguments}) {
 }
 
 /// Replaces the current route with the new route (useful for login success, splash screens, etc.)
-void navigateAndReplace(BuildContext context, String path, {Object? arguments}) {
+void navigateAndReplace(
+  BuildContext context,
+  String path, {
+  Object? arguments,
+}) {
   if (arguments != null) {
     context.pushReplacement(path, extra: arguments);
   } else {
@@ -20,8 +24,11 @@ void navigateAndReplace(BuildContext context, String path, {Object? arguments}) 
 }
 
 /// Pops all routes and pushes a new one (clears entire stack)
-void navigateAndRemoveUntil(BuildContext context, String path,
-    {Object? arguments}) {
+void navigateAndRemoveUntil(
+  BuildContext context,
+  String path, {
+  Object? arguments,
+}) {
   if (arguments != null) {
     context.go(path, extra: arguments);
   } else {

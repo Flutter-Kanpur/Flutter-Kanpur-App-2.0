@@ -32,154 +32,149 @@ class CommunityScreen extends ConsumerWidget {
       child: FkScreen(
         padding: EdgeInsets.fromLTRB(AppSpacing.h22, 0, AppSpacing.h22, 96),
         children: [
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                'Community',
-                style: AppTextStyles.titleLarge
-              ),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.notifications_outlined),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.more_vert),
-            ),
-          ],
-        ),
-        SizedBox(height: AppSpacing.v18),
-        CommunityAskBanner(
-          onTap: () => context.go(RouteNames.communityAskQuestion),
-        ),
-        FkSectionTitle(
-          title: 'Featured discussions',
-          actionLabel: 'Explore all',
-          onActionTap: () => context.go(RouteNames.communityDiscussions),
-        ),
-        questionsAsync.when(
-          loading: () => const SizedBox(
-            height: 200,
-            child: Center(child: CircularProgressIndicator()),
-          ),
-          error: (e, _) => _ErrorTile(
-            message: 'Could not load discussions.',
-            onRetry: () => ref.read(questionsProvider.notifier).refresh(),
-          ),
-          data: (questions) {
-            if (questions.isEmpty) {
-              return const _EmptyTile(message: 'No discussions yet. Start one!');
-            }
-            return LayoutBuilder(
-              builder: (context, constraints) {
-                final cardWidth =
-                    (constraints.maxWidth * 0.90);
-                return SizedBox(
-                  height: 280,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    clipBehavior: Clip.none,
-                    itemCount: questions.length,
-                    separatorBuilder: (context, index) =>
-                        SizedBox(width: AppSpacing.h12),
-                    itemBuilder: (_, i) => CommunityDiscussionCard(
-                      question: questions[i],
-                      width: cardWidth,
-                      onTap: () => context.push(
-                        '${RouteNames.communityDiscussionDetail}/${questions[i].id}',
-                      ),
-                    ),
-                  ),
-                );
-              },
-            );
-          },
-        ),
-        SizedBox(height: AppSpacing.v22),
-        const FkSectionTitle(title: 'Contribute'),
-        SizedBox(
-          height: 300,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          Row(
             children: [
               Expanded(
-                flex: 3,
-                child: CommunityContributeCard(
-                  label: 'Open to all',
-                  title: 'Upload Your Projects',
-                  body: 'Share your projects with the community to showcase your work.',
-                  onTap: () => context.go(RouteNames.communityUploadProject),
-                ),
+                child: Text('Community', style: AppTextStyles.titleLarge),
               ),
-              SizedBox(width: AppSpacing.h12),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.notifications_outlined),
+              ),
+              IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
+            ],
+          ),
+          SizedBox(height: AppSpacing.v18),
+          CommunityAskBanner(
+            onTap: () => context.go(RouteNames.communityAskQuestion),
+          ),
+          FkSectionTitle(
+            title: 'Featured discussions',
+            actionLabel: 'Explore all',
+            onActionTap: () => context.go(RouteNames.communityDiscussions),
+          ),
+          questionsAsync.when(
+            loading: () => const SizedBox(
+              height: 200,
+              child: Center(child: CircularProgressIndicator()),
+            ),
+            error: (e, _) => _ErrorTile(
+              message: 'Could not load discussions.',
+              onRetry: () => ref.read(questionsProvider.notifier).refresh(),
+            ),
+            data: (questions) {
+              if (questions.isEmpty) {
+                return const _EmptyTile(
+                  message: 'No discussions yet. Start one!',
+                );
+              }
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  final cardWidth = (constraints.maxWidth * 0.90);
+                  return SizedBox(
+                    height: 280,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      clipBehavior: Clip.none,
+                      itemCount: questions.length,
+                      separatorBuilder: (context, index) =>
+                          SizedBox(width: AppSpacing.h12),
+                      itemBuilder: (_, i) => CommunityDiscussionCard(
+                        question: questions[i],
+                        width: cardWidth,
+                        onTap: () => context.push(
+                          '${RouteNames.communityDiscussionDetail}/${questions[i].id}',
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+          SizedBox(height: AppSpacing.v22),
+          const FkSectionTitle(title: 'Contribute'),
+          SizedBox(
+            height: 300,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: CommunityContributeCard(
+                    label: 'Open to all',
+                    title: 'Upload Your Projects',
+                    body:
+                        'Share your projects with the community to showcase your work.',
+                    onTap: () => context.go(RouteNames.communityUploadProject),
+                  ),
+                ),
+                SizedBox(width: AppSpacing.h12),
+                Expanded(
+                  flex: 4,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        flex: 6,
+                        child: CommunityContributeCard(
+                          label: 'Write for us',
+                          body:
+                              'Submit a blog request and contribute content that helps the community grow.',
+                          onTap: () => context.go(RouteNames.blogs),
+                        ),
+                      ),
+                      SizedBox(height: AppSpacing.v12),
+                      Expanded(
+                        flex: 4,
+                        child: CommunityContributeCard(
+                          label: 'Get involved',
+                          body: 'Join as a Contributor',
+                          onTap: () => context.go(RouteNames.profile),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: AppSpacing.v22),
+          const FkSectionTitle(title: 'Community Stats'),
+          const CommunityStatsPanel(),
+          SizedBox(height: AppSpacing.v12),
+          FkPrimaryButton(label: 'Join us on discord', onPressed: () {}),
+          SizedBox(height: AppSpacing.v22),
+          const FkSectionTitle(title: 'Our team'),
+          membersAsync.when(
+            loading: () => const SizedBox(
+              height: 72,
+              child: Center(child: CircularProgressIndicator()),
+            ),
+            error: (_, __) => const SizedBox.shrink(),
+            data: (members) => CommunityTeamCarousel(members: members),
+          ),
+          SizedBox(height: 4 * AppSpacing.v22),
+          Text(
+            'Built for the\nflutter\ncommunity!',
+            style: AppTextStyles.displayMedium.copyWith(
+              color: AppColors.neutral200,
+            ),
+          ),
+          SizedBox(height: AppSpacing.v18),
+          Row(
+            children: [
+              Text('Crafted with ', style: AppTextStyles.bodyMedium),
+              const Icon(Icons.favorite, color: AppColors.warning600),
               Expanded(
-                flex: 4,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      flex: 6,
-                      child: CommunityContributeCard(
-                        label: 'Write for us',
-                        body: 'Submit a blog request and contribute content that helps the community grow.',
-                        onTap: () => context.go(RouteNames.blogs),
-                      ),
-                    ),
-                    SizedBox(height: AppSpacing.v12),
-                    Expanded(
-                      flex: 4,
-                      child: CommunityContributeCard(
-                        label: 'Get involved',
-                        body: 'Join as a Contributor',
-                        onTap: () => context.go(RouteNames.profile),
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  ' by the Flutter Kanpur Community',
+                  style: AppTextStyles.bodyMedium,
                 ),
               ),
             ],
           ),
-        ),
-        SizedBox(height: AppSpacing.v22),
-        const FkSectionTitle(title: 'Community Stats'),
-        const CommunityStatsPanel(),
-        SizedBox(height: AppSpacing.v12),
-        FkPrimaryButton(label: 'Join us on discord', onPressed: () {}),
-        SizedBox(height: AppSpacing.v22),
-        const FkSectionTitle(title: 'Our team'),
-        membersAsync.when(
-          loading: () => const SizedBox(
-            height: 72,
-            child: Center(child: CircularProgressIndicator()),
-          ),
-          error: (_, __) => const SizedBox.shrink(),
-          data: (members) => CommunityTeamCarousel(members: members),
-        ),
-        SizedBox(height: 4*AppSpacing.v22),
-        Text(
-          'Built for the\nflutter\ncommunity!',
-          style: AppTextStyles.displayMedium.copyWith(
-                color: AppColors.neutral200,
-
-              ),
-        ),
-        SizedBox(height: AppSpacing.v18),
-        Row(
-          children: [
-            Text('Crafted with ',
-                style: AppTextStyles.bodyMedium),
-            const Icon(Icons.favorite, color: AppColors.warning600,),
-            Expanded(
-              child: Text(
-                ' by the Flutter Kanpur Community',
-                style: AppTextStyles.bodyMedium,
-              ),
-            ),
-          ],
-        ),
-      ],
+        ],
       ),
     );
   }
@@ -204,11 +199,12 @@ class _ErrorTile extends StatelessWidget {
           const Icon(Icons.error_outline, color: AppColors.warning600),
           SizedBox(width: AppSpacing.h10),
           Expanded(
-            child: Text(message,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(color: AppColors.warning700)),
+            child: Text(
+              message,
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: AppColors.warning700),
+            ),
           ),
           TextButton(onPressed: onRetry, child: const Text('Retry')),
         ],
@@ -227,11 +223,12 @@ class _EmptyTile extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: AppSpacing.v16),
       child: Center(
-        child: Text(message,
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(color: AppColors.neutral500)),
+        child: Text(
+          message,
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: AppColors.neutral500),
+        ),
       ),
     );
   }

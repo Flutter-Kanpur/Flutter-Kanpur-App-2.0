@@ -48,7 +48,10 @@ class EmailVerificationScreen extends ConsumerWidget {
 
               Text(
                 'auth.emailVerifiedTitle'.tr(),
-                style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w600),
+                style: AppTextStyles.titleLarge.copyWith(
+                  color: AppColors.blackBase,
+                  fontWeight: FontWeight.w600,
+                ),
                 textAlign: TextAlign.center,
               ),
 
@@ -80,7 +83,9 @@ class EmailVerificationScreen extends ConsumerWidget {
               GradientButton(
                 height: 50.h,
                 text: "I've verified my email",
-                textStyle: AppTextStyles.bodyLarge.copyWith(color: AppColors.whiteBase),
+                textStyle: AppTextStyles.bodyLarge.copyWith(
+                  color: AppColors.whiteBase,
+                ),
                 onTap: () => context.go(RouteNames.home),
               ),
 

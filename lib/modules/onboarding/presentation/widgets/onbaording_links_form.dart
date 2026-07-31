@@ -14,7 +14,6 @@ class OnboardingLinksForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-
         TextField(
           decoration: InputDecoration(
             hintText: 'onboarding.githubLink'.tr(),
@@ -40,9 +39,7 @@ class OnboardingLinksForm extends StatelessWidget {
             focusedBorder: OutlineInputBorder(
               borderRadius: AppRadius.all03,
 
-              borderSide: const BorderSide(
-                color: AppBorders.primary,
-              ),
+              borderSide: const BorderSide(color: AppBorders.primary),
             ),
           ),
         ),
@@ -74,9 +71,7 @@ class OnboardingLinksForm extends StatelessWidget {
             focusedBorder: OutlineInputBorder(
               borderRadius: AppRadius.all03,
 
-              borderSide: const BorderSide(
-                color: AppBorders.primary,
-              ),
+              borderSide: const BorderSide(color: AppBorders.primary),
             ),
           ),
         ),
@@ -108,9 +103,7 @@ class OnboardingLinksForm extends StatelessWidget {
             focusedBorder: OutlineInputBorder(
               borderRadius: AppRadius.all03,
 
-              borderSide: const BorderSide(
-                color: AppBorders.primary,
-              ),
+              borderSide: const BorderSide(color: AppBorders.primary),
             ),
           ),
         ),
@@ -123,7 +116,9 @@ class OnboardingLinksForm extends StatelessWidget {
           child: Text(
             'onboarding.editAnytime'.tr(),
 
-            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pending400),
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.pending400,
+            ),
           ),
         ),
       ],

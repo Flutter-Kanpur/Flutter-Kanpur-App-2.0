@@ -38,7 +38,10 @@ class OnboardingSkillsScreen extends StatelessWidget {
 
             children: [
               Container(
-                padding: AppSpacing.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v16),
+                padding: AppSpacing.symmetric(
+                  horizontal: AppSpacing.h16,
+                  vertical: AppSpacing.v16,
+                ),
 
                 decoration: BoxDecoration(
                   borderRadius: AppRadius.all03,
@@ -86,7 +89,9 @@ class OnboardingSkillsScreen extends StatelessWidget {
               Text(
                 'onboarding.addOther'.tr(),
 
-                style: AppTextStyles.bodyLarge.copyWith(color: AppColors.primary500),
+                style: AppTextStyles.bodyLarge.copyWith(
+                  color: AppColors.primary500,
+                ),
               ),
 
               const Spacer(),

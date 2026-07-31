@@ -21,7 +21,10 @@ class ContributorInfoCard extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: AppSpacing.symmetric(horizontal: AppSpacing.h20, vertical: AppSpacing.v18),
+      padding: AppSpacing.symmetric(
+        horizontal: AppSpacing.h20,
+        vertical: AppSpacing.v18,
+      ),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: AppRadius.all04,

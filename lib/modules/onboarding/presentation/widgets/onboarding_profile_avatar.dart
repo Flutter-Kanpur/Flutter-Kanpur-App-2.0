@@ -12,15 +12,11 @@ class OnboardingProfileAvatar extends StatelessWidget {
       alignment: Alignment.center,
 
       children: [
-
         CircleAvatar(
           radius: 50.r,
           backgroundColor: AppColors.neutral50,
 
-          child: Image.asset(
-            AppAssets.dashIcon,
-            width: 40.w,
-          ),
+          child: Image.asset(AppAssets.dashIcon, width: 40.w),
         ),
 
         Positioned(
@@ -31,11 +27,7 @@ class OnboardingProfileAvatar extends StatelessWidget {
             radius: 14.r,
             backgroundColor: AppColors.primary500,
 
-            child: Icon(
-              Icons.add,
-              color: AppColors.whiteBase,
-              size: 18.sp,
-            ),
+            child: Icon(Icons.add, color: AppColors.whiteBase, size: 18.sp),
           ),
         ),
       ],

@@ -61,9 +61,9 @@ class AnswerCard extends ConsumerWidget {
                     : null,
                 child: authorPhotoUrl == null
                     ? Text(
-                  _getInitials(authorName),
-                  style: AppTextStyles.labelMedium,
-                )
+                        _getInitials(authorName),
+                        style: AppTextStyles.labelMedium,
+                      )
                     : null,
               ),
               SizedBox(width: AppSpacing.h12),
@@ -71,13 +71,12 @@ class AnswerCard extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      authorName,
-                      style: AppTextStyles.labelLarge,
-                    ),
+                    Text(authorName, style: AppTextStyles.labelLarge),
                     Text(
                       createdAt,
-                      style: AppTextStyles.bodySmall.copyWith(color: AppColors.neutral500),
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.neutral500,
+                      ),
                     ),
                   ],
                 ),
@@ -89,7 +88,9 @@ class AnswerCard extends ConsumerWidget {
                       PopupMenuItem(
                         child: Text(
                           'Delete',
-                          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.warning600),
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.warning600,
+                          ),
                         ),
                         onTap: onDelete,
                       ),
@@ -103,7 +104,10 @@ class AnswerCard extends ConsumerWidget {
           // Answer Body
           Text(
             body,
-            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase, height: 1.5),
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.blackBase,
+              height: 1.5,
+            ),
           ),
           SizedBox(height: AppSpacing.v12),
 

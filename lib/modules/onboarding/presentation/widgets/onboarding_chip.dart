@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
@@ -32,16 +31,12 @@ class OnboardingChip extends StatelessWidget {
         ),
 
         decoration: BoxDecoration(
-          color: isSelected
-              ? AppColors.blackBase
-              : AppColors.whiteBase,
+          color: isSelected ? AppColors.blackBase : AppColors.whiteBase,
 
           borderRadius: AppRadius.all06,
 
           border: Border.all(
-            color: isSelected
-                ? AppColors.blackBase
-                : AppBorders.secondary,
+            color: isSelected ? AppColors.blackBase : AppBorders.secondary,
           ),
         ),
 

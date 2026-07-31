@@ -14,17 +14,14 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 
-
 class OnboardingProfileScreen extends StatefulWidget {
   final VoidCallback? onNext;
 
-  const OnboardingProfileScreen({
-    super.key,
-    this.onNext,
-  });
+  const OnboardingProfileScreen({super.key, this.onNext});
 
   @override
-  State<OnboardingProfileScreen> createState() => _OnboardingProfileScreenState();
+  State<OnboardingProfileScreen> createState() =>
+      _OnboardingProfileScreenState();
 }
 
 /// Scale-aware layout constants for different screen sizes.
@@ -72,7 +69,6 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
     });
   }
 
-
   @override
   void dispose() {
     nameController.dispose();
@@ -81,12 +77,8 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
   }
 
   void _scrollToFocusedField() {
-    final nodes = [
-      nameFocusNode,
-    ];
-    final keys = [
-      nameFieldKey,
-    ];
+    final nodes = [nameFocusNode];
+    final keys = [nameFieldKey];
 
     for (int i = 0; i < nodes.length; i++) {
       if (nodes[i].hasFocus && keys[i].currentContext != null) {
@@ -102,7 +94,6 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
     }
   }
 
-
   void _goToNextScreen() async {
     final name = nameController.text.trim();
 
@@ -115,16 +106,13 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
 
     setState(() => _isLoading = true);
 
-    await Future.delayed(
-      const Duration(milliseconds: 300),
-    );
+    await Future.delayed(const Duration(milliseconds: 300));
 
     if (mounted) {
       setState(() => _isLoading = false);
       widget.onNext?.call();
     }
   }
-
 
   void _showImagePickerSheet() {
     showModalBottomSheet(
@@ -161,7 +149,9 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
                   ),
                   title: Text(
                     "Import from gallery",
-                    style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase),
+                    style: AppTextStyles.titleLarge.copyWith(
+                      color: AppColors.blackBase,
+                    ),
                   ),
                   onTap: () {
                     Navigator.pop(context);
@@ -176,7 +166,9 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
                   ),
                   title: Text(
                     "Take Photo",
-                    style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase),
+                    style: AppTextStyles.titleLarge.copyWith(
+                      color: AppColors.blackBase,
+                    ),
                   ),
                   onTap: () {
                     Navigator.pop(context);
@@ -191,7 +183,9 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
                   ),
                   title: Text(
                     "Remove current picture",
-                    style: AppTextStyles.titleLarge.copyWith(color: AppColors.warning600),
+                    style: AppTextStyles.titleLarge.copyWith(
+                      color: AppColors.warning600,
+                    ),
                   ),
                   onTap: () {
                     Navigator.pop(context);
@@ -208,8 +202,10 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
 
   Future<void> _pickAndUploadImage(ImageSource source) async {
     try {
-      final pickedFile =
-      await _picker.pickImage(source: source, imageQuality: 70);
+      final pickedFile = await _picker.pickImage(
+        source: source,
+        imageQuality: 70,
+      );
 
       if (pickedFile == null) return;
 
@@ -245,20 +241,29 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
       builder: (context) {
         return Dialog(
           backgroundColor: AppColors.whiteBase,
-          shape: RoundedRectangleBorder(
-            borderRadius: AppRadius.all07,
-          ),
+          shape: RoundedRectangleBorder(borderRadius: AppRadius.all07),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v18),
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSpacing.h16,
+              vertical: AppSpacing.v18,
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("Remove?", style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w700)),
+                Text(
+                  "Remove?",
+                  style: AppTextStyles.headlineSmall.copyWith(
+                    color: AppColors.blackBase,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
                 12.verticalSpace,
                 Text(
                   "Are you sure want to remove the profile photo?",
                   textAlign: TextAlign.center,
-                  style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
+                  style: AppTextStyles.bodyLarge.copyWith(
+                    color: AppColors.neutral500,
+                  ),
                 ),
                 24.verticalSpace,
                 GradientButton(
@@ -272,7 +277,12 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
                 14.verticalSpace,
                 GestureDetector(
                   onTap: () => Navigator.pop(context),
-                  child: Text("Cancel", style: AppTextStyles.bodyLarge.copyWith(color: AppColors.warning600)),
+                  child: Text(
+                    "Cancel",
+                    style: AppTextStyles.bodyLarge.copyWith(
+                      color: AppColors.warning600,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -300,7 +310,8 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
               ),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                  minHeight: constraints.maxHeight -
+                  minHeight:
+                      constraints.maxHeight -
                       MediaQuery.of(context).padding.top -
                       MediaQuery.of(context).padding.bottom,
                 ),
@@ -323,7 +334,9 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
                           isLoading: _isLoading,
                           onTap: _goToNextScreen,
                           text: "Continue",
-                          textStyle: AppTextStyles.bodyLarge.copyWith(color: AppBorders.tertiary),
+                          textStyle: AppTextStyles.bodyLarge.copyWith(
+                            color: AppBorders.tertiary,
+                          ),
                           height: _Layout.buttonHeight(context),
                           width: double.infinity,
                         ),
@@ -349,14 +362,14 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
           backgroundImage: _localFilePath != null
               ? FileImage(File(_localFilePath!))
               : (_localPhotoUrl != null
-              ? NetworkImage(_localPhotoUrl!) as ImageProvider
-              : null),
+                    ? NetworkImage(_localPhotoUrl!) as ImageProvider
+                    : null),
           child: (_localFilePath == null && _localPhotoUrl == null)
               ? SvgPicture.asset(
-            AssetsPath.emptyImage,
-            color: AppColors.blackBase,
-            height: _Layout.avatarIconSize(context),
-          )
+                  AssetsPath.emptyImage,
+                  color: AppColors.blackBase,
+                  height: _Layout.avatarIconSize(context),
+                )
               : null,
         ),
         Positioned(
@@ -391,18 +404,19 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
             child: CustomTextField(
               controller: nameController,
               focusNode: nameFocusNode,
-              showTickIcon: nameController.text.isNotEmpty &&
+              showTickIcon:
+                  nameController.text.isNotEmpty &&
                   nameController.text.length > 4,
               text: "Full name",
               showBorder:
-              nameFocusNode.hasFocus || nameController.text.isNotEmpty,
+                  nameFocusNode.hasFocus || nameController.text.isNotEmpty,
               borderColor: nameFocusNode.hasFocus
                   ? AppColors.primary500
                   : nameController.text.isNotEmpty
                   ? AppColors.neutral100
                   : AppColors.neutral50,
               fillColor:
-              nameFocusNode.hasFocus || nameController.text.isNotEmpty
+                  nameFocusNode.hasFocus || nameController.text.isNotEmpty
                   ? Colors.transparent
                   : AppColors.neutral50,
             ),

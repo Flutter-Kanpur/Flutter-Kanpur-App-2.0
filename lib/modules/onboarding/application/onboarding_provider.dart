@@ -28,8 +28,9 @@ class OnboardingStatus {
   }
 }
 
-final onboardingStatusProvider =
-    StateProvider<OnboardingStatus>((ref) => const OnboardingStatus());
+final onboardingStatusProvider = StateProvider<OnboardingStatus>(
+  (ref) => const OnboardingStatus(),
+);
 
 final isOnboardingCompletedProvider = Provider<bool>((ref) {
   return ref.watch(onboardingStatusProvider).isCompleted;
@@ -37,14 +38,16 @@ final isOnboardingCompletedProvider = Provider<bool>((ref) {
 
 final completeOnboardingProvider = Provider<void Function()>((ref) {
   return () {
-    ref.read(onboardingStatusProvider.notifier).state =
-        const OnboardingStatus(isCompleted: true);
+    ref.read(onboardingStatusProvider.notifier).state = const OnboardingStatus(
+      isCompleted: true,
+    );
   };
 });
 
 final skipOnboardingProvider = Provider<void Function()>((ref) {
   return () {
-    ref.read(onboardingStatusProvider.notifier).state =
-        const OnboardingStatus(isCompleted: true);
+    ref.read(onboardingStatusProvider.notifier).state = const OnboardingStatus(
+      isCompleted: true,
+    );
   };
 });

@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/core/storage/app_prefs.dart';
 
 class AuthLandingScreen extends StatefulWidget {
   const AuthLandingScreen({super.key});
@@ -51,6 +52,8 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
       );
     } else {
       if (!mounted) return;
+      await AppPrefs.setHasSeenLanding(true);
+      if (!mounted) return;
       context.go(RouteNames.authOptions);
     }
   }
@@ -66,10 +69,17 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
               child: Align(
                 alignment: Alignment.topRight,
                 child: TextButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    await AppPrefs.setHasSeenLanding(true);
+                    if (!mounted) return;
                     context.go(RouteNames.authOptions);
                   },
-                  child: Text('Skip', style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
+                  child: Text(
+                    'Skip',
+                    style: AppTextStyles.titleMedium.copyWith(
+                      color: AppColors.blackBase,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -115,7 +125,10 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
           Text(
             pageData.title,
             textAlign: TextAlign.center,
-            style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold),
+            style: AppTextStyles.headlineSmall.copyWith(
+              color: AppColors.blackBase,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           16.verticalSpace,
 
@@ -124,7 +137,11 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
             child: Text(
               pageData.description,
               textAlign: TextAlign.center,
-              style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500, fontWeight: FontWeight.w300, height: 1.5),
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.neutral500,
+                fontWeight: FontWeight.w300,
+                height: 1.5,
+              ),
             ),
           ),
           1.verticalSpace,
@@ -143,7 +160,9 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
           width: _currentPage == index ? 32.w : 8.w,
           height: 8,
           decoration: BoxDecoration(
-            color: _currentPage == index ? AppColors.blackBase : AppColors.neutral200,
+            color: _currentPage == index
+                ? AppColors.blackBase
+                : AppColors.neutral200,
             borderRadius: AppRadius.all01,
           ),
         ),
@@ -153,9 +172,7 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
 
   Widget _buildNextButton() {
     return GradientButton(
-      textStyle: AppTextStyles.bodyMedium.copyWith(
-        color: AppColors.whiteBase,
-      ),
+      textStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.whiteBase),
       width: 150.w,
       onTap: _goToNextPage,
       text: _currentPage == pages.length - 1 ? 'Get Started ->' : 'Next ->',

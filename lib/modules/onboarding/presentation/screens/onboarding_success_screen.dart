@@ -7,6 +7,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
 
 class OnboardingSuccessScreen extends StatelessWidget {
   const OnboardingSuccessScreen({super.key});
@@ -25,7 +27,6 @@ class OnboardingSuccessScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
 
             children: [
-
               SvgPicture.asset(
                 AppAssets.successIcon,
                 width: 220.w,
@@ -39,7 +40,10 @@ class OnboardingSuccessScreen extends StatelessWidget {
 
                 textAlign: TextAlign.center,
 
-                style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w700),
+                style: AppTextStyles.headlineSmall.copyWith(
+                  color: AppColors.blackBase,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
 
               12.verticalSpace,
@@ -49,14 +53,17 @@ class OnboardingSuccessScreen extends StatelessWidget {
 
                 textAlign: TextAlign.center,
 
-                style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500, height: 1.5),
+                style: AppTextStyles.bodyLarge.copyWith(
+                  color: AppColors.neutral500,
+                  height: 1.5,
+                ),
               ),
 
               48.verticalSpace,
 
               GradientButton(
                 text: 'onboarding.redirectToHome'.tr(),
-                onTap: () {},
+                onTap: () => context.go(RouteNames.home),
                 height: 48.h,
                 width: double.infinity,
               ),

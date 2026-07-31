@@ -12,10 +12,30 @@ class CommunityTeamCarousel extends StatelessWidget {
   final List<CommunityMember> members;
 
   static const _fallback = [
-    CommunityMember(name: 'Angelica Singh', role: 'UI/UX Designer', skills: [], status: 'active'),
-    CommunityMember(name: 'Pushti Sonawala', role: 'Full Stack Dev', skills: [], status: 'active'),
-    CommunityMember(name: 'Ayush Singh', role: 'App Developer', skills: [], status: 'active'),
-    CommunityMember(name: 'Sarah Fatima', role: 'Flutter Developer', skills: [], status: 'active'),
+    CommunityMember(
+      name: 'Angelica Singh',
+      role: 'UI/UX Designer',
+      skills: [],
+      status: 'active',
+    ),
+    CommunityMember(
+      name: 'Pushti Sonawala',
+      role: 'Full Stack Dev',
+      skills: [],
+      status: 'active',
+    ),
+    CommunityMember(
+      name: 'Ayush Singh',
+      role: 'App Developer',
+      skills: [],
+      status: 'active',
+    ),
+    CommunityMember(
+      name: 'Sarah Fatima',
+      role: 'Flutter Developer',
+      skills: [],
+      status: 'active',
+    ),
   ];
 
   @override
@@ -97,7 +117,8 @@ class _AutoScrollRowState extends State<_AutoScrollRow>
   @override
   void didUpdateWidget(covariant _AutoScrollRow old) {
     super.didUpdateWidget(old);
-    if (old.members != widget.members || old.leftToRight != widget.leftToRight) {
+    if (old.members != widget.members ||
+        old.leftToRight != widget.leftToRight) {
       _offset = 0;
     }
   }
@@ -137,7 +158,10 @@ class _MemberPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: AppSpacing.symmetric(horizontal: AppSpacing.h10, vertical: AppSpacing.v8),
+      padding: AppSpacing.symmetric(
+        horizontal: AppSpacing.h10,
+        vertical: AppSpacing.v8,
+      ),
       decoration: BoxDecoration(
         color: AppColors.neutral50,
         borderRadius: AppRadius.all09,
@@ -153,7 +177,9 @@ class _MemberPill extends StatelessWidget {
             child: member.photoUrl == null
                 ? Text(
                     member.name.isNotEmpty ? member.name[0].toUpperCase() : '?',
-                    style: AppTextStyles.titleMedium.copyWith(color: AppColors.primary500),
+                    style: AppTextStyles.titleMedium.copyWith(
+                      color: AppColors.primary500,
+                    ),
                   )
                 : null,
           ),
@@ -167,19 +193,18 @@ class _MemberPill extends StatelessWidget {
                   member.name,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleSmall
-                      ?.copyWith(fontWeight: FontWeight.w600),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
                 ),
                 SizedBox(height: AppSpacing.v2),
                 Text(
                   member.role,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.neutral500,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: AppColors.neutral500),
                 ),
               ],
             ),

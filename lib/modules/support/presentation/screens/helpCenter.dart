@@ -45,128 +45,150 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
   @override
   Widget build(BuildContext context) {
     return GradientBackground(
-        child: Scaffold(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          centerTitle: true,
           backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            centerTitle: true,
-            backgroundColor: Colors.transparent,
-            title: Text(
-              translate(context, "helpCenter.title"),
-              style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w600),
-            ),
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () => Navigator.pop(context),
+          title: Text(
+            translate(context, "helpCenter.title"),
+            style: AppTextStyles.titleLarge.copyWith(
+              color: AppColors.blackBase,
+              fontWeight: FontWeight.w600,
             ),
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: AppSpacing.v10),
-
-                CommonSearchBar(
-                  controller: _searchController,
-                  hintText: 'Search for events...',
-                  onChanged: (v) => setState(() {
-                    _query = v.trim();
-                    expandedIndex = -1;
-                  }),
-                  onMicTap: () {
-                    // TODO: add voice input handling
-                  },
-                ),
-
-                SizedBox(height: AppSpacing.v22),
-
-                // 🔹 FAQ
-                ..._buildFaqItems(),
-
-                SizedBox(height: AppSpacing.v12),
-
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.h10),
-                  child: Text(
-                    translate(context, 'helpCenter.quickHelpTitle'),
-                    style: AppTextStyles.titleSmall.copyWith(color: AppColors.primary500),
-                  ),
-                ),
-
-                SizedBox(height: AppSpacing.v16),
-
-                SizedBox(
-                  height: 120.h,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    padding: AppSpacing.horizontal(AppSpacing.h20),
-                    children: [
-                      CategoryCard(
-                        title: translate(context, 'helpCenter.category1.title'),
-                        description:
-                        translate(context, 'helpCenter.category1.desc'),
-                      ),
-                      SizedBox(width: AppSpacing.h12),
-                      CategoryCard(
-                        title: translate(context, 'helpCenter.category2.title'),
-                        description:
-                        translate(context, 'helpCenter.category2.desc'),
-                      ),
-                      SizedBox(width: AppSpacing.h12),
-                      CategoryCard(
-                        title: translate(context, 'helpCenter.category3.title'),
-                        description:
-                        translate(context, 'helpCenter.category3.desc'),
-                      ),
-                      SizedBox(width: AppSpacing.h12),
-                      CategoryCard(
-                        title: translate(context, 'helpCenter.category4.title'),
-                        description:
-                        translate(context, 'helpCenter.category4.desc'),
-                      ),
-                      SizedBox(width: AppSpacing.h12),
-                      CategoryCard(
-                        title: translate(context, 'helpCenter.category5.title'),
-                        description:
-                        translate(context, 'helpCenter.category5.desc'),
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: AppSpacing.v22),
-
-                Center(
-                  child: Column(
-                    children: [
-                      Text(
-                        translate(context, 'helpCenter.stillNeedHelp'),
-                        style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w800),
-                      ),
-                      SizedBox(height: AppSpacing.v12),
-                      Text(
-                        translate(context, 'helpCenter.cantFind'),
-                        style: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase)
-                            .apply(color: AppColors.neutral300),
-                      ),
-                      SizedBox(height: AppSpacing.v16),
-                      GradientButton(
-                        height: 45.h,
-                        width: 230.w,
-                        textStyle: AppTextStyles.labelLarge.copyWith(color: AppColors.whiteBase),
-                        text: translate(context, 'helpCenter.contactButton'),
-                        onTap: () {
-                          context.push('/profile/contact-community-team');
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: AppSpacing.v22),
-              ],
-            ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context),
           ),
-        ));
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: AppSpacing.v10),
+
+              CommonSearchBar(
+                controller: _searchController,
+                hintText: 'Search for events...',
+                onChanged: (v) => setState(() {
+                  _query = v.trim();
+                  expandedIndex = -1;
+                }),
+                onMicTap: () {
+                  // TODO: add voice input handling
+                },
+              ),
+
+              SizedBox(height: AppSpacing.v22),
+
+              // 🔹 FAQ
+              ..._buildFaqItems(),
+
+              SizedBox(height: AppSpacing.v12),
+
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.h10),
+                child: Text(
+                  translate(context, 'helpCenter.quickHelpTitle'),
+                  style: AppTextStyles.titleSmall.copyWith(
+                    color: AppColors.primary500,
+                  ),
+                ),
+              ),
+
+              SizedBox(height: AppSpacing.v16),
+
+              SizedBox(
+                height: 120.h,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  padding: AppSpacing.horizontal(AppSpacing.h20),
+                  children: [
+                    CategoryCard(
+                      title: translate(context, 'helpCenter.category1.title'),
+                      description: translate(
+                        context,
+                        'helpCenter.category1.desc',
+                      ),
+                    ),
+                    SizedBox(width: AppSpacing.h12),
+                    CategoryCard(
+                      title: translate(context, 'helpCenter.category2.title'),
+                      description: translate(
+                        context,
+                        'helpCenter.category2.desc',
+                      ),
+                    ),
+                    SizedBox(width: AppSpacing.h12),
+                    CategoryCard(
+                      title: translate(context, 'helpCenter.category3.title'),
+                      description: translate(
+                        context,
+                        'helpCenter.category3.desc',
+                      ),
+                    ),
+                    SizedBox(width: AppSpacing.h12),
+                    CategoryCard(
+                      title: translate(context, 'helpCenter.category4.title'),
+                      description: translate(
+                        context,
+                        'helpCenter.category4.desc',
+                      ),
+                    ),
+                    SizedBox(width: AppSpacing.h12),
+                    CategoryCard(
+                      title: translate(context, 'helpCenter.category5.title'),
+                      description: translate(
+                        context,
+                        'helpCenter.category5.desc',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(height: AppSpacing.v22),
+
+              Center(
+                child: Column(
+                  children: [
+                    Text(
+                      translate(context, 'helpCenter.stillNeedHelp'),
+                      style: AppTextStyles.titleMedium.copyWith(
+                        color: AppColors.blackBase,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    SizedBox(height: AppSpacing.v12),
+                    Text(
+                      translate(context, 'helpCenter.cantFind'),
+                      style: AppTextStyles.bodyMedium
+                          .copyWith(color: AppColors.blackBase)
+                          .apply(color: AppColors.neutral300),
+                    ),
+                    SizedBox(height: AppSpacing.v16),
+                    GradientButton(
+                      height: 45.h,
+                      width: 230.w,
+                      textStyle: AppTextStyles.labelLarge.copyWith(
+                        color: AppColors.whiteBase,
+                      ),
+                      text: translate(context, 'helpCenter.contactButton'),
+                      onTap: () {
+                        context.push('/profile/contact-community-team');
+                      },
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(height: AppSpacing.v22),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   List<Widget> _buildFaqItems() {
@@ -215,7 +237,9 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
             ListTile(
               title: Text(
                 f['q']!,
-                style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase),
+                style: AppTextStyles.titleMedium.copyWith(
+                  color: AppColors.blackBase,
+                ),
               ),
               trailing: Icon(
                 isExpanded
@@ -231,7 +255,12 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
             if (isExpanded)
               Container(
                 width: double.infinity,
-                padding: AppSpacing.only(left: AppSpacing.h16, top: 0, right: AppSpacing.h16, bottom: AppSpacing.v16),
+                padding: AppSpacing.only(
+                  left: AppSpacing.h16,
+                  top: 0,
+                  right: AppSpacing.h16,
+                  bottom: AppSpacing.v16,
+                ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -247,7 +276,9 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                     Expanded(
                       child: Text(
                         f['a']!,
-                        style: AppTextStyles.labelLarge.copyWith(color: AppColors.neutral400),
+                        style: AppTextStyles.labelLarge.copyWith(
+                          color: AppColors.neutral400,
+                        ),
                       ),
                     ),
                   ],

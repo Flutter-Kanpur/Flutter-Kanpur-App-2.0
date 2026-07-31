@@ -22,7 +22,9 @@ class MyContributionsScreen extends StatelessWidget {
       backgroundColor: AppColors.whiteBase,
       isScrollControlled: true,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.r06)),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(AppRadius.r06),
+        ),
       ),
       builder: (_) => const ContributorHelpBottomSheet(),
     );
@@ -46,7 +48,10 @@ class MyContributionsScreen extends StatelessWidget {
           Align(
             alignment: Alignment.topLeft,
             child: Container(
-              padding: AppSpacing.symmetric(horizontal: AppSpacing.h12, vertical: AppSpacing.v6),
+              padding: AppSpacing.symmetric(
+                horizontal: AppSpacing.h12,
+                vertical: AppSpacing.v6,
+              ),
               decoration: BoxDecoration(
                 color: AppColors.success100,
                 borderRadius: AppRadius.all07,

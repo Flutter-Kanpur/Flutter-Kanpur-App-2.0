@@ -25,8 +25,8 @@ final currentUserIdProvider = FutureProvider<String?>((ref) async {
 
 final questionsProvider =
     AsyncNotifierProvider<QuestionsNotifier, List<CommunityQuestion>>(
-  QuestionsNotifier.new,
-);
+      QuestionsNotifier.new,
+    );
 
 class QuestionsNotifier extends AsyncNotifier<List<CommunityQuestion>> {
   String? _filter;
@@ -39,14 +39,16 @@ class QuestionsNotifier extends AsyncNotifier<List<CommunityQuestion>> {
     _filter = filter;
     state = const AsyncLoading();
     state = await AsyncValue.guard(
-      () => ref.read(communityRepositoryProvider).fetchQuestions(filter: _filter),
+      () =>
+          ref.read(communityRepositoryProvider).fetchQuestions(filter: _filter),
     );
   }
 
   Future<void> refresh() async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(
-      () => ref.read(communityRepositoryProvider).fetchQuestions(filter: _filter),
+      () =>
+          ref.read(communityRepositoryProvider).fetchQuestions(filter: _filter),
     );
   }
 }
@@ -55,8 +57,8 @@ class QuestionsNotifier extends AsyncNotifier<List<CommunityQuestion>> {
 
 final communityMembersProvider =
     AsyncNotifierProvider<CommunityMembersNotifier, List<CommunityMember>>(
-  CommunityMembersNotifier.new,
-);
+      CommunityMembersNotifier.new,
+    );
 
 class CommunityMembersNotifier extends AsyncNotifier<List<CommunityMember>> {
   @override
@@ -75,8 +77,8 @@ class CommunityMembersNotifier extends AsyncNotifier<List<CommunityMember>> {
 
 final communityProjectsProvider =
     AsyncNotifierProvider<CommunityProjectsNotifier, List<CommunityProject>>(
-  CommunityProjectsNotifier.new,
-);
+      CommunityProjectsNotifier.new,
+    );
 
 class CommunityProjectsNotifier extends AsyncNotifier<List<CommunityProject>> {
   @override
@@ -95,23 +97,26 @@ class CommunityProjectsNotifier extends AsyncNotifier<List<CommunityProject>> {
 
 final questionDetailProvider =
     FutureProvider.family<CommunityQuestion?, String>((ref, questionId) {
-  return ref.read(communityRepositoryProvider).fetchQuestionById(questionId);
-});
+      return ref
+          .read(communityRepositoryProvider)
+          .fetchQuestionById(questionId);
+    });
 
 // ─── Replies ─────────────────────────────────────────────────────────────────
 
-final repliesProvider = FutureProvider.family<List<CommunityReply>, String>(
-  (ref, questionId) {
-    return ref.read(communityRepositoryProvider).fetchReplies(questionId);
-  },
-);
+final repliesProvider = FutureProvider.family<List<CommunityReply>, String>((
+  ref,
+  questionId,
+) {
+  return ref.read(communityRepositoryProvider).fetchReplies(questionId);
+});
 
 // ─── Actions (submit question / project) ─────────────────────────────────────
 
 final communityActionControllerProvider =
     AsyncNotifierProvider<CommunityActionController, void>(
-  CommunityActionController.new,
-);
+      CommunityActionController.new,
+    );
 
 class CommunityActionController extends AsyncNotifier<void> {
   @override
@@ -135,11 +140,13 @@ class CommunityActionController extends AsyncNotifier<void> {
   }) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(
-      () => ref.read(answerServiceProvider).submitAnswer(
-        questionId: questionId,
-        body: body,
-        codeSnippet: codeSnippet,
-      ),
+      () => ref
+          .read(answerServiceProvider)
+          .submitAnswer(
+            questionId: questionId,
+            body: body,
+            codeSnippet: codeSnippet,
+          ),
     );
     if (!state.hasError) {
       ref.invalidate(repliesProvider(questionId));

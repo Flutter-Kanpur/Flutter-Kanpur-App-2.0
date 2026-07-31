@@ -35,9 +35,7 @@ class OnboardingRoleScreen extends StatelessWidget {
             decoration: InputDecoration(
               hintText: 'onboarding.searchRolesHint'.tr(),
 
-              border: OutlineInputBorder(
-                borderRadius: AppRadius.all09,
-              ),
+              border: OutlineInputBorder(borderRadius: AppRadius.all09),
             ),
           ),
 
@@ -49,7 +47,10 @@ class OnboardingRoleScreen extends StatelessWidget {
 
             children: roles.map((role) {
               return Container(
-                padding: AppSpacing.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v10),
+                padding: AppSpacing.symmetric(
+                  horizontal: AppSpacing.h16,
+                  vertical: AppSpacing.v10,
+                ),
 
                 decoration: BoxDecoration(
                   borderRadius: AppRadius.all06,
@@ -67,7 +68,9 @@ class OnboardingRoleScreen extends StatelessWidget {
           Text(
             'onboarding.addOther'.tr(),
 
-            style: AppTextStyles.bodyLarge.copyWith(color: AppColors.primary500),
+            style: AppTextStyles.bodyLarge.copyWith(
+              color: AppColors.primary500,
+            ),
           ),
 
           const Spacer(),

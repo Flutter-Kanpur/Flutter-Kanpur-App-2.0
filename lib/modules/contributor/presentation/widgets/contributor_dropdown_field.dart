@@ -48,7 +48,9 @@ class ContributorDropdownField extends StatelessWidget {
 
           hint: Text(
             hint,
-            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral300),
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.neutral300,
+            ),
           ),
 
           decoration: InputDecoration(
@@ -62,17 +64,12 @@ class ContributorDropdownField extends StatelessWidget {
 
             enabledBorder: OutlineInputBorder(
               borderRadius: AppRadius.all03,
-              borderSide: BorderSide(
-                color: AppBorders.primary,
-              ),
+              borderSide: BorderSide(color: AppBorders.primary),
             ),
 
             focusedBorder: OutlineInputBorder(
               borderRadius: AppRadius.all03,
-              borderSide: BorderSide(
-                color: AppBorders.blue,
-                width: 1.5,
-              ),
+              borderSide: BorderSide(color: AppBorders.blue, width: 1.5),
             ),
 
             errorBorder: OutlineInputBorder(

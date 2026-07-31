@@ -21,7 +21,9 @@ class AuthRemoteDataSource {
 
     await _client
         .from(AuthConstants.usersTable)
-        .update({AuthConstants.lastLoginAtField: DateTime.now().toIso8601String()})
+        .update({
+          AuthConstants.lastLoginAtField: DateTime.now().toIso8601String(),
+        })
         .eq(AuthConstants.uidField, user.id);
 
     final rows = await _client
@@ -57,14 +59,16 @@ class AuthRemoteDataSource {
     // Insert the users row. If this fails (e.g. the auth signup already ran
     // and only the insert crashed), don't block the user — they just verify email.
     try {
-      await _client.from(AuthConstants.usersTable).insert(
-        AuthUserModel.toInsertMap(
-          uid: user.id,
-          email: email,
-          username: username,
-          isEmailVerified: user.emailConfirmedAt != null,
-        ),
-      );
+      await _client
+          .from(AuthConstants.usersTable)
+          .insert(
+            AuthUserModel.toInsertMap(
+              uid: user.id,
+              email: email,
+              username: username,
+              isEmailVerified: user.emailConfirmedAt != null,
+            ),
+          );
     } catch (_) {
       // Row might already exist from a previous partial attempt — safe to ignore.
     }

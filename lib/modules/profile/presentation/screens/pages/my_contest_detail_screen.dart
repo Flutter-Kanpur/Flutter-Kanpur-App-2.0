@@ -45,9 +45,12 @@ class MyContestDetailScreen extends ConsumerWidget {
 
   TextStyle _metaValueStyle(MyContestMetaTone tone) {
     return switch (tone) {
-      MyContestMetaTone.urgent => AppTextStyles.bodyLarge.copyWith(color: AppColors.warning600),
-      MyContestMetaTone.positive =>
-        AppTextStyles.bodyLarge.copyWith(color: AppColors.success600),
+      MyContestMetaTone.urgent => AppTextStyles.bodyLarge.copyWith(
+        color: AppColors.warning600,
+      ),
+      MyContestMetaTone.positive => AppTextStyles.bodyLarge.copyWith(
+        color: AppColors.success600,
+      ),
     };
   }
 
@@ -70,25 +73,46 @@ class MyContestDetailScreen extends ConsumerWidget {
               color: AppColors.blackBase,
             ),
           ),
-          title: Text('Contest details', style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w500)),
+          title: Text(
+            'Contest details',
+            style: AppTextStyles.titleLarge.copyWith(
+              color: AppColors.blackBase,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ),
         body: contest == null
             ? Center(
                 child: Text(
                   'Contest not found.',
-                  style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
+                  style: AppTextStyles.bodyLarge.copyWith(
+                    color: AppColors.neutral500,
+                  ),
                 ),
               )
             : SingleChildScrollView(
-                padding: EdgeInsets.fromLTRB(AppSpacing.h20, AppSpacing.h8, AppSpacing.h20, AppSpacing.h22),
+                padding: EdgeInsets.fromLTRB(
+                  AppSpacing.h20,
+                  AppSpacing.h8,
+                  AppSpacing.h20,
+                  AppSpacing.h22,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(contest.title, style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold)),
+                    Text(
+                      contest.title,
+                      style: AppTextStyles.headlineSmall.copyWith(
+                        color: AppColors.blackBase,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     SizedBox(height: AppSpacing.v4),
                     Text(
                       contest.categoryLabel,
-                      style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
+                      style: AppTextStyles.bodyLarge.copyWith(
+                        color: AppColors.neutral500,
+                      ),
                     ),
                     SizedBox(height: AppSpacing.v16),
                     Row(
@@ -113,7 +137,9 @@ class MyContestDetailScreen extends ConsumerWidget {
                     SizedBox(height: AppSpacing.v16),
                     Text(
                       contest.scheduleLabel,
-                      style: AppTextStyles.bodyLarge.copyWith(color: AppColors.blackBase),
+                      style: AppTextStyles.bodyLarge.copyWith(
+                        color: AppColors.blackBase,
+                      ),
                     ),
                     SizedBox(height: AppSpacing.v4),
                     Text(
@@ -137,26 +163,33 @@ class MyContestDetailScreen extends ConsumerWidget {
                               ),
                               child: Text(
                                 tag,
-                                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase),
+                                style: AppTextStyles.bodyMedium.copyWith(
+                                  color: AppColors.blackBase,
+                                ),
                               ),
                             ),
                           )
                           .toList(),
                     ),
                     SizedBox(height: AppSpacing.v20),
-                    Divider(
-                      height: 1,
-                      thickness: 1,
-                      color: AppBorders.primary,
-                    ),
+                    Divider(height: 1, thickness: 1, color: AppBorders.primary),
                     SizedBox(height: AppSpacing.v20),
-                    Text('What You\'ll Do', style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w500)),
+                    Text(
+                      'What You\'ll Do',
+                      style: AppTextStyles.titleLarge.copyWith(
+                        color: AppColors.blackBase,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                     SizedBox(height: AppSpacing.v12),
                     _BulletList(items: contest.whatYoullDo),
                     SizedBox(height: AppSpacing.v20),
                     Text(
                       'Rewards & Outcomes',
-                      style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w500),
+                      style: AppTextStyles.titleLarge.copyWith(
+                        color: AppColors.blackBase,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     SizedBox(height: AppSpacing.v12),
                     _BulletList(items: contest.rewardsAndOutcomes),
@@ -165,7 +198,10 @@ class MyContestDetailScreen extends ConsumerWidget {
                       text: 'Add to Calendar',
                       height: 48.h,
                       onTap: () => _addToCalendar(contest),
-                      textStyle: AppTextStyles.labelLarge.copyWith(color: AppColors.whiteBase, fontWeight: FontWeight.w600),
+                      textStyle: AppTextStyles.labelLarge.copyWith(
+                        color: AppColors.whiteBase,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ],
                 ),
@@ -194,7 +230,10 @@ class _OutlinedPillButton extends StatelessWidget {
         onTap: onTap,
         borderRadius: AppRadius.all09,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.h18, vertical: AppSpacing.v10),
+          padding: EdgeInsets.symmetric(
+            horizontal: AppSpacing.h18,
+            vertical: AppSpacing.v10,
+          ),
           decoration: BoxDecoration(
             color: AppColors.whiteBase,
             borderRadius: AppRadius.all09,
@@ -205,7 +244,12 @@ class _OutlinedPillButton extends StatelessWidget {
             children: [
               Icon(icon, size: 18.sp, color: AppColors.blackBase),
               SizedBox(width: AppSpacing.h6),
-              Text(label, style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
+              Text(
+                label,
+                style: AppTextStyles.titleMedium.copyWith(
+                  color: AppColors.blackBase,
+                ),
+              ),
             ],
           ),
         ),
@@ -230,8 +274,20 @@ class _BulletList extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('•  ', style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500)),
-                  Expanded(child: Text(item, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500))),
+                  Text(
+                    '•  ',
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.neutral500,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      item,
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.neutral500,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

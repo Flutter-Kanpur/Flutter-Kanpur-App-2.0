@@ -32,9 +32,12 @@ class MyContestCard extends StatelessWidget {
 
   TextStyle _metaValueStyle() {
     return switch (contest.metaTone) {
-      MyContestMetaTone.urgent => AppTextStyles.bodyLarge.copyWith(color: AppColors.warning600),
-      MyContestMetaTone.positive =>
-        AppTextStyles.bodyLarge.copyWith(color: AppColors.success600),
+      MyContestMetaTone.urgent => AppTextStyles.bodyLarge.copyWith(
+        color: AppColors.warning600,
+      ),
+      MyContestMetaTone.positive => AppTextStyles.bodyLarge.copyWith(
+        color: AppColors.success600,
+      ),
     };
   }
 
@@ -58,7 +61,12 @@ class MyContestCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(contest.categoryLabel, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500)),
+                  Text(
+                    contest.categoryLabel,
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.neutral500,
+                    ),
+                  ),
                   IconButton(
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),
@@ -76,7 +84,13 @@ class MyContestCard extends StatelessWidget {
                 ],
               ),
               SizedBox(height: AppSpacing.v8),
-              Text(contest.title, style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w500)),
+              Text(
+                contest.title,
+                style: AppTextStyles.titleLarge.copyWith(
+                  color: AppColors.blackBase,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
               SizedBox(height: AppSpacing.v12),
               Wrap(
                 spacing: AppSpacing.h8,
@@ -92,17 +106,18 @@ class MyContestCard extends StatelessWidget {
                           color: AppColors.neutral50,
                           borderRadius: AppRadius.all09,
                         ),
-                        child: Text(tag, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase)),
+                        child: Text(
+                          tag,
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.blackBase,
+                          ),
+                        ),
                       ),
                     )
                     .toList(),
               ),
               SizedBox(height: AppSpacing.v16),
-              Divider(
-                height: 1,
-                thickness: 1,
-                color: AppBorders.primary,
-              ),
+              Divider(height: 1, thickness: 1, color: AppBorders.primary),
               SizedBox(height: AppSpacing.v16),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -113,7 +128,9 @@ class MyContestCard extends StatelessWidget {
                       children: [
                         Text(
                           contest.metaLabel,
-                          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500),
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.neutral500,
+                          ),
                         ),
                         SizedBox(height: AppSpacing.v4),
                         Text(contest.metaValue, style: _metaValueStyle()),
@@ -126,7 +143,10 @@ class MyContestCard extends StatelessWidget {
                       text: contest.actionLabel,
                       height: 44.h,
                       onTap: onAction,
-                      textStyle: AppTextStyles.labelLarge.copyWith(color: AppColors.whiteBase, fontWeight: FontWeight.w600),
+                      textStyle: AppTextStyles.labelLarge.copyWith(
+                        color: AppColors.whiteBase,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],

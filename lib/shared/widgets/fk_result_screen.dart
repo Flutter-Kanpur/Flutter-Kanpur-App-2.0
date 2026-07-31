@@ -59,9 +59,9 @@ class FkResultScreen extends StatelessWidget {
             SizedBox(height: AppSpacing.v12),
             Text(
               message,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: AppColors.neutral500,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyLarge?.copyWith(color: AppColors.neutral500),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: AppSpacing.v22),

@@ -32,7 +32,10 @@ class JoinAsContributorScreen extends StatelessWidget {
           /// Information Card
           Container(
             width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: AppSpacing.h10, vertical: AppSpacing.v16),
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSpacing.h10,
+              vertical: AppSpacing.v16,
+            ),
             decoration: BoxDecoration(
               color: AppColors.primary50,
               borderRadius: AppRadius.all05,
@@ -49,7 +52,10 @@ class JoinAsContributorScreen extends StatelessWidget {
           /// Green Card
           Container(
             width: double.infinity,
-            padding: AppSpacing.symmetric(horizontal: AppSpacing.h18, vertical: AppSpacing.v18),
+            padding: AppSpacing.symmetric(
+              horizontal: AppSpacing.h18,
+              vertical: AppSpacing.v18,
+            ),
             decoration: BoxDecoration(
               color: AppColors.success100,
               borderRadius: AppRadius.all04,

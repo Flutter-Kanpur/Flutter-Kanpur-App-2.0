@@ -22,7 +22,12 @@ class ContributorApplicationUnderReviewScreen extends StatelessWidget {
     return GradientBackground(
       child: SafeArea(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(AppSpacing.h20, AppSpacing.h18, AppSpacing.h20, 24),
+          padding: EdgeInsets.fromLTRB(
+            AppSpacing.h20,
+            AppSpacing.h18,
+            AppSpacing.h20,
+            24,
+          ),
           child: Column(
             children: [
               FkHeader(
@@ -94,7 +99,11 @@ class ContributorApplicationUnderReviewScreen extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.info, size: 18, color: AppColors.pending400),
+                    const Icon(
+                      Icons.info,
+                      size: 18,
+                      color: AppColors.pending400,
+                    ),
                     SizedBox(width: AppSpacing.h8),
                     Expanded(
                       child: Text(
@@ -117,12 +126,12 @@ class ContributorApplicationUnderReviewScreen extends StatelessWidget {
   Widget _item(String title, String value) {
     return Column(
       children: [
-        Text(title, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral400)),
-        SizedBox(height: AppSpacing.v4),
         Text(
-          value,
-          style: AppTextStyles.titleMedium,
+          title,
+          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral400),
         ),
+        SizedBox(height: AppSpacing.v4),
+        Text(value, style: AppTextStyles.titleMedium),
       ],
     );
   }

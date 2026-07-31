@@ -6,7 +6,7 @@ class UserService {
   final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
 
   UserService({SupabaseClient? client})
-      : _client = client ?? Supabase.instance.client;
+    : _client = client ?? Supabase.instance.client;
 
   // ─── Get Current User ────────────────────────────────────────────────
 
@@ -31,6 +31,42 @@ class UserService {
     }
   }
 
+  Future<bool> isOnboardingCompleted() async {
+    try {
+      final user = _client.auth.currentUser;
+      if (user == null) return false;
+
+      final data = await _client
+          .from('users')
+          .select('onboarding_completed')
+          .eq('uid', user.id)
+          .maybeSingle();
+
+      return data?['onboarding_completed'] == true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<bool> markOnboardingCompleted() async {
+    try {
+      final user = _client.auth.currentUser;
+      if (user == null) return false;
+
+      await _client
+          .from('users')
+          .update({
+            'onboarding_completed': true,
+            'updated_at': DateTime.now().toIso8601String(),
+          })
+          .eq('uid', user.id);
+
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
   // ─── Save User Profile ───────────────────────────────────────────────
 
   Future<bool> saveUserProfile({
@@ -47,17 +83,14 @@ class UserService {
 
       print('💾 [UserService] Saving profile: $displayName');
 
-      await _client.from('users').upsert(
-        {
-          'uid': user.id,
-          'email': user.email,
-          'display_name': displayName,
-          'username': username,
-          'photo_url': photoUrl,
-          'updated_at': DateTime.now().toIso8601String(),
-        },
-        onConflict: 'uid',
-      );
+      await _client.from('users').upsert({
+        'uid': user.id,
+        'email': user.email,
+        'display_name': displayName,
+        'username': username,
+        'photo_url': photoUrl,
+        'updated_at': DateTime.now().toIso8601String(),
+      }, onConflict: 'uid');
 
       print('✅ [UserService] Profile saved');
       return true;
@@ -82,17 +115,14 @@ class UserService {
       final deviceId = await _getDeviceId();
       final deviceInfo = await _getDeviceInfo();
 
-      await _client.from('user_devices').upsert(
-        {
-          'user_uid': user.id,
-          'device_id': deviceId,
-          'device_name': deviceInfo['deviceName'],
-          'device_os': deviceInfo['deviceOs'],
-          'device_model': deviceInfo['deviceModel'],
-          'last_login': DateTime.now().toIso8601String(),
-        },
-        onConflict: 'device_id',
-      );
+      await _client.from('user_devices').upsert({
+        'user_uid': user.id,
+        'device_id': deviceId,
+        'device_name': deviceInfo['deviceName'],
+        'device_os': deviceInfo['deviceOs'],
+        'device_model': deviceInfo['deviceModel'],
+        'last_login': DateTime.now().toIso8601String(),
+      }, onConflict: 'device_id');
 
       print('✅ [UserService] Device tracked: $deviceId');
       return true;

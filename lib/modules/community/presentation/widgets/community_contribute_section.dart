@@ -3,7 +3,6 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/border_shadow_container.dart';
 
 class CommunityContributeCard extends StatelessWidget {
@@ -39,7 +38,10 @@ class CommunityContributeCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.h12, vertical: AppSpacing.v4),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppSpacing.h12,
+                    vertical: AppSpacing.v4,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.primary500,
                     borderRadius: AppRadius.all09,
@@ -49,7 +51,9 @@ class CommunityContributeCard extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.left,
-                    style: AppTextStyles.titleSmall.copyWith(color: AppColors.whiteBase),
+                    style: AppTextStyles.titleSmall.copyWith(
+                      color: AppColors.whiteBase,
+                    ),
                   ),
                 ),
                 if (title != null && title!.isNotEmpty) ...[
@@ -64,7 +68,9 @@ class CommunityContributeCard extends StatelessWidget {
                     ),
                   ),
                 ],
-                SizedBox(height: title == null ? AppSpacing.v6 : AppSpacing.v16),
+                SizedBox(
+                  height: title == null ? AppSpacing.v6 : AppSpacing.v16,
+                ),
                 Expanded(
                   child: Text(
                     body,
@@ -72,11 +78,11 @@ class CommunityContributeCard extends StatelessWidget {
                     maxLines: title == null ? 4 : 5,
                     textAlign: TextAlign.left,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          height: 1.30,
-                          color: title == null
-                              ? AppColors.blackBase
-                              : AppColors.neutral500,
-                        ),
+                      height: 1.30,
+                      color: title == null
+                          ? AppColors.blackBase
+                          : AppColors.neutral500,
+                    ),
                   ),
                 ),
               ],

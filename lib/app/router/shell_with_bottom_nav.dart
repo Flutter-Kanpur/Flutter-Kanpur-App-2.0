@@ -75,8 +75,12 @@ class ShellWithBottomNav extends StatelessWidget {
                   type: BottomNavigationBarType.fixed,
                   selectedItemColor: AppColors.primary500,
                   unselectedItemColor: AppColors.neutral300,
-                  unselectedLabelStyle: AppTextStyles.labelMedium.copyWith(color: AppColors.neutral400),
-                  selectedLabelStyle: AppTextStyles.labelMedium.copyWith(color: AppColors.neutral400),
+                  unselectedLabelStyle: AppTextStyles.labelMedium.copyWith(
+                    color: AppColors.neutral400,
+                  ),
+                  selectedLabelStyle: AppTextStyles.labelMedium.copyWith(
+                    color: AppColors.neutral400,
+                  ),
                   items: [
                     _navItem(asset: AssetsPath.home, label: 'Home'),
                     _navItem(asset: AssetsPath.community, label: 'Community'),

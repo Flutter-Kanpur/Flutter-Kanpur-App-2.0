@@ -19,9 +19,7 @@ class OnboardingRemovePhotoDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: AppRadius.all06,
-      ),
+      shape: RoundedRectangleBorder(borderRadius: AppRadius.all06),
 
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -33,11 +31,13 @@ class OnboardingRemovePhotoDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
 
           children: [
-
             Text(
               'onboarding.removePhotoTitle'.tr(),
 
-              style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w700),
+              style: AppTextStyles.headlineSmall.copyWith(
+                color: AppColors.blackBase,
+                fontWeight: FontWeight.w700,
+              ),
             ),
 
             12.verticalSpace,
@@ -47,32 +47,29 @@ class OnboardingRemovePhotoDialog extends StatelessWidget {
 
               textAlign: TextAlign.center,
 
-              style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500, height: 1.5),
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.neutral500,
+                height: 1.5,
+              ),
             ),
 
             24.verticalSpace,
 
             Row(
               children: [
-
                 Expanded(
                   child: OutlinedButton(
                     onPressed: onCancelTap,
 
                     style: OutlinedButton.styleFrom(
-                      minimumSize: Size(
-                        double.infinity,
-                        48.h,
-                      ),
+                      minimumSize: Size(double.infinity, 48.h),
 
                       shape: RoundedRectangleBorder(
                         borderRadius: AppRadius.all03,
                       ),
                     ),
 
-                    child: Text(
-                      'onboarding.cancel'.tr(),
-                    ),
+                    child: Text('onboarding.cancel'.tr()),
                   ),
                 ),
 
@@ -85,19 +82,14 @@ class OnboardingRemovePhotoDialog extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.warning600,
 
-                      minimumSize: Size(
-                        double.infinity,
-                        48.h,
-                      ),
+                      minimumSize: Size(double.infinity, 48.h),
 
                       shape: RoundedRectangleBorder(
                         borderRadius: AppRadius.all03,
                       ),
                     ),
 
-                    child: Text(
-                      'onboarding.delete'.tr(),
-                    ),
+                    child: Text('onboarding.delete'.tr()),
                   ),
                 ),
               ],
