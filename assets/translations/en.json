@@ -67,8 +67,8 @@
     "finishSetup": "Finish Setup",
     "skipForNow": "Skip for now",
     "searchRolesHint": "Search roles or skills...",
-    "noRolesFound": "No matching roles found.",
-    "resultsFound": "3 results found",
+    "resultsFound": "{} results found",
+    "noMatchingResultsFound": "No matching results found",
     "selectAtLeastOneOption": "Please select at least one option.",
     "addOther": "Add other",
     "yearsOfExperience": "Years of experience",
@@ -99,7 +99,12 @@
     "successTitle": "Setup Complete",
     "successSubTitle": "Your profile is all set!",
     "redirectToHome": "Redirecting to home...",
-    "or": "OR"
+    "or": "OR",
+    "saveFailed": "Failed to save onboarding",
+    "imageProcessError": "Could not process image. Please try again.",
+    "imagePickError": "Could not pick image. Please try again.",
+    "linkedinLinkDetected": "LinkedIn link detected.",
+    "websiteLinkDetected": "Website link detected.",
   },
 
   "profile": {
