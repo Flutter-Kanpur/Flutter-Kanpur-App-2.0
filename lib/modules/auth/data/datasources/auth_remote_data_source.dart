@@ -1,5 +1,6 @@
 import 'package:flutter_knp_mobile_app_v2/modules/auth/auth_constants.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/auth/data/models/auth_user_model.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/blogs/data/readme_auth_bridge.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthRemoteDataSource {
@@ -96,6 +97,7 @@ class AuthRemoteDataSource {
 
   Future<void> signOut() async {
     await _client.auth.signOut();
+    await ReadmeAuthBridge.signOut();
   }
 
   Future<AuthUserModel?> refreshAndCheckVerification() async {

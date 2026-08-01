@@ -23,6 +23,7 @@ class AssetsPath {
   static const String community = 'assets/icons/community_icon.svg';
   static const String explore = 'assets/icons/explore_icon.svg';
   static const String profile = 'assets/icons/profile_icon.svg';
+  static const String readme = 'assets/icons/readme.svg';
   static const String success = 'assets/icons/success.svg';
   static const String applicationSubmitted = 'assets/success_tick.png';
   static const String reviewPage = 'assets/review.png';

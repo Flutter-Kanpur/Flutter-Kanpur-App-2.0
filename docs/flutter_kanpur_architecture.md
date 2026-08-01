@@ -22,6 +22,9 @@ Create `.env` in the project root:
 ```env
 SUPABASE_URL=''
 SUPABASE_ANON_KEY=''
+README_SUPABASE_URL=''
+README_SUPABASE_ANON_KEY=''
+README_SYNC_SESSION_URL=''
 ```
 
 Run:
