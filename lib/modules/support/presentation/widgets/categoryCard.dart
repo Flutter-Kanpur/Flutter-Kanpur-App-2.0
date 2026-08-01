@@ -35,12 +35,16 @@ class CategoryCard extends StatelessWidget {
           children: [
             Text(
               title,
-              style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase),
+              style: AppTextStyles.titleMedium.copyWith(
+                color: AppColors.blackBase,
+              ),
             ),
             SizedBox(height: AppSpacing.v6),
             Text(
               description,
-              style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral400),
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.neutral400,
+              ),
             ),
           ],
         ),

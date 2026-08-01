@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
@@ -21,21 +20,16 @@ class OnboardingAddOtherChip extends StatelessWidget {
     return Container(
       width: 170.w,
 
-      padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.h16,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16),
 
       decoration: BoxDecoration(
         borderRadius: AppRadius.all06,
 
-        border: Border.all(
-          color: AppBorders.primary,
-        ),
+        border: Border.all(color: AppBorders.primary),
       ),
 
       child: Row(
         children: [
-
           Expanded(
             child: TextField(
               controller: controller,
@@ -53,10 +47,7 @@ class OnboardingAddOtherChip extends StatelessWidget {
           GestureDetector(
             onTap: onSubmitted,
 
-            child: Icon(
-              Icons.check,
-              size: 18.sp,
-            ),
+            child: Icon(Icons.check, size: 18.sp),
           ),
         ],
       ),

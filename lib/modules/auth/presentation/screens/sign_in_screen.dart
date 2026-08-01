@@ -14,6 +14,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/auth/data/services/user_service.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
@@ -48,7 +49,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     return GradientBackground(
       child: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v10),
+          padding: EdgeInsets.symmetric(
+            horizontal: AppSpacing.h16,
+            vertical: AppSpacing.v10,
+          ),
           child: Form(
             key: formKey,
             child: Column(
@@ -102,7 +106,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
       children: [
         Text(
           'auth.welcomeBack'.tr(),
-          style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w700),
+          style: AppTextStyles.titleLarge.copyWith(
+            color: AppColors.blackBase,
+            fontWeight: FontWeight.w700,
+          ),
         ),
         14.verticalSpace,
         Padding(
@@ -201,11 +208,15 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                       AppColors.success600,
                       Icons.check_circle,
                     );
-                    Future.delayed(const Duration(milliseconds: 800)).then((_) {
-                      if (mounted) {
-                        ctx.pushReplacement(RouteNames.home);
-                      }
-                    });
+                    await Future.delayed(const Duration(milliseconds: 800));
+                    if (!mounted) return;
+                    final done = await UserService().isOnboardingCompleted();
+                    if (!mounted) return;
+                    ctx.pushReplacement(
+                      done
+                          ? RouteNames.home
+                          : RouteNames.onboardingNavigation,
+                    );
                   }
                 } catch (e) {
                   if (mounted) {
@@ -266,7 +277,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             Expanded(
               child: Text(
                 message,
-                style: AppTextStyles.labelLarge.copyWith(color: AppColors.whiteBase),
+                style: AppTextStyles.labelLarge.copyWith(
+                  color: AppColors.whiteBase,
+                ),
               ),
             ),
           ],
@@ -275,10 +288,11 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         duration: Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,
         margin: AppSpacing.all(AppSpacing.h16),
-        shape: RoundedRectangleBorder(
-          borderRadius: AppRadius.all02,
+        shape: RoundedRectangleBorder(borderRadius: AppRadius.all02),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppSpacing.h16,
+          vertical: AppSpacing.v16,
         ),
-        padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v16),
       ),
     );
   }

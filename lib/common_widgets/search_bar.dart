@@ -1,4 +1,4 @@
-  import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/translate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,10 +45,17 @@ class CommonSearchBar extends StatelessWidget {
           ],
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v16),
+          padding: EdgeInsets.symmetric(
+            horizontal: AppSpacing.h16,
+            vertical: AppSpacing.v16,
+          ),
           child: Row(
             children: [
-              Icon(Icons.search_rounded, size: 20.sp, color: AppColors.blackBase),
+              Icon(
+                Icons.search_rounded,
+                size: 20.sp,
+                color: AppColors.blackBase,
+              ),
               12.horizontalSpace,
               Expanded(
                 child: TextField(
@@ -58,11 +65,15 @@ class CommonSearchBar extends StatelessWidget {
                   onTap: onTap,
                   onChanged: onChanged,
                   onSubmitted: onSubmitted,
-                  style: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase),
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.blackBase,
+                  ),
                   decoration: InputDecoration(
-                     hintText:
-                          hintText ?? translate(context, 'common.searchEvents'),
-                      hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500),
+                    hintText:
+                        hintText ?? translate(context, 'common.searchEvents'),
+                    hintStyle: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.neutral500,
+                    ),
                     border: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
@@ -71,11 +82,19 @@ class CommonSearchBar extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(color: AppColors.blackBase, width: AppSpacing.v2, height: 25),
+              Container(
+                color: AppColors.blackBase,
+                width: AppSpacing.v2,
+                height: 25,
+              ),
               8.horizontalSpace,
               GestureDetector(
                 onTap: onMicTap,
-                child: Icon(Icons.mic_none, color: AppColors.blackBase, size: 20.sp),
+                child: Icon(
+                  Icons.mic_none,
+                  color: AppColors.blackBase,
+                  size: 20.sp,
+                ),
               ),
             ],
           ),

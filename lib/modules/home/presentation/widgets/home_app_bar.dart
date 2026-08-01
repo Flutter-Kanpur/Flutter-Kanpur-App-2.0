@@ -24,7 +24,12 @@ class HomeAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(AppSpacing.h22, AppSpacing.h20, AppSpacing.h8, AppSpacing.h22),
+      padding: EdgeInsets.fromLTRB(
+        AppSpacing.h22,
+        AppSpacing.h20,
+        AppSpacing.h8,
+        AppSpacing.h22,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -35,7 +40,9 @@ class HomeAppBar extends StatelessWidget {
               children: [
                 Text(
                   _getFormattedDate(),
-                  style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500),
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.neutral500,
+                  ),
                 ),
                 4.verticalSpace,
                 Text(

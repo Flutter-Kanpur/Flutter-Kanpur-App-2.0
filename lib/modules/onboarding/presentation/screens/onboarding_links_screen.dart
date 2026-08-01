@@ -10,10 +10,7 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 class OnboardingLinksScreen extends StatelessWidget {
   final VoidCallback onNext;
 
-  const OnboardingLinksScreen({
-    super.key,
-    required this.onNext,
-  });
+  const OnboardingLinksScreen({super.key, required this.onNext});
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +25,11 @@ class OnboardingLinksScreen extends StatelessWidget {
 
           child: Column(
             children: [
-
               TextField(
                 decoration: InputDecoration(
                   hintText: 'onboarding.githubLink'.tr(),
 
-                  border: OutlineInputBorder(
-                    borderRadius: AppRadius.all03,
-                  ),
+                  border: OutlineInputBorder(borderRadius: AppRadius.all03),
                 ),
               ),
 
@@ -45,9 +39,7 @@ class OnboardingLinksScreen extends StatelessWidget {
                 decoration: InputDecoration(
                   hintText: 'onboarding.linkedinLink'.tr(),
 
-                  border: OutlineInputBorder(
-                    borderRadius: AppRadius.all03,
-                  ),
+                  border: OutlineInputBorder(borderRadius: AppRadius.all03),
                 ),
               ),
 
@@ -57,9 +49,7 @@ class OnboardingLinksScreen extends StatelessWidget {
                 decoration: InputDecoration(
                   hintText: 'onboarding.portfolioLink'.tr(),
 
-                  border: OutlineInputBorder(
-                    borderRadius: AppRadius.all03,
-                  ),
+                  border: OutlineInputBorder(borderRadius: AppRadius.all03),
                 ),
               ),
 
@@ -71,7 +61,9 @@ class OnboardingLinksScreen extends StatelessWidget {
                 child: Text(
                   'onboarding.editAnytime'.tr(),
 
-                  style: AppTextStyles.bodyMedium.copyWith(color: AppColors.pending400),
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.pending400,
+                  ),
                 ),
               ),
 
@@ -86,11 +78,7 @@ class OnboardingLinksScreen extends StatelessWidget {
 
               16.verticalSpace,
 
-              Center(
-                child: Text(
-                  'onboarding.skipForNow'.tr(),
-                ),
-              ),
+              Center(child: Text('onboarding.skipForNow'.tr())),
 
               24.verticalSpace,
             ],

@@ -113,10 +113,19 @@ class _TimelineStep extends StatelessWidget {
                   color: AppColors.primary500,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.check, color: AppColors.whiteBase, size: 18),
+                child: const Icon(
+                  Icons.check,
+                  color: AppColors.whiteBase,
+                  size: 18,
+                ),
               ),
               if (!isLast)
-                Expanded(child: Container(width: AppSpacing.h6, color: AppColors.primary500)),
+                Expanded(
+                  child: Container(
+                    width: AppSpacing.h6,
+                    color: AppColors.primary500,
+                  ),
+                ),
             ],
           ),
           SizedBox(width: AppSpacing.h16),

@@ -34,9 +34,9 @@ class DiscussionListItem extends StatelessWidget {
             Text(
               question.title,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AppColors.primary500,
-                    height: 1.4,
-                  ),
+                color: AppColors.primary500,
+                height: 1.4,
+              ),
             ),
             SizedBox(height: AppSpacing.v18),
             Row(
@@ -52,7 +52,9 @@ class DiscussionListItem extends StatelessWidget {
                           question.authorName.isNotEmpty
                               ? question.authorName[0].toUpperCase()
                               : '?',
-                          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.whiteBase),
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.whiteBase,
+                          ),
                         )
                       : null,
                 ),
@@ -64,24 +66,23 @@ class DiscussionListItem extends StatelessWidget {
                       Text(
                         question.authorName,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w800,
-                            ),
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                       Text(
                         question.createdLabel,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall
-                            ?.copyWith(color: AppColors.neutral400),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.neutral400,
+                        ),
                       ),
                     ],
                   ),
                 ),
                 Text(
                   '${question.answerCount} answers',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.neutral500,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(color: AppColors.neutral500),
                 ),
               ],
             ),

@@ -1,12 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/community/application/community_provider.dart';
-import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_card.dart';
-import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_header.dart';
-import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
-import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_section_title.dart';
-import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_status_chip.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
 import 'package:flutter_knp_mobile_app_v2/common_widgets/search_bar.dart';
@@ -33,7 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final announcements = [
       {
         'title': 'home.announcements.first.title'.tr(),
@@ -89,19 +80,31 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   onFiltersTap: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('home.filtersBottomSheetPlaceholder'.tr())),
+                      SnackBar(
+                        content: Text(
+                          'home.filtersBottomSheetPlaceholder'.tr(),
+                        ),
+                      ),
                     );
                   },
                   selectedFiltersCount: 0,
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(AppSpacing.h22, AppSpacing.h22, AppSpacing.h22, AppSpacing.h16),
+                  padding: EdgeInsets.fromLTRB(
+                    AppSpacing.h22,
+                    AppSpacing.h22,
+                    AppSpacing.h22,
+                    AppSpacing.h16,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         'home.whatsNew'.tr(),
-                        style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w600),
+                        style: AppTextStyles.titleLarge.copyWith(
+                          color: AppColors.blackBase,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -111,7 +114,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             Text(
                               'home.seeAll'.tr(),
-                              style: AppTextStyles.titleMedium.copyWith(color: AppColors.neutral500),
+                              style: AppTextStyles.titleMedium.copyWith(
+                                color: AppColors.neutral500,
+                              ),
                             ),
                             SizedBox(width: AppSpacing.h2),
                             Icon(
@@ -167,4 +172,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-

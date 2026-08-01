@@ -54,7 +54,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     return GradientBackground(
       child: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v10),
+          padding: EdgeInsets.symmetric(
+            horizontal: AppSpacing.h16,
+            vertical: AppSpacing.v10,
+          ),
           child: Form(
             key: formKey,
             child: Column(
@@ -116,7 +119,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       children: [
         Text(
           'auth.signUpTitle'.tr(),
-          style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w700),
+          style: AppTextStyles.titleLarge.copyWith(
+            color: AppColors.blackBase,
+            fontWeight: FontWeight.w700,
+          ),
         ),
         14.verticalSpace,
         Padding(
@@ -261,7 +267,7 @@ Widget _buildCreateButton(
                   );
                   Future.delayed(const Duration(milliseconds: 800)).then((_) {
                     if (ctx.mounted) {
-                      ctx.pushReplacement(RouteNames.signIn);
+                      ctx.pushReplacement(RouteNames.onboardingNavigation);
                     }
                   });
                 }
@@ -287,9 +293,7 @@ Widget _buildSignInText(BuildContext context) {
       child: Text.rich(
         TextSpan(
           text: '${'auth.alreadyHaveAccount'.tr()} ',
-          style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.neutral500,
-          ),
+          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500),
           children: [
             TextSpan(
               text: 'auth.login'.tr(),
@@ -323,7 +327,9 @@ void _showToast(
           Expanded(
             child: Text(
               message,
-              style: AppTextStyles.labelLarge.copyWith(color: AppColors.whiteBase),
+              style: AppTextStyles.labelLarge.copyWith(
+                color: AppColors.whiteBase,
+              ),
             ),
           ),
         ],
@@ -333,7 +339,10 @@ void _showToast(
       behavior: SnackBarBehavior.floating,
       margin: AppSpacing.all(AppSpacing.h16),
       shape: RoundedRectangleBorder(borderRadius: AppRadius.all02),
-      padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v16),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.h16,
+        vertical: AppSpacing.v16,
+      ),
     ),
   );
 }

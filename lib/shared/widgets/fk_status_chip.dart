@@ -18,7 +18,10 @@ class FkStatusChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: AppSpacing.symmetric(horizontal: AppSpacing.h10, vertical: AppSpacing.v6),
+      padding: AppSpacing.symmetric(
+        horizontal: AppSpacing.h10,
+        vertical: AppSpacing.v6,
+      ),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
         borderRadius: AppRadius.all09,

@@ -125,16 +125,36 @@ class EventEntity extends Equatable {
 
   String _getMonthName(int month) {
     const months = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
     return months[month - 1];
   }
 
   String _getMonthNameShort(int month) {
     const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return months[month - 1];
   }
@@ -165,5 +185,22 @@ class EventEntity extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, category, title, description, shortDescription, cover, fromTime, toTime, type, speakerName, speakerImage, speakerIntro, speakerLinkedin, speakerTwitter, hostName, hostImage];
-} 
+  List<Object?> get props => [
+    id,
+    category,
+    title,
+    description,
+    shortDescription,
+    cover,
+    fromTime,
+    toTime,
+    type,
+    speakerName,
+    speakerImage,
+    speakerIntro,
+    speakerLinkedin,
+    speakerTwitter,
+    hostName,
+    hostImage,
+  ];
+}

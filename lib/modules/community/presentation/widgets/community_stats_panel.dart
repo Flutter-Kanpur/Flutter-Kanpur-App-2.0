@@ -19,7 +19,10 @@ class CommunityStatsPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: AppSpacing.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v20),
+      padding: AppSpacing.symmetric(
+        horizontal: AppSpacing.h16,
+        vertical: AppSpacing.v20,
+      ),
       decoration: BoxDecoration(
         color: AppColors.primary50,
         borderRadius: AppRadius.all05,
@@ -28,7 +31,10 @@ class CommunityStatsPanel extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _StatItem(value: memberCount, label: 'Community\nmembers'),
-          _StatItem(value: contributionCount, label: 'Community\ncontributions'),
+          _StatItem(
+            value: contributionCount,
+            label: 'Community\ncontributions',
+          ),
           _StatItem(value: eventsCount, label: 'Events\nhosted'),
         ],
       ),
@@ -49,17 +55,17 @@ class _StatItem extends StatelessWidget {
         Text(
           value,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: AppColors.blackBase,
-                fontWeight: FontWeight.w500,
-              ),
+            color: AppColors.blackBase,
+            fontWeight: FontWeight.w500,
+          ),
         ),
         SizedBox(height: AppSpacing.v6),
         Text(
           label,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.neutral500,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodySmall?.copyWith(color: AppColors.neutral500),
         ),
       ],
     );

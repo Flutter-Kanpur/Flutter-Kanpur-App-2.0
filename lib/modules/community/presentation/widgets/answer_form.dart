@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_text_field.dart';
 import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_primary_button.dart';
 import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_file_upload_box.dart';
@@ -14,11 +13,7 @@ class AnswerForm extends ConsumerStatefulWidget {
   final String questionId;
   final VoidCallback? onSubmitted;
 
-  const AnswerForm({
-    super.key,
-    required this.questionId,
-    this.onSubmitted,
-  });
+  const AnswerForm({super.key, required this.questionId, this.onSubmitted});
 
   @override
   ConsumerState<AnswerForm> createState() => _AnswerFormState();
@@ -67,13 +62,17 @@ class _AnswerFormState extends ConsumerState<AnswerForm> {
 
     final codeSnippet = _codeController.text.trim();
 
-    print('📝 [AnswerForm] Submitting answer for question: ${widget.questionId}');
-
-    ref.read(communityActionControllerProvider.notifier).submitAnswer(
-      questionId: widget.questionId,
-      body: body,
-      codeSnippet: codeSnippet.isEmpty ? null : codeSnippet,
+    print(
+      '📝 [AnswerForm] Submitting answer for question: ${widget.questionId}',
     );
+
+    ref
+        .read(communityActionControllerProvider.notifier)
+        .submitAnswer(
+          questionId: widget.questionId,
+          body: body,
+          codeSnippet: codeSnippet.isEmpty ? null : codeSnippet,
+        );
   }
 
   @override
@@ -121,9 +120,9 @@ class _AnswerFormState extends ConsumerState<AnswerForm> {
         children: [
           Text(
             'Your Answer',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w700,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
           ),
           SizedBox(height: AppSpacing.v12),
           FkTextField(
@@ -142,9 +141,9 @@ class _AnswerFormState extends ConsumerState<AnswerForm> {
           SizedBox(height: AppSpacing.v12),
           Text(
             'Attach file (Optional)',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
           ),
           SizedBox(height: AppSpacing.v8),
           const FkFileUploadBox(),

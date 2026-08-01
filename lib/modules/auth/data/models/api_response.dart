@@ -16,11 +16,7 @@ class ApiResponse<T> {
 
   /// Successful response with data
   factory ApiResponse.success(T data) {
-    return ApiResponse(
-      success: true,
-      data: data,
-      statusCode: '200',
-    );
+    return ApiResponse(success: true, data: data, statusCode: '200');
   }
 
   /// Error response with message

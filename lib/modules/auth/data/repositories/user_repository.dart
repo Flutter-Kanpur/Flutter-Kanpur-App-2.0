@@ -37,15 +37,19 @@ class UserRepository {
   }) async {
     try {
       final now = DateTime.now().toIso8601String();
-      final response = await _supabase.from('users').insert({
-        'uid': uid,
-        'email': email,
-        'display_name': displayName,
-        'full_name': fullName,
-        'status': 'active',
-        'created_at': now,
-        'updated_at': now,
-      }).select().single();
+      final response = await _supabase
+          .from('users')
+          .insert({
+            'uid': uid,
+            'email': email,
+            'display_name': displayName,
+            'full_name': fullName,
+            'status': 'active',
+            'created_at': now,
+            'updated_at': now,
+          })
+          .select()
+          .single();
 
       final user = UserModel.fromJson(response as Map<String, dynamic>);
       return ApiResponse<UserModel>.success(user);

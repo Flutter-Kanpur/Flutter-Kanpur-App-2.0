@@ -14,8 +14,8 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 // Local filter state for the discussions screen.
 final _discussionFilterProvider =
     NotifierProvider<DiscussionFilterNotifier, String?>(
-  DiscussionFilterNotifier.new,
-);
+      DiscussionFilterNotifier.new,
+    );
 
 class DiscussionFilterNotifier extends Notifier<String?> {
   @override
@@ -62,7 +62,12 @@ class _CommunityDiscussionsScreenState
     final activeFilter = ref.watch(_discussionFilterProvider);
 
     return FkScreen(
-      padding: EdgeInsets.fromLTRB(AppSpacing.h16, AppSpacing.h16, AppSpacing.h22, 96),
+      padding: EdgeInsets.fromLTRB(
+        AppSpacing.h16,
+        AppSpacing.h16,
+        AppSpacing.h22,
+        96,
+      ),
       children: [
         // Top bar
         Row(
@@ -75,14 +80,12 @@ class _CommunityDiscussionsScreenState
               child: Text(
                 'Discussions',
                 textAlign: TextAlign.center,
-                style: AppTextStyles
-                    .titleLarge.copyWith(fontWeight: FontWeight.w700),
+                style: AppTextStyles.titleLarge.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.more_horiz),
-            ),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz)),
           ],
         ),
         SizedBox(height: AppSpacing.v22),
@@ -100,7 +103,7 @@ class _CommunityDiscussionsScreenState
         ),
         SizedBox(height: AppSpacing.v16),
         questionsAsync.when(
-          loading: () =>  Padding(
+          loading: () => Padding(
             padding: EdgeInsets.symmetric(vertical: AppSpacing.v22),
             child: Center(child: CircularProgressIndicator()),
           ),
@@ -124,15 +127,16 @@ class _CommunityDiscussionsScreenState
                     Text(
                       '${questions.length} discussions',
                       style: AppTextStyles.bodyLarge.copyWith(
-                            color: AppColors.neutral500,
-                          ),
+                        color: AppColors.neutral500,
+                      ),
                     ),
                     SizedBox(height: AppSpacing.v16),
                     ...questions.map(
                       (q) => DiscussionListItem(
                         question: q,
-                        onTap: () =>
-                            context.push('${RouteNames.communityDiscussions}/${q.id}'),
+                        onTap: () => context.push(
+                          '${RouteNames.communityDiscussions}/${q.id}',
+                        ),
                       ),
                     ),
                     SizedBox(height: AppSpacing.v22),
@@ -158,13 +162,17 @@ class _ErrorView extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: AppSpacing.v22),
       child: Column(
         children: [
-          const Icon(Icons.wifi_off_rounded, size: 48, color: AppColors.neutral400),
+          const Icon(
+            Icons.wifi_off_rounded,
+            size: 48,
+            color: AppColors.neutral400,
+          ),
           SizedBox(height: AppSpacing.v12),
           Text(
             'Could not load discussions',
-            style:AppTextStyles
-                .bodyLarge
-                .copyWith(color: AppColors.neutral500),
+            style: AppTextStyles.bodyLarge.copyWith(
+              color: AppColors.neutral500,
+            ),
           ),
           SizedBox(height: AppSpacing.v16),
           TextButton(onPressed: onRetry, child: const Text('Try again')),
@@ -185,9 +193,7 @@ class _EmptyView extends StatelessWidget {
         child: Text(
           'No discussions yet.\nBe the first to start one!',
           textAlign: TextAlign.center,
-          style: AppTextStyles
-              .bodyLarge
-              .copyWith(color: AppColors.neutral500),
+          style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
         ),
       ),
     );

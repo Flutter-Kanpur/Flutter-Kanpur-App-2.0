@@ -37,7 +37,6 @@ dependencies:
   flutter_secure_storage: ^10.2.0
   supabase_flutter: ^2.12.4
   flutter_dotenv: ^6.0.1
-  rename_app: ^1.6.6
   flutter_riverpod: ^3.3.1
   easy_localization: ^3.0.8
   flutter_kanpur_ui_kit: ^0.0.13
@@ -55,10 +54,11 @@ dependencies:
   equatable: ^2.0.8
   cached_network_image: ^3.3.1
   firebase_messaging: ^14.7.0
-  device_info_plus: ^9.1.1
+  device_info_plus: ^10.1.2
   firebase_core: ^2.24.0
   share_plus: ^12.0.1
   add_2_calendar: 3.0.1
+  shared_preferences: ^2.5.5
 
 dev_dependencies:
   flutter_test:

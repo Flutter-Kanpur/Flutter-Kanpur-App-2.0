@@ -15,17 +15,15 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 class DiscussionDetailScreen extends ConsumerStatefulWidget {
   final String questionId;
 
-  const DiscussionDetailScreen({
-    super.key,
-    required this.questionId,
-  });
+  const DiscussionDetailScreen({super.key, required this.questionId});
 
   @override
   ConsumerState<DiscussionDetailScreen> createState() =>
       _DiscussionDetailScreenState();
 }
 
-class _DiscussionDetailScreenState extends ConsumerState<DiscussionDetailScreen> {
+class _DiscussionDetailScreenState
+    extends ConsumerState<DiscussionDetailScreen> {
   bool _showAnswerForm = false;
   int _currentPage = 0;
   final int _answersPerPage = 5;
@@ -36,9 +34,8 @@ class _DiscussionDetailScreenState extends ConsumerState<DiscussionDetailScreen>
     final currentUserIdAsync = ref.watch(currentUserIdProvider);
 
     return questionAsync.when(
-      loading: () => const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      ),
+      loading: () =>
+          const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, _) => Scaffold(
         appBar: AppBar(
           leading: BackButton(
@@ -103,7 +100,12 @@ class _DetailBody extends ConsumerWidget {
     final repliesAsync = ref.watch(repliesProvider(question.id));
 
     return FkScreen(
-      padding: EdgeInsets.fromLTRB(AppSpacing.h22, AppSpacing.h12, AppSpacing.h22, 96),
+      padding: EdgeInsets.fromLTRB(
+        AppSpacing.h22,
+        AppSpacing.h12,
+        AppSpacing.h22,
+        96,
+      ),
       children: [
         _TopBar(
           title: 'Discussion',
@@ -146,9 +148,9 @@ class _DetailBody extends ConsumerWidget {
           children: [
             Text(
               'Answers',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
             ),
             ElevatedButton.icon(
               onPressed: onToggleAnswerForm,
@@ -161,19 +163,14 @@ class _DetailBody extends ConsumerWidget {
 
         // Answer Form
         if (showAnswerForm) ...[
-          AnswerForm(
-            questionId: question.id,
-            onSubmitted: onToggleAnswerForm,
-          ),
+          AnswerForm(questionId: question.id, onSubmitted: onToggleAnswerForm),
           SizedBox(height: AppSpacing.v22),
         ],
 
         // Answers List
         repliesAsync.when(
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (e, _) => Center(
-            child: Text('Error loading answers: $e'),
-          ),
+          error: (e, _) => Center(child: Text('Error loading answers: $e')),
           data: (replies) {
             if (replies.isEmpty) {
               return Padding(
@@ -194,32 +191,36 @@ class _DetailBody extends ConsumerWidget {
               children: [
                 Text(
                   'Responses ${replies.length}',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.neutral500,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(color: AppColors.neutral500),
                 ),
                 SizedBox(height: AppSpacing.v16),
-                ...pageReplies.map((reply) => AnswerCard(
-                  answerId: reply.id,
-                  authorName: reply.authorName,
-                  authorPhotoUrl: reply.authorPhotoUrl,
-                  body: reply.body,
-                  createdAt: reply.createdLabel,
-                  likeCount: reply.likeCount,
-                  isOwnAnswer: reply.authorId == currentUserId,
-                  onLike: () {
-                    ref
-                        .read(communityActionControllerProvider.notifier)
-                        .likeAnswer(reply.id, question.id);
-                  },
-                  onDelete: reply.authorId == currentUserId
-                      ? () {
-                          ref
-                              .read(communityActionControllerProvider.notifier)
-                              .deleteAnswer(reply.id, question.id);
-                        }
-                      : null,
-                )),
+                ...pageReplies.map(
+                  (reply) => AnswerCard(
+                    answerId: reply.id,
+                    authorName: reply.authorName,
+                    authorPhotoUrl: reply.authorPhotoUrl,
+                    body: reply.body,
+                    createdAt: reply.createdLabel,
+                    likeCount: reply.likeCount,
+                    isOwnAnswer: reply.authorId == currentUserId,
+                    onLike: () {
+                      ref
+                          .read(communityActionControllerProvider.notifier)
+                          .likeAnswer(reply.id, question.id);
+                    },
+                    onDelete: reply.authorId == currentUserId
+                        ? () {
+                            ref
+                                .read(
+                                  communityActionControllerProvider.notifier,
+                                )
+                                .deleteAnswer(reply.id, question.id);
+                          }
+                        : null,
+                  ),
+                ),
 
                 if (totalPages > 1) ...[
                   SizedBox(height: AppSpacing.v22),
@@ -266,10 +267,9 @@ class _TopBar extends StatelessWidget {
           child: Text(
             title,
             textAlign: TextAlign.center,
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge
-                ?.copyWith(fontWeight: FontWeight.w700),
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
           ),
         ),
         IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz)),
@@ -279,11 +279,7 @@ class _TopBar extends StatelessWidget {
 }
 
 class _AuthorRow extends StatelessWidget {
-  const _AuthorRow({
-    required this.name,
-    required this.subtitle,
-    this.photoUrl,
-  });
+  const _AuthorRow({required this.name, required this.subtitle, this.photoUrl});
 
   final String name;
   final String subtitle;
@@ -295,11 +291,14 @@ class _AuthorRow extends StatelessWidget {
       children: [
         CircleAvatar(
           backgroundColor: AppColors.warning300,
-          backgroundImage:
-              photoUrl != null ? NetworkImage(photoUrl!) : null,
+          backgroundImage: photoUrl != null ? NetworkImage(photoUrl!) : null,
           child: photoUrl == null
-              ? Text(name.isNotEmpty ? name[0].toUpperCase() : '?',
-                  style: AppTextStyles.bodyMedium.copyWith(color: AppColors.whiteBase))
+              ? Text(
+                  name.isNotEmpty ? name[0].toUpperCase() : '?',
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.whiteBase,
+                  ),
+                )
               : null,
         ),
         SizedBox(width: AppSpacing.h12),
@@ -308,17 +307,15 @@ class _AuthorRow extends StatelessWidget {
           children: [
             Text(
               name,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleSmall
-                  ?.copyWith(fontWeight: FontWeight.w700),
+              style: Theme.of(
+                context,
+              ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
             ),
             Text(
               subtitle,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: AppColors.neutral400),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: AppColors.neutral400),
             ),
           ],
         ),
@@ -326,4 +323,3 @@ class _AuthorRow extends StatelessWidget {
     );
   }
 }
-

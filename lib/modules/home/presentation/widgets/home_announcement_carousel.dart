@@ -30,7 +30,6 @@ class HomeAnnouncementCarousel extends StatelessWidget {
       child: Column(
         children: [
           CarouselSlider.builder(
-
             itemCount: announcements.length,
             itemBuilder: (context, index, realIndex) {
               final n = announcements.length;
@@ -114,7 +113,7 @@ class _AnnouncementCard extends StatelessWidget {
                 left: 20.w,
                 bottom: 20.h,
                 child: ElevatedButton(
-                  onPressed: ()  {},
+                  onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.whiteBase,
                     foregroundColor: AppColors.primary600,
@@ -129,7 +128,8 @@ class _AnnouncementCard extends StatelessWidget {
                   ),
                   child: Text(
                     btnText.isNotEmpty ? btnText : 'View Details',
-                    style: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase,
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.blackBase,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -149,7 +149,11 @@ class _AnnouncementCard extends StatelessWidget {
                         children: [
                           Text(
                             title,
-                            style: AppTextStyles.titleLarge.copyWith(color: AppColors.whiteBase, fontWeight: FontWeight.w600, height: 1.2),
+                            style: AppTextStyles.titleLarge.copyWith(
+                              color: AppColors.whiteBase,
+                              fontWeight: FontWeight.w600,
+                              height: 1.2,
+                            ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -184,7 +188,8 @@ class _AnnouncementCard extends StatelessWidget {
                         ),
                         child: Text(
                           btnText,
-                          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase,
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.blackBase,
                             fontWeight: FontWeight.w400,
                           ),
                         ),

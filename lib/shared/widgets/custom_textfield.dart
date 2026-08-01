@@ -94,7 +94,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
         decoration: InputDecoration(
           border: InputBorder.none,
           hintText: widget.text,
-          hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500),
+          hintStyle: AppTextStyles.bodyMedium.copyWith(
+            color: AppColors.neutral500,
+          ),
           contentPadding: EdgeInsets.symmetric(
             horizontal: 0,
             vertical: AppSpacing.v18,

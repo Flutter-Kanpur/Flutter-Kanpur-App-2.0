@@ -4,7 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CommunityRepository {
   CommunityRepository({SupabaseClient? client})
-      : _client = client ?? Supabase.instance.client;
+    : _client = client ?? Supabase.instance.client;
 
   final SupabaseClient _client;
 
@@ -16,11 +16,9 @@ class CommunityRepository {
   }) async {
     var query = _client
         .from(DatabaseTables.questions)
-        .select(
-          '''id, title, body, image_url, status, answer_count, like_count,
+        .select('''id, title, body, image_url, status, answer_count, like_count,
              view_count, created_at, author_uid,
-             author:users!author_uid(uid, display_name, username, photo_url)''',
-        )
+             author:users!author_uid(uid, display_name, username, photo_url)''')
         .eq('is_deleted', false);
 
     if (filter == 'unanswered') query = query.eq('answer_count', 0);
@@ -31,9 +29,7 @@ class CommunityRepository {
       }
     }
 
-    final data = await query
-        .order('created_at', ascending: false)
-        .limit(limit);
+    final data = await query.order('created_at', ascending: false).limit(limit);
 
     return (data as List<dynamic>)
         .map((m) => CommunityQuestion.fromMap(m as Map<String, dynamic>))
@@ -66,11 +62,9 @@ class CommunityRepository {
   }) async {
     final data = await _client
         .from(DatabaseTables.answers)
-        .select(
-          '''id, body, like_count, view_count, created_at,
+        .select('''id, body, like_count, view_count, created_at,
              author_uid,
-             author:users!author_uid(uid, display_name, username, photo_url)''',
-        )
+             author:users!author_uid(uid, display_name, username, photo_url)''')
         .eq('question_id', questionId)
         .eq('is_deleted', false)
         .order('like_count', ascending: false)

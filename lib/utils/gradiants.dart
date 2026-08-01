@@ -14,18 +14,17 @@ RadialGradient backgroundGradiant() {
 }
 
 List<Color> getBackgroundGradientColors() {
-  return [
-    AppColors.primary950,
-    AppColors.blackBase,
-  ];
+  return [AppColors.primary950, AppColors.blackBase];
 }
 
 List<Color> getGradientColors(double scrollOffset) {
   double t = (scrollOffset / 300).clamp(0.0, 1.0);
-  final centerColor =
-      Color.lerp(AppColors.primary950, AppColors.primary950, t)!;
-  final edgeColor =
-      Color.lerp(AppColors.blackBase, AppColors.blackBase, t)!;
+  final centerColor = Color.lerp(
+    AppColors.primary950,
+    AppColors.primary950,
+    t,
+  )!;
+  final edgeColor = Color.lerp(AppColors.blackBase, AppColors.blackBase, t)!;
   return [centerColor, edgeColor];
 }
 
@@ -54,7 +53,6 @@ LinearGradient titleGradient() {
   return const LinearGradient(
     colors: [
       AppColors.whiteBase, // Sky blue// Light blue
-
       // Sky blue// Light blue
       AppColors.primary300, // Light green
     ],
@@ -99,11 +97,7 @@ class GradientText extends StatelessWidget {
       shaderCallback: (bounds) => gradient.createShader(
         Rect.fromLTWH(0, 0, bounds.width, bounds.height),
       ),
-      child: Text(
-        text,
-        style: style,
-        textAlign: textAlign,
-      ),
+      child: Text(text, style: style, textAlign: textAlign),
     );
   }
 }

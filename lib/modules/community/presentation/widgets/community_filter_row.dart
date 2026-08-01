@@ -63,11 +63,11 @@ class _Chip extends StatelessWidget {
         margin: EdgeInsets.only(right: AppSpacing.h8),
         padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16),
         decoration: BoxDecoration(
-          color: selected ? primary.withValues(alpha: 0.1) : AppColors.whiteBase,
+          color: selected
+              ? primary.withValues(alpha: 0.1)
+              : AppColors.whiteBase,
           borderRadius: AppRadius.all02,
-          border: Border.all(
-            color: selected ? primary : AppColors.primary100,
-          ),
+          border: Border.all(color: selected ? primary : AppColors.primary100),
         ),
         child: Row(
           children: [
@@ -78,13 +78,16 @@ class _Chip extends StatelessWidget {
             Text(
               label,
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: selected ? primary : null,
-                  ),
+                fontWeight: FontWeight.w700,
+                color: selected ? primary : null,
+              ),
             ),
             if (icon != null)
-              Icon(Icons.keyboard_arrow_down, size: 18,
-                  color: selected ? primary : null),
+              Icon(
+                Icons.keyboard_arrow_down,
+                size: 18,
+                color: selected ? primary : null,
+              ),
           ],
         ),
       ),

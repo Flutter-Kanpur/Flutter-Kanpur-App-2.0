@@ -33,7 +33,9 @@ class AnswerService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getAnswersForQuestion(String questionId) async {
+  Future<List<Map<String, dynamic>>> getAnswersForQuestion(
+    String questionId,
+  ) async {
     try {
       final data = await _client
           .from('answers')
@@ -63,9 +65,7 @@ class AnswerService {
     }
   }
 
-  Future<bool> likeAnswer({
-    required String answerId,
-  }) async {
+  Future<bool> likeAnswer({required String answerId}) async {
     try {
       final currentUser = _authService.getCurrentUser();
       if (currentUser == null) throw Exception('User not authenticated');
@@ -90,7 +90,10 @@ class AnswerService {
       });
 
       // Increment like count
-      await _client.rpc('increment_answer_likes', params: {'answer_id': answerId});
+      await _client.rpc(
+        'increment_answer_likes',
+        params: {'answer_id': answerId},
+      );
 
       print('✅ Answer liked successfully');
       return true;
@@ -100,9 +103,7 @@ class AnswerService {
     }
   }
 
-  Future<bool> unlikeAnswer({
-    required String answerId,
-  }) async {
+  Future<bool> unlikeAnswer({required String answerId}) async {
     try {
       final currentUser = _authService.getCurrentUser();
       if (currentUser == null) throw Exception('User not authenticated');
@@ -114,7 +115,10 @@ class AnswerService {
           .eq('user_id', currentUser.id);
 
       // Decrement like count
-      await _client.rpc('decrement_answer_likes', params: {'answer_id': answerId});
+      await _client.rpc(
+        'decrement_answer_likes',
+        params: {'answer_id': answerId},
+      );
 
       print('✅ Answer unliked successfully');
       return true;
@@ -173,9 +177,7 @@ class AnswerService {
     }
   }
 
-  Future<bool> checkIfUserLikedAnswer({
-    required String answerId,
-  }) async {
+  Future<bool> checkIfUserLikedAnswer({required String answerId}) async {
     try {
       final currentUser = _authService.getCurrentUser();
       if (currentUser == null) return false;

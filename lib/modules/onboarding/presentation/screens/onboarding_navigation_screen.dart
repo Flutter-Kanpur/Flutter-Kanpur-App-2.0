@@ -10,6 +10,9 @@ import 'onboarding_skills_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/auth/data/services/user_service.dart';
 
 class OnboardingNavigationScreen extends StatefulWidget {
   const OnboardingNavigationScreen({super.key});
@@ -39,8 +42,11 @@ class _OnboardingNavigationScreenState
     'onboarding.screen4SubTitle'.tr(),
   ];
 
-  void _nextStep() {
+  Future<void> _nextStep() async {
     if (_currentStep == 3) {
+      await UserService().markOnboardingCompleted();
+      if (!mounted) return;
+      context.go(RouteNames.onboardingSuccess);
       return;
     }
 
@@ -69,7 +75,10 @@ class _OnboardingNavigationScreenState
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v10),
+              padding: EdgeInsets.symmetric(
+                horizontal: AppSpacing.h16,
+                vertical: AppSpacing.v10,
+              ),
 
               child: OnboardingProgressBar(currentStep: _currentStep),
             ),
@@ -84,7 +93,10 @@ class _OnboardingNavigationScreenState
 
                     textAlign: TextAlign.center,
 
-                    style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w700),
+                    style: AppTextStyles.headlineSmall.copyWith(
+                      color: AppColors.blackBase,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
 
                   15.verticalSpace,
@@ -94,7 +106,9 @@ class _OnboardingNavigationScreenState
 
                     textAlign: TextAlign.center,
 
-                    style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
+                    style: AppTextStyles.bodyLarge.copyWith(
+                      color: AppColors.neutral500,
+                    ),
                   ),
                 ],
               ),

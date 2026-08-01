@@ -21,14 +21,17 @@ class FkSectionTitle extends StatelessWidget {
       padding: EdgeInsets.only(top: AppSpacing.v8, bottom: AppSpacing.v8),
       child: Row(
         children: [
-          Expanded(
-            child: Text(
-              title,
-              style: AppTextStyles.titleMedium,
-            ),
-          ),
+          Expanded(child: Text(title, style: AppTextStyles.titleMedium)),
           if (actionLabel != null)
-            TextButton(onPressed: onActionTap, child: Text(actionLabel!,style: AppTextStyles.bodyMedium.copyWith(color: AppColors.primary500))),
+            TextButton(
+              onPressed: onActionTap,
+              child: Text(
+                actionLabel!,
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.primary500,
+                ),
+              ),
+            ),
         ],
       ),
     );

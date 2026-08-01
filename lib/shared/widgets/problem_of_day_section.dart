@@ -26,10 +26,7 @@ class ProblemOfDaySection extends StatelessWidget {
       padding: AppSpacing.all(AppSpacing.h20),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [
-            AppColors.primary500,
-            AppColors.primary400,
-          ],
+          colors: [AppColors.primary500, AppColors.primary400],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -43,7 +40,10 @@ class ProblemOfDaySection extends StatelessWidget {
             children: [
               Text(
                 translate(context, "profile.problemOfDay"),
-                style: AppTextStyles.titleLarge.copyWith(color: AppColors.whiteBase, fontWeight: FontWeight.bold),
+                style: AppTextStyles.titleLarge.copyWith(
+                  color: AppColors.whiteBase,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -52,15 +52,16 @@ class ProblemOfDaySection extends StatelessWidget {
             children: [
               Text(
                 '${translate(context, "profile.lv")} $level',
-                style: AppTextStyles.bodySmall.copyWith(color: AppColors.whiteBase.withOpacity(0.8)
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: AppColors.whiteBase.withOpacity(0.8),
                 ),
               ),
               const Spacer(),
               Text(
                 '${(progress * 100).toInt()}%',
-                style: AppTextStyles.bodySmall.copyWith(color: AppColors.whiteBase.withOpacity(0.8)
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: AppColors.whiteBase.withOpacity(0.8),
                 ),
-
               ),
             ],
           ),
@@ -70,7 +71,9 @@ class ProblemOfDaySection extends StatelessWidget {
             child: LinearProgressIndicator(
               value: progress,
               backgroundColor: AppColors.whiteBase.withOpacity(0.2),
-              valueColor: const AlwaysStoppedAnimation<Color>(AppColors.whiteBase),
+              valueColor: const AlwaysStoppedAnimation<Color>(
+                AppColors.whiteBase,
+              ),
               minHeight: 10.h,
             ),
           ),
@@ -81,11 +84,12 @@ class ProblemOfDaySection extends StatelessWidget {
               backgroundColor: AppColors.whiteBase,
               foregroundColor: AppColors.primary500,
               elevation: 0,
-              padding: AppSpacing.symmetric(horizontal: AppSpacing.h20, vertical: 0),
-              minimumSize: Size(0, 36.h),
-              shape: RoundedRectangleBorder(
-                borderRadius: AppRadius.all02,
+              padding: AppSpacing.symmetric(
+                horizontal: AppSpacing.h20,
+                vertical: 0,
               ),
+              minimumSize: Size(0, 36.h),
+              shape: RoundedRectangleBorder(borderRadius: AppRadius.all02),
             ),
             child: Text(
               translate(context, "profile.viewProgress"),

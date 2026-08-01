@@ -5,7 +5,7 @@ class AuthService {
   final SupabaseClient _client;
 
   AuthService({SupabaseClient? client})
-      : _client = client ?? Supabase.instance.client;
+    : _client = client ?? Supabase.instance.client;
 
   // ─── Sign In ──────────────────────────────────────────────────────────────
 

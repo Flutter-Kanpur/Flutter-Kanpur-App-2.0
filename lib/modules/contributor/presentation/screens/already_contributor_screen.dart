@@ -18,15 +18,18 @@ class AlreadyContributorScreen extends StatelessWidget {
     return GradientBackground(
       child: SafeArea(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(AppSpacing.h20, AppSpacing.h18, AppSpacing.h20, 24),
+          padding: EdgeInsets.fromLTRB(
+            AppSpacing.h20,
+            AppSpacing.h18,
+            AppSpacing.h20,
+            24,
+          ),
           child: Column(
             children: [
               FkHeader(
                 title: "contributor.joinAsContributor".tr(),
                 subtitle: "",
-                leading: const FkBackButton(
-                  fallbackPath: RouteNames.profile,
-                ),
+                leading: const FkBackButton(fallbackPath: RouteNames.profile),
               ),
 
               const Spacer(),

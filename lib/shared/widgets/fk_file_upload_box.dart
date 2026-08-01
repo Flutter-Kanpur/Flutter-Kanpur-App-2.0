@@ -11,14 +11,14 @@ class FkFileUploadBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: AppSpacing.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v20),
+      padding: AppSpacing.symmetric(
+        horizontal: AppSpacing.h16,
+        vertical: AppSpacing.v20,
+      ),
       decoration: BoxDecoration(
         color: AppColors.whiteBase,
         borderRadius: AppRadius.all04,
-        border: Border.all(
-          color: AppBorders.primary,
-          style: BorderStyle.solid,
-        ),
+        border: Border.all(color: AppBorders.primary, style: BorderStyle.solid),
       ),
       child: Column(
         children: [
@@ -26,9 +26,9 @@ class FkFileUploadBox extends StatelessWidget {
           SizedBox(height: AppSpacing.v10),
           Text(
             'Choose a file or drag & drop it here.',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.neutral500,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: AppColors.neutral500),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: AppSpacing.v12),
