@@ -214,7 +214,7 @@ class CommunityScreen extends ConsumerWidget {
           ),
 
           SizedBox(height: AppSpacing.v22),
-          const FkSectionTitle(title: 'Our team'),
+          const FkSectionTitle(title: 'Active Contributors'),
           membersAsync.when(
             loading: () => const CommunityLoadingView(height: 72),
             error: (e, _) => CommunityErrorView(
