@@ -1,3 +1,4 @@
+import 'package:flutter_knp_mobile_app_v2/modules/blogs/data/readme_auth_bridge.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../domain/auth_models.dart' as models;
 
@@ -103,6 +104,7 @@ class AuthService {
     try {
       print('🔐 [AuthService] Signing out');
       await _client.auth.signOut();
+      await ReadmeAuthBridge.signOut();
       print('✅ [AuthService] Sign out successful');
     } catch (e) {
       print('❌ [AuthService] Sign out error: $e');

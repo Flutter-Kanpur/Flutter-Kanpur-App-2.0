@@ -241,7 +241,8 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
                 ),
                 SizedBox(height: AppSpacing.v12),
                 OutlinedButton(
-                  onPressed: _pickFile,
+                  // onPressed: _pickFile,
+                  onPressed: (){},
                   style: OutlinedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     foregroundColor: AppColors.blackBase,
@@ -360,19 +361,19 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
     );
   }
 
-  Future<void> _pickFile() async {
-    try {
-      final result = await FilePicker.pickFiles(withData: true);
-      if (result != null && result.files.isNotEmpty) {
-        setState(() {
-          pickedFile = result.files.first;
-        });
-      }
-    } catch (e) {
-      // ignore: avoid_print
-      print('File pick error: $e');
-    }
-  }
+  // Future<void> _pickFile() async {
+  //   try {
+  //     final result = await FilePicker.pickFiles(withData: true);
+  //     if (result != null && result.files.isNotEmpty) {
+  //       setState(() {
+  //         pickedFile = result.files.first;
+  //       });
+  //     }
+  //   } catch (e) {
+  //     // ignore: avoid_print
+  //     print('File pick error: $e');
+  //   }
+  // }
 
   Future<void> _uploadFile() async {
     if (pickedFile == null) return;

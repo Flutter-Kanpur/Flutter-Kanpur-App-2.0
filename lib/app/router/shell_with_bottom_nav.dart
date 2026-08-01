@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -50,17 +51,27 @@ class ShellWithBottomNav extends StatelessWidget {
     );
   }
 
+  BottomNavigationBarItem _readmeNavItem() {
+    return BottomNavigationBarItem(
+      icon: _ReadmeNavIcon(color: AppColors.neutral300),
+      activeIcon: _ReadmeNavIcon(color: AppColors.primary500),
+      label: 'ReadMe',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final path = state.uri.path;
     final currentIndex = _selectedIndexForPath(path);
     final isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
+    final hideHostBottomNav =
+        isKeyboardVisible || path.startsWith(RouteNames.blogs);
 
     return GradientBackground(
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: navigationShell,
-        bottomNavigationBar: isKeyboardVisible
+        bottomNavigationBar: hideHostBottomNav
             ? null
             : Theme(
                 data: Theme.of(context).copyWith(
@@ -85,11 +96,44 @@ class ShellWithBottomNav extends StatelessWidget {
                     _navItem(asset: AssetsPath.home, label: 'Home'),
                     _navItem(asset: AssetsPath.community, label: 'Community'),
                     _navItem(asset: AssetsPath.explore, label: 'Explore'),
-                    _navItem(asset: AssetsPath.explore, label: 'Blogs'),
+                    _readmeNavItem(),
                     _navItem(asset: AssetsPath.profile, label: 'Profile'),
                   ],
                 ),
               ),
+      ),
+    );
+  }
+}
+
+/// Rounded square ReadMe mark with white label drawn on the icon.
+class _ReadmeNavIcon extends StatelessWidget {
+  const _ReadmeNavIcon({required this.color});
+
+  final Color color;
+
+  static const double _size = 24;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: _size,
+      height: _size,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          SvgPicture.asset(
+            AssetsPath.readme,
+            width: _size,
+            height: _size,
+            colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+          ),
+          Text(
+            'ReadMe',
+            textAlign: TextAlign.center,
+            style: AppTextStyles.labelSmall.copyWith(color: AppColors.whiteBase, fontSize: 5),
+          ),
+        ],
       ),
     );
   }

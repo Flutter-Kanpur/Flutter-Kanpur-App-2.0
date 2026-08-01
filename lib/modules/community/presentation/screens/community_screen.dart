@@ -145,7 +145,7 @@ class CommunityScreen extends ConsumerWidget {
           SizedBox(height: AppSpacing.v12),
           FkPrimaryButton(label: 'Join us on discord', onPressed: () {}),
           SizedBox(height: AppSpacing.v22),
-          const FkSectionTitle(title: 'Our team'),
+          const FkSectionTitle(title: 'Active Contributors'),
           membersAsync.when(
             loading: () => const SizedBox(
               height: 72,
