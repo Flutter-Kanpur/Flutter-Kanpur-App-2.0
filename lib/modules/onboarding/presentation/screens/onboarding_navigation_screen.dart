@@ -95,9 +95,7 @@ class _OnboardingNavigationScreenState
     final step = draft.currentStep.clamp(0, 3);
 
     if (!_restored || _pageController == null) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     return Scaffold(
