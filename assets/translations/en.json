@@ -77,8 +77,8 @@
     "experience3Years": "3 years",
     "experience4Years": "4 years",
     "addSkills": "Add Skills (Minimum 3 skills)",
-    "githubLink": "Github Link",
-    "linkedinLink": "LinkedIn link",
+    "githubUsername": "Github username",
+"linkedinUsername": "LinkedIn username",
     "portfolioLink": "Portfolio/Website link",
     "githubLinkDetected": "GitHub link detected.",
     "invalidLink": "We couldn't verify this link.",
@@ -104,7 +104,7 @@
     "imageProcessError": "Could not process image. Please try again.",
     "imagePickError": "Could not pick image. Please try again.",
     "linkedinLinkDetected": "LinkedIn link detected.",
-    "websiteLinkDetected": "Website link detected.",
+    "websiteLinkDetected": "Website link detected."
   },
 
   "profile": {

@@ -29,6 +29,9 @@ class _OnboardingLinksScreenState extends ConsumerState<OnboardingLinksScreen> {
   late final TextEditingController _githubController;
   late final TextEditingController _linkedinController;
   late final TextEditingController _websiteController;
+  final _githubFocus = FocusNode();
+  final _linkedinFocus = FocusNode();
+  final _websiteFocus = FocusNode();
 
   LinkStatus _githubStatus = LinkStatus.empty;
   LinkStatus _linkedinStatus = LinkStatus.empty;
@@ -41,17 +44,31 @@ class _OnboardingLinksScreenState extends ConsumerState<OnboardingLinksScreen> {
   void initState() {
     super.initState();
     final draft = ref.read(onboardingProvider);
-    _githubController = TextEditingController(text: draft.githubUrl);
-    _linkedinController = TextEditingController(text: draft.linkedinUrl);
+
+    _githubController = TextEditingController(
+      text: usernameFromGithubUrl(draft.githubUrl),
+    );
+    _linkedinController = TextEditingController(
+      text: usernameFromLinkedinUrl(draft.linkedinUrl),
+    );
     _websiteController = TextEditingController(text: draft.websiteUrl);
 
-    _githubStatus = validateLink(draft.githubUrl, LinkKind.github);
-    _linkedinStatus = validateLink(draft.linkedinUrl, LinkKind.linkedin);
+    _githubStatus = validateUsername(_githubController.text);
+    _linkedinStatus = validateUsername(_linkedinController.text);
     _websiteStatus = validateLink(draft.websiteUrl, LinkKind.website);
 
     _githubController.addListener(() => _onChanged(LinkKind.github));
     _linkedinController.addListener(() => _onChanged(LinkKind.linkedin));
     _websiteController.addListener(() => _onChanged(LinkKind.website));
+    _githubFocus.addListener(() {
+      if (!_githubFocus.hasFocus) _validateField(LinkKind.github);
+    });
+    _linkedinFocus.addListener(() {
+      if (!_linkedinFocus.hasFocus) _validateField(LinkKind.linkedin);
+    });
+    _websiteFocus.addListener(() {
+      if (!_websiteFocus.hasFocus) _validateField(LinkKind.website);
+    });
   }
 
   @override
@@ -60,6 +77,9 @@ class _OnboardingLinksScreenState extends ConsumerState<OnboardingLinksScreen> {
     _githubController.dispose();
     _linkedinController.dispose();
     _websiteController.dispose();
+    _githubFocus.dispose();
+    _linkedinFocus.dispose();
+    _websiteFocus.dispose();
     super.dispose();
   }
 
@@ -67,23 +87,45 @@ class _OnboardingLinksScreenState extends ConsumerState<OnboardingLinksScreen> {
     _activeKind = kind;
     _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 400), () async {
-      final github = _githubController.text.trim();
-      final linkedin = _linkedinController.text.trim();
+      final githubUser = _githubController.text.trim();
+      final linkedinUser = _linkedinController.text.trim();
       final website = _websiteController.text.trim();
 
       setState(() {
-        _githubStatus = validateLink(github, LinkKind.github);
-        _linkedinStatus = validateLink(linkedin, LinkKind.linkedin);
-        _websiteStatus = validateLink(website, LinkKind.website);
+        switch (kind) {
+          case LinkKind.github:
+            _githubStatus = LinkStatus.empty;
+          case LinkKind.linkedin:
+            _linkedinStatus = LinkStatus.empty;
+          case LinkKind.website:
+            _websiteStatus = LinkStatus.empty;
+        }
       });
 
       await ref
           .read(onboardingProvider.notifier)
           .setLinks(
-            githubUrl: github,
-            linkedinUrl: linkedin,
+            githubUrl: buildGithubUrl(githubUser),
+            linkedinUrl: buildLinkedinUrl(linkedinUser),
             websiteUrl: website,
           );
+    });
+  }
+
+  void _validateField(LinkKind kind) {
+    _activeKind = kind;
+    setState(() {
+      switch (kind) {
+        case LinkKind.github:
+          _githubStatus = validateUsername(_githubController.text);
+        case LinkKind.linkedin:
+          _linkedinStatus = validateUsername(_linkedinController.text);
+        case LinkKind.website:
+          _websiteStatus = validateLink(
+            _websiteController.text,
+            LinkKind.website,
+          );
+      }
     });
   }
 
@@ -127,10 +169,13 @@ class _OnboardingLinksScreenState extends ConsumerState<OnboardingLinksScreen> {
     final error = status == LinkStatus.invalid;
     final borderColor = error ? AppColors.warning600 : AppBorders.secondary;
     final focusedColor = error ? AppColors.warning600 : AppColors.primary500;
+    final hintTextStyle = AppTextStyles.bodyLarge.copyWith(
+      color: AppColors.neutral400,
+    );
 
     return InputDecoration(
-      hintText: hint,
-      hintStyle: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral400),
+      hintText: hint.isEmpty ? null : hint,
+      hintStyle: hintTextStyle,
       filled: true,
       fillColor: AppColors.neutral50,
       contentPadding: EdgeInsets.symmetric(
@@ -154,6 +199,51 @@ class _OnboardingLinksScreenState extends ConsumerState<OnboardingLinksScreen> {
       focusedBorder: OutlineInputBorder(
         borderRadius: AppRadius.all03,
         borderSide: BorderSide(color: focusedColor),
+      ),
+    );
+  }
+
+  Widget _usernameField({
+    required TextEditingController controller,
+    required FocusNode focusNode,
+    required String prefix,
+    required LinkStatus status,
+  }) {
+    final error = status == LinkStatus.invalid;
+    final focused = focusNode.hasFocus;
+    final borderColor = error
+        ? AppColors.warning600
+        : focused
+        ? AppColors.primary500
+        : AppBorders.secondary;
+    final prefixStyle = AppTextStyles.bodyLarge.copyWith(
+      color: AppColors.neutral400,
+    );
+
+    return Container(
+      padding: EdgeInsets.only(left: AppSpacing.h16),
+      decoration: BoxDecoration(
+        color: AppColors.neutral50,
+        borderRadius: AppRadius.all03,
+        border: Border.all(color: borderColor),
+      ),
+      child: Row(
+        children: [
+          Text(prefix, style: prefixStyle),
+          Expanded(
+            child: TextField(
+              controller: controller,
+              focusNode: focusNode, // must wire this
+              style: AppTextStyles.bodyLarge.copyWith(
+                color: AppColors.blackBase,
+              ),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                // ... rest unchanged
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -200,24 +290,23 @@ class _OnboardingLinksScreenState extends ConsumerState<OnboardingLinksScreen> {
       padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16),
       child: Column(
         children: [
-          TextField(
+          _usernameField(
             controller: _githubController,
-            decoration: _decoration(
-              hint: 'onboarding.githubLink'.tr(),
-              status: _githubStatus,
-            ),
+            focusNode: _githubFocus,
+            prefix: 'github.com/',
+            status: _githubStatus,
           ),
           16.verticalSpace,
-          TextField(
+          _usernameField(
             controller: _linkedinController,
-            decoration: _decoration(
-              hint: 'onboarding.linkedinLink'.tr(),
-              status: _linkedinStatus,
-            ),
+            focusNode: _linkedinFocus,
+            prefix: 'linkedin.com/in/',
+            status: _linkedinStatus,
           ),
           16.verticalSpace,
           TextField(
             controller: _websiteController,
+            focusNode: _websiteFocus,
             decoration: _decoration(
               hint: 'onboarding.portfolioLink'.tr(),
               status: _websiteStatus,
@@ -241,13 +330,6 @@ class _OnboardingLinksScreenState extends ConsumerState<OnboardingLinksScreen> {
             onTap: widget.onNext,
             height: 48.h,
             width: double.infinity,
-          ),
-          16.verticalSpace,
-          Center(
-            child: GestureDetector(
-              onTap: widget.onNext,
-              child: Text('onboarding.skipForNow'.tr()),
-            ),
           ),
           24.verticalSpace,
         ],

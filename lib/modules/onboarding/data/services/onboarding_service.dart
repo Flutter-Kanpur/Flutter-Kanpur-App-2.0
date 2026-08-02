@@ -4,8 +4,6 @@ import 'package:flutter_knp_mobile_app_v2/modules/auth/auth_constants.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/onboarding/domain/onboarding_draft.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-/// Persists completed onboarding data to Supabase.
-/// Call only from the last-screen Finish action — not while drafting mid-flow.
 class OnboardingService {
   OnboardingService({SupabaseClient? client})
     : _client = client ?? Supabase.instance.client;
@@ -38,6 +36,7 @@ class OnboardingService {
       AuthConstants.websiteUrlField: draft.websiteUrl.trim().isEmpty
           ? null
           : draft.websiteUrl.trim(),
+      AuthConstants.rolesField: draft.selectedRoles,
       AuthConstants.onboardingCompletedField: true,
       AuthConstants.updatedAtField: DateTime.now().toIso8601String(),
     };
@@ -89,8 +88,6 @@ class OnboardingService {
           .toList();
 
       await _client.from('user_skills').insert(rows);
-    } catch (_) {
-      // Skills table may differ by environment — profile update still succeeds.
-    }
+    } catch (_) {}
   }
 }
