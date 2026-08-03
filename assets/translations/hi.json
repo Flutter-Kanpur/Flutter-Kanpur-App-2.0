@@ -67,8 +67,8 @@
     "finishSetup": "सेटअप पूरा करें",
     "skipForNow": "अभी के लिए छोड़ें",
     "searchRolesHint": "रोल्स या स्किल्स खोजें...",
-    "noRolesFound": "कोई मेल खाने वाला रोल नहीं मिला।",
-    "resultsFound": "3 परिणाम मिले",
+    "noMatchingResultsFound": "कोई मेल खाने वाला परिणाम नहीं मिला",
+    "resultsFound": "{} परिणाम मिले",
     "selectAtLeastOneOption": "कृपया कम से कम एक विकल्प चुनें।",
     "addOther": "अन्य जोड़ें",
     "yearsOfExperience": "अनुभव के वर्ष",
@@ -77,8 +77,8 @@
     "experience3Years": "3 वर्ष",
     "experience4Years": "4 वर्ष",
     "addSkills": "स्किल्स जोड़ें (कम से कम 3 स्किल्स)",
-    "githubLink": "Github लिंक",
-    "linkedinLink": "LinkedIn लिंक",
+    "githubUsername": "Github यूज़रनेम",
+"linkedinUsername": "LinkedIn यूज़रनेम",
     "portfolioLink": "पोर्टफोलियो/वेबसाइट लिंक",
     "githubLinkDetected": "GitHub लिंक मिला।",
     "invalidLink": "हम इस लिंक को सत्यापित नहीं कर सके।",
@@ -99,7 +99,12 @@
     "successTitle": "सेटअप पूरा हुआ",
     "successSubTitle": "आपकी प्रोफ़ाइल तैयार है!",
     "redirectToHome": "होम में लौटा जा रहा है...",
-    "or": "या"
+    "or": "या",
+    "saveFailed": "ऑनबोर्डिंग सेव नहीं हो सकी",
+    "imageProcessError": "इमेज प्रोसेस नहीं हो सकी। कृपया फिर से कोशिश करें।",
+    "imagePickError": "इमेज चुनी नहीं जा सकी। कृपया फिर से कोशिश करें।",
+    "linkedinLinkDetected": "LinkedIn लिंक मिला।",
+    "websiteLinkDetected": "वेबसाइट लिंक मिला।"
   },
 
   "profile": {

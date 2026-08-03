@@ -6,21 +6,27 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/custom_textfield.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:flutter_knp_mobile_app_v2/core/constants/app_assets.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/onboarding/presentation/widgets/onboarding_profile_avatar.dart';
+import 'package:flutter_knp_mobile_app_v2/core/utils/image_compress_helper.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/onboarding/application/onboarding_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_confirm_dialog.dart';
 
-class OnboardingProfileScreen extends StatefulWidget {
+class OnboardingProfileScreen extends ConsumerStatefulWidget {
   final VoidCallback? onNext;
 
   const OnboardingProfileScreen({super.key, this.onNext});
 
   @override
-  State<OnboardingProfileScreen> createState() =>
+  ConsumerState<OnboardingProfileScreen> createState() =>
       _OnboardingProfileScreenState();
 }
 
@@ -39,7 +45,8 @@ class _Layout {
   static double buttonHeight(BuildContext context) => 48.h;
 }
 
-class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
+class _OnboardingProfileScreenState
+    extends ConsumerState<OnboardingProfileScreen> {
   bool _hasError = false;
   bool _isLoading = false;
   bool _isTyping = false;
@@ -56,18 +63,23 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
   String? _localPhotoUrl;
 
   @override
-  void initState() {
-    super.initState();
-    nameController.addListener(() {
-      final text = nameController.text.trim();
-      setState(() {
-        _isTyping = text.isNotEmpty;
-        if (text.isNotEmpty) {
-          _hasError = false;
-        }
-      });
+void initState() {
+  super.initState();
+  final draft = ref.read(onboardingProvider);
+  nameController.text = draft.fullName;
+  _localFilePath = draft.localPhotoPath;
+
+  nameController.addListener(() {
+    final text = nameController.text.trim();
+    setState(() {
+      _isTyping = text.isNotEmpty;
+      if (text.isNotEmpty) {
+        _hasError = false;
+      }
     });
-  }
+    ref.read(onboardingProvider.notifier).setFullName(text);
+  });
+}
 
   @override
   void dispose() {
@@ -110,6 +122,8 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
 
     if (mounted) {
       setState(() => _isLoading = false);
+      await ref.read(onboardingProvider.notifier).setFullName(name);
+await ref.read(onboardingProvider.notifier).setStep(1);
       widget.onNext?.call();
     }
   }
@@ -148,7 +162,7 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
                     height: 24.h,
                   ),
                   title: Text(
-                    "Import from gallery",
+                    'onboarding.importFromGallery'.tr(),
                     style: AppTextStyles.titleLarge.copyWith(
                       color: AppColors.blackBase,
                     ),
@@ -165,7 +179,7 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
                     height: 24.h,
                   ),
                   title: Text(
-                    "Take Photo",
+                    'onboarding.takePhoto'.tr(),
                     style: AppTextStyles.titleLarge.copyWith(
                       color: AppColors.blackBase,
                     ),
@@ -182,7 +196,7 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
                     height: 24.h,
                   ),
                   title: Text(
-                    "Remove current picture",
+                    'onboarding.removeCurrentPicture'.tr(),
                     style: AppTextStyles.titleLarge.copyWith(
                       color: AppColors.warning600,
                     ),
@@ -201,96 +215,62 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
   }
 
   Future<void> _pickAndUploadImage(ImageSource source) async {
+  try {
+    final pickedFile = await _picker.pickImage(
+      source: source,
+      imageQuality: 85,
+      maxWidth: 1024,
+      maxHeight: 1024,
+    );
+
+    if (pickedFile == null) return;
+    if (!mounted) return;
+
+    String pathToUse = pickedFile.path;
     try {
-      final pickedFile = await _picker.pickImage(
-        source: source,
-        imageQuality: 70,
-      );
-
-      if (pickedFile == null) return;
-
-      final extension = pickedFile.path.split('.').last.toLowerCase();
-
-      if (extension != 'jpg' && extension != 'jpeg' && extension != 'png') {
-        setState(() {
-          _fileError = "Please select a JPG or PNG image.";
-        });
-        return;
-      }
-
-      setState(() {
-        _fileError = null;
-        _localFilePath = pickedFile.path;
-      });
-    } catch (e) {
-      print("Upload error: $e");
+      final compressed =
+          await ImageCompressHelper.compressToAvatar(pickedFile.path);
+      if (compressed != null) pathToUse = compressed;
+    } catch (_) {
+      // keep original path if compress fails
     }
-  }
 
-  Future<void> _removeProfileImage() async {
+    // Save to Riverpod FIRST (survives screen remount after gallery/camera)
+    await ref.read(onboardingProvider.notifier).setPhotoPath(pathToUse);
+
+    if (!mounted) return;
     setState(() {
-      _localFilePath = null;
-      _localPhotoUrl = null;
+      _fileError = null;
+      _localFilePath = pathToUse;
+    });
+  } catch (e) {
+    if (!mounted) return;
+    setState(() {
+      _fileError = 'onboarding.imagePickError'.tr();
     });
   }
+}
+
+ Future<void> _removeProfileImage() async {
+  setState(() {
+    _localFilePath = null;
+    _localPhotoUrl = null;
+  });
+  await ref.read(onboardingProvider.notifier).setPhotoPath(null);
+}
 
   void _showRemoveConfirmationDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return Dialog(
-          backgroundColor: AppColors.whiteBase,
-          shape: RoundedRectangleBorder(borderRadius: AppRadius.all07),
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppSpacing.h16,
-              vertical: AppSpacing.v18,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  "Remove?",
-                  style: AppTextStyles.headlineSmall.copyWith(
-                    color: AppColors.blackBase,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                12.verticalSpace,
-                Text(
-                  "Are you sure want to remove the profile photo?",
-                  textAlign: TextAlign.center,
-                  style: AppTextStyles.bodyLarge.copyWith(
-                    color: AppColors.neutral500,
-                  ),
-                ),
-                24.verticalSpace,
-                GradientButton(
-                  color: AppColors.warning600,
-                  onTap: () async {
-                    Navigator.pop(context);
-                    await _removeProfileImage();
-                  },
-                  text: "Delete",
-                ),
-                14.verticalSpace,
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Text(
-                    "Cancel",
-                    style: AppTextStyles.bodyLarge.copyWith(
-                      color: AppColors.warning600,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
+  FkConfirmDialog.show(
+  context,
+  title: 'onboarding.removePhotoTitle'.tr(),
+  message: 'onboarding.removePhotoSubTitle'.tr(),
+  confirmLabel: 'onboarding.delete'.tr(),
+  cancelLabel: 'onboarding.cancel'.tr(),
+  onConfirm: () async {
+    await _removeProfileImage();
+  },
+);
+}
 
   @override
   Widget build(BuildContext context) {
@@ -322,6 +302,14 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
                       _Layout.topPadding(context).verticalSpace,
 
                       _buildAvatarSection(context),
+                      if (_fileError != null) ...[
+  SizedBox(height: 8.h),
+  Text(
+    _fileError!,
+    style: AppTextStyles.bodyMedium.copyWith(color: AppColors.warning600),
+    textAlign: TextAlign.center,
+  ),
+],
 
                       _Layout.sectionSpacing(context).verticalSpace,
 
@@ -333,7 +321,8 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
                         child: GradientButton(
                           isLoading: _isLoading,
                           onTap: _goToNextScreen,
-                          text: "Continue",
+                          text: 	
+'onboarding.continue'.tr(),
                           textStyle: AppTextStyles.bodyLarge.copyWith(
                             color: AppBorders.tertiary,
                           ),
@@ -353,44 +342,15 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
   }
 
   Widget _buildAvatarSection(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        CircleAvatar(
-          radius: _Layout.avatarRadius(context),
-          backgroundColor: AppColors.neutral50,
-          backgroundImage: _localFilePath != null
-              ? FileImage(File(_localFilePath!))
-              : (_localPhotoUrl != null
-                    ? NetworkImage(_localPhotoUrl!) as ImageProvider
-                    : null),
-          child: (_localFilePath == null && _localPhotoUrl == null)
-              ? SvgPicture.asset(
-                  AssetsPath.emptyImage,
-                  color: AppColors.blackBase,
-                  height: _Layout.avatarIconSize(context),
-                )
-              : null,
-        ),
-        Positioned(
-          bottom: _Layout.addButtonOffset(context),
-          right: _Layout.addButtonOffset(context),
-          child: GestureDetector(
-            onTap: _showImagePickerSheet,
-            child: CircleAvatar(
-              radius: _Layout.addButtonRadius(context),
-              backgroundColor: AppColors.primary500,
-              child: Icon(
-                Icons.add,
-                size: _Layout.addButtonIconSize(context),
-                color: AppColors.whiteBase,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  final draft = ref.watch(onboardingProvider);
+  final path = draft.localPhotoPath ?? _localFilePath;
+
+  return OnboardingProfileAvatar(
+    localPhotoPath: path,
+    networkPhotoUrl: _localPhotoUrl,
+    onAddTap: _showImagePickerSheet,
+  );
+}
 
   Widget _buildForm(BuildContext context) {
     return Form(
@@ -402,24 +362,26 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
           Container(
             key: nameFieldKey,
             child: CustomTextField(
-              controller: nameController,
-              focusNode: nameFocusNode,
-              showTickIcon:
-                  nameController.text.isNotEmpty &&
-                  nameController.text.length > 4,
-              text: "Full name",
-              showBorder:
-                  nameFocusNode.hasFocus || nameController.text.isNotEmpty,
-              borderColor: nameFocusNode.hasFocus
-                  ? AppColors.primary500
-                  : nameController.text.isNotEmpty
-                  ? AppColors.neutral100
-                  : AppColors.neutral50,
-              fillColor:
-                  nameFocusNode.hasFocus || nameController.text.isNotEmpty
-                  ? Colors.transparent
-                  : AppColors.neutral50,
-            ),
+  controller: nameController,
+  focusNode: nameFocusNode,
+  showTickIcon:
+      nameController.text.isNotEmpty &&
+      nameController.text.length > 4,
+  text: 'onboarding.fullName'.tr(),
+  showBorder: _hasError ||
+      nameFocusNode.hasFocus ||
+      nameController.text.isNotEmpty,
+  borderColor: _hasError
+      ? AppColors.warning600
+      : nameFocusNode.hasFocus
+          ? AppColors.primary500
+          : AppColors.neutral100,
+  fillColor: _hasError ||
+          nameFocusNode.hasFocus ||
+          nameController.text.isNotEmpty
+      ? Colors.transparent
+      : AppColors.neutral50,
+),
           ),
           if (_hasError)
             Padding(
@@ -433,7 +395,8 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
                   ),
                   6.horizontalSpace,
                   Text(
-                    "Please enter your name.",
+                   	
+'onboarding.fullNameError'.tr(),
                     style: AppTextStyles.bodyLarge,
                   ),
                 ],

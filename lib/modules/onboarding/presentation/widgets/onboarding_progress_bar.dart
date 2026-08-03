@@ -24,10 +24,9 @@ class OnboardingProgressBar extends StatelessWidget {
             height: 6.h,
 
             decoration: BoxDecoration(
-              color: isActive ? AppColors.blackBase : AppColors.neutral100,
-
-              borderRadius: AppRadius.all09,
-            ),
+  color: isActive ? AppColors.primary500 : AppColors.primary50,
+  borderRadius: AppRadius.all09,
+),
           ),
         );
       }),
