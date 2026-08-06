@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/application/community_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/application/notifications_provider.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_ask_banner.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_async_views.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_contribute_section.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_discussion_card.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_stats_panel.dart';
@@ -10,11 +18,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_section_title.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/external_links.dart';
 
 class CommunityScreen extends ConsumerWidget {
   const CommunityScreen({super.key});
@@ -26,65 +30,70 @@ class CommunityScreen extends ConsumerWidget {
 
     return RefreshIndicator(
       onRefresh: () async {
-        await ref.read(questionsProvider.notifier).refresh();
-        await ref.read(communityMembersProvider.notifier).refresh();
+        // Run both refreshes together instead of one after the other, so
+        // pull-to-refresh finishes in one round trip's time, not two.
+        await Future.wait([
+          ref.read(questionFeedProvider.notifier).refresh(),
+          ref.read(communityMembersProvider.notifier).refresh(),
+          ref.read(notificationsProvider.notifier).refresh(),
+        ]);
       },
       child: FkScreen(
         padding: EdgeInsets.fromLTRB(AppSpacing.h22, 0, AppSpacing.h22, 96),
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text('Community', style: AppTextStyles.titleLarge),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.notifications_outlined),
-              ),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
-            ],
-          ),
+          const _CommunityAppBar(),
           SizedBox(height: AppSpacing.v18),
+
           CommunityAskBanner(
-            onTap: () => context.go(RouteNames.communityAskQuestion),
+            onTap: () => context.push(RouteNames.communityAskQuestion),
           ),
+
           FkSectionTitle(
             title: 'Featured discussions',
             actionLabel: 'Explore all',
-            onActionTap: () => context.go(RouteNames.communityDiscussions),
+            onActionTap: () => context.push(RouteNames.communityDiscussions),
           ),
           questionsAsync.when(
-            loading: () => const SizedBox(
-              height: 200,
-              child: Center(child: CircularProgressIndicator()),
-            ),
-            error: (e, _) => _ErrorTile(
+            loading: () => const CommunityLoadingView(height: 280),
+            error: (e, _) => CommunityErrorView(
+              compact: true,
               message: 'Could not load discussions.',
-              onRetry: () => ref.read(questionsProvider.notifier).refresh(),
+              onRetry: () => ref.read(questionFeedProvider.notifier).refresh(),
             ),
             data: (questions) {
               if (questions.isEmpty) {
-                return const _EmptyTile(
-                  message: 'No discussions yet. Start one!',
+                return CommunityEmptyView(
+                  message: 'No discussions yet.',
+                  actionLabel: 'Start one',
+                  onAction: () =>
+                      context.push(RouteNames.communityAskQuestion),
                 );
               }
+              // Carousel shows the newest handful; "Explore all" has the rest.
+              final featured = questions.take(10).toList();
               return LayoutBuilder(
                 builder: (context, constraints) {
-                  final cardWidth = (constraints.maxWidth * 0.90);
+                  final cardWidth = constraints.maxWidth * 0.90;
                   return SizedBox(
-                    height: 280,
+                    height: 300,
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       clipBehavior: Clip.none,
-                      itemCount: questions.length,
-                      separatorBuilder: (context, index) =>
+                      itemCount: featured.length,
+                      separatorBuilder: (_, _) =>
                           SizedBox(width: AppSpacing.h12),
                       itemBuilder: (_, i) => CommunityDiscussionCard(
-                        question: questions[i],
+                        question: featured[i],
                         width: cardWidth,
                         onTap: () => context.push(
-                          '${RouteNames.communityDiscussionDetail}/${questions[i].id}',
+                          '${RouteNames.communityDiscussionDetail}/${featured[i].id}',
                         ),
+                        onLike: () => ref
+                            .read(communityEngagementProvider)
+                            .toggleQuestionLike(featured[i]),
+                        onSave: () => ref
+                            .read(communityEngagementProvider)
+                            .toggleQuestionSave(featured[i]),
                       ),
                     ),
                   );
@@ -92,6 +101,7 @@ class CommunityScreen extends ConsumerWidget {
               );
             },
           ),
+
           SizedBox(height: AppSpacing.v22),
           const FkSectionTitle(title: 'Contribute'),
           SizedBox(
@@ -106,7 +116,8 @@ class CommunityScreen extends ConsumerWidget {
                     title: 'Upload Your Projects',
                     body:
                         'Share your projects with the community to showcase your work.',
-                    onTap: () => context.go(RouteNames.communityUploadProject),
+                    onTap: () =>
+                        context.push(RouteNames.communityUploadProject),
                   ),
                 ),
                 SizedBox(width: AppSpacing.h12),
@@ -130,7 +141,9 @@ class CommunityScreen extends ConsumerWidget {
                         child: CommunityContributeCard(
                           label: 'Get involved',
                           body: 'Join as a Contributor',
-                          onTap: () => context.go(RouteNames.profile),
+                          // Was pointing at /profile, which is not the
+                          // contributor flow.
+                          onTap: () => context.push(RouteNames.joinContributor),
                         ),
                       ),
                     ],
@@ -139,21 +152,35 @@ class CommunityScreen extends ConsumerWidget {
               ],
             ),
           ),
+
           SizedBox(height: AppSpacing.v22),
           const FkSectionTitle(title: 'Community Stats'),
           const CommunityStatsPanel(),
           SizedBox(height: AppSpacing.v12),
-          FkPrimaryButton(label: 'Join us on discord', onPressed: () {}),
-          SizedBox(height: AppSpacing.v22),
-          const FkSectionTitle(title: 'Active Contributors'),
-          membersAsync.when(
-            loading: () => const SizedBox(
-              height: 72,
-              child: Center(child: CircularProgressIndicator()),
+          FkPrimaryButton(
+            label: 'Join us on discord',
+            onPressed: () => openExternalUrlOrNotify(
+              context,
+              ExternalLinks.discordInvite,
+              failureMessage: "Couldn't open Discord. Is it installed?",
             ),
-            error: (_, __) => const SizedBox.shrink(),
-            data: (members) => CommunityTeamCarousel(members: members),
           ),
+
+          SizedBox(height: AppSpacing.v22),
+          const FkSectionTitle(title: 'Our team'),
+          membersAsync.when(
+            loading: () => const CommunityLoadingView(height: 72),
+            error: (_, _) => CommunityErrorView(
+              compact: true,
+              message: 'Could not load members.',
+              onRetry: () =>
+                  ref.read(communityMembersProvider.notifier).refresh(),
+            ),
+            data: (members) => members.isEmpty
+                ? const CommunityEmptyView(message: 'No members listed yet.')
+                : CommunityTeamCarousel(members: members),
+          ),
+
           SizedBox(height: 4 * AppSpacing.v22),
           Text(
             'Built for the\nflutter\ncommunity!',
@@ -180,56 +207,101 @@ class CommunityScreen extends ConsumerWidget {
   }
 }
 
-class _ErrorTile extends StatelessWidget {
-  const _ErrorTile({required this.message, required this.onRetry});
-
-  final String message;
-  final VoidCallback onRetry;
+/// Title, notification bell with unread badge, and overflow menu.
+class _CommunityAppBar extends ConsumerWidget {
+  const _CommunityAppBar();
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: AppSpacing.all(AppSpacing.h16),
-      decoration: BoxDecoration(
-        color: AppColors.warning50,
-        borderRadius: AppRadius.all03,
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.error_outline, color: AppColors.warning600),
-          SizedBox(width: AppSpacing.h10),
-          Expanded(
-            child: Text(
-              message,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: AppColors.warning700),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final unread = ref.watch(unreadNotificationCountProvider);
+
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            'Community',
+            style: AppTextStyles.titleLarge.copyWith(
+              fontWeight: FontWeight.w600,
+              color: AppColors.neutral950,
             ),
           ),
-          TextButton(onPressed: onRetry, child: const Text('Retry')),
-        ],
-      ),
+        ),
+        IconButton(
+          onPressed: () => context.push(RouteNames.communityNotifications),
+          tooltip: 'Notifications',
+          icon: Badge(
+            isLabelVisible: unread > 0,
+            label: Text(unread > 99 ? '99+' : '$unread'),
+            backgroundColor: AppColors.warning600,
+            child: const Icon(
+              Icons.notifications_none_rounded,
+              color: AppColors.neutral950,
+            ),
+          ),
+        ),
+        _CommunityOverflowMenu(),
+      ],
     );
   }
 }
 
-class _EmptyTile extends StatelessWidget {
-  const _EmptyTile({required this.message});
-
-  final String message;
-
+class _CommunityOverflowMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: AppSpacing.v16),
-      child: Center(
-        child: Text(
-          message,
-          style: Theme.of(
-            context,
-          ).textTheme.bodyMedium?.copyWith(color: AppColors.neutral500),
+    return PopupMenuButton<String>(
+      tooltip: 'More',
+      icon: const Icon(Icons.more_vert_rounded, color: AppColors.neutral950),
+      shape: RoundedRectangleBorder(borderRadius: AppRadius.all03),
+      onSelected: (value) {
+        switch (value) {
+          case 'guidelines':
+            context.push(RouteNames.communityGuidelines);
+          case 'members':
+            context.push(RouteNames.communityMembers);
+          case 'projects':
+            context.push(RouteNames.communityProjects);
+          case 'discord':
+            openExternalUrlOrNotify(context, ExternalLinks.discordInvite);
+        }
+      },
+      itemBuilder: (context) => const [
+        PopupMenuItem(
+          value: 'guidelines',
+          child: ListTile(
+            dense: true,
+            contentPadding: EdgeInsets.zero,
+            leading: Icon(Icons.rule_rounded),
+            title: Text('Community guidelines'),
+          ),
         ),
-      ),
+        PopupMenuItem(
+          value: 'members',
+          child: ListTile(
+            dense: true,
+            contentPadding: EdgeInsets.zero,
+            leading: Icon(Icons.groups_outlined),
+            title: Text('Members'),
+          ),
+        ),
+        PopupMenuItem(
+          value: 'projects',
+          child: ListTile(
+            dense: true,
+            contentPadding: EdgeInsets.zero,
+            leading: Icon(Icons.folder_copy_outlined),
+            title: Text('Projects'),
+          ),
+        ),
+        PopupMenuItem(
+          value: 'discord',
+          child: ListTile(
+            dense: true,
+            contentPadding: EdgeInsets.zero,
+            leading: Icon(Icons.discord_outlined),
+            title: Text('Join us on Discord'),
+          ),
+        ),
+      ],
     );
   }
 }

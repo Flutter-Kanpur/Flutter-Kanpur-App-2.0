@@ -1,165 +1,158 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_text_field.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_primary_button.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_file_upload_box.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/community/application/community_provider.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/application/community_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_constants.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_text_field.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/form_validators.dart';
+
+/// Reply composer shown under a discussion.
+///
+/// Collapsed it is a single "Write a reply" box; focusing it reveals the code
+/// snippet field and the post button, matching the Figma flow.
 class AnswerForm extends ConsumerStatefulWidget {
+  const AnswerForm({
+    super.key,
+    required this.questionId,
+    this.onSubmitted,
+    this.autofocus = false,
+  });
+
   final String questionId;
   final VoidCallback? onSubmitted;
-
-  const AnswerForm({super.key, required this.questionId, this.onSubmitted});
+  final bool autofocus;
 
   @override
   ConsumerState<AnswerForm> createState() => _AnswerFormState();
 }
 
 class _AnswerFormState extends ConsumerState<AnswerForm> {
-  late final TextEditingController _bodyController;
-  late final TextEditingController _codeController;
+  final _formKey = GlobalKey<FormState>();
+  final _bodyController = TextEditingController();
+  final _codeController = TextEditingController();
+  final _bodyFocus = FocusNode();
+
+  bool _expanded = false;
+  bool _submitting = false;
 
   @override
   void initState() {
     super.initState();
-    _bodyController = TextEditingController();
-    _codeController = TextEditingController();
+    _expanded = widget.autofocus;
+    _bodyFocus.addListener(() {
+      if (_bodyFocus.hasFocus && !_expanded) setState(() => _expanded = true);
+    });
   }
 
   @override
   void dispose() {
     _bodyController.dispose();
     _codeController.dispose();
+    _bodyFocus.dispose();
     super.dispose();
   }
 
-  void _submitAnswer() {
-    final body = _bodyController.text.trim();
+  Future<void> _submit() async {
+    if (!(_formKey.currentState?.validate() ?? false)) return;
 
-    if (body.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('⚠️ Please enter your answer'),
-          backgroundColor: AppColors.pending500,
-        ),
-      );
-      return;
-    }
+    final code = _codeController.text.trim();
 
-    if (body.length < 10) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('⚠️ Answer must be at least 10 characters'),
-          backgroundColor: AppColors.pending500,
-        ),
-      );
-      return;
-    }
-
-    final codeSnippet = _codeController.text.trim();
-
-    print(
-      '📝 [AnswerForm] Submitting answer for question: ${widget.questionId}',
-    );
-
-    ref
+    setState(() => _submitting = true);
+    // Awaiting the result rather than listening to the shared controller:
+    // ref.listen on communityActionControllerProvider also fired for unrelated
+    // actions, which cleared this form when some other submit succeeded.
+    final result = await ref
         .read(communityActionControllerProvider.notifier)
         .submitAnswer(
           questionId: widget.questionId,
-          body: body,
-          codeSnippet: codeSnippet.isEmpty ? null : codeSnippet,
+          body: _bodyController.text.trim(),
+          codeSnippet: code.isEmpty ? null : code,
         );
+
+    if (!mounted) return;
+    setState(() => _submitting = false);
+
+    final messenger = ScaffoldMessenger.of(context)..hideCurrentSnackBar();
+
+    if (result.isSuccess) {
+      _bodyController.clear();
+      _codeController.clear();
+      setState(() => _expanded = false);
+      _bodyFocus.unfocus();
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text('Reply posted'),
+          backgroundColor: AppColors.success600,
+        ),
+      );
+      widget.onSubmitted?.call();
+    } else {
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(result.message),
+          backgroundColor: AppColors.warning600,
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final submitState = ref.watch(communityActionControllerProvider);
-
-    ref.listen(communityActionControllerProvider, (previous, next) {
-      next.when(
-        data: (_) {
-          if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: const Text('✅ Answer posted successfully'),
-                backgroundColor: AppColors.success600,
-              ),
-            );
-            _bodyController.clear();
-            _codeController.clear();
-            widget.onSubmitted?.call();
-          }
-        },
-        error: (error, _) {
-          if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('❌ Error: ${error.toString()}'),
-                backgroundColor: AppColors.warning600,
-              ),
-            );
-          }
-        },
-        loading: () {},
-      );
-    });
-
-    return Container(
-      padding: AppSpacing.all(AppSpacing.h12),
-      decoration: BoxDecoration(
-        border: Border.all(color: AppBorders.primary),
-        borderRadius: AppRadius.all02,
-        color: AppColors.neutral50,
-      ),
+    return Form(
+      key: _formKey,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            'Your Answer',
-            style: Theme.of(
-              context,
-            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
-          ),
-          SizedBox(height: AppSpacing.v12),
           FkTextField(
-            label: 'Answer',
-            hint: 'Write your detailed answer here...',
+            label: '',
+            hint: 'Write a reply',
             controller: _bodyController,
-            maxLines: 5,
+            maxLines: _expanded ? 4 : 2,
+            maxLength: CommunityConstants.answerMaxLength,
+            showCounter: _expanded,
+            validator: (v) => FormValidators.minLength(
+              v,
+              min: 10,
+              field: 'Reply',
+            ),
           ),
-          SizedBox(height: AppSpacing.v12),
-          FkTextField(
-            label: 'Code Snippet (Optional)',
-            hint: 'Paste your code here if relevant...',
-            controller: _codeController,
-            maxLines: 4,
-          ),
-          SizedBox(height: AppSpacing.v12),
-          Text(
-            'Attach file (Optional)',
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
-          ),
-          SizedBox(height: AppSpacing.v8),
-          const FkFileUploadBox(),
-          SizedBox(height: AppSpacing.v16),
-          Row(
-            children: [
-              Expanded(
-                child: FkPrimaryButton(
-                  label: 'Post Answer',
-                  icon: null,
-                  isLoading: submitState.isLoading,
-                  onPressed: _submitAnswer,
+          if (_expanded) ...[
+            SizedBox(height: AppSpacing.v12),
+            FkTextField(
+              label: 'Code snippet (optional)',
+              hint: 'Paste code that helps explain your answer',
+              controller: _codeController,
+              maxLines: 4,
+            ),
+            SizedBox(height: AppSpacing.v16),
+            Row(
+              children: [
+                TextButton(
+                  onPressed: _submitting
+                      ? null
+                      : () {
+                          _bodyController.clear();
+                          _codeController.clear();
+                          _bodyFocus.unfocus();
+                          setState(() => _expanded = false);
+                        },
+                  child: const Text('Cancel'),
                 ),
-              ),
-            ],
-          ),
+                SizedBox(width: AppSpacing.h12),
+                Expanded(
+                  child: FkPrimaryButton(
+                    label: 'Post reply',
+                    icon: null,
+                    isLoading: _submitting,
+                    onPressed: _submit,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ],
       ),
     );

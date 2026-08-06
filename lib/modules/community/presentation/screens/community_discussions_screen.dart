@@ -1,27 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/application/community_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/data/repositories/community_repository.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_async_views.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_filter_row.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/discussion_list_item.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart';
-import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
-
-// Local filter state for the discussions screen.
-final _discussionFilterProvider =
-    NotifierProvider<DiscussionFilterNotifier, String?>(
-      DiscussionFilterNotifier.new,
-    );
-
-class DiscussionFilterNotifier extends Notifier<String?> {
-  @override
-  String? build() => null;
-  void update(String? value) => state = value;
-}
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen_top_bar.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/count_format.dart';
 
 class CommunityDiscussionsScreen extends ConsumerStatefulWidget {
   const CommunityDiscussionsScreen({super.key});
@@ -33,7 +25,7 @@ class CommunityDiscussionsScreen extends ConsumerStatefulWidget {
 
 class _CommunityDiscussionsScreenState
     extends ConsumerState<CommunityDiscussionsScreen> {
-  final ScrollController _scrollController = ScrollController();
+  final _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -43,158 +35,150 @@ class _CommunityDiscussionsScreenState
 
   @override
   void dispose() {
-    _scrollController.removeListener(_onScroll);
-    _scrollController.dispose();
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
     super.dispose();
   }
 
+  /// Fetches the next page once the user is within 400px of the bottom.
+  /// The notifier itself guards against overlapping calls.
   void _onScroll() {
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent - 500) {
-      // User scrolled near bottom - could trigger load more here
-      // For now, we load all at once via the provider
+    if (!_scrollController.hasClients) return;
+    final position = _scrollController.position;
+    if (position.pixels >= position.maxScrollExtent - 400) {
+      ref.read(questionFeedProvider.notifier).loadMore();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final questionsAsync = ref.watch(questionsProvider);
-    final activeFilter = ref.watch(_discussionFilterProvider);
+    final feedAsync = ref.watch(questionFeedProvider);
 
-    return FkScreen(
-      padding: EdgeInsets.fromLTRB(
-        AppSpacing.h16,
-        AppSpacing.h16,
-        AppSpacing.h22,
-        96,
-      ),
-      children: [
-        // Top bar
-        Row(
-          children: [
-            IconButton(
-              onPressed: () => context.go(RouteNames.community),
-              icon: const Icon(Icons.arrow_back),
+    return SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Header stays outside the scroll view so the filter chips and the
+          // "Start a new discussion" action remain reachable while paging.
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+              AppSpacing.h16,
+              AppSpacing.v12,
+              AppSpacing.h16,
+              0,
             ),
-            Expanded(
-              child: Text(
-                'Discussions',
-                textAlign: TextAlign.center,
-                style: AppTextStyles.titleLarge.copyWith(
-                  fontWeight: FontWeight.w700,
+            child: Column(
+              children: [
+                FkScreenTopBar(
+                  title: 'Discussion',
+                  fallbackPath: RouteNames.community,
                 ),
-              ),
+                SizedBox(height: AppSpacing.v18),
+                FkPrimaryButton(
+                  label: 'Start a new discussion',
+                  onPressed: () =>
+                      context.push(RouteNames.communityAskQuestion),
+                ),
+                SizedBox(height: AppSpacing.v18),
+                CommunityFilterRow(
+                  selected: feedAsync.value?.filter,
+                  onSelected: (filter) =>
+                      ref.read(questionFeedProvider.notifier).setFilter(filter),
+                ),
+                SizedBox(height: AppSpacing.v16),
+              ],
             ),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz)),
-          ],
-        ),
-        SizedBox(height: AppSpacing.v22),
-        FkPrimaryButton(
-          label: 'Start a new discussion',
-          onPressed: () => context.go(RouteNames.communityAskQuestion),
-        ),
-        SizedBox(height: AppSpacing.v18),
-        CommunityFilterRow(
-          selected: activeFilter,
-          onSelected: (filter) {
-            ref.read(_discussionFilterProvider.notifier).update(filter);
-            ref.read(questionsProvider.notifier).setFilter(filter);
-          },
-        ),
-        SizedBox(height: AppSpacing.v16),
-        questionsAsync.when(
-          loading: () => Padding(
-            padding: EdgeInsets.symmetric(vertical: AppSpacing.v22),
-            child: Center(child: CircularProgressIndicator()),
           ),
-          error: (e, _) => _ErrorView(
-            onRetry: () => ref.read(questionsProvider.notifier).refresh(),
-          ),
-          data: (questions) {
-            if (questions.isEmpty) {
-              return const _EmptyView();
-            }
-            return RefreshIndicator(
-              onRefresh: () async {
-                await ref.read(questionsProvider.notifier).refresh();
-              },
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () =>
+                  ref.read(questionFeedProvider.notifier).refresh(),
+              child: feedAsync.when(
+                loading: () => const CommunityLoadingView(height: 320),
+                error: (e, _) => ListView(
+                  physics: const AlwaysScrollableScrollPhysics(),
                   children: [
-                    Text(
-                      '${questions.length} discussions',
-                      style: AppTextStyles.bodyLarge.copyWith(
-                        color: AppColors.neutral500,
-                      ),
+                    CommunityErrorView(
+                      message: 'Could not load discussions.',
+                      onRetry: () =>
+                          ref.read(questionFeedProvider.notifier).refresh(),
                     ),
-                    SizedBox(height: AppSpacing.v16),
-                    ...questions.map(
-                      (q) => DiscussionListItem(
-                        question: q,
-                        onTap: () => context.push(
-                          '${RouteNames.communityDiscussions}/${q.id}',
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: AppSpacing.v22),
                   ],
                 ),
+                data: (feed) {
+                  if (feed.questions.isEmpty) {
+                    return ListView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      children: [
+                        CommunityEmptyView(
+                          icon: Icons.forum_outlined,
+                          message: feed.filter == null
+                              ? 'No discussions yet.\nBe the first to start one!'
+                              : 'Nothing matches "${CommunityFilter.labelOf(feed.filter!)}".',
+                          actionLabel: feed.filter == null
+                              ? 'Ask a question'
+                              : 'Clear filter',
+                          onAction: () => feed.filter == null
+                              ? context.push(RouteNames.communityAskQuestion)
+                              : ref
+                                    .read(questionFeedProvider.notifier)
+                                    .setFilter(null),
+                        ),
+                      ],
+                    );
+                  }
+
+                  return ListView.builder(
+                    controller: _scrollController,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: EdgeInsets.fromLTRB(
+                      AppSpacing.h16,
+                      0,
+                      AppSpacing.h16,
+                      96,
+                    ),
+                    // +1 header row, +1 footer row.
+                    itemCount: feed.questions.length + 2,
+                    itemBuilder: (context, index) {
+                      if (index == 0) {
+                        return Padding(
+                          padding: EdgeInsets.only(bottom: AppSpacing.v16),
+                          child: Text(
+                            '${formatCount(feed.questions.length)}'
+                            '${feed.hasMore ? '+' : ''} '
+                            '${feed.questions.length == 1 ? 'question' : 'questions'}',
+                            style: AppTextStyles.bodyLarge.copyWith(
+                              color: AppColors.neutral500,
+                            ),
+                          ),
+                        );
+                      }
+
+                      if (index == feed.questions.length + 1) {
+                        return CommunityLoadMoreFooter(
+                          isLoading: feed.isLoadingMore,
+                          hasMore: feed.hasMore,
+                          error: feed.loadMoreError,
+                          onRetry: () =>
+                              ref.read(questionFeedProvider.notifier).loadMore(),
+                        );
+                      }
+
+                      final question = feed.questions[index - 1];
+                      return DiscussionListItem(
+                        question: question,
+                        onTap: () => context.push(
+                          '${RouteNames.communityDiscussionDetail}/${question.id}',
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
-            );
-          },
-        ),
-      ],
-    );
-  }
-}
-
-class _ErrorView extends StatelessWidget {
-  const _ErrorView({required this.onRetry});
-
-  final VoidCallback onRetry;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: AppSpacing.v22),
-      child: Column(
-        children: [
-          const Icon(
-            Icons.wifi_off_rounded,
-            size: 48,
-            color: AppColors.neutral400,
-          ),
-          SizedBox(height: AppSpacing.v12),
-          Text(
-            'Could not load discussions',
-            style: AppTextStyles.bodyLarge.copyWith(
-              color: AppColors.neutral500,
             ),
           ),
-          SizedBox(height: AppSpacing.v16),
-          TextButton(onPressed: onRetry, child: const Text('Try again')),
         ],
-      ),
-    );
-  }
-}
-
-class _EmptyView extends StatelessWidget {
-  const _EmptyView();
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: AppSpacing.v22),
-      child: Center(
-        child: Text(
-          'No discussions yet.\nBe the first to start one!',
-          textAlign: TextAlign.center,
-          style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
-        ),
       ),
     );
   }

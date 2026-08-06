@@ -18,6 +18,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/community_result_screens.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/community_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/discussion_detail_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/notifications_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/upload_project_form_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/upload_project_landing_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/events/presentation/screens/events_screen.dart';
@@ -140,9 +141,17 @@ final GoRouter appRouter = GoRouter(
                   builder: (context, state) => const ProjectSubmittedScreen(),
                 ),
                 GoRoute(
+                  path: RouteNames.communityQuestionPostedSegment,
+                  builder: (context, state) => const QuestionPostedScreen(),
+                ),
+                GoRoute(
                   path: RouteNames.communityNetworkErrorSegment,
                   builder: (context, state) =>
                       const CommunityNetworkErrorScreen(),
+                ),
+                GoRoute(
+                  path: RouteNames.communityNotificationsSegment,
+                  builder: (context, state) => const NotificationsScreen(),
                 ),
               ],
             ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_primary_button.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
@@ -73,8 +73,9 @@ class UploadProjectLandingScreen extends StatelessWidget {
                 child: FkPrimaryButton(
                   label: 'Upload project',
                   icon: null,
+                  // push, not go, so the form's back arrow returns here
                   onPressed: () =>
-                      context.go(RouteNames.communityUploadProjectForm),
+                      context.push(RouteNames.communityUploadProjectForm),
                 ),
               ),
             ],

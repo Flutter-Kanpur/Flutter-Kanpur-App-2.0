@@ -31,7 +31,9 @@ class RouteNames {
   static const communityUploadProject = '/community/upload-project';
   static const communityUploadProjectForm = '/community/upload-project/form';
   static const communityProjectSubmitted = '/community/project-submitted';
+  static const communityQuestionPosted = '/community/question-posted';
   static const communityNetworkError = '/community/network-error';
+  static const communityNotifications = '/community/notifications';
 
   /// Community Segments
   static const communityDiscussionsSegment = 'discussions';
@@ -43,7 +45,9 @@ class RouteNames {
   static const communityUploadProjectSegment = 'upload-project';
   static const communityUploadProjectFormSegment = 'form';
   static const communityProjectSubmittedSegment = 'project-submitted';
+  static const communityQuestionPostedSegment = 'question-posted';
   static const communityNetworkErrorSegment = 'network-error';
+  static const communityNotificationsSegment = 'notifications';
 
   static const manageProfile = '/profile/manage-profile';
   static const editProfile = '/profile/edit-profile';

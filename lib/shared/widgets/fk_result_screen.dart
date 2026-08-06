@@ -11,6 +11,9 @@ class FkResultScreen extends StatelessWidget {
     required this.color,
     required this.buttonLabel,
     required this.onPressed,
+    this.buttonIcon,
+    this.secondaryLabel,
+    this.onSecondaryPressed,
   });
 
   final String title;
@@ -19,6 +22,13 @@ class FkResultScreen extends StatelessWidget {
   final Color color;
   final String buttonLabel;
   final VoidCallback onPressed;
+
+  /// Optional leading icon inside the primary button (Figma: 👁 View discussion).
+  final IconData? buttonIcon;
+
+  /// Optional text link under the primary button (Figma: "Post another question").
+  final String? secondaryLabel;
+  final VoidCallback? onSecondaryPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -67,11 +77,30 @@ class FkResultScreen extends StatelessWidget {
             SizedBox(height: AppSpacing.v22),
             SizedBox(
               width: 220,
-              child: OutlinedButton(
-                onPressed: onPressed,
-                child: Text(buttonLabel),
-              ),
+              child: buttonIcon == null
+                  ? OutlinedButton(
+                      onPressed: onPressed,
+                      child: Text(buttonLabel),
+                    )
+                  : OutlinedButton.icon(
+                      onPressed: onPressed,
+                      icon: Icon(buttonIcon, size: 18),
+                      label: Text(buttonLabel),
+                    ),
             ),
+            if (secondaryLabel != null && onSecondaryPressed != null) ...[
+              SizedBox(height: AppSpacing.v12),
+              TextButton(
+                onPressed: onSecondaryPressed,
+                child: Text(
+                  secondaryLabel!,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: AppColors.primary500,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
           ],
         ),
       ),

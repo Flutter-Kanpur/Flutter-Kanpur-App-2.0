@@ -25,7 +25,7 @@ class CommunityContributeCard extends StatelessWidget {
       onTap: onTap,
       child: InnerShadowContainer(
         alignment: Alignment.topLeft,
-        shadowColor: const Color(0XFFB3C4FF).withOpacity(0.08),
+        shadowColor: const Color(0XFFB3C4FF).withValues(alpha: 0.08),
         isShadowBottomLeft: true,
         isShadowBottomRight: true,
         isShadowTopLeft: true,
