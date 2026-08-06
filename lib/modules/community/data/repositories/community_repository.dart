@@ -254,20 +254,6 @@ class CommunityRepository {
         .toList();
   }
 
-  Future<int> countReplies(String questionId) async {
-    try {
-      final res = await _client
-          .from(DatabaseTables.answers)
-          .select('id')
-          .eq('question_id', questionId)
-          .eq('is_deleted', false)
-          .count(CountOption.exact);
-      return res.count;
-    } catch (_) {
-      return 0;
-    }
-  }
-
   Future<List<CommunityMember>> fetchMembers({int limit = 50}) async {
     final data = await _client
         .from(DatabaseTables.communityMemberships)
