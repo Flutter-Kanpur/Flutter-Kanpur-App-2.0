@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 
 RadialGradient backgroundGradiant() {
   return const RadialGradient(
     center: Alignment.center,
     radius: 0.7,
     colors: [
-      Color(0xFF183B4D), // Center color (brighter)
-      Color(0xFF03080B), // Edge color (darker)
+      AppColors.primary950, // Center color (brighter)
+      AppColors.blackBase, // Edge color (darker)
     ],
     stops: [0.0, 0.8],
   );
 }
 
 List<Color> getBackgroundGradientColors() {
-  return [
-    const Color(0xFF183B4D),
-    const Color(0xFF03080B),
-  ];
+  return [AppColors.primary950, AppColors.blackBase];
 }
 
 List<Color> getGradientColors(double scrollOffset) {
   double t = (scrollOffset / 300).clamp(0.0, 1.0);
-  final centerColor =
-      Color.lerp(const Color(0xFF183B4D), const Color(0xFF183B4D), t)!;
-  final edgeColor =
-      Color.lerp(const Color(0xFF03080B), const Color(0xFF03080B), t)!;
+  final centerColor = Color.lerp(
+    AppColors.primary950,
+    AppColors.primary950,
+    t,
+  )!;
+  final edgeColor = Color.lerp(AppColors.blackBase, AppColors.blackBase, t)!;
   return [centerColor, edgeColor];
 }
 
@@ -38,9 +38,9 @@ Alignment getGradientCenter(double scrollOffset, double scrollPosition) {
 LinearGradient buttonGradient() {
   return const LinearGradient(
     colors: [
-      Color(0xFF00BFFF), // Sky blue
-      Color(0xFF00BFFF), // Holds blue till mid
-      Color(0xFF13131B), // Deep dark
+      AppColors.primary400, // Sky blue
+      AppColors.primary400, // Holds blue till mid
+      AppColors.blackBase, // Deep dark
     ],
     stops: [0.0, 0.5, 1.0], // Transition at mid-point
     begin: Alignment.centerLeft,
@@ -52,10 +52,9 @@ LinearGradient buttonGradient() {
 LinearGradient titleGradient() {
   return const LinearGradient(
     colors: [
-      Color(0xFFFFFFFF), // Sky blue// Light blue
-
+      AppColors.whiteBase, // Sky blue// Light blue
       // Sky blue// Light blue
-      Color(0xFF64A9DD), // Light green
+      AppColors.primary300, // Light green
     ],
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
@@ -65,9 +64,9 @@ LinearGradient titleGradient() {
 LinearGradient eventTitleGradient() {
   return const LinearGradient(
     colors: [
-      Color(0xFF00BFFF), // Sky blue
-      Color(0xFF4FC3F7), // Light blue
-      Color(0xFF29B6F6), // Blue
+      AppColors.primary400, // Sky blue
+      AppColors.primary300, // Light blue
+      AppColors.primary300, // Blue
     ],
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
@@ -86,7 +85,7 @@ class GradientText extends StatelessWidget {
     super.key,
     this.style,
     this.gradient = const LinearGradient(
-      colors: [Color(0xFFFFFFFF), Color(0xFF64A9DD)],
+      colors: [AppColors.whiteBase, AppColors.primary300],
     ),
     this.textAlign,
   });
@@ -98,11 +97,7 @@ class GradientText extends StatelessWidget {
       shaderCallback: (bounds) => gradient.createShader(
         Rect.fromLTWH(0, 0, bounds.width, bounds.height),
       ),
-      child: Text(
-        text,
-        style: style,
-        textAlign: textAlign,
-      ),
+      child: Text(text, style: style, textAlign: textAlign),
     );
   }
 }

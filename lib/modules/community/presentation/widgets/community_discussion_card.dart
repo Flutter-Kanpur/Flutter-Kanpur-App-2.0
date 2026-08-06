@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_models.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class CommunityDiscussionCard extends StatelessWidget {
   const CommunityDiscussionCard({
@@ -20,11 +24,11 @@ class CommunityDiscussionCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: width,
-        padding: const EdgeInsets.all(16),
+        padding: AppSpacing.all(AppSpacing.h16),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: const Color(0xFFE0E0E0)),
+          color: AppColors.whiteBase,
+          borderRadius: AppRadius.all06,
+          border: Border.all(color: AppBorders.secondary),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,44 +38,51 @@ class CommunityDiscussionCard extends StatelessWidget {
               time: question.createdLabel,
               photoUrl: question.authorPhotoUrl,
             ),
-            const SizedBox(height: 18),
+            SizedBox(height: AppSpacing.v18),
             Text(
               question.title,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium
-                  ?.copyWith(fontWeight: FontWeight.w700),
+              style: AppTextStyles.titleMedium.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: AppSpacing.v10),
             Expanded(
               child: Text(
                 question.body,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.subtitleTextDarkGrey,
-                      height: 1.42,
-                    ),
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.neutral500,
+                ),
               ),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: AppSpacing.v12),
             if (question.tag.isNotEmpty)
               Text(
                 '#${question.tag}',
-                style: const TextStyle(color: AppColors.primary),
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.primary500,
+                ),
               ),
-            const SizedBox(height: 10),
+            SizedBox(height: AppSpacing.v10),
             const Divider(),
             Row(
               children: [
+                const Icon(Icons.favorite_border_outlined, size: 18),
+                SizedBox(width: AppSpacing.h4),
+                Text('${question.answerCount}'),
+                SizedBox(width: AppSpacing.h10),
                 const Icon(Icons.chat_bubble_outline, size: 18),
-                const SizedBox(width: 4),
+                SizedBox(width: AppSpacing.h4),
                 Text('${question.answerCount}'),
                 const Spacer(),
-                const Icon(Icons.bookmark_outline,
-                    color: AppColors.primary, size: 20),
+                const Icon(
+                  Icons.bookmark_outline,
+                  color: AppColors.primary500,
+                  size: 20,
+                ),
               ],
             ),
           ],
@@ -82,11 +93,7 @@ class CommunityDiscussionCard extends StatelessWidget {
 }
 
 class _AuthorRow extends StatelessWidget {
-  const _AuthorRow({
-    required this.name,
-    required this.time,
-    this.photoUrl,
-  });
+  const _AuthorRow({required this.name, required this.time, this.photoUrl});
 
   final String name;
   final String time;
@@ -98,17 +105,18 @@ class _AuthorRow extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: 18,
-          backgroundColor: const Color(0xFFFFB5C8),
-          backgroundImage:
-              photoUrl != null ? NetworkImage(photoUrl!) : null,
+          backgroundColor: AppColors.warning300,
+          backgroundImage: photoUrl != null ? NetworkImage(photoUrl!) : null,
           child: photoUrl == null
               ? Text(
                   name.isNotEmpty ? name[0].toUpperCase() : '?',
-                  style: const TextStyle(color: Colors.white, fontSize: 14),
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.whiteBase,
+                  ),
                 )
               : null,
         ),
-        const SizedBox(width: 10),
+        SizedBox(width: AppSpacing.h10),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,17 +125,15 @@ class _AuthorRow extends StatelessWidget {
                 name,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall
-                    ?.copyWith(fontWeight: FontWeight.w700),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
               ),
               Text(
                 time,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(color: Colors.grey),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: AppColors.neutral400),
               ),
             ],
           ),

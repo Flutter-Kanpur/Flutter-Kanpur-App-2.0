@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
 import 'package:flutter_knp_mobile_app_v2/common_widgets/search_bar.dart';
@@ -10,6 +8,9 @@ import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/widgets/home
 import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/widgets/event_card_component.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,7 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final announcements = [
       {
         'title': 'home.announcements.first.title'.tr(),
@@ -80,22 +80,30 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   onFiltersTap: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('home.filtersBottomSheetPlaceholder'.tr())),
+                      SnackBar(
+                        content: Text(
+                          'home.filtersBottomSheetPlaceholder'.tr(),
+                        ),
+                      ),
                     );
                   },
                   selectedFiltersCount: 0,
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 16.h),
+                  padding: EdgeInsets.fromLTRB(
+                    AppSpacing.h22,
+                    AppSpacing.h22,
+                    AppSpacing.h22,
+                    AppSpacing.h16,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         'home.whatsNew'.tr(),
-                        style: TextStyle(
-                          fontSize: 18.sp,
+                        style: AppTextStyles.titleLarge.copyWith(
+                          color: AppColors.blackBase,
                           fontWeight: FontWeight.w600,
-                          color: Colors.black,
                         ),
                       ),
                       GestureDetector(
@@ -106,17 +114,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             Text(
                               'home.seeAll'.tr(),
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.grey[600],
+                              style: AppTextStyles.titleMedium.copyWith(
+                                color: AppColors.neutral500,
                               ),
                             ),
-                            SizedBox(width: 2.w),
+                            SizedBox(width: AppSpacing.h2),
                             Icon(
                               Icons.chevron_right,
                               size: 20.sp,
-                              color: Colors.grey[600],
+                              color: AppColors.neutral500,
                             ),
                           ],
                         ),
@@ -125,13 +131,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16),
                   child: Column(
                     children: [
                       EventCardComponent(
                         assetPath: AssetsPath.launcheventpng,
                         status: 'home.events.upcoming'.tr(),
-                        statusColor: const Color(0xFF10B981),
+                        statusColor: AppColors.success500,
                         organization: 'home.events.organization'.tr(),
                         title: 'home.events.first.title'.tr(),
                         description: 'home.events.first.description'.tr(),
@@ -145,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       EventCardComponent(
                         assetPath: AssetsPath.fkcard,
                         status: 'home.events.upcoming'.tr(),
-                        statusColor: const Color(0xFF10B981),
+                        statusColor: AppColors.success500,
                         organization: 'home.events.organization'.tr(),
                         title: 'home.events.second.title'.tr(),
                         description: 'home.events.second.description'.tr(),
@@ -166,4 +172,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-

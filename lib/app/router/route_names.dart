@@ -47,10 +47,50 @@ class RouteNames {
 
   static const manageProfile = '/profile/manage-profile';
   static const editProfile = '/profile/edit-profile';
+  static const myEvents = '/profile/my-events';
+  static const myContests = '/profile/my-contests';
+  static const problemOfDay = '/profile/problem-of-day';
+
+  /// Legal
+  static const aboutFlutterKanpur = '/profile/about-flutter-kanpur';
+  static const privacyPolicy = '/profile/privacy-policy';
+  static const termsOfUse = '/profile/terms-of-use';
+
+  /// Support
+  static const helpCenter = '/profile/help-center';
+  static const contactCommunityTeam = '/profile/contact-community-team';
+  static const reportAnIssue = '/profile/report-an-issue';
 
   /// Onboarding Segments
   static const onboardingProfileSegment = 'profile';
   static const onboardingRoleSegment = 'role';
   static const onboardingSkillsSegment = 'skills';
   static const onboardingLinksSegment = 'links';
+
+  /// Contributor
+  static const joinContributor = '/contributor/join';
+  static const contributorApplication = '/contributor/application';
+  static const reviewApplication = '/contributor/review';
+  static const applicationSummary = '/contributor/summary';
+  static const applicationSubmitted = '/contributor/submitted';
+
+  static const myContributions = '/contributor/my-contributions';
+  static const noContributions = '/contributor/no-contributions';
+  static const alreadyContributor = '/contributor/already-contributor';
+  static const applicationAlreadySubmitted =
+      '/contributor/application-already-submitted';
+  static const applicationUnderReview = '/contributor/application-under-review';
+  static const applicationRejected = '/contributor/application-rejected';
+
+  /// Contributor Segments
+  static const contributorApplicationSegment = 'application';
+  static const reviewApplicationSegment = 'review';
+  static const applicationSummarySegment = 'summary';
+  static const applicationSubmittedSegment = 'submitted';
+
+  static const noContributionsSegment = 'no-contributions';
+  static const alreadyContributorSegment = 'already-contributor';
+  static const applicationAlreadySubmittedSegment = 'application-submitted';
+  static const applicationUnderReviewSegment = 'application-under-review';
+  static const applicationRejectedSegment = 'application-rejected';
 }

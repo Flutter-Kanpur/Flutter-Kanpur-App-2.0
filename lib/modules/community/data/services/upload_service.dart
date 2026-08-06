@@ -3,7 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UploadService {
   final SupabaseClient _supabase;
-  
+
   UploadService(this._supabase);
 
   /// Upload file to Supabase Storage
@@ -21,15 +21,18 @@ class UploadService {
       }
 
       // Generate unique filename
-      final fileName = '${DateTime.now().millisecondsSinceEpoch}_${file.path.split('/').last}';
+      final fileName =
+          '${DateTime.now().millisecondsSinceEpoch}_${file.path.split('/').last}';
       final uploadPath = '$path/$fileName';
 
       // Upload to Supabase Storage
-      await _supabase.storage.from(bucket).upload(
-        uploadPath,
-        file,
-        fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
-      );
+      await _supabase.storage
+          .from(bucket)
+          .upload(
+            uploadPath,
+            file,
+            fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
+          );
 
       // Return public URL
       final publicUrl = _supabase.storage.from(bucket).getPublicUrl(uploadPath);
@@ -70,10 +73,7 @@ class UploadService {
   }
 
   /// Get public URL for a file
-  String getPublicUrl({
-    required String bucket,
-    required String path,
-  }) {
+  String getPublicUrl({required String bucket, required String path}) {
     return _supabase.storage.from(bucket).getPublicUrl(path);
   }
 }

@@ -14,7 +14,7 @@ class ProjectSubmittedScreen extends StatelessWidget {
       message:
           'Thanks for sharing your project. Our team will review it and notify you once it is approved.',
       icon: Icons.check_rounded,
-      color: AppColors.primary,
+      color: AppColors.primary500,
       buttonLabel: 'View my projects',
       onPressed: () => context.go(RouteNames.communityProjects),
     );
@@ -30,7 +30,7 @@ class CommunityNetworkErrorScreen extends StatelessWidget {
       title: 'Network error',
       message: "Couldn't post your question right now.",
       icon: Icons.wifi_tethering_error_rounded,
-      color: AppColors.errorColor,
+      color: AppColors.warning600,
       buttonLabel: 'Try again',
       onPressed: () => context.go(RouteNames.communityAskQuestion),
     );

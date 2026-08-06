@@ -9,6 +9,10 @@ import 'package:flutter_knp_mobile_app_v2/modules/community/application/communit
 import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 
 class AskQuestionScreen extends ConsumerStatefulWidget {
   const AskQuestionScreen({super.key});
@@ -23,7 +27,13 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
   final _tagsController = TextEditingController();
 
   String _selectedCategory = 'general';
-  final List<String> _categories = ['general', 'flutter', 'dart', 'widgets', 'state-management'];
+  final List<String> _categories = [
+    'general',
+    'flutter',
+    'dart',
+    'widgets',
+    'state-management',
+  ];
   List<String> _selectedTags = [];
   String? _selectedImageUrl;
 
@@ -62,7 +72,7 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: const Text('✅ Question posted successfully'),
-                backgroundColor: Colors.green.shade600,
+                backgroundColor: AppColors.success600,
               ),
             );
             Future.delayed(const Duration(milliseconds: 800)).then((_) {
@@ -77,7 +87,7 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('❌ Error: ${error.toString()}'),
-                backgroundColor: Colors.red.shade600,
+                backgroundColor: AppColors.warning600,
               ),
             );
           }
@@ -88,47 +98,44 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
 
     return FkScreen(
       children: [
-        _TopBar(
-          title: 'Ask a question',
-          onBack: () => context.pop(),
-        ),
-        const SizedBox(height: 26),
+        _TopBar(title: 'Ask a question', onBack: () => context.pop()),
+        SizedBox(height: AppSpacing.v22),
         FkTextField(
           label: 'Question title',
           hint: 'Enter title',
           controller: _titleController,
         ),
-        const SizedBox(height: 26),
+        SizedBox(height: AppSpacing.v22),
         FkTextField(
           label: 'Details',
           hint: "Add more context, code snippets, or what you've tried so far.",
           controller: _detailsController,
           maxLines: 5,
         ),
-        const SizedBox(height: 26),
+        SizedBox(height: AppSpacing.v22),
         // Category Dropdown
         Text(
           'Choose a category',
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: AppSpacing.v8),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
+          padding: AppSpacing.horizontal(AppSpacing.h12),
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.shade300),
-            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: AppBorders.primary),
+            borderRadius: AppRadius.all02,
           ),
           child: DropdownButton<String>(
             value: _selectedCategory,
             isExpanded: true,
             underline: const SizedBox(),
             items: _categories
-                .map((category) => DropdownMenuItem(
-                      value: category,
-                      child: Text(category),
-                    ))
+                .map(
+                  (category) =>
+                      DropdownMenuItem(value: category, child: Text(category)),
+                )
                 .toList(),
             onChanged: (value) {
               if (value != null) {
@@ -137,56 +144,61 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
             },
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: AppSpacing.v8),
         Align(
           alignment: Alignment.centerLeft,
           child: FkStatusChip(label: '$_selectedCategory  X'),
         ),
-        const SizedBox(height: 26),
+        SizedBox(height: AppSpacing.v22),
         // Tags Input
         FkTextField(
           label: 'Tags',
           hint: 'add tags',
           controller: _tagsController,
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: AppSpacing.v8),
         Align(
           alignment: Alignment.centerLeft,
           child: GestureDetector(
             onTap: _addTag,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              padding: AppSpacing.symmetric(
+                horizontal: AppSpacing.h12,
+                vertical: AppSpacing.v8,
+              ),
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.blue),
-                borderRadius: BorderRadius.circular(4),
+                border: Border.all(color: AppBorders.blue),
+                borderRadius: AppRadius.all01,
               ),
               child: const Text('+ Add Tag'),
             ),
           ),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: AppSpacing.v12),
         if (_selectedTags.isNotEmpty)
           Wrap(
-            spacing: 8,
-            runSpacing: 8,
+            spacing: AppSpacing.h8,
+            runSpacing: AppSpacing.v8,
             children: _selectedTags
-                .map((tag) => GestureDetector(
-                      onTap: () => _removeTag(tag),
-                      child: FkStatusChip(label: '#$tag  X'),
-                    ))
+                .map(
+                  (tag) => GestureDetector(
+                    onTap: () => _removeTag(tag),
+                    child: FkStatusChip(label: '#$tag  X'),
+                  ),
+                )
                 .toList(),
           ),
-        const SizedBox(height: 26),
+        SizedBox(height: AppSpacing.v22),
         // File Upload
         Text(
           'Upload screenshot or file (optional)',
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: AppSpacing.v10),
         const FkFileUploadBox(),
-        const SizedBox(height: 26),
+        SizedBox(height: AppSpacing.v22),
         // Submit Button
         FkPrimaryButton(
           label: 'Post question',
@@ -198,7 +210,7 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: const Text('⚠️ Please fill in title and details'),
-                  backgroundColor: Colors.orange.shade600,
+                  backgroundColor: AppColors.pending500,
                 ),
               );
               return;
@@ -212,7 +224,9 @@ class _AskQuestionScreenState extends ConsumerState<AskQuestionScreen> {
               imageUrl: _selectedImageUrl,
             );
 
-            ref.read(communityActionControllerProvider.notifier).submitQuestion(draft);
+            ref
+                .read(communityActionControllerProvider.notifier)
+                .submitQuestion(draft);
           },
         ),
       ],
@@ -235,12 +249,12 @@ class _TopBar extends StatelessWidget {
           child: Text(
             title,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
           ),
         ),
-        const SizedBox(width: 48),
+        SizedBox(width: AppSpacing.h22),
       ],
     );
   }

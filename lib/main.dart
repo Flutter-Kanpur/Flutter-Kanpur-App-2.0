@@ -1,3 +1,4 @@
+import 'package:Readme/core/network/readme_supabase.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -13,17 +14,25 @@ Future<void> main() async {
 
   await dotenv.load(fileName: '.env');
 
-  await Supabase.initialize(url: Env.supabaseUrl, publishableKey: Env.supabaseAnonKey);
+  await Supabase.initialize(
+    url: Env.supabaseUrl,
+    publishableKey: Env.supabaseAnonKey,
+  );
+
+  // ReadMe blogs live on a different Supabase project than the main app.
+  // Bind a dedicated client so article queries hit the correct database.
+  final readmeUrl = Env.readmeSupabaseUrl;
+  final readmeKey = Env.readmeSupabaseAnonKey;
+  if (readmeUrl.isNotEmpty && readmeKey.isNotEmpty) {
+    ReadmeSupabase.bind(SupabaseClient(readmeUrl, readmeKey));
+  }
 
   runApp(
     ProviderScope(
       child: EasyLocalization(
         supportedLocales: const [Locale('en'), Locale('hi')],
-
         path: 'assets/translations',
-
         fallbackLocale: const Locale('en'),
-
         child: const FlutterKanpurApp(),
       ),
     ),

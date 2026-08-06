@@ -1,6 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class OnboardingImagePickerSheet extends StatelessWidget {
   final VoidCallback onGalleryTap;
@@ -18,16 +22,16 @@ class OnboardingImagePickerSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: 24.w,
-        vertical: 24.h,
+        horizontal: AppSpacing.h16,
+        vertical: AppSpacing.v16,
       ),
 
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.whiteBase,
 
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24.r),
-          topRight: Radius.circular(24.r),
+          topLeft: Radius.circular(AppRadius.r06),
+          topRight: Radius.circular(AppRadius.r06),
         ),
       ),
 
@@ -35,7 +39,6 @@ class OnboardingImagePickerSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
 
         children: [
-
           _buildTile(
             icon: Icons.photo_library_outlined,
             title: 'onboarding.importFromGallery'.tr(),
@@ -69,17 +72,15 @@ class OnboardingImagePickerSheet extends StatelessWidget {
     required VoidCallback onTap,
     bool isDelete = false,
   }) {
-
     return GestureDetector(
       onTap: onTap,
 
       child: Row(
         children: [
-
           Icon(
             icon,
             size: 24.sp,
-            color: isDelete ? Colors.red : Colors.black,
+            color: isDelete ? AppColors.warning600 : AppColors.blackBase,
           ),
 
           14.horizontalSpace,
@@ -87,10 +88,8 @@ class OnboardingImagePickerSheet extends StatelessWidget {
           Text(
             title,
 
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w500,
-              color: isDelete ? Colors.red : Colors.black,
+            style: AppTextStyles.titleMedium.copyWith(
+              color: isDelete ? AppColors.warning600 : AppColors.blackBase,
             ),
           ),
         ],

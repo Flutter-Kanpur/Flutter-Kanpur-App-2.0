@@ -1,6 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class OnboardingExperienceDropdown extends StatelessWidget {
   final String selectedValue;
@@ -19,39 +24,31 @@ class OnboardingExperienceDropdown extends StatelessWidget {
 
       child: Container(
         padding: EdgeInsets.symmetric(
-          horizontal: 16.w,
-          vertical: 16.h,
+          horizontal: AppSpacing.h16,
+          vertical: AppSpacing.v16,
         ),
 
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14.r),
+          borderRadius: AppRadius.all03,
 
-          border: Border.all(
-            color: const Color(0xFFE0E0E0),
-          ),
+          border: Border.all(color: AppBorders.secondary),
         ),
 
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
           children: [
-
             Text(
               selectedValue.isEmpty
                   ? 'onboarding.yearsOfExperience'.tr()
                   : selectedValue,
 
-              style: TextStyle(
-                fontSize: 15.sp,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
+              style: AppTextStyles.titleSmall.copyWith(
+                color: AppColors.blackBase,
               ),
             ),
 
-            Icon(
-              Icons.keyboard_arrow_down_rounded,
-              size: 24.sp,
-            ),
+            Icon(Icons.keyboard_arrow_down_rounded, size: 24.sp),
           ],
         ),
       ),

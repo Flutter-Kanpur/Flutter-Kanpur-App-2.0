@@ -7,8 +7,12 @@ import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
 
 // import '../../../../services/remote_config_service.dart';
 import '../../../utils/assets_path.dart';
-import '../../../utils/text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+
 import '../../../utils/translate.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 // import '../../domain/entities/profile_entity.dart';
 // import '../bloc/profile_bloc.dart';
 // import '../bloc/profile_event.dart';
@@ -78,7 +82,8 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
     _inlineAddOtherFocusNode.unfocus();
     setState(() => _showInlineAddOther = false);
     if (value.isEmpty) return;
-    if (_predefinedSkills.any((s) => s.toLowerCase() == value.toLowerCase())) return;
+    if (_predefinedSkills.any((s) => s.toLowerCase() == value.toLowerCase()))
+      return;
     setState(() {
       _selectedSkills.add(value);
     });
@@ -107,17 +112,17 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration: BoxDecoration(
+        color: AppColors.whiteBase,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(32),
-          topRight: Radius.circular(32),
+          topLeft: Radius.circular(AppRadius.r07),
+          topRight: Radius.circular(AppRadius.r07),
         ),
       ),
       padding: EdgeInsets.only(
-        left: 20.w,
-        right: 20.w,
-        top: 20.h,
+        left: AppSpacing.h10,
+        right: AppSpacing.h10,
+        top: AppSpacing.v10,
         bottom: MediaQuery.of(context).viewInsets.bottom + 20.h,
       ),
       child: SingleChildScrollView(
@@ -130,56 +135,71 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
                 width: 60.w,
                 height: 4.h,
                 decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(2),
+                  color: AppColors.blackBase,
+                  borderRadius: AppRadius.all01,
                 ),
               ),
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: AppSpacing.v20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   translate(context, "profile.addSkills"),
-                  style: textStyle_18BoldBlack(),
+                  style: AppTextStyles.titleLarge.copyWith(
+                    color: AppColors.blackBase,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 IconButton(
                   onPressed: () => context.pop(),
-                  icon: const Icon(Icons.close_rounded, color: Colors.black),
+                  icon: const Icon(
+                    Icons.close_rounded,
+                    color: AppColors.blackBase,
+                  ),
                   style: IconButton.styleFrom(
-                    backgroundColor: const Color(0xFFF6F6F6),
+                    backgroundColor: AppColors.neutral50,
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: AppSpacing.v16),
             Container(
               height: 48.h,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100.r),
-                border: Border.all(color: AppColors.communityBorderColor),
+                borderRadius: AppRadius.all09,
+                border: Border.all(color: AppBorders.secondary),
               ),
               child: TextField(
                 controller: _searchController,
-                style: textStyle_14RegularBlack().copyWith(
-          color: const Color(0xFF3D3D3D),
-        ),
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.neutral900,
+                ),
                 decoration: InputDecoration(
                   hintText: translate(context, "profile.searchRolesSkills"),
-                  hintStyle: textStyle_16RegularGrey(),
+                  hintStyle: AppTextStyles.bodyLarge.copyWith(
+                    color: AppColors.neutral500,
+                  ),
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 14.h,
+                    horizontal: AppSpacing.h16,
+                    vertical: AppSpacing.v16,
                   ),
                   suffixIcon: Padding(
-                    padding: EdgeInsets.only(right: 12.w, top: 15.h, bottom: 15.h),
+                    padding: EdgeInsets.only(
+                      right: AppSpacing.h12,
+                      top: AppSpacing.v16,
+                      bottom: AppSpacing.v16,
+                    ),
                     child: SizedBox(
                       height: 20.h,
                       width: 20.w,
                       child: SvgPicture.asset(
                         AssetsPath.explore,
-                        colorFilter: const ColorFilter.mode(AppColors.contributorFieldHintColor, BlendMode.srcIn),
+                        colorFilter: const ColorFilter.mode(
+                          AppColors.neutral300,
+                          BlendMode.srcIn,
+                        ),
                         fit: BoxFit.contain,
                       ),
                     ),
@@ -187,10 +207,10 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
                 ),
               ),
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: AppSpacing.v20),
             Wrap(
-              spacing: 10.w,
-              runSpacing: 10.h,
+              spacing: AppSpacing.h10,
+              runSpacing: AppSpacing.v10,
               children: [
                 ..._filteredSkills.map((skill) {
                   final isSelected = _selectedSkills.contains(skill);
@@ -205,28 +225,32 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
                       });
                     },
                     child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 150),
-                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                      duration: Duration(milliseconds: 150),
+                      padding: AppSpacing.symmetric(
+                        horizontal: AppSpacing.h16,
+                        vertical: AppSpacing.v8,
+                      ),
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? const Color(0xFF4167F2).withValues(alpha: 0.12)
-                            : Colors.white,
-                        borderRadius: BorderRadius.circular(24.r),
+                            ? AppColors.primary500.withValues(alpha: 0.12)
+                            : AppColors.whiteBase,
+                        borderRadius: AppRadius.all06,
                         border: Border.all(
                           color: isSelected
-                              ? const Color(0xFF4167F2)
-                              : const Color(0xFFE3E3E3),
+                              ? AppColors.primary500
+                              : AppBorders.secondary,
                           width: isSelected ? 1.5 : 1,
                         ),
                       ),
                       child: Text(
                         skill,
-                        style: textStyle_14RegularBlack().copyWith(
+                        style: AppTextStyles.bodyMedium.copyWith(
                           color: isSelected
-                              ? const Color(0xFF4167F2)
-                              : const Color(0xFF3D3D3D),
-                          fontWeight:
-                              isSelected ? FontWeight.w600 : FontWeight.w400,
+                              ? AppColors.primary500
+                              : AppColors.neutral900,
+                          fontWeight: isSelected
+                              ? FontWeight.w600
+                              : FontWeight.w400,
                         ),
                       ),
                     ),
@@ -236,28 +260,29 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
                   _buildInlineAddOtherChip(),
               ],
             ),
-            SizedBox(height: 24.h),
+            SizedBox(height: AppSpacing.v22),
             GestureDetector(
               onTap: _startInlineAddOther,
               child: Text(
                 translate(context, "profile.addOther"),
-                style: textStyle_16BoldLinkBlue().copyWith(
-                  fontSize: 16.sp,
+                style: AppTextStyles.bodyLarge.copyWith(
+                  color: AppColors.primary500,
                   fontWeight: FontWeight.w500,
                 ),
               ),
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: AppSpacing.v20),
             GradientButton(
               onTap: () {
                 widget.onSave(_selectedSkills.toList());
                 Navigator.of(context).pop();
               },
               text: translate(context, "profile.saveChanges"),
-              textStyle:
-                  textStyle_16MediumBlack().copyWith(color: Colors.white),
+              textStyle: AppTextStyles.titleMedium.copyWith(
+                color: AppColors.whiteBase,
+              ),
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: AppSpacing.v20),
           ],
         ),
       ),
@@ -267,14 +292,16 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
   Widget _buildInlineAddOtherChip() {
     return Container(
       constraints: BoxConstraints(minWidth: 120.w, maxWidth: 200.w),
-      padding: EdgeInsets.only(left: 14.w, right: 8.w, top: 6.h, bottom: 6.h),
+      padding: EdgeInsets.only(
+        left: AppSpacing.h16,
+        right: AppSpacing.h8,
+        top: AppSpacing.v6,
+        bottom: AppSpacing.v6,
+      ),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24.r),
-        border: Border.all(
-          color: const Color(0xFF4167F2),
-          width: 1.5,
-        ),
+        color: AppColors.whiteBase,
+        borderRadius: AppRadius.all06,
+        border: Border.all(color: AppBorders.blue, width: 1.5),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -284,10 +311,10 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
             child: TextField(
               controller: _inlineAddOtherController,
               focusNode: _inlineAddOtherFocusNode,
-              style: textStyle_16RegularBlack().copyWith(fontSize: 14.sp),
+              style: AppTextStyles.bodyLarge,
               decoration: InputDecoration(
                 hintText: translate(context, 'profile.enterSkill'),
-                hintStyle: textStyle_16RegularGrey().copyWith(fontSize: 14.sp),
+                hintStyle: AppTextStyles.bodyLarge,
                 isDense: true,
                 contentPadding: EdgeInsets.zero,
                 border: InputBorder.none,
@@ -299,11 +326,7 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
           ),
           GestureDetector(
             onTap: _cancelInlineAddOther,
-            child: Icon(
-              Icons.close,
-              size: 18.sp,
-              color: Colors.black,
-            ),
+            child: Icon(Icons.close, size: 18.sp, color: AppColors.blackBase),
           ),
         ],
       ),

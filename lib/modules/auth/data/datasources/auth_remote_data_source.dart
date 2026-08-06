@@ -1,5 +1,6 @@
 import 'package:flutter_knp_mobile_app_v2/modules/auth/auth_constants.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/auth/data/models/auth_user_model.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/blogs/data/readme_auth_bridge.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthRemoteDataSource {
@@ -21,7 +22,9 @@ class AuthRemoteDataSource {
 
     await _client
         .from(AuthConstants.usersTable)
-        .update({AuthConstants.lastLoginAtField: DateTime.now().toIso8601String()})
+        .update({
+          AuthConstants.lastLoginAtField: DateTime.now().toIso8601String(),
+        })
         .eq(AuthConstants.uidField, user.id);
 
     final rows = await _client
@@ -57,14 +60,16 @@ class AuthRemoteDataSource {
     // Insert the users row. If this fails (e.g. the auth signup already ran
     // and only the insert crashed), don't block the user — they just verify email.
     try {
-      await _client.from(AuthConstants.usersTable).insert(
-        AuthUserModel.toInsertMap(
-          uid: user.id,
-          email: email,
-          username: username,
-          isEmailVerified: user.emailConfirmedAt != null,
-        ),
-      );
+      await _client
+          .from(AuthConstants.usersTable)
+          .insert(
+            AuthUserModel.toInsertMap(
+              uid: user.id,
+              email: email,
+              username: username,
+              isEmailVerified: user.emailConfirmedAt != null,
+            ),
+          );
     } catch (_) {
       // Row might already exist from a previous partial attempt — safe to ignore.
     }
@@ -92,6 +97,7 @@ class AuthRemoteDataSource {
 
   Future<void> signOut() async {
     await _client.auth.signOut();
+    await ReadmeAuthBridge.signOut();
   }
 
   Future<AuthUserModel?> refreshAndCheckVerification() async {

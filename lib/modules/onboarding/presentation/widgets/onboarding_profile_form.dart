@@ -1,6 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 
 class OnboardingProfileForm extends StatelessWidget {
   const OnboardingProfileForm({super.key});
@@ -12,29 +15,27 @@ class OnboardingProfileForm extends StatelessWidget {
         hintText: 'onboarding.fullName'.tr(),
 
         filled: true,
-        fillColor: const Color(0xFFF7F7F7),
+        fillColor: AppColors.neutral50,
 
         contentPadding: EdgeInsets.symmetric(
-          horizontal: 16.w,
-          vertical: 18.h,
+          horizontal: AppSpacing.h16,
+          vertical: AppSpacing.v18,
         ),
 
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14.r),
+          borderRadius: AppRadius.all03,
           borderSide: BorderSide.none,
         ),
 
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14.r),
+          borderRadius: AppRadius.all03,
           borderSide: BorderSide.none,
         ),
 
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14.r),
+          borderRadius: AppRadius.all03,
 
-          borderSide: const BorderSide(
-            color: Colors.black,
-          ),
+          borderSide: const BorderSide(color: AppBorders.primary),
         ),
       ),
     );

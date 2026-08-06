@@ -45,7 +45,8 @@ class CommunityMember {
     final user = map['member'] as Map<String, dynamic>?;
     final skillsList = (user?['user_skills'] as List<dynamic>?) ?? [];
     return CommunityMember(
-      name: user?['display_name'] as String? ??
+      name:
+          user?['display_name'] as String? ??
           user?['username'] as String? ??
           'Anonymous',
       role: map['role'] as String? ?? 'member',
@@ -90,7 +91,8 @@ class CommunityProject {
           .map((t) => (t as Map)['tech_name'] as String? ?? '')
           .where((t) => t.isNotEmpty)
           .toList(),
-      ownerName: owner?['display_name'] as String? ?? owner?['username'] as String?,
+      ownerName:
+          owner?['display_name'] as String? ?? owner?['username'] as String?,
       githubUrl: map['github_url'] as String?,
     );
   }
@@ -141,7 +143,8 @@ class CommunityQuestion {
       tag: '',
       answerCount: map['answer_count'] as int? ?? 0,
       status: map['status'] as String? ?? 'open',
-      authorName: author?['display_name'] as String? ??
+      authorName:
+          author?['display_name'] as String? ??
           author?['username'] as String? ??
           'Anonymous',
       createdLabel: _timeAgo(map['created_at'] as String?),
@@ -160,8 +163,18 @@ class CommunityQuestion {
     if (diff.inDays == 1) return 'Yesterday';
     if (diff.inDays < 30) return '${diff.inDays}d ago';
     const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return '${dt.day} ${months[dt.month - 1]}';
   }
@@ -193,7 +206,8 @@ class CommunityReply {
     return CommunityReply(
       id: map['id'] as String? ?? '',
       authorId: author?['uid'] as String? ?? '',
-      authorName: author?['display_name'] as String? ??
+      authorName:
+          author?['display_name'] as String? ??
           author?['username'] as String? ??
           'Anonymous',
       authorPhotoUrl: author?['photo_url'] as String?,

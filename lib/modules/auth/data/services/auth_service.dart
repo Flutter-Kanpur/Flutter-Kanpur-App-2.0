@@ -1,3 +1,4 @@
+import 'package:flutter_knp_mobile_app_v2/modules/blogs/data/readme_auth_bridge.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../domain/auth_models.dart' as models;
 
@@ -5,7 +6,7 @@ class AuthService {
   final SupabaseClient _client;
 
   AuthService({SupabaseClient? client})
-      : _client = client ?? Supabase.instance.client;
+    : _client = client ?? Supabase.instance.client;
 
   // ─── Sign In ──────────────────────────────────────────────────────────────
 
@@ -31,11 +32,20 @@ class AuthService {
       }
 
       print('✅ [AuthService] Sign in successful: ${user.id}');
-      return models.AuthResponse.success(
-        userId: user.id,
-        email: user.email ?? '',
-        message: 'Signed in successfully',
-      );
+
+try {
+  await _client.from('users').update({
+    'last_login_at': DateTime.now().toIso8601String(),
+  }).eq('uid', user.id);
+} catch (_) {
+  // profile row may not exist yet — don't block login
+}
+
+return models.AuthResponse.success(
+  userId: user.id,
+  email: user.email ?? '',
+  message: 'Signed in successfully',
+);
     } on AuthException catch (e) {
       print('❌ [AuthService] Auth error: ${e.message}');
       return models.AuthResponse.error(
@@ -62,9 +72,13 @@ class AuthService {
       print('🔐 [AuthService] Signing up user: $email');
 
       final response = await _client.auth.signUp(
-        email: email,
-        password: password,
-      );
+  email: email,
+  password: password,
+  data: {
+    if (displayName != null && displayName.isNotEmpty)
+      'display_name': displayName,
+  },
+);
 
       final user = response.user;
       if (user == null) {
@@ -76,6 +90,18 @@ class AuthService {
       }
 
       print('✅ [AuthService] Sign up successful: ${user.id}');
+      try {
+  await _client.from('users').insert({
+    'uid': user.id,
+    'email': email,
+    'username': displayName ?? '',
+    'display_name': displayName,
+    'email_verified': user.emailConfirmedAt != null,
+    'onboarding_completed': false,
+  });
+} catch (_) {
+  // row may already exist from a partial retry
+}
 
       return models.SignUpResponse.success(
         userId: user.id,
@@ -103,6 +129,7 @@ class AuthService {
     try {
       print('🔐 [AuthService] Signing out');
       await _client.auth.signOut();
+      await ReadmeAuthBridge.signOut();
       print('✅ [AuthService] Sign out successful');
     } catch (e) {
       print('❌ [AuthService] Sign out error: $e');

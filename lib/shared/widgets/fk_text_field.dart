@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 
 class FkTextField extends StatelessWidget {
   const FkTextField({
@@ -9,6 +12,8 @@ class FkTextField extends StatelessWidget {
     this.controller,
     this.maxLines = 1,
     this.focused = false,
+    this.validator,
+    this.autovalidateMode = AutovalidateMode.disabled,
   });
 
   final String label;
@@ -16,6 +21,8 @@ class FkTextField extends StatelessWidget {
   final TextEditingController? controller;
   final int maxLines;
   final bool focused;
+  final String? Function(String?)? validator;
+  final AutovalidateMode autovalidateMode;
 
   @override
   Widget build(BuildContext context) {
@@ -28,25 +35,27 @@ class FkTextField extends StatelessWidget {
             context,
           ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
         ),
-        const SizedBox(height: 10),
-        TextField(
+        SizedBox(height: AppSpacing.v10),
+        TextFormField(
           controller: controller,
           maxLines: maxLines,
+          validator: validator,
+          autovalidateMode: autovalidateMode,
           decoration: InputDecoration(
             hintText: hint,
             filled: true,
-            fillColor: Colors.white,
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 14,
+            fillColor: AppColors.whiteBase,
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: AppSpacing.h16,
+              vertical: AppSpacing.v16,
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(color: Color(0xFFD6D6D6)),
+              borderRadius: AppRadius.all03,
+              borderSide: BorderSide(color: AppBorders.primary),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(color: AppColors.primary),
+              borderRadius: AppRadius.all03,
+              borderSide: const BorderSide(color: AppBorders.blue),
             ),
           ),
         ),

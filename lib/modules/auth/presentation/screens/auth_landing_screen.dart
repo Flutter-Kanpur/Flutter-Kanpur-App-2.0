@@ -7,6 +7,9 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradient_background.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/core/storage/app_prefs.dart';
 
 class AuthLandingScreen extends StatefulWidget {
   const AuthLandingScreen({super.key});
@@ -49,6 +52,8 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
       );
     } else {
       if (!mounted) return;
+      await AppPrefs.setHasSeenLanding(true);
+      if (!mounted) return;
       context.go(RouteNames.authOptions);
     }
   }
@@ -60,14 +65,21 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.all(20.sp),
+              padding: AppSpacing.all(AppSpacing.h20),
               child: Align(
                 alignment: Alignment.topRight,
                 child: TextButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    await AppPrefs.setHasSeenLanding(true);
+                    if (!mounted) return;
                     context.go(RouteNames.authOptions);
                   },
-                  child: Text('Skip', style: textStyle_16MediumBlack()),
+                  child: Text(
+                    'Skip',
+                    style: AppTextStyles.titleMedium.copyWith(
+                      color: AppColors.blackBase,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -86,7 +98,7 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(20.sp),
+              padding: AppSpacing.all(AppSpacing.h20),
               child: Column(
                 children: [
                   _buildPageIndicators(),
@@ -104,7 +116,7 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
 
   Widget _buildPage(AuthLandingScreenData pageData) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.sp),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.h10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -113,17 +125,21 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
           Text(
             pageData.title,
             textAlign: TextAlign.center,
-            style: textStyle_24BoldBlack(),
+            style: AppTextStyles.headlineSmall.copyWith(
+              color: AppColors.blackBase,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           16.verticalSpace,
 
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5.sp),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.h10),
             child: Text(
               pageData.description,
               textAlign: TextAlign.center,
-              style: textStyle_14RegularGrey().copyWith(
-                color: AppColors.subtitleTextDarkGrey,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.neutral500,
+                fontWeight: FontWeight.w300,
                 height: 1.5,
               ),
             ),
@@ -140,12 +156,14 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
       children: List.generate(
         pages.length,
         (index) => Container(
-          margin: EdgeInsets.symmetric(horizontal: 2.sp),
+          margin: EdgeInsets.symmetric(horizontal: AppSpacing.h2),
           width: _currentPage == index ? 32.w : 8.w,
           height: 8,
           decoration: BoxDecoration(
-            color: _currentPage == index ? Colors.black : Color(0XFFD9D9D9),
-            borderRadius: BorderRadius.circular(4.r),
+            color: _currentPage == index
+                ? AppColors.blackBase
+                : AppColors.neutral200,
+            borderRadius: AppRadius.all01,
           ),
         ),
       ),
@@ -154,9 +172,7 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
 
   Widget _buildNextButton() {
     return GradientButton(
-      textStyle: textStyle_14MediumGreyHintStyle().copyWith(
-        color: Colors.white,
-      ),
+      textStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.whiteBase),
       width: 150.w,
       onTap: _goToNextPage,
       text: _currentPage == pages.length - 1 ? 'Get Started ->' : 'Next ->',

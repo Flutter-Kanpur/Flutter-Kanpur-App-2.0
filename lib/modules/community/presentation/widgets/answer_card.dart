@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class AnswerCard extends ConsumerWidget {
   final String answerId;
@@ -37,11 +42,11 @@ class AnswerCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      margin: EdgeInsets.only(bottom: 16.h),
-      padding: EdgeInsets.all(12.w),
+      margin: EdgeInsets.only(bottom: AppSpacing.v16),
+      padding: AppSpacing.all(AppSpacing.h12),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(color: AppBorders.primary),
+        borderRadius: AppRadius.all02,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,28 +61,21 @@ class AnswerCard extends ConsumerWidget {
                     : null,
                 child: authorPhotoUrl == null
                     ? Text(
-                  _getInitials(authorName),
-                  style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w600),
-                )
+                        _getInitials(authorName),
+                        style: AppTextStyles.labelMedium,
+                      )
                     : null,
               ),
-              SizedBox(width: 12.w),
+              SizedBox(width: AppSpacing.h12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      authorName,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    Text(authorName, style: AppTextStyles.labelLarge),
                     Text(
                       createdAt,
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Colors.grey.shade600,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.neutral500,
                       ),
                     ),
                   ],
@@ -88,9 +86,11 @@ class AnswerCard extends ConsumerWidget {
                   itemBuilder: (context) => [
                     if (onDelete != null)
                       PopupMenuItem(
-                        child: const Text(
+                        child: Text(
                           'Delete',
-                          style: TextStyle(color: Colors.red),
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.warning600,
+                          ),
                         ),
                         onTap: onDelete,
                       ),
@@ -99,18 +99,17 @@ class AnswerCard extends ConsumerWidget {
                 ),
             ],
           ),
-          SizedBox(height: 12.h),
+          SizedBox(height: AppSpacing.v12),
 
           // Answer Body
           Text(
             body,
-            style: TextStyle(
-              fontSize: 14.sp,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.blackBase,
               height: 1.5,
-              color: Colors.black87,
             ),
           ),
-          SizedBox(height: 12.h),
+          SizedBox(height: AppSpacing.v12),
 
           // Bottom Stats
           Row(
@@ -121,7 +120,7 @@ class AnswerCard extends ConsumerWidget {
                 icon: const Icon(Icons.thumb_up_outlined, size: 16),
                 label: Text('$likeCount'),
                 style: TextButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w),
+                  padding: AppSpacing.horizontal(AppSpacing.h8),
                 ),
               ),
             ],

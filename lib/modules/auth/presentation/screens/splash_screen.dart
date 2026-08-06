@@ -5,6 +5,7 @@ import 'package:flutter_knp_mobile_app_v2/core/constants/app_assets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -33,10 +34,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primary,
+      backgroundColor: AppColors.primary500,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30.w),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.h22),
           child: Column(
             children: [
               const Spacer(),
@@ -50,9 +51,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
               ),
               const Spacer(),
               Padding(
-                padding: EdgeInsets.only(bottom: 40.h),
+                padding: EdgeInsets.only(bottom: AppSpacing.v20),
                 child: const CircularProgressIndicator(
-                  color: Colors.white,
+                  color: AppColors.whiteBase,
                   strokeWidth: 2,
                 ),
               ),

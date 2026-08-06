@@ -14,10 +14,12 @@ class RemoteConfigService {
 
   /// Initialize Remote Config with in-app defaults. Call once after Firebase.initializeApp().
   Future<void> initialize() async {
-    await _remoteConfig.setConfigSettings(RemoteConfigSettings(
-      fetchTimeout: const Duration(seconds: 10),
-      minimumFetchInterval: Duration.zero,
-    ));
+    await _remoteConfig.setConfigSettings(
+      RemoteConfigSettings(
+        fetchTimeout: const Duration(seconds: 10),
+        minimumFetchInterval: Duration.zero,
+      ),
+    );
     await _remoteConfig.setDefaults(<String, dynamic>{
       _paramAppConfig: jsonEncode({
         'profile_community': {'enable': 'true'},
@@ -96,8 +98,9 @@ class RemoteConfigService {
       if (screen2 == null) return _defaultOnboardingScreen2Options;
       final optionsRaw = screen2['options'];
       if (optionsRaw == null) return _defaultOnboardingScreen2Options;
-      final String optionsStr =
-          optionsRaw is String ? optionsRaw : optionsRaw.toString();
+      final String optionsStr = optionsRaw is String
+          ? optionsRaw
+          : optionsRaw.toString();
       final trimmed = optionsStr.trim();
       final withoutBrackets = trimmed
           .replaceFirst(RegExp(r'^\s*\['), '')
@@ -124,8 +127,9 @@ class RemoteConfigService {
       if (screen3 == null) return _defaultOnboardingScreen3Options;
       final optionsRaw = screen3['options'];
       if (optionsRaw == null) return _defaultOnboardingScreen3Options;
-      final String optionsStr =
-          optionsRaw is String ? optionsRaw : optionsRaw.toString();
+      final String optionsStr = optionsRaw is String
+          ? optionsRaw
+          : optionsRaw.toString();
       final trimmed = optionsStr.trim();
       final withoutBrackets = trimmed
           .replaceFirst(RegExp(r'^\s*\['), '')
@@ -147,32 +151,40 @@ class RemoteConfigService {
     try {
       final jsonString = _remoteConfig.getString(_paramAppConfig);
       // ignore: avoid_print
-      print('[RemoteConfig] appConfig raw: ${jsonString.substring(0, jsonString.length.clamp(0, 200))}');
+      print(
+        '[RemoteConfig] appConfig raw: ${jsonString.substring(0, jsonString.length.clamp(0, 200))}',
+      );
       final map = jsonDecode(jsonString) as Map<String, dynamic>?;
       if (map == null) return [];
       final carouselData =
           map['home_screen_carousel_data'] as Map<String, dynamic>?;
       // ignore: avoid_print
-      print('[RemoteConfig] home_screen_carousel_data keys: ${carouselData?.keys.toList()}');
+      print(
+        '[RemoteConfig] home_screen_carousel_data keys: ${carouselData?.keys.toList()}',
+      );
       if (carouselData == null) return [];
 
       // Sort keys (announcement_1, announcement_2, …) to maintain order.
       final keys = carouselData.keys.toList()..sort();
 
-      return keys.map((key) {
-        final entry = carouselData[key] as Map<String, dynamic>?;
-        if (entry == null) return null;
-        final bgRaw = entry['background_image'];
-        final bgImage =
-            (bgRaw != null && bgRaw.toString().isNotEmpty) ? bgRaw.toString() : null;
-        return <String, String?>{
-          'title': entry['title']?.toString() ?? '',
-          'body': entry['body']?.toString() ?? '',
-          'btn_text': entry['btn_text']?.toString() ?? '',
-          'btn_url': entry['btn_url']?.toString() ?? '',
-          'background_image': bgImage,
-        };
-      }).whereType<Map<String, String?>>().toList();
+      return keys
+          .map((key) {
+            final entry = carouselData[key] as Map<String, dynamic>?;
+            if (entry == null) return null;
+            final bgRaw = entry['background_image'];
+            final bgImage = (bgRaw != null && bgRaw.toString().isNotEmpty)
+                ? bgRaw.toString()
+                : null;
+            return <String, String?>{
+              'title': entry['title']?.toString() ?? '',
+              'body': entry['body']?.toString() ?? '',
+              'btn_text': entry['btn_text']?.toString() ?? '',
+              'btn_url': entry['btn_url']?.toString() ?? '',
+              'background_image': bgImage,
+            };
+          })
+          .whereType<Map<String, String?>>()
+          .toList();
     } catch (_) {
       return [];
     }

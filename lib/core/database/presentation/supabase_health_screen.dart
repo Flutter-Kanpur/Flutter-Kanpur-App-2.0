@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/core/database/models/app_table_schema.dart';
 import 'package:flutter_knp_mobile_app_v2/core/database/models/database_health_status.dart';
 import 'package:flutter_knp_mobile_app_v2/core/database/services/supabase_database_service.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 
 class SupabaseHealthScreen extends StatefulWidget {
   const SupabaseHealthScreen({super.key});
@@ -29,18 +31,18 @@ class _SupabaseHealthScreenState extends State<SupabaseHealthScreen> {
           final status = snapshot.data;
 
           return ListView(
-            padding: const EdgeInsets.all(16),
+            padding: AppSpacing.all(AppSpacing.h16),
             children: [
               _StatusPanel(
                 loading: snapshot.connectionState != ConnectionState.done,
                 status: status,
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: AppSpacing.v16),
               Text(
                 'Supabase Tables',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: AppSpacing.v8),
               for (final table in appTableSchemas)
                 Card(
                   child: ListTile(
@@ -72,10 +74,10 @@ class _StatusPanel extends StatelessWidget {
       color: loading
           ? null
           : ready
-          ? Colors.green.shade50
-          : Colors.orange.shade50,
+          ? AppColors.success50
+          : AppColors.pending50,
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: AppSpacing.all(AppSpacing.h16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -87,7 +89,7 @@ class _StatusPanel extends StatelessWidget {
                   : 'Supabase needs attention',
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: AppSpacing.v8),
             Text(status?.message ?? 'Please wait.'),
           ],
         ),

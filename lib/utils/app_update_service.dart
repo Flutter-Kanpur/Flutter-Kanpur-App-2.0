@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:new_version_plus/model/version_status.dart';
 import 'package:new_version_plus/new_version_plus.dart';
 import 'package:url_launcher/url_launcher.dart'; // Assuming you have an AppColors file, otherwise I will use standard colors
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 
 class AppUpdateService {
   static final AppUpdateService _instance = AppUpdateService._internal();
@@ -23,7 +28,9 @@ class AppUpdateService {
 
     try {
       final status = await newVersion.getVersionStatus();
-      debugPrint('App Update Status: ${status?.localVersion} -> ${status?.storeVersion}');
+      debugPrint(
+        'App Update Status: ${status?.localVersion} -> ${status?.storeVersion}',
+      );
       if (status != null && status.canUpdate) {
         if (context.mounted) {
           _showUpdateDialog(context, status);
@@ -42,16 +49,15 @@ class AppUpdateService {
         return WillPopScope(
           onWillPop: () async => false, // Prevent back button closure
           child: AlertDialog(
-            backgroundColor: const Color(0xFF0F1C25), // Match app theme
+            backgroundColor: AppColors.blackBase, // Match app theme
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-              side: const BorderSide(color: Color(0xFF2A3C4D)),
+              borderRadius: AppRadius.all04,
+              side: const BorderSide(color: AppBorders.blue),
             ),
-            title: const Text(
+            title: Text(
               'Update Available',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
+              style: AppTextStyles.titleMedium.copyWith(
+                color: AppColors.whiteBase,
               ),
             ),
             content: Column(
@@ -60,26 +66,35 @@ class AppUpdateService {
               children: [
                 Text(
                   'A new version (${status.storeVersion}) is available. Please update the app to enjoy the latest features and bug fixes.',
-                  style: const TextStyle(color: Colors.white70),
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.whiteBase.withValues(alpha: 0.70),
+                  ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: AppSpacing.v8),
                 Text(
                   'Current Version: ${status.localVersion}',
-                  style: const TextStyle(color: Colors.white38, fontSize: 12),
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.whiteBase.withValues(alpha: 0.38),
+                  ),
                 ),
               ],
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text('Later', style: TextStyle(color: Colors.white54)),
+                child: Text(
+                  'Later',
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.whiteBase.withValues(alpha: 0.54),
+                  ),
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueAccent,
-                  foregroundColor: Colors.white,
+                  backgroundColor: AppColors.primary400,
+                  foregroundColor: AppColors.whiteBase,
                 ),
                 child: const Text('Update Now'),
                 onPressed: () {
@@ -97,9 +112,10 @@ class AppUpdateService {
   void _launchStore() async {
     final String url;
     if (Platform.isAndroid) {
-      url = "https://play.google.com/store/search?q=flutter%20kanpur&c=apps&hl=en";
+      url =
+          "https://play.google.com/store/search?q=flutter%20kanpur&c=apps&hl=en";
     } else if (Platform.isIOS) {
-       url = "https://apps.apple.com/";
+      url = "https://apps.apple.com/";
     } else {
       return;
     }

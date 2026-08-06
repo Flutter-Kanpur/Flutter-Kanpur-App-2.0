@@ -1,8 +1,10 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_models.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class CommunityTeamCarousel extends StatelessWidget {
   const CommunityTeamCarousel({super.key, required this.members});
@@ -10,10 +12,30 @@ class CommunityTeamCarousel extends StatelessWidget {
   final List<CommunityMember> members;
 
   static const _fallback = [
-    CommunityMember(name: 'Angelica Singh', role: 'UI/UX Designer', skills: [], status: 'active'),
-    CommunityMember(name: 'Pushti Sonawala', role: 'Full Stack Dev', skills: [], status: 'active'),
-    CommunityMember(name: 'Ayush Singh', role: 'App Developer', skills: [], status: 'active'),
-    CommunityMember(name: 'Sarah Fatima', role: 'Flutter Developer', skills: [], status: 'active'),
+    CommunityMember(
+      name: 'Angelica Singh',
+      role: 'UI/UX Designer',
+      skills: [],
+      status: 'active',
+    ),
+    CommunityMember(
+      name: 'Pushti Sonawala',
+      role: 'Full Stack Dev',
+      skills: [],
+      status: 'active',
+    ),
+    CommunityMember(
+      name: 'Ayush Singh',
+      role: 'App Developer',
+      skills: [],
+      status: 'active',
+    ),
+    CommunityMember(
+      name: 'Sarah Fatima',
+      role: 'Flutter Developer',
+      skills: [],
+      status: 'active',
+    ),
   ];
 
   @override
@@ -31,7 +53,7 @@ class CommunityTeamCarousel extends StatelessWidget {
           height: 72,
           child: _AutoScrollRow(members: row1, leftToRight: true),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: AppSpacing.v10),
         SizedBox(
           height: 72,
           child: _AutoScrollRow(members: row2, leftToRight: false),
@@ -41,7 +63,7 @@ class CommunityTeamCarousel extends StatelessWidget {
   }
 }
 
-// StatefulWidget is required here for ScrollController + Timer (animation only, no data state).
+// StatefulWidget is required here for ScrollController + Ticker (animation only, no data state).
 class _AutoScrollRow extends StatefulWidget {
   const _AutoScrollRow({required this.members, required this.leftToRight});
 
@@ -52,76 +74,77 @@ class _AutoScrollRow extends StatefulWidget {
   State<_AutoScrollRow> createState() => _AutoScrollRowState();
 }
 
-class _AutoScrollRowState extends State<_AutoScrollRow> {
-  static const _tick = Duration(milliseconds: 32);
-  static const _step = 0.7;
+class _AutoScrollRowState extends State<_AutoScrollRow>
+    with SingleTickerProviderStateMixin {
+  /// Scroll speed in logical pixels per second.
+  static const _pixelsPerSecond = 22.0;
+  static const _pillWidth = 206.0;
+
+  /// The list renders three copies of [members], so scrolling exactly one
+  /// copy's width lands on a pixel-identical frame — the wrap is invisible.
+  static const _copies = 3;
 
   final _controller = ScrollController();
-  Timer? _timer;
-  bool _rtlInit = false;
+  late final Ticker _ticker;
+  Duration _lastElapsed = Duration.zero;
+  double _offset = 0;
+
+  double get _gap => AppSpacing.h10;
+  double get _itemExtent => _pillWidth + _gap;
+  double get _cycle => widget.members.length * _itemExtent;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _start());
+    _ticker = createTicker(_onTick)..start();
   }
 
-  void _start() {
-    _timer?.cancel();
-    _timer = Timer.periodic(_tick, (_) {
-      if (!mounted || !_controller.hasClients) return;
-      final max = _controller.position.maxScrollExtent;
-      if (max <= 0) return;
+  void _onTick(Duration elapsed) {
+    final dt = (elapsed - _lastElapsed).inMicroseconds / 1000000;
+    _lastElapsed = elapsed;
 
-      if (!widget.leftToRight && !_rtlInit) {
-        _rtlInit = true;
-        _controller.jumpTo(max);
-        return;
-      }
+    if (!_controller.hasClients) return;
+    final max = _controller.position.maxScrollExtent;
+    if (max <= 0 || _cycle <= 0) return;
 
-      final next = widget.leftToRight
-          ? _controller.offset + _step
-          : _controller.offset - _step;
+    _offset += _pixelsPerSecond * dt * (widget.leftToRight ? 1 : -1);
+    if (_offset >= _cycle) _offset -= _cycle;
+    if (_offset < 0) _offset += _cycle;
 
-      if (next > max) {
-        _controller.jumpTo(0);
-      } else if (next < 0) {
-        _controller.jumpTo(max);
-      } else {
-        _controller.jumpTo(next);
-      }
-    });
+    _controller.jumpTo(_offset.clamp(0, max));
   }
 
   @override
   void didUpdateWidget(covariant _AutoScrollRow old) {
     super.didUpdateWidget(old);
-    if (old.members != widget.members || old.leftToRight != widget.leftToRight) {
-      _rtlInit = false;
-      WidgetsBinding.instance.addPostFrameCallback((_) => _start());
+    if (old.members != widget.members ||
+        old.leftToRight != widget.leftToRight) {
+      _offset = 0;
     }
   }
 
   @override
   void dispose() {
-    _timer?.cancel();
+    _ticker.dispose();
     _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final repeated = [...widget.members, ...widget.members, ...widget.members];
-    return ListView.separated(
+    final members = widget.members;
+    if (members.isEmpty) return const SizedBox.shrink();
+
+    return ListView.builder(
       controller: _controller,
       scrollDirection: Axis.horizontal,
       physics: const NeverScrollableScrollPhysics(),
       clipBehavior: Clip.none,
-      itemCount: repeated.length,
-      separatorBuilder: (_, _) => const SizedBox(width: 10),
-      itemBuilder: (_, i) => SizedBox(
-        width: 206,
-        child: _MemberPill(member: repeated[i]),
+      itemExtent: _itemExtent,
+      itemCount: members.length * _copies,
+      itemBuilder: (_, i) => Padding(
+        padding: EdgeInsets.only(right: _gap),
+        child: _MemberPill(member: members[i % members.length]),
       ),
     );
   }
@@ -135,28 +158,32 @@ class _MemberPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      padding: AppSpacing.symmetric(
+        horizontal: AppSpacing.h10,
+        vertical: AppSpacing.v8,
+      ),
       decoration: BoxDecoration(
-        color: const Color(0xFFF6F6F6),
-        borderRadius: BorderRadius.circular(999),
+        color: AppColors.neutral50,
+        borderRadius: AppRadius.all09,
       ),
       child: Row(
         children: [
           CircleAvatar(
             radius: 24,
-            backgroundColor: AppColors.primary.withValues(alpha: 0.15),
+            backgroundColor: AppColors.primary500.withValues(alpha: 0.15),
             backgroundImage: member.photoUrl != null
                 ? NetworkImage(member.photoUrl!)
                 : null,
             child: member.photoUrl == null
                 ? Text(
                     member.name.isNotEmpty ? member.name[0].toUpperCase() : '?',
-                    style: const TextStyle(
-                        color: AppColors.primary, fontWeight: FontWeight.w700),
+                    style: AppTextStyles.titleMedium.copyWith(
+                      color: AppColors.primary500,
+                    ),
                   )
                 : null,
           ),
-          const SizedBox(width: 10),
+          SizedBox(width: AppSpacing.h10),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -166,19 +193,18 @@ class _MemberPill extends StatelessWidget {
                   member.name,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleSmall
-                      ?.copyWith(fontWeight: FontWeight.w600),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: AppSpacing.v2),
                 Text(
                   member.role,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.subtitleTextDarkGrey,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: AppColors.neutral500),
                 ),
               ],
             ),

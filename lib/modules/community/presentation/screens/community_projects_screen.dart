@@ -9,6 +9,7 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 class CommunityProjectsScreen extends ConsumerWidget {
   const CommunityProjectsScreen({super.key});
@@ -24,15 +25,15 @@ class CommunityProjectsScreen extends ConsumerWidget {
           subtitle: 'Community projects, tech stack, and status.',
           leading: FkBackButton(),
         ),
-        const SizedBox(height: 18),
+        SizedBox(height: AppSpacing.v18),
         FkPrimaryButton(
           label: 'Upload your project',
           onPressed: () => context.go(RouteNames.communityUploadProject),
         ),
-        const SizedBox(height: 20),
+        SizedBox(height: AppSpacing.v20),
         projectsAsync.when(
-          loading: () => const Padding(
-            padding: EdgeInsets.symmetric(vertical: 48),
+          loading: () => Padding(
+            padding: EdgeInsets.symmetric(vertical: AppSpacing.v22),
             child: Center(child: CircularProgressIndicator()),
           ),
           error: (e, _) => _ErrorView(
@@ -49,7 +50,7 @@ class CommunityProjectsScreen extends ConsumerWidget {
               children: [
                 for (final project in projects)
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
+                    padding: EdgeInsets.only(bottom: AppSpacing.v12),
                     child: CommunityProjectCard(project: project),
                   ),
               ],
@@ -69,19 +70,22 @@ class _ErrorView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 48),
+      padding: EdgeInsets.symmetric(vertical: AppSpacing.v22),
       child: Column(
         children: [
-          const Icon(Icons.wifi_off_rounded, size: 48, color: Colors.grey),
-          const SizedBox(height: 12),
+          const Icon(
+            Icons.wifi_off_rounded,
+            size: 48,
+            color: AppColors.neutral400,
+          ),
+          SizedBox(height: AppSpacing.v12),
           Text(
             'Could not load projects',
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge
-                ?.copyWith(color: AppColors.subtitleTextDarkGrey),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyLarge?.copyWith(color: AppColors.neutral500),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: AppSpacing.v16),
           TextButton(onPressed: onRetry, child: const Text('Try again')),
         ],
       ),
@@ -97,15 +101,14 @@ class _EmptyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 48),
+      padding: EdgeInsets.symmetric(vertical: AppSpacing.v22),
       child: Center(
         child: Text(
           message,
           textAlign: TextAlign.center,
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge
-              ?.copyWith(color: AppColors.subtitleTextDarkGrey),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyLarge?.copyWith(color: AppColors.neutral500),
         ),
       ),
     );

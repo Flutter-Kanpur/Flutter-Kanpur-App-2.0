@@ -10,6 +10,7 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradient_background.dar
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 class EmailVerificationScreen extends ConsumerWidget {
   const EmailVerificationScreen({super.key});
@@ -29,7 +30,7 @@ class EmailVerificationScreen extends ConsumerWidget {
     return GradientBackground(
       child: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16),
           child: Column(
             children: [
               const Spacer(),
@@ -47,7 +48,10 @@ class EmailVerificationScreen extends ConsumerWidget {
 
               Text(
                 'auth.emailVerifiedTitle'.tr(),
-                style: textStyle_18MediumBlack().copyWith(fontSize: 24.sp),
+                style: AppTextStyles.titleLarge.copyWith(
+                  color: AppColors.blackBase,
+                  fontWeight: FontWeight.w600,
+                ),
                 textAlign: TextAlign.center,
               ),
 
@@ -55,8 +59,8 @@ class EmailVerificationScreen extends ConsumerWidget {
 
               Text(
                 'auth.emailVerifiedSubTitle'.tr(),
-                style: textStyle_16RegularBlack().copyWith(
-                  color: AppColors.subtitleTextDarkGrey,
+                style: AppTextStyles.bodyLarge.copyWith(
+                  color: AppColors.neutral500,
                   height: 1.5,
                 ),
                 textAlign: TextAlign.center,
@@ -66,9 +70,9 @@ class EmailVerificationScreen extends ConsumerWidget {
                 8.verticalSpace,
                 Text(
                   email,
-                  style: textStyle_14RegularBlack().copyWith(
+                  style: AppTextStyles.bodyMedium.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: AppColors.selectedNavBarIconColor,
+                    color: AppColors.primary500,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -79,7 +83,9 @@ class EmailVerificationScreen extends ConsumerWidget {
               GradientButton(
                 height: 50.h,
                 text: "I've verified my email",
-                textStyle: textStyle_16RegularBlack().copyWith(color: Colors.white),
+                textStyle: AppTextStyles.bodyLarge.copyWith(
+                  color: AppColors.whiteBase,
+                ),
                 onTap: () => context.go(RouteNames.home),
               ),
 
@@ -89,8 +95,8 @@ class EmailVerificationScreen extends ConsumerWidget {
                 onPressed: () => context.go(RouteNames.signIn),
                 child: Text(
                   'auth.login'.tr(),
-                  style: textStyle_14RegularBlack().copyWith(
-                    color: AppColors.selectedNavBarIconColor,
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.primary500,
                   ),
                 ),
               ),

@@ -4,6 +4,11 @@ import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
 import 'package:flutter_knp_mobile_app_v2/core/constants/app_assets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
 
 class OnboardingSuccessScreen extends StatelessWidget {
   const OnboardingSuccessScreen({super.key});
@@ -11,18 +16,17 @@ class OnboardingSuccessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.whiteBase,
 
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16),
 
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
 
             children: [
-
               SvgPicture.asset(
                 AppAssets.successIcon,
                 width: 220.w,
@@ -36,10 +40,9 @@ class OnboardingSuccessScreen extends StatelessWidget {
 
                 textAlign: TextAlign.center,
 
-                style: TextStyle(
-                  fontSize: 24.sp,
+                style: AppTextStyles.headlineSmall.copyWith(
+                  color: AppColors.blackBase,
                   fontWeight: FontWeight.w700,
-                  color: Colors.black,
                 ),
               ),
 
@@ -50,10 +53,8 @@ class OnboardingSuccessScreen extends StatelessWidget {
 
                 textAlign: TextAlign.center,
 
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w400,
-                  color: const Color(0xFF7A7A7A),
+                style: AppTextStyles.bodyLarge.copyWith(
+                  color: AppColors.neutral500,
                   height: 1.5,
                 ),
               ),
@@ -62,7 +63,7 @@ class OnboardingSuccessScreen extends StatelessWidget {
 
               GradientButton(
                 text: 'onboarding.redirectToHome'.tr(),
-                onTap: () {},
+                onTap: () => context.go(RouteNames.home),
                 height: 48.h,
                 width: double.infinity,
               ),

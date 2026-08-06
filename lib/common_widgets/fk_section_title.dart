@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 class FkSectionTitle extends StatelessWidget {
   const FkSectionTitle({
@@ -15,7 +16,7 @@ class FkSectionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8, bottom: 12),
+      padding: EdgeInsets.only(top: AppSpacing.v8, bottom: AppSpacing.v12),
       child: Row(
         children: [
           Expanded(

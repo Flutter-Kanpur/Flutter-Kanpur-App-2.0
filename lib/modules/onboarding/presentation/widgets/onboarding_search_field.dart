@@ -1,6 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 
 class OnboardingSearchField extends StatelessWidget {
   const OnboardingSearchField({super.key});
@@ -11,33 +14,27 @@ class OnboardingSearchField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: 'onboarding.searchRolesHint'.tr(),
 
-        prefixIcon: const Icon(
-          Icons.search,
-        ),
+        prefixIcon: const Icon(Icons.search),
 
         filled: true,
-        fillColor: const Color(0xFFF7F7F7),
+        fillColor: AppColors.neutral50,
 
-        contentPadding: EdgeInsets.symmetric(
-          vertical: 16.h,
-        ),
+        contentPadding: EdgeInsets.symmetric(vertical: AppSpacing.v16),
 
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(100.r),
+          borderRadius: AppRadius.all09,
           borderSide: BorderSide.none,
         ),
 
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(100.r),
+          borderRadius: AppRadius.all09,
           borderSide: BorderSide.none,
         ),
 
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(100.r),
+          borderRadius: AppRadius.all09,
 
-          borderSide: const BorderSide(
-            color: Colors.black,
-          ),
+          borderSide: const BorderSide(color: AppBorders.primary),
         ),
       ),
     );

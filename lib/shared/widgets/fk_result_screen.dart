@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 class FkResultScreen extends StatelessWidget {
   const FkResultScreen({
@@ -23,7 +24,7 @@ class FkResultScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: AppSpacing.all(AppSpacing.h22),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -45,9 +46,9 @@ class FkResultScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Icon(icon, size: 70, color: Colors.white),
+              child: Icon(icon, size: 70, color: AppColors.whiteBase),
             ),
-            const SizedBox(height: 28),
+            SizedBox(height: AppSpacing.v22),
             Text(
               title,
               style: Theme.of(
@@ -55,15 +56,15 @@ class FkResultScreen extends StatelessWidget {
               ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: AppSpacing.v12),
             Text(
               message,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: AppColors.subtitleTextDarkGrey,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyLarge?.copyWith(color: AppColors.neutral500),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: AppSpacing.v22),
             SizedBox(
               width: 220,
               child: OutlinedButton(

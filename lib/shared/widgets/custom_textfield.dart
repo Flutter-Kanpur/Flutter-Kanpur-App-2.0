@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/core/constants/app_assets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 class CustomTextField extends StatefulWidget {
   final String text;
@@ -34,7 +38,7 @@ class CustomTextField extends StatefulWidget {
     this.maxLines = 1,
     this.hintColor,
     this.borderColor,
-    this.fillColor = const Color(0xFFF6F6F6),
+    this.fillColor = AppColors.neutral50,
     this.validator,
     this.showBorder = false,
     this.hintFontSize,
@@ -69,17 +73,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     return Container(
       height: 56,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: AppSpacing.horizontal(AppSpacing.h16),
       decoration: BoxDecoration(
         color: widget.fillColor,
         border: widget.showBorder
-            ? Border.all(color: widget.borderColor ?? const Color(0xFFF6F6F6))
+            ? Border.all(color: widget.borderColor ?? AppBorders.tertiary)
             : null,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: AppRadius.all04,
       ),
       alignment: Alignment.center,
       child: TextFormField(
-        style: textStyle_14MediumGreyHintStyle().copyWith(color: Colors.black),
+        style: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase),
         controller: _internalController,
         focusNode: widget.focusNode,
         obscureText: widget.isPassword && _obscureText,
@@ -90,10 +94,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
         decoration: InputDecoration(
           border: InputBorder.none,
           hintText: widget.text,
-          hintStyle: textStyle_14MediumGreyHintStyle(),
-          contentPadding: const EdgeInsets.symmetric(
+          hintStyle: AppTextStyles.bodyMedium.copyWith(
+            color: AppColors.neutral500,
+          ),
+          contentPadding: EdgeInsets.symmetric(
             horizontal: 0,
-            vertical: 18,
+            vertical: AppSpacing.v18,
           ),
           suffixIcon: widget.isPassword && widget.enablePasswordToggle
               ? IconButton(
@@ -110,7 +116,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 )
               : widget.showTickIcon
               ? Padding(
-                  padding: const EdgeInsets.all(12.0),
+                  padding: AppSpacing.all(AppSpacing.h12),
                   child: SvgPicture.asset(AppAssets.greenTickIcon),
                 )
               : const SizedBox.shrink(),

@@ -113,5 +113,6 @@ class UserModel {
   }
 
   @override
-  String toString() => 'UserModel(uid: $uid, email: $email, displayName: $displayName)';
+  String toString() =>
+      'UserModel(uid: $uid, email: $email, displayName: $displayName)';
 }

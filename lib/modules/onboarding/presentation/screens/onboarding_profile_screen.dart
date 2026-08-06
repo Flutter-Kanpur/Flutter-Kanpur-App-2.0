@@ -5,22 +5,29 @@ import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/custom_textfield.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
-import 'package:flutter_knp_mobile_app_v2/utils/text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:flutter_knp_mobile_app_v2/core/constants/app_assets.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/onboarding/presentation/widgets/onboarding_profile_avatar.dart';
+import 'package:flutter_knp_mobile_app_v2/core/utils/image_compress_helper.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/onboarding/application/onboarding_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_confirm_dialog.dart';
 
-
-class OnboardingProfileScreen extends StatefulWidget {
+class OnboardingProfileScreen extends ConsumerStatefulWidget {
   final VoidCallback? onNext;
 
-  const OnboardingProfileScreen({
-    super.key,
-    this.onNext,
-  });
+  const OnboardingProfileScreen({super.key, this.onNext});
 
   @override
-  State<OnboardingProfileScreen> createState() => _OnboardingProfileScreenState();
+  ConsumerState<OnboardingProfileScreen> createState() =>
+      _OnboardingProfileScreenState();
 }
 
 /// Scale-aware layout constants for different screen sizes.
@@ -38,7 +45,8 @@ class _Layout {
   static double buttonHeight(BuildContext context) => 48.h;
 }
 
-class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
+class _OnboardingProfileScreenState
+    extends ConsumerState<OnboardingProfileScreen> {
   bool _hasError = false;
   bool _isLoading = false;
   bool _isTyping = false;
@@ -55,19 +63,23 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
   String? _localPhotoUrl;
 
   @override
-  void initState() {
-    super.initState();
-    nameController.addListener(() {
-      final text = nameController.text.trim();
-      setState(() {
-        _isTyping = text.isNotEmpty;
-        if (text.isNotEmpty) {
-          _hasError = false;
-        }
-      });
-    });
-  }
+void initState() {
+  super.initState();
+  final draft = ref.read(onboardingProvider);
+  nameController.text = draft.fullName;
+  _localFilePath = draft.localPhotoPath;
 
+  nameController.addListener(() {
+    final text = nameController.text.trim();
+    setState(() {
+      _isTyping = text.isNotEmpty;
+      if (text.isNotEmpty) {
+        _hasError = false;
+      }
+    });
+    ref.read(onboardingProvider.notifier).setFullName(text);
+  });
+}
 
   @override
   void dispose() {
@@ -77,12 +89,8 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
   }
 
   void _scrollToFocusedField() {
-    final nodes = [
-      nameFocusNode,
-    ];
-    final keys = [
-      nameFieldKey,
-    ];
+    final nodes = [nameFocusNode];
+    final keys = [nameFieldKey];
 
     for (int i = 0; i < nodes.length; i++) {
       if (nodes[i].hasFocus && keys[i].currentContext != null) {
@@ -98,7 +106,6 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
     }
   }
 
-
   void _goToNextScreen() async {
     final name = nameController.text.trim();
 
@@ -111,16 +118,15 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
 
     setState(() => _isLoading = true);
 
-    await Future.delayed(
-      const Duration(milliseconds: 300),
-    );
+    await Future.delayed(const Duration(milliseconds: 300));
 
     if (mounted) {
       setState(() => _isLoading = false);
+      await ref.read(onboardingProvider.notifier).setFullName(name);
+await ref.read(onboardingProvider.notifier).setStep(1);
       widget.onNext?.call();
     }
   }
-
 
   void _showImagePickerSheet() {
     showModalBottomSheet(
@@ -130,11 +136,11 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
         return Align(
           alignment: Alignment.bottomCenter,
           child: Container(
-            padding: EdgeInsets.all(20.sp),
+            padding: AppSpacing.all(AppSpacing.h20),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.whiteBase,
               borderRadius: BorderRadius.vertical(
-                top: Radius.circular(35.r),
+                top: Radius.circular(AppRadius.r07),
               ),
             ),
             child: Column(
@@ -142,10 +148,10 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
               children: [
                 Container(
                   width: 75.w,
-                  height: 7.h,
+                  height: AppSpacing.v16,
                   decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(10.r),
+                    color: AppColors.blackBase,
+                    borderRadius: AppRadius.all02,
                   ),
                 ),
                 20.verticalSpace,
@@ -156,8 +162,10 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
                     height: 24.h,
                   ),
                   title: Text(
-                    "Import from gallery",
-                    style: textStyle_18BlackRegular(),
+                    'onboarding.importFromGallery'.tr(),
+                    style: AppTextStyles.titleLarge.copyWith(
+                      color: AppColors.blackBase,
+                    ),
                   ),
                   onTap: () {
                     Navigator.pop(context);
@@ -171,8 +179,10 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
                     height: 24.h,
                   ),
                   title: Text(
-                    "Take Photo",
-                    style: textStyle_18BlackRegular(),
+                    'onboarding.takePhoto'.tr(),
+                    style: AppTextStyles.titleLarge.copyWith(
+                      color: AppColors.blackBase,
+                    ),
                   ),
                   onTap: () {
                     Navigator.pop(context);
@@ -186,8 +196,10 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
                     height: 24.h,
                   ),
                   title: Text(
-                    "Remove current picture",
-                    style: textStyle_18RedRegular(),
+                    'onboarding.removeCurrentPicture'.tr(),
+                    style: AppTextStyles.titleLarge.copyWith(
+                      color: AppColors.warning600,
+                    ),
                   ),
                   onTap: () {
                     Navigator.pop(context);
@@ -203,80 +215,62 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
   }
 
   Future<void> _pickAndUploadImage(ImageSource source) async {
+  try {
+    final pickedFile = await _picker.pickImage(
+      source: source,
+      imageQuality: 85,
+      maxWidth: 1024,
+      maxHeight: 1024,
+    );
+
+    if (pickedFile == null) return;
+    if (!mounted) return;
+
+    String pathToUse = pickedFile.path;
     try {
-      final pickedFile =
-      await _picker.pickImage(source: source, imageQuality: 70);
-
-      if (pickedFile == null) return;
-
-      final extension = pickedFile.path.split('.').last.toLowerCase();
-
-      if (extension != 'jpg' && extension != 'jpeg' && extension != 'png') {
-        setState(() {
-          _fileError = "Please select a JPG or PNG image.";
-        });
-        return;
-      }
-
-      setState(() {
-        _fileError = null;
-        _localFilePath = pickedFile.path;
-      });
-    } catch (e) {
-      print("Upload error: $e");
+      final compressed =
+          await ImageCompressHelper.compressToAvatar(pickedFile.path);
+      if (compressed != null) pathToUse = compressed;
+    } catch (_) {
+      // keep original path if compress fails
     }
-  }
 
-  Future<void> _removeProfileImage() async {
+    // Save to Riverpod FIRST (survives screen remount after gallery/camera)
+    await ref.read(onboardingProvider.notifier).setPhotoPath(pathToUse);
+
+    if (!mounted) return;
     setState(() {
-      _localFilePath = null;
-      _localPhotoUrl = null;
+      _fileError = null;
+      _localFilePath = pathToUse;
+    });
+  } catch (e) {
+    if (!mounted) return;
+    setState(() {
+      _fileError = 'onboarding.imagePickError'.tr();
     });
   }
+}
+
+ Future<void> _removeProfileImage() async {
+  setState(() {
+    _localFilePath = null;
+    _localPhotoUrl = null;
+  });
+  await ref.read(onboardingProvider.notifier).setPhotoPath(null);
+}
 
   void _showRemoveConfirmationDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return Dialog(
-          backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.r),
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.sp, vertical: 28.sp),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text("Remove?", style: textStyle_24BlackBold()),
-                12.verticalSpace,
-                Text(
-                  "Are you sure want to remove the profile photo?",
-                  textAlign: TextAlign.center,
-                  style: textStyle_16RegularGrey(),
-                ),
-                24.verticalSpace,
-                GradientButton(
-                  color: AppColors.redBgText,
-                  onTap: () async {
-                    Navigator.pop(context);
-                    await _removeProfileImage();
-                  },
-                  text: "Delete",
-                ),
-                14.verticalSpace,
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Text("Cancel", style: textStyle_16RedRegular()),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
+  FkConfirmDialog.show(
+  context,
+  title: 'onboarding.removePhotoTitle'.tr(),
+  message: 'onboarding.removePhotoSubTitle'.tr(),
+  confirmLabel: 'onboarding.delete'.tr(),
+  cancelLabel: 'onboarding.cancel'.tr(),
+  onConfirm: () async {
+    await _removeProfileImage();
+  },
+);
+}
 
   @override
   Widget build(BuildContext context) {
@@ -296,7 +290,8 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
               ),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                  minHeight: constraints.maxHeight -
+                  minHeight:
+                      constraints.maxHeight -
                       MediaQuery.of(context).padding.top -
                       MediaQuery.of(context).padding.bottom,
                 ),
@@ -307,6 +302,14 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
                       _Layout.topPadding(context).verticalSpace,
 
                       _buildAvatarSection(context),
+                      if (_fileError != null) ...[
+  SizedBox(height: 8.h),
+  Text(
+    _fileError!,
+    style: AppTextStyles.bodyMedium.copyWith(color: AppColors.warning600),
+    textAlign: TextAlign.center,
+  ),
+],
 
                       _Layout.sectionSpacing(context).verticalSpace,
 
@@ -318,8 +321,11 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
                         child: GradientButton(
                           isLoading: _isLoading,
                           onTap: _goToNextScreen,
-                          text: "Continue",
-                          textStyle: textStyle_16RegularWhite(),
+                          text: 	
+'onboarding.continue'.tr(),
+                          textStyle: AppTextStyles.bodyLarge.copyWith(
+                            color: AppBorders.tertiary,
+                          ),
                           height: _Layout.buttonHeight(context),
                           width: double.infinity,
                         ),
@@ -336,44 +342,15 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
   }
 
   Widget _buildAvatarSection(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        CircleAvatar(
-          radius: _Layout.avatarRadius(context),
-          backgroundColor: AppColors.bgSecondary,
-          backgroundImage: _localFilePath != null
-              ? FileImage(File(_localFilePath!))
-              : (_localPhotoUrl != null
-              ? NetworkImage(_localPhotoUrl!) as ImageProvider
-              : null),
-          child: (_localFilePath == null && _localPhotoUrl == null)
-              ? SvgPicture.asset(
-            AssetsPath.emptyImage,
-            color: Colors.black,
-            height: _Layout.avatarIconSize(context),
-          )
-              : null,
-        ),
-        Positioned(
-          bottom: _Layout.addButtonOffset(context),
-          right: _Layout.addButtonOffset(context),
-          child: GestureDetector(
-            onTap: _showImagePickerSheet,
-            child: CircleAvatar(
-              radius: _Layout.addButtonRadius(context),
-              backgroundColor: const Color(0xFF4167F2),
-              child: Icon(
-                Icons.add,
-                size: _Layout.addButtonIconSize(context),
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  final draft = ref.watch(onboardingProvider);
+  final path = draft.localPhotoPath ?? _localFilePath;
+
+  return OnboardingProfileAvatar(
+    localPhotoPath: path,
+    networkPhotoUrl: _localPhotoUrl,
+    onAddTap: _showImagePickerSheet,
+  );
+}
 
   Widget _buildForm(BuildContext context) {
     return Form(
@@ -385,38 +362,42 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
           Container(
             key: nameFieldKey,
             child: CustomTextField(
-              controller: nameController,
-              focusNode: nameFocusNode,
-              showTickIcon: nameController.text.isNotEmpty &&
-                  nameController.text.length > 4,
-              text: "Full name",
-              showBorder:
-              nameFocusNode.hasFocus || nameController.text.isNotEmpty,
-              borderColor: nameFocusNode.hasFocus
-                  ? AppColors.selectedNavBarIconColor
-                  : nameController.text.isNotEmpty
-                  ? AppColors.communityBorderColor
-                  : const Color(0xFFF6F6F6),
-              fillColor:
-              nameFocusNode.hasFocus || nameController.text.isNotEmpty
-                  ? Colors.transparent
-                  : const Color(0xFFF6F6F6),
-            ),
+  controller: nameController,
+  focusNode: nameFocusNode,
+  showTickIcon:
+      nameController.text.isNotEmpty &&
+      nameController.text.length > 4,
+  text: 'onboarding.fullName'.tr(),
+  showBorder: _hasError ||
+      nameFocusNode.hasFocus ||
+      nameController.text.isNotEmpty,
+  borderColor: _hasError
+      ? AppColors.warning600
+      : nameFocusNode.hasFocus
+          ? AppColors.primary500
+          : AppColors.neutral100,
+  fillColor: _hasError ||
+          nameFocusNode.hasFocus ||
+          nameController.text.isNotEmpty
+      ? Colors.transparent
+      : AppColors.neutral50,
+),
           ),
           if (_hasError)
             Padding(
-              padding: EdgeInsets.only(top: 8.h),
+              padding: EdgeInsets.only(top: AppSpacing.v8),
               child: Row(
                 children: [
                   Icon(
                     Icons.warning_rounded,
-                    color: AppColors.redBgText,
+                    color: AppColors.warning600,
                     size: 18.sp,
                   ),
                   6.horizontalSpace,
                   Text(
-                    "Please enter your name.",
-                    style: textStyle_16RedRegular().copyWith(fontSize: 14.sp),
+                   	
+'onboarding.fullNameError'.tr(),
+                    style: AppTextStyles.bodyLarge,
                   ),
                 ],
               ),

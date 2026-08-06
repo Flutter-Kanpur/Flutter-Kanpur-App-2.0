@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class OnboardingCustomChip extends StatelessWidget {
   final String title;
@@ -15,28 +19,25 @@ class OnboardingCustomChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: 14.w,
-        vertical: 10.h,
+        horizontal: AppSpacing.h16,
+        vertical: AppSpacing.v10,
       ),
 
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: AppColors.blackBase,
 
-        borderRadius: BorderRadius.circular(24.r),
+        borderRadius: AppRadius.all06,
       ),
 
       child: Row(
         mainAxisSize: MainAxisSize.min,
 
         children: [
-
           Text(
             title,
 
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w500,
+            style: AppTextStyles.labelLarge.copyWith(
+              color: AppColors.whiteBase,
             ),
           ),
 
@@ -45,11 +46,7 @@ class OnboardingCustomChip extends StatelessWidget {
           GestureDetector(
             onTap: onRemove,
 
-            child: Icon(
-              Icons.close,
-              color: Colors.white,
-              size: 18.sp,
-            ),
+            child: Icon(Icons.close, color: AppColors.whiteBase, size: 18.sp),
           ),
         ],
       ),

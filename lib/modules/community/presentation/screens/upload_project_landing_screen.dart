@@ -4,6 +4,8 @@ import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_primary_button.dart'
 import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 class UploadProjectLandingScreen extends StatelessWidget {
   const UploadProjectLandingScreen({super.key});
@@ -19,7 +21,7 @@ class UploadProjectLandingScreen extends StatelessWidget {
             icon: const Icon(Icons.close_rounded),
           ),
         ),
-        const SizedBox(height: 26),
+        SizedBox(height: AppSpacing.v22),
         Text(
           'Showcase your work and inspire other community members.',
           textAlign: TextAlign.center,
@@ -27,7 +29,7 @@ class UploadProjectLandingScreen extends StatelessWidget {
             context,
           ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
         ),
-        const SizedBox(height: 40),
+        SizedBox(height: AppSpacing.v22),
         const _TimelineStep(
           title: 'Submit your project',
           body:
@@ -45,12 +47,12 @@ class UploadProjectLandingScreen extends StatelessWidget {
               'Once approved, your project is published and visible to the community.',
           isLast: true,
         ),
-        const SizedBox(height: 28),
+        SizedBox(height: AppSpacing.v22),
         Container(
-          padding: const EdgeInsets.all(24),
+          padding: AppSpacing.all(AppSpacing.h22),
           decoration: BoxDecoration(
-            color: AppColors.communityGuidelinesContainerBackground,
-            borderRadius: BorderRadius.circular(18),
+            color: AppColors.primary50,
+            borderRadius: AppRadius.all04,
           ),
           child: Column(
             children: [
@@ -60,12 +62,12 @@ class UploadProjectLandingScreen extends StatelessWidget {
                   context,
                 ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: AppSpacing.v10),
               const Text(
                 'Upload your project and let the community inspired by your work.',
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 18),
+              SizedBox(height: AppSpacing.v18),
               SizedBox(
                 width: 200,
                 child: FkPrimaryButton(
@@ -108,19 +110,28 @@ class _TimelineStep extends StatelessWidget {
                 width: 28,
                 height: 28,
                 decoration: const BoxDecoration(
-                  color: AppColors.primary,
+                  color: AppColors.primary500,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.check, color: Colors.white, size: 18),
+                child: const Icon(
+                  Icons.check,
+                  color: AppColors.whiteBase,
+                  size: 18,
+                ),
               ),
               if (!isLast)
-                Expanded(child: Container(width: 3, color: AppColors.primary)),
+                Expanded(
+                  child: Container(
+                    width: AppSpacing.h6,
+                    color: AppColors.primary500,
+                  ),
+                ),
             ],
           ),
-          const SizedBox(width: 14),
+          SizedBox(width: AppSpacing.h16),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(bottom: 34),
+              padding: EdgeInsets.only(bottom: AppSpacing.v22),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -130,7 +141,7 @@ class _TimelineStep extends StatelessWidget {
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  const SizedBox(height: 6),
+                  SizedBox(height: AppSpacing.v6),
                   Text(body),
                 ],
               ),

@@ -21,10 +21,9 @@ class SignInController extends AsyncNotifier<void> {
   }) async {
     state = const AsyncValue.loading();
     try {
-      final response = await ref.read(authServiceProvider).signIn(
-            email: email,
-            password: password,
-          );
+      final response = await ref
+          .read(authServiceProvider)
+          .signIn(email: email, password: password);
       if (response.success) {
         state = const AsyncValue.data(null);
       }
@@ -55,11 +54,9 @@ class SignUpController extends AsyncNotifier<void> {
   }) async {
     state = const AsyncValue.loading();
     try {
-      final response = await ref.read(authServiceProvider).signUp(
-            email: email,
-            password: password,
-            displayName: displayName,
-          );
+      final response = await ref
+          .read(authServiceProvider)
+          .signUp(email: email, password: password, displayName: displayName);
       if (response.success) {
         state = const AsyncValue.data(null);
       }

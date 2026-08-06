@@ -78,13 +78,14 @@ jobs:
         run: |
           echo "Checking PR title: $PR_TITLE"
 
-          if [[ "$PR_TITLE" =~ ^FKP-[0-9]+[[:space:]]#comment[[:space:]].+ ]] || [[ "$PR_TITLE" =~ ^FKP-[0-9]+:[[:space:]].+ ]]; then
+          if [[ "$PR_TITLE" =~ ^FKP-[0-9]+[[:space:]]#(comment)?[[:space:]].+ ]] || [[ "$PR_TITLE" =~ ^FKP-[0-9]+:[[:space:]].+ ]]; then
             echo "PR title format is valid"
             echo "is_valid=true" >> "$GITHUB_OUTPUT"
           else
             echo "PR title format violation"
-            echo "Use: FKP-123 #comment short description"
-            echo "Example: FKP-16 #comment Add Supabase table connection schema"
+            echo "Use: FKP-123 # short description"
+            echo "Also accepted: FKP-123 #comment short description"
+            echo "Example: FKP-16 # Add Supabase table connection schema"
             echo "is_valid=false" >> "$GITHUB_OUTPUT"
             exit 1
           fi

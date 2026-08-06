@@ -6,6 +6,7 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_header.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 class CommunityMembersScreen extends ConsumerWidget {
   const CommunityMembersScreen({super.key});
@@ -21,10 +22,10 @@ class CommunityMembersScreen extends ConsumerWidget {
           subtitle: 'Community members and their roles.',
           leading: FkBackButton(),
         ),
-        const SizedBox(height: 18),
+        SizedBox(height: AppSpacing.v18),
         membersAsync.when(
-          loading: () => const Padding(
-            padding: EdgeInsets.symmetric(vertical: 48),
+          loading: () => Padding(
+            padding: EdgeInsets.symmetric(vertical: AppSpacing.v22),
             child: Center(child: CircularProgressIndicator()),
           ),
           error: (e, _) => _ErrorView(
@@ -39,7 +40,7 @@ class CommunityMembersScreen extends ConsumerWidget {
               children: [
                 for (final member in members)
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
+                    padding: EdgeInsets.only(bottom: AppSpacing.v12),
                     child: CommunityMemberCard(member: member),
                   ),
               ],
@@ -59,19 +60,22 @@ class _ErrorView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 48),
+      padding: EdgeInsets.symmetric(vertical: AppSpacing.v22),
       child: Column(
         children: [
-          const Icon(Icons.wifi_off_rounded, size: 48, color: Colors.grey),
-          const SizedBox(height: 12),
+          const Icon(
+            Icons.wifi_off_rounded,
+            size: 48,
+            color: AppColors.neutral400,
+          ),
+          SizedBox(height: AppSpacing.v12),
           Text(
             'Could not load members',
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge
-                ?.copyWith(color: AppColors.subtitleTextDarkGrey),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyLarge?.copyWith(color: AppColors.neutral500),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: AppSpacing.v16),
           TextButton(onPressed: onRetry, child: const Text('Try again')),
         ],
       ),
@@ -87,14 +91,13 @@ class _EmptyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 48),
+      padding: EdgeInsets.symmetric(vertical: AppSpacing.v22),
       child: Center(
         child: Text(
           message,
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge
-              ?.copyWith(color: AppColors.subtitleTextDarkGrey),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyLarge?.copyWith(color: AppColors.neutral500),
         ),
       ),
     );

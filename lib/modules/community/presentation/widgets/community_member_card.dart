@@ -3,6 +3,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_mod
 import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_card.dart';
 import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_status_chip.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 class CommunityMemberCard extends StatelessWidget {
   const CommunityMemberCard({super.key, required this.member});
@@ -16,10 +17,10 @@ class CommunityMemberCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CircleAvatar(
-            backgroundColor: AppColors.primary.withValues(alpha: 0.12),
+            backgroundColor: AppColors.primary500.withValues(alpha: 0.12),
             child: Text(member.name.substring(0, 1)),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: AppSpacing.h12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,12 +31,12 @@ class CommunityMemberCard extends StatelessWidget {
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: AppSpacing.v4),
                 Text(member.role),
-                const SizedBox(height: 10),
+                SizedBox(height: AppSpacing.v10),
                 Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
+                  spacing: AppSpacing.h8,
+                  runSpacing: AppSpacing.v8,
                   children: member.skills
                       .map((skill) => FkStatusChip(label: skill))
                       .toList(),
@@ -43,7 +44,7 @@ class CommunityMemberCard extends StatelessWidget {
               ],
             ),
           ),
-          FkStatusChip(label: member.status, color: AppColors.successColor),
+          FkStatusChip(label: member.status, color: AppColors.success600),
         ],
       ),
     );

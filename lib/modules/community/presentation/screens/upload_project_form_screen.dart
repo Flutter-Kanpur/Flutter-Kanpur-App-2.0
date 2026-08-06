@@ -9,6 +9,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/community/application/communit
 import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 class UploadProjectFormScreen extends ConsumerStatefulWidget {
   const UploadProjectFormScreen({super.key});
@@ -44,44 +45,44 @@ class _UploadProjectFormScreenState
           title: 'Upload project',
           onBack: () => context.go(RouteNames.communityUploadProject),
         ),
-        const SizedBox(height: 26),
+        SizedBox(height: AppSpacing.v22),
         FkTextField(
           label: 'Project name',
           hint: 'Enter title',
           controller: _nameController,
         ),
-        const SizedBox(height: 26),
+        SizedBox(height: AppSpacing.v22),
         FkTextField(
           label: 'Short description',
           hint: 'Max 120 characters',
           controller: _descriptionController,
           maxLines: 5,
         ),
-        const SizedBox(height: 26),
+        SizedBox(height: AppSpacing.v22),
         const FkTextField(label: 'Tech stack', hint: '-select-'),
-        const SizedBox(height: 8),
+        SizedBox(height: AppSpacing.v8),
         const Align(
           alignment: Alignment.centerLeft,
           child: FkStatusChip(label: 'React  X'),
         ),
-        const SizedBox(height: 26),
+        SizedBox(height: AppSpacing.v22),
         FkTextField(
           label: 'Project links',
           hint: 'Github URL',
           controller: _githubController,
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: AppSpacing.v10),
         const FkTextField(label: '', hint: 'Live demo / APK'),
-        const SizedBox(height: 26),
+        SizedBox(height: AppSpacing.v22),
         Text(
           'Upload screenshot or file (optional)',
           style: Theme.of(
             context,
           ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: AppSpacing.v10),
         const FkFileUploadBox(),
-        const SizedBox(height: 26),
+        SizedBox(height: AppSpacing.v22),
         FkPrimaryButton(
           label: 'Submit project',
           isLoading: actionState.isLoading,
@@ -129,7 +130,7 @@ class _TopBar extends StatelessWidget {
             ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
           ),
         ),
-        const SizedBox(width: 48),
+        SizedBox(width: AppSpacing.h22),
       ],
     );
   }

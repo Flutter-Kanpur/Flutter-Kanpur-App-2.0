@@ -1,6 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class OnboardingRemovePhotoDialog extends StatelessWidget {
   final VoidCallback onDeleteTap;
@@ -15,28 +19,24 @@ class OnboardingRemovePhotoDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24.r),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: AppRadius.all06),
 
       child: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: 24.w,
-          vertical: 24.h,
+          horizontal: AppSpacing.h16,
+          vertical: AppSpacing.v16,
         ),
 
         child: Column(
           mainAxisSize: MainAxisSize.min,
 
           children: [
-
             Text(
               'onboarding.removePhotoTitle'.tr(),
 
-              style: TextStyle(
-                fontSize: 20.sp,
+              style: AppTextStyles.headlineSmall.copyWith(
+                color: AppColors.blackBase,
                 fontWeight: FontWeight.w700,
-                color: Colors.black,
               ),
             ),
 
@@ -47,10 +47,8 @@ class OnboardingRemovePhotoDialog extends StatelessWidget {
 
               textAlign: TextAlign.center,
 
-              style: TextStyle(
-                fontSize: 15.sp,
-                fontWeight: FontWeight.w400,
-                color: const Color(0xFF7A7A7A),
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.neutral500,
                 height: 1.5,
               ),
             ),
@@ -59,25 +57,19 @@ class OnboardingRemovePhotoDialog extends StatelessWidget {
 
             Row(
               children: [
-
                 Expanded(
                   child: OutlinedButton(
                     onPressed: onCancelTap,
 
                     style: OutlinedButton.styleFrom(
-                      minimumSize: Size(
-                        double.infinity,
-                        48.h,
-                      ),
+                      minimumSize: Size(double.infinity, 48.h),
 
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14.r),
+                        borderRadius: AppRadius.all03,
                       ),
                     ),
 
-                    child: Text(
-                      'onboarding.cancel'.tr(),
-                    ),
+                    child: Text('onboarding.cancel'.tr()),
                   ),
                 ),
 
@@ -88,21 +80,16 @@ class OnboardingRemovePhotoDialog extends StatelessWidget {
                     onPressed: onDeleteTap,
 
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
+                      backgroundColor: AppColors.warning600,
 
-                      minimumSize: Size(
-                        double.infinity,
-                        48.h,
-                      ),
+                      minimumSize: Size(double.infinity, 48.h),
 
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14.r),
+                        borderRadius: AppRadius.all03,
                       ),
                     ),
 
-                    child: Text(
-                      'onboarding.delete'.tr(),
-                    ),
+                    child: Text('onboarding.delete'.tr()),
                   ),
                 ),
               ],

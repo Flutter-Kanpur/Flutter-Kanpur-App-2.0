@@ -5,6 +5,8 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_back_button.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_header.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 class TermsOfService extends StatelessWidget {
   const TermsOfService({super.key});
@@ -20,37 +22,37 @@ class TermsOfService extends StatelessWidget {
             subtitle: '',
             leading: FkBackButton(),
           ),
-          const SizedBox(height: 28),
+          SizedBox(height: AppSpacing.v22),
           Text("termsOfServices.termsOfServices1".tr(), style: usedTextTheme),
-          const SizedBox(height: 28),
+          SizedBox(height: AppSpacing.v22),
           Text("termsOfServices.termsOfServices2".tr(), style: usedTextTheme),
-          const SizedBox(height: 28),
+          SizedBox(height: AppSpacing.v22),
           Text("termsOfServices.termsOfServices3".tr(), style: usedTextTheme),
-          const SizedBox(height: 28),
+          SizedBox(height: AppSpacing.v22),
           Text("termsOfServices.termsOfServices4".tr(), style: usedTextTheme),
-          const SizedBox(height: 32),
+          SizedBox(height: AppSpacing.v22),
           Container(
-            padding: EdgeInsets.all(8.0),
+            padding: AppSpacing.all(AppSpacing.h8),
             width: double.infinity,
             decoration: BoxDecoration(
-              color: AppColors.redWarningBackground,
-              borderRadius: BorderRadius.circular(8.0),
+              color: AppColors.warning100,
+              borderRadius: AppRadius.all02,
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 2),
+                  padding: EdgeInsets.only(top: AppSpacing.v2),
                   child: Icon(
                     Icons.warning_rounded,
-                    color: AppColors.errorColor,
+                    color: AppColors.warning600,
                   ),
                 ),
-                const SizedBox(width: 16),
+                SizedBox(width: AppSpacing.h16),
                 Expanded(
                   child: Text(
                     "termsOfServices.termsOfServicesWarning".tr(),
-                    style: usedTextTheme?.copyWith(color: AppColors.redBgText),
+                    style: usedTextTheme?.copyWith(color: AppColors.warning600),
                   ),
                 ),
               ],

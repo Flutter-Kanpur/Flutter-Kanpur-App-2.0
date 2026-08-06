@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 
 class FkFileUploadBox extends StatelessWidget {
   const FkFileUploadBox({super.key});
@@ -8,27 +11,27 @@ class FkFileUploadBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+      padding: AppSpacing.symmetric(
+        horizontal: AppSpacing.h16,
+        vertical: AppSpacing.v20,
+      ),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: const Color(0xFFD0D0D0),
-          style: BorderStyle.solid,
-        ),
+        color: AppColors.whiteBase,
+        borderRadius: AppRadius.all04,
+        border: Border.all(color: AppBorders.primary, style: BorderStyle.solid),
       ),
       child: Column(
         children: [
-          const Icon(Icons.cloud_upload_outlined, color: Colors.grey),
-          const SizedBox(height: 10),
+          const Icon(Icons.cloud_upload_outlined, color: AppColors.neutral400),
+          SizedBox(height: AppSpacing.v10),
           Text(
             'Choose a file or drag & drop it here.',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.subtitleTextDarkGrey,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: AppColors.neutral500),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: AppSpacing.v12),
           OutlinedButton(onPressed: () {}, child: const Text('Browse files')),
         ],
       ),

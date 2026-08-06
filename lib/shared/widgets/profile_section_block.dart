@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../utils/text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 /// Groups a section title and its tiles in one rounded container with dividers between items.
 class ProfileSectionBlock extends StatelessWidget {
@@ -17,36 +19,40 @@ class ProfileSectionBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.h),
+      padding: AppSpacing.only(
+        left: AppSpacing.h20,
+        top: 0,
+        right: AppSpacing.h20,
+        bottom: AppSpacing.v20,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: EdgeInsets.only(bottom: 4.h),
+            padding: EdgeInsets.only(bottom: AppSpacing.v4),
             child: Text(
               title,
-              style: textStyle_16RegularGrey().copyWith(
-                color: AppColors.subtitleTextDarkGrey,
-                fontSize: 16.sp,
+              style: AppTextStyles.bodyLarge.copyWith(
+                color: AppColors.neutral500,
               ),
             ),
           ),
-          SizedBox(height: 8.h),
+          SizedBox(height: AppSpacing.v8),
           Container(
             decoration: BoxDecoration(
-              color: AppColors.profileSectionBackground,
-              borderRadius: BorderRadius.circular(12.r),
+              color: AppColors.neutral50,
+              borderRadius: AppRadius.all03,
             ),
             child: Column(
               children: [
                 for (int i = 0; i < tiles.length; i++) ...[
                   if (i > 0)
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      padding: AppSpacing.horizontal(AppSpacing.h20),
                       child: const Divider(
                         height: 1,
                         thickness: 1,
-                        color: AppColors.textWhite,
+                        color: AppColors.whiteBase,
                       ),
                     ),
                   tiles[i],

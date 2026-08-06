@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 class CommunityFilterRow extends StatelessWidget {
   const CommunityFilterRow({
@@ -57,31 +60,34 @@ class _Chip extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.only(right: 8),
-        padding: const EdgeInsets.symmetric(horizontal: 14),
+        margin: EdgeInsets.only(right: AppSpacing.h8),
+        padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16),
         decoration: BoxDecoration(
-          color: selected ? primary.withValues(alpha: 0.1) : Colors.white,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(
-            color: selected ? primary : const Color(0xFFD8DDF0),
-          ),
+          color: selected
+              ? primary.withValues(alpha: 0.1)
+              : AppColors.whiteBase,
+          borderRadius: AppRadius.all02,
+          border: Border.all(color: selected ? primary : AppColors.primary100),
         ),
         child: Row(
           children: [
             if (icon != null) ...[
               Icon(icon, size: 16, color: selected ? primary : null),
-              const SizedBox(width: 6),
+              SizedBox(width: AppSpacing.h6),
             ],
             Text(
               label,
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: selected ? primary : null,
-                  ),
+                fontWeight: FontWeight.w700,
+                color: selected ? primary : null,
+              ),
             ),
             if (icon != null)
-              Icon(Icons.keyboard_arrow_down, size: 18,
-                  color: selected ? primary : null),
+              Icon(
+                Icons.keyboard_arrow_down,
+                size: 18,
+                color: selected ? primary : null,
+              ),
           ],
         ),
       ),

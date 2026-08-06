@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import '../../../utils/translate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../utils/text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
 class ProblemOfDaySection extends StatelessWidget {
   const ProblemOfDaySection({
@@ -20,17 +23,14 @@ class ProblemOfDaySection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(20.w),
+      padding: AppSpacing.all(AppSpacing.h20),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [
-            Color(0xFF4167F2),
-            Color(0xFF6B8EFF),
-          ],
+          colors: [AppColors.primary500, AppColors.primary400],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(24.r),
+        borderRadius: AppRadius.all06,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,64 +40,62 @@ class ProblemOfDaySection extends StatelessWidget {
             children: [
               Text(
                 translate(context, "profile.problemOfDay"),
-                style: textStyle_18BoldBlack().copyWith(
-                  color: Colors.white,
-                  fontSize: 18.sp,
+                style: AppTextStyles.titleLarge.copyWith(
+                  color: AppColors.whiteBase,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ],
           ),
-          SizedBox(height: 12.h),
+          SizedBox(height: AppSpacing.v12),
           Row(
             children: [
               Text(
                 '${translate(context, "profile.lv")} $level',
-                style: textStyle_14RegularBlack().copyWith(
-                  color: Colors.white.withOpacity(0.8),
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w600,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: AppColors.whiteBase.withOpacity(0.8),
                 ),
               ),
               const Spacer(),
               Text(
                 '${(progress * 100).toInt()}%',
-                style: textStyle_14RegularBlack().copyWith(
-                  color: Colors.white.withOpacity(0.8),
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w600,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: AppColors.whiteBase.withOpacity(0.8),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 8.h),
+          SizedBox(height: AppSpacing.v8),
           ClipRRect(
-            borderRadius: BorderRadius.circular(10.r),
+            borderRadius: AppRadius.all02,
             child: LinearProgressIndicator(
               value: progress,
-              backgroundColor: Colors.white.withOpacity(0.2),
-              valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+              backgroundColor: AppColors.whiteBase.withOpacity(0.2),
+              valueColor: const AlwaysStoppedAnimation<Color>(
+                AppColors.whiteBase,
+              ),
               minHeight: 10.h,
             ),
           ),
-          SizedBox(height: 16.h),
+          SizedBox(height: AppSpacing.v16),
           ElevatedButton(
             onPressed: onViewProgress,
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: AppColors.selectedNavBarIconColor,
+              backgroundColor: AppColors.whiteBase,
+              foregroundColor: AppColors.primary500,
               elevation: 0,
-              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20.w),
-              minimumSize: Size(0, 36.h),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.r),
+              padding: AppSpacing.symmetric(
+                horizontal: AppSpacing.h20,
+                vertical: 0,
               ),
+              minimumSize: Size(0, 36.h),
+              shape: RoundedRectangleBorder(borderRadius: AppRadius.all02),
             ),
             child: Text(
               translate(context, "profile.viewProgress"),
-              style: textStyle_14RegularBlack().copyWith(
+              style: AppTextStyles.bodyMedium.copyWith(
                 fontWeight: FontWeight.w600,
-                color: AppColors.selectedNavBarIconColor,
-                fontSize: 12.sp,
+                color: AppColors.primary500,
               ),
             ),
           ),

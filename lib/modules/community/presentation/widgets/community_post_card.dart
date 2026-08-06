@@ -3,6 +3,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_mod
 import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_card.dart';
 import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_status_chip.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
 class CommunityPostCard extends StatelessWidget {
   const CommunityPostCard({super.key, required this.post, this.onTap});
@@ -22,10 +23,10 @@ class CommunityPostCard extends StatelessWidget {
           Row(
             children: [
               CircleAvatar(
-                backgroundColor: AppColors.primary.withValues(alpha: 0.12),
+                backgroundColor: AppColors.primary500.withValues(alpha: 0.12),
                 child: Text(post.authorName.substring(0, 1)),
               ),
-              const SizedBox(width: 10),
+              SizedBox(width: AppSpacing.h10),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +40,7 @@ class CommunityPostCard extends StatelessWidget {
                     Text(
                       '${post.authorRole} - ${post.createdLabel}',
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: AppColors.subtitleTextDarkGrey,
+                        color: AppColors.neutral500,
                       ),
                     ),
                   ],
@@ -51,31 +52,31 @@ class CommunityPostCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 14),
+          SizedBox(height: AppSpacing.v16),
           Text(
             post.title,
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w800,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: AppSpacing.v8),
           Text(post.body, style: theme.textTheme.bodyMedium),
-          const SizedBox(height: 12),
+          SizedBox(height: AppSpacing.v12),
           Wrap(
-            spacing: 8,
-            runSpacing: 8,
+            spacing: AppSpacing.h8,
+            runSpacing: AppSpacing.v8,
             children: post.tags
                 .map((tag) => FkStatusChip(label: '#$tag'))
                 .toList(),
           ),
-          const SizedBox(height: 14),
+          SizedBox(height: AppSpacing.v16),
           Row(
             children: [
               _Metric(
                 icon: Icons.chat_bubble_outline,
                 label: '${post.replyCount} replies',
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: AppSpacing.h16),
               _Metric(
                 icon: Icons.favorite_border_rounded,
                 label: '${post.likeCount} likes',
@@ -117,8 +118,8 @@ class _Metric extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 16, color: AppColors.subtitleTextDarkGrey),
-        const SizedBox(width: 4),
+        Icon(icon, size: 16, color: AppColors.neutral500),
+        SizedBox(width: AppSpacing.h4),
         Text(label),
       ],
     );
