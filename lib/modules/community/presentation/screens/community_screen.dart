@@ -45,7 +45,17 @@ class CommunityScreen extends ConsumerWidget {
           SizedBox(height: AppSpacing.v18),
 
           CommunityAskBanner(
-            onTap: () => context.push(RouteNames.communityAskQuestion),
+            onAskQuestion: () => context.push(RouteNames.communityAskQuestion),
+            // Real member photos when they have loaded; the stack is simply
+            // omitted until then rather than showing placeholder faces.
+            memberPhotoUrls:
+                membersAsync.value
+                    ?.map((m) => m.photoUrl)
+                    .whereType<String>()
+                    .where((url) => url.isNotEmpty)
+                    .take(4)
+                    .toList() ??
+                const [],
           ),
 
           FkSectionTitle(
