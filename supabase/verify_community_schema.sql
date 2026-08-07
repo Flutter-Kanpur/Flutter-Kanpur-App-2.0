@@ -1,7 +1,13 @@
 -- Community module schema verification.
 --
 -- Read-only. Paste into the Supabase SQL editor and run.
--- Every row should report PASS once 002 and 004 have both been applied.
+--
+-- The first row is always a SUMMARY. It reads either
+--   ALL CHECKS PASSED        -> 002 and 004 are both fully applied
+--   N CHECK(S) FAILED        -> the failing rows are listed directly beneath
+--
+-- This script always returns rows, so "no rows returned" means the script did
+-- not run, never that everything is fine.
 
 WITH required_columns(tbl, col, added_by) AS (
   VALUES
@@ -45,111 +51,141 @@ WITH required_columns(tbl, col, added_by) AS (
     ('projects',     'cover_image_url', '004'),
 
     -- join tables
-    ('question_likes', 'question_id',   '002'),
-    ('question_likes', 'user_uid',      '002'),
-    ('answer_likes',   'answer_id',     '002'),
-    ('answer_likes',   'user_uid',      '002'),
-    ('answer_comments','answer_id',     '002'),
-    ('answer_comments','author_uid',    '002'),
-    ('answer_comments','body',          '002'),
-    ('answer_comments','is_deleted',    '002'),
-    ('question_saves', 'question_id',   '004'),
-    ('question_saves', 'user_uid',      '004'),
+    ('question_likes',  'question_id',  '002'),
+    ('question_likes',  'user_uid',     '002'),
+    ('answer_likes',    'answer_id',    '002'),
+    ('answer_likes',    'user_uid',     '002'),
+    ('answer_comments', 'answer_id',    '002'),
+    ('answer_comments', 'author_uid',   '002'),
+    ('answer_comments', 'body',         '002'),
+    ('answer_comments', 'is_deleted',   '002'),
+    ('question_saves',  'question_id',  '004'),
+    ('question_saves',  'user_uid',     '004'),
 
-    -- notifications (used by the community bell)
+    -- notifications (community bell)
     ('notifications', 'user_uid',       'base'),
     ('notifications', 'module',         'base'),
     ('notifications', 'title',          'base'),
     ('notifications', 'body',           'base'),
     ('notifications', 'read_at',        'base')
+),
+
+checks AS (
+  -- Columns -----------------------------------------------------------------
+  SELECT
+    '1. COLUMN'           AS check_group,
+    r.added_by            AS migration,
+    r.tbl || '.' || r.col AS object,
+    CASE WHEN c.column_name IS NULL THEN 'FAIL - missing' ELSE 'PASS' END AS result
+  FROM required_columns r
+  LEFT JOIN information_schema.columns c
+         ON c.table_schema = 'public'
+        AND c.table_name   = r.tbl
+        AND c.column_name  = r.col
+
+  UNION ALL
+
+  -- Tables ------------------------------------------------------------------
+  SELECT
+    '2. TABLE', m.added_by, m.tbl,
+    CASE WHEN t.table_name IS NULL THEN 'FAIL - missing' ELSE 'PASS' END
+  FROM (VALUES
+          ('questions','base'), ('answers','base'), ('projects','base'),
+          ('project_tech_stack','base'), ('community_memberships','base'),
+          ('user_skills','base'), ('users','base'), ('notifications','base'),
+          ('question_likes','002'), ('answer_likes','002'),
+          ('answer_comments','002'), ('question_saves','004')
+       ) AS m(tbl, added_by)
+  LEFT JOIN information_schema.tables t
+         ON t.table_schema = 'public' AND t.table_name = m.tbl
+
+  UNION ALL
+
+  -- Unique constraints ------------------------------------------------------
+  SELECT
+    '3. UNIQUE', m.added_by, m.conname,
+    CASE WHEN c.conname IS NULL THEN 'FAIL - missing' ELSE 'PASS' END
+  FROM (VALUES
+          ('question_likes_unique','002'),
+          ('answer_likes_unique','002'),
+          ('question_saves_unique','004')
+       ) AS m(conname, added_by)
+  LEFT JOIN pg_constraint c ON c.conname = m.conname
+
+  UNION ALL
+
+  -- Counter triggers --------------------------------------------------------
+  SELECT
+    '4. TRIGGER', '004', m.tgname,
+    CASE WHEN t.tgname IS NULL THEN 'FAIL - missing' ELSE 'PASS' END
+  FROM (VALUES
+          ('trg_question_likes_count'),
+          ('trg_question_saves_count'),
+          ('trg_answer_likes_count'),
+          ('trg_answer_comments_count'),
+          ('trg_answers_question_count')
+       ) AS m(tgname)
+  LEFT JOIN pg_trigger t ON t.tgname = m.tgname AND NOT t.tgisinternal
+
+  UNION ALL
+
+  -- Foreign keys the PostgREST embeds depend on -----------------------------
+  -- e.g. author:users!author_uid(...) only resolves if this FK exists.
+  SELECT
+    '5. FOREIGN KEY', 'base/002', m.conname,
+    CASE WHEN c.conname IS NULL THEN 'FAIL - missing' ELSE 'PASS' END
+  FROM (VALUES
+          ('questions_author_uid_fkey'),
+          ('answers_author_uid_fkey'),
+          ('answer_comments_author_uid_fkey'),
+          ('projects_owner_uid_fkey'),
+          ('project_tech_stack_project_id_fkey'),
+          ('community_memberships_user_uid_fkey'),
+          ('user_skills_user_uid_fkey')
+       ) AS m(conname)
+  LEFT JOIN pg_constraint c ON c.conname = m.conname
+
+  UNION ALL
+
+  -- Storage policies for media/community/** ---------------------------------
+  -- Created by 004, or by hand in Storage > Policies when the SQL editor
+  -- lacks ownership of storage.objects.
+  SELECT
+    '6. STORAGE POLICY', '004', m.polname,
+    CASE WHEN p.policyname IS NULL THEN 'FAIL - missing' ELSE 'PASS' END
+  FROM (VALUES
+          ('community_attachments_insert'),
+          ('community_attachments_delete_own')
+       ) AS m(polname)
+  LEFT JOIN pg_policies p
+         ON p.schemaname = 'storage'
+        AND p.tablename  = 'objects'
+        AND p.policyname = m.polname
 )
-SELECT
-  '1. COLUMN'          AS check_group,
-  r.added_by           AS migration,
-  r.tbl || '.' || r.col AS object,
-  CASE WHEN c.column_name IS NULL THEN 'FAIL - missing' ELSE 'PASS' END AS result
-FROM required_columns r
-LEFT JOIN information_schema.columns c
-       ON c.table_schema = 'public'
-      AND c.table_name   = r.tbl
-      AND c.column_name  = r.col
-WHERE c.column_name IS NULL   -- comment out this line to see PASS rows too
 
-UNION ALL
-
--- Tables ---------------------------------------------------------------------
-SELECT
-  '2. TABLE',
-  m.added_by,
-  m.tbl,
-  CASE WHEN t.table_name IS NULL THEN 'FAIL - missing' ELSE 'PASS' END
-FROM (VALUES
-        ('questions','base'), ('answers','base'), ('projects','base'),
-        ('project_tech_stack','base'), ('community_memberships','base'),
-        ('user_skills','base'), ('users','base'), ('notifications','base'),
-        ('question_likes','002'), ('answer_likes','002'),
-        ('answer_comments','002'), ('question_saves','004')
-     ) AS m(tbl, added_by)
-LEFT JOIN information_schema.tables t
-       ON t.table_schema = 'public' AND t.table_name = m.tbl
-
-UNION ALL
-
--- Unique constraints ---------------------------------------------------------
-SELECT
-  '3. UNIQUE',
-  m.added_by,
-  m.conname,
-  CASE WHEN c.conname IS NULL THEN 'FAIL - missing' ELSE 'PASS' END
-FROM (VALUES
-        ('question_likes_unique','002/004'),
-        ('answer_likes_unique','002/004'),
-        ('question_saves_unique','004')
-     ) AS m(conname, added_by)
-LEFT JOIN pg_constraint c ON c.conname = m.conname
-
-UNION ALL
-
--- Counter triggers -----------------------------------------------------------
-SELECT
-  '4. TRIGGER',
-  '004',
-  m.tgname,
-  CASE WHEN t.tgname IS NULL THEN 'FAIL - missing' ELSE 'PASS' END
-FROM (VALUES
-        ('trg_question_likes_count'),
-        ('trg_question_saves_count'),
-        ('trg_answer_likes_count'),
-        ('trg_answer_comments_count'),
-        ('trg_answers_question_count')
-     ) AS m(tgname)
-LEFT JOIN pg_trigger t ON t.tgname = m.tgname AND NOT t.tgisinternal
-
-UNION ALL
-
--- Foreign keys the PostgREST embeds depend on --------------------------------
--- e.g. author:users!author_uid(...) only resolves if this FK exists.
-SELECT
-  '5. FOREIGN KEY',
-  'base/002/004',
-  m.conname,
-  CASE WHEN c.conname IS NULL THEN 'FAIL - missing' ELSE 'PASS' END
-FROM (VALUES
-        ('questions_author_uid_fkey'),
-        ('answers_author_uid_fkey'),
-        ('answer_comments_author_uid_fkey'),
-        ('projects_owner_uid_fkey'),
-        ('project_tech_stack_project_id_fkey'),
-        ('community_memberships_user_uid_fkey'),
-        ('user_skills_user_uid_fkey')
-     ) AS m(conname)
-LEFT JOIN pg_constraint c ON c.conname = m.conname
-
-ORDER BY 1, 4 DESC, 3;
+SELECT check_group, migration, object, result
+FROM (
+  -- Summary first, then failures, then everything that passed.
+  SELECT 0 AS sort_key, 'SUMMARY' AS check_group, '' AS migration,
+         CASE WHEN (SELECT count(*) FROM checks WHERE result <> 'PASS') = 0
+              THEN 'ALL CHECKS PASSED'
+              ELSE (SELECT count(*) FROM checks WHERE result <> 'PASS')::text
+                   || ' CHECK(S) FAILED - see rows below'
+         END AS object,
+         CASE WHEN (SELECT count(*) FROM checks WHERE result <> 'PASS') = 0
+              THEN 'PASS' ELSE 'FAIL' END AS result
+  UNION ALL
+  SELECT 1, check_group, migration, object, result
+    FROM checks WHERE result <> 'PASS'
+  UNION ALL
+  SELECT 2, check_group, migration, object, result
+    FROM checks WHERE result = 'PASS'
+) ordered
+ORDER BY sort_key, check_group, object;
 
 
 -- ---------------------------------------------------------------------------
--- Counter drift check. Run after 004; every row should show 0 difference.
+-- Counter drift check. Should return no rows once 004 has run.
 -- ---------------------------------------------------------------------------
 -- SELECT q.id, q.title,
 --        q.like_count   AS stored_likes,
@@ -161,9 +197,3 @@ ORDER BY 1, 4 DESC, 3;
 --  WHERE q.like_count <> (SELECT count(*) FROM public.question_likes l WHERE l.question_id = q.id)
 --     OR q.answer_count <> (SELECT count(*) FROM public.answers a
 --                            WHERE a.question_id = q.id AND NOT a.is_deleted);
-
-
--- ---------------------------------------------------------------------------
--- Storage: the upload box writes to a bucket named 'community'.
--- ---------------------------------------------------------------------------
--- SELECT id, name, public FROM storage.buckets WHERE name = 'community';
