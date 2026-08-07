@@ -33,6 +33,23 @@ class RouteNames {
   static const communityProjectSubmitted = '/community/project-submitted';
   static const communityNetworkError = '/community/network-error';
 
+  // IMPORTANT - do not flatten the two routes below into `/community/<name>`.
+  //
+  // readmePathRedirect() treats any two-segment `/community/<slug>` path that
+  // is not in its allowlist as a ReadMe community slug and redirects it to
+  // /readme-community/<slug>. That renders ReadMe's "community not found"
+  // screen, whose back button pops an empty stack and crashes the app.
+  // Its regex only matches two-segment paths, so nesting one level deeper
+  // (or living outside /community) keeps these clear of it.
+
+  /// Nested under ask-question: three segments, so the redirect skips it.
+  static const communityQuestionPosted = '/community/ask-question/posted';
+
+  /// Top-level: the redirect only inspects `/community/...` and `/profile/...`.
+  /// Registered inside the Community shell branch, so the Community tab stays
+  /// selected while it is open.
+  static const notifications = '/notifications';
+
   /// Community Segments
   static const communityDiscussionsSegment = 'discussions';
   static const communityDiscussionDetailSegment = 'discussion';
@@ -44,6 +61,9 @@ class RouteNames {
   static const communityUploadProjectFormSegment = 'form';
   static const communityProjectSubmittedSegment = 'project-submitted';
   static const communityNetworkErrorSegment = 'network-error';
+
+  /// Child of [communityAskQuestionSegment] - see [communityQuestionPosted].
+  static const communityQuestionPostedSegment = 'posted';
 
   static const manageProfile = '/profile/manage-profile';
   static const editProfile = '/profile/edit-profile';

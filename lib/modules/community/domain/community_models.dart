@@ -69,6 +69,8 @@ class CommunityProject {
     required this.techStack,
     this.ownerName,
     this.githubUrl,
+    this.liveUrl,
+    this.coverImageUrl,
   });
 
   final String id;
@@ -78,6 +80,8 @@ class CommunityProject {
   final List<String> techStack;
   final String? ownerName;
   final String? githubUrl;
+  final String? liveUrl;
+  final String? coverImageUrl;
 
   factory CommunityProject.fromMap(Map<String, dynamic> map) {
     final owner = map['owner'] as Map<String, dynamic>?;
@@ -94,6 +98,8 @@ class CommunityProject {
       ownerName:
           owner?['display_name'] as String? ?? owner?['username'] as String?,
       githubUrl: map['github_url'] as String?,
+      liveUrl: map['live_url'] as String?,
+      coverImageUrl: map['cover_image_url'] as String?,
     );
   }
 
@@ -116,32 +122,83 @@ class CommunityQuestion {
     required this.id,
     required this.title,
     required this.body,
-    required this.tag,
+    required this.tags,
+    required this.category,
     required this.answerCount,
+    required this.likeCount,
+    required this.saveCount,
     required this.status,
     required this.authorName,
     required this.createdLabel,
     this.authorPhotoUrl,
+    this.imageUrl,
+    this.isLiked = false,
+    this.isSaved = false,
   });
 
   final String id;
   final String title;
   final String body;
-  final String tag;
+  final List<String> tags;
+  final String category;
   final int answerCount;
+  final int likeCount;
+  final int saveCount;
   final String status;
   final String authorName;
   final String createdLabel;
   final String? authorPhotoUrl;
+  final String? imageUrl;
 
-  factory CommunityQuestion.fromMap(Map<String, dynamic> map) {
+  /// Whether the signed-in user has liked / bookmarked this question.
+  /// Hydrated by the repository from `question_likes` / `question_saves`.
+  final bool isLiked;
+  final bool isSaved;
+
+  /// First tag, or empty — kept for call sites that render a single chip.
+  String get tag => tags.isEmpty ? '' : tags.first;
+
+  CommunityQuestion copyWith({
+    int? answerCount,
+    int? likeCount,
+    int? saveCount,
+    bool? isLiked,
+    bool? isSaved,
+  }) {
+    return CommunityQuestion(
+      id: id,
+      title: title,
+      body: body,
+      tags: tags,
+      category: category,
+      answerCount: answerCount ?? this.answerCount,
+      likeCount: likeCount ?? this.likeCount,
+      saveCount: saveCount ?? this.saveCount,
+      status: status,
+      authorName: authorName,
+      createdLabel: createdLabel,
+      authorPhotoUrl: authorPhotoUrl,
+      imageUrl: imageUrl,
+      isLiked: isLiked ?? this.isLiked,
+      isSaved: isSaved ?? this.isSaved,
+    );
+  }
+
+  factory CommunityQuestion.fromMap(
+    Map<String, dynamic> map, {
+    bool isLiked = false,
+    bool isSaved = false,
+  }) {
     final author = map['author'] as Map<String, dynamic>?;
     return CommunityQuestion(
       id: map['id'] as String? ?? '',
       title: map['title'] as String? ?? '',
       body: map['body'] as String? ?? '',
-      tag: '',
+      tags: _stringList(map['tags']),
+      category: map['category'] as String? ?? 'general',
       answerCount: map['answer_count'] as int? ?? 0,
+      likeCount: map['like_count'] as int? ?? 0,
+      saveCount: map['save_count'] as int? ?? 0,
       status: map['status'] as String? ?? 'open',
       authorName:
           author?['display_name'] as String? ??
@@ -149,7 +206,29 @@ class CommunityQuestion {
           'Anonymous',
       createdLabel: _timeAgo(map['created_at'] as String?),
       authorPhotoUrl: author?['photo_url'] as String?,
+      imageUrl: map['image_url'] as String?,
+      isLiked: isLiked,
+      isSaved: isSaved,
     );
+  }
+
+  /// `questions.tags` is a Postgres `TEXT[]`, which arrives as a List, but
+  /// tolerate a comma-joined string too in case a row was written by hand.
+  static List<String> _stringList(Object? raw) {
+    if (raw is List) {
+      return raw
+          .map((t) => t?.toString().trim() ?? '')
+          .where((t) => t.isNotEmpty)
+          .toList();
+    }
+    if (raw is String) {
+      return raw
+          .split(',')
+          .map((t) => t.trim())
+          .where((t) => t.isNotEmpty)
+          .toList();
+    }
+    return const [];
   }
 
   static String _timeAgo(String? isoDate) {
@@ -189,7 +268,9 @@ class CommunityReply {
     required this.createdLabel,
     required this.body,
     required this.likeCount,
+    required this.commentCount,
     required this.createdAt,
+    this.isLiked = false,
   });
 
   final String id;
@@ -199,9 +280,31 @@ class CommunityReply {
   final String createdLabel;
   final String body;
   final int likeCount;
+  final int commentCount;
   final String createdAt;
 
-  factory CommunityReply.fromMap(Map<String, dynamic> map) {
+  /// Whether the signed-in user has liked this answer.
+  final bool isLiked;
+
+  CommunityReply copyWith({int? likeCount, bool? isLiked}) {
+    return CommunityReply(
+      id: id,
+      authorId: authorId,
+      authorName: authorName,
+      authorPhotoUrl: authorPhotoUrl,
+      createdLabel: createdLabel,
+      body: body,
+      likeCount: likeCount ?? this.likeCount,
+      commentCount: commentCount,
+      createdAt: createdAt,
+      isLiked: isLiked ?? this.isLiked,
+    );
+  }
+
+  factory CommunityReply.fromMap(
+    Map<String, dynamic> map, {
+    bool isLiked = false,
+  }) {
     final author = map['author'] as Map<String, dynamic>?;
     return CommunityReply(
       id: map['id'] as String? ?? '',
@@ -214,9 +317,19 @@ class CommunityReply {
       createdLabel: CommunityQuestion._timeAgo(map['created_at'] as String?),
       body: map['body'] as String? ?? '',
       likeCount: map['like_count'] as int? ?? 0,
+      commentCount: map['comment_count'] as int? ?? 0,
       createdAt: map['created_at'] as String? ?? '',
+      isLiked: isLiked,
     );
   }
+}
+
+/// One page of questions plus whether the server has more behind it.
+class CommunityQuestionPage {
+  const CommunityQuestionPage({required this.items, required this.hasMore});
+
+  final List<CommunityQuestion> items;
+  final bool hasMore;
 }
 
 class CommunityProjectSubmission {
@@ -224,13 +337,17 @@ class CommunityProjectSubmission {
     required this.name,
     required this.description,
     required this.techStack,
-    required this.links,
+    required this.githubUrl,
+    this.liveDemoUrl,
+    this.screenshotUrl,
   });
 
   final String name;
   final String description;
   final List<String> techStack;
-  final List<String> links;
+  final String githubUrl;
+  final String? liveDemoUrl;
+  final String? screenshotUrl;
 }
 
 class CommunityQuestionDraft {

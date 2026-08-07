@@ -31,6 +31,9 @@ class AssetsPath {
   static const String contributorApproved = 'assets/contributorSuccess.png';
   static const String contribute1 = 'assets/contribute1.svg';
   static const String uploadIcon = 'assets/icons/upload_icon.svg';
+  static const String notificationIcon = 'assets/icons/notification_icon.svg';
+  /// Blue tick used on the success result screens.
+  static const String successTick = 'assets/success_tick.png';
   static const String projectLandingDescription =
       'assets/project_landing_description.svg';
   static const String tickIcon = 'assets/icons/tick.svg';

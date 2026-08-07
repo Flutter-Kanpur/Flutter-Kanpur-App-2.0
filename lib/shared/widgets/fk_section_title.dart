@@ -21,14 +21,30 @@ class FkSectionTitle extends StatelessWidget {
       padding: EdgeInsets.only(top: AppSpacing.v8, bottom: AppSpacing.v8),
       child: Row(
         children: [
-          Expanded(child: Text(title, style: AppTextStyles.titleMedium)),
+          Expanded(
+            child: Text(
+              title,
+              style: AppTextStyles.titleMedium.copyWith(
+                fontWeight: FontWeight.w600,
+                color: AppColors.neutral950,
+              ),
+            ),
+          ),
           if (actionLabel != null)
+            // Default TextButton padding pushed the action off the grid;
+            // the design has it flush with the content edge.
             TextButton(
               onPressed: onActionTap,
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.h4),
+                minimumSize: Size.zero,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
               child: Text(
                 actionLabel!,
                 style: AppTextStyles.bodyMedium.copyWith(
                   color: AppColors.primary500,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
