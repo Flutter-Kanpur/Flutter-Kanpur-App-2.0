@@ -9,6 +9,7 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/application/community_provider.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_models.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/answer_card.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/answer_comments_sheet.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/answer_form.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_async_views.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_author_row.dart';
@@ -323,6 +324,11 @@ class _DetailBodyState extends ConsumerState<_DetailBody> {
                     reply: reply,
                     isOwnAnswer: reply.authorId == currentUserId,
                     onLike: () => _toggleAnswerLike(reply),
+                    onReply: () => showAnswerCommentsSheet(
+                      context,
+                      questionId: question.id,
+                      answer: reply,
+                    ),
                     onDelete: reply.authorId == currentUserId
                         ? () => ref
                               .read(communityActionControllerProvider.notifier)

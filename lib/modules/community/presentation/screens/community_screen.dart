@@ -9,6 +9,7 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/application/community_provider.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/application/notifications_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/data/community_error_message.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_ask_banner.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_async_views.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_contribute_section.dart';
@@ -19,6 +20,31 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart'
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_section_title.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/external_links.dart';
+
+/// Runs a like / bookmark toggle and reports failure.
+///
+/// [CommunityEngagement] rolls its optimistic update back on error and returns
+/// the error rather than throwing, so without this the icon would silently
+/// flip back with no explanation.
+Future<void> _runEngagement(
+  BuildContext context,
+  Future<Object?> Function() action,
+  String fallback,
+) async {
+  // Captured before the await so context is not used across the async gap.
+  final messenger = ScaffoldMessenger.of(context);
+  final error = await action();
+  if (error == null) return;
+
+  messenger
+    ..hideCurrentSnackBar()
+    ..showSnackBar(
+      SnackBar(
+        content: Text(describeCommunityError(error, fallback: fallback)),
+        backgroundColor: AppColors.warning600,
+      ),
+    );
+}
 
 class CommunityScreen extends ConsumerWidget {
   const CommunityScreen({super.key});
@@ -99,12 +125,20 @@ class CommunityScreen extends ConsumerWidget {
                         onTap: () => context.push(
                           '${RouteNames.communityDiscussionDetail}/${featured[i].id}',
                         ),
-                        onLike: () => ref
-                            .read(communityEngagementProvider)
-                            .toggleQuestionLike(featured[i]),
-                        onSave: () => ref
-                            .read(communityEngagementProvider)
-                            .toggleQuestionSave(featured[i]),
+                        onLike: () => _runEngagement(
+                          context,
+                          () => ref
+                              .read(communityEngagementProvider)
+                              .toggleQuestionLike(featured[i]),
+                          'Could not update your like.',
+                        ),
+                        onSave: () => _runEngagement(
+                          context,
+                          () => ref
+                              .read(communityEngagementProvider)
+                              .toggleQuestionSave(featured[i]),
+                          'Could not update your bookmark.',
+                        ),
                       ),
                     ),
                   );

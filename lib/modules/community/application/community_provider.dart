@@ -324,6 +324,32 @@ class RepliesNotifier extends AsyncNotifier<ReplyFeedState> {
   }
 }
 
+// --- Comments on an answer --------------------------------------------------
+
+final answerCommentsProvider =
+    AsyncNotifierProvider.family<
+      AnswerCommentsNotifier,
+      List<CommunityReply>,
+      String
+    >(AnswerCommentsNotifier.new);
+
+class AnswerCommentsNotifier extends AsyncNotifier<List<CommunityReply>> {
+  AnswerCommentsNotifier(this.answerId);
+
+  /// Riverpod 3 hands a family's argument to the notifier constructor.
+  final String answerId;
+
+  @override
+  Future<List<CommunityReply>> build() =>
+      ref.read(answerServiceProvider).fetchComments(answerId);
+
+  Future<void> refresh() async {
+    state = await AsyncValue.guard(
+      () => ref.read(answerServiceProvider).fetchComments(answerId),
+    );
+  }
+}
+
 // --- Engagement (like / save) -----------------------------------------------
 
 /// Like and bookmark toggles, applied optimistically and rolled back on error.
@@ -402,9 +428,20 @@ class CommunityEngagement {
   }
 
   /// Keeps the feed and the detail screen showing the same numbers.
+  ///
+  /// The detail provider is only touched when it is already alive. Reading
+  /// `.notifier` on a family that nothing is watching *creates* it, which fired
+  /// a pointless fetchQuestionById on every like from the feed - and that
+  /// in-flight fetch (issued before the like was written) then overwrote the
+  /// optimistic value, leaving a stale un-liked entry cached for the next time
+  /// the detail screen opened.
   void _applyQuestion(CommunityQuestion question) {
     _ref.read(questionFeedProvider.notifier).replaceQuestion(question);
-    _ref.read(questionDetailProvider(question.id).notifier).replace(question);
+
+    final detail = questionDetailProvider(question.id);
+    if (_ref.exists(detail)) {
+      _ref.read(detail.notifier).replace(question);
+    }
   }
 }
 
@@ -470,6 +507,25 @@ class CommunityActionController extends AsyncNotifier<void> {
     if (result.isSuccess) {
       await ref.read(repliesProvider(questionId).notifier).refresh();
       await ref.read(questionDetailProvider(questionId).notifier).refresh();
+    }
+    return result;
+  }
+
+  Future<SubmitResult> submitComment({
+    required String answerId,
+    required String questionId,
+    required String body,
+  }) async {
+    final result = await _run(
+      () => ref
+          .read(answerServiceProvider)
+          .submitComment(answerId: answerId, body: body),
+    );
+    if (result.isSuccess) {
+      await ref.read(answerCommentsProvider(answerId).notifier).refresh();
+      // comment_count lives on the answer row, so the reply list needs a
+      // reload for the count under the answer to move.
+      await ref.read(repliesProvider(questionId).notifier).refresh();
     }
     return result;
   }

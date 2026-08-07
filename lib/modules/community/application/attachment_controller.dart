@@ -27,7 +27,11 @@ class AttachmentState {
 /// Shared by the Ask-a-question and Upload-project forms.
 ///
 /// [folder] namespaces the object in the storage bucket, e.g. `questions`.
-final attachmentControllerProvider = NotifierProvider.family<
+///
+/// autoDispose so the state resets once the form closes. Without it a file
+/// picked but never submitted stayed in the provider and silently re-attached
+/// itself to the next question or project the user started.
+final attachmentControllerProvider = NotifierProvider.autoDispose.family<
   AttachmentController,
   AttachmentState,
   String
