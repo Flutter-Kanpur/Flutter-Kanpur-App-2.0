@@ -50,6 +50,7 @@ class NotificationsScreen extends ConsumerWidget {
                 loading: () =>
                     const Center(child: CircularProgressIndicator()),
                 error: (e, _) => CommunityErrorView(
+                  error: e,
                   message: 'Could not load notifications.',
                   onRetry: () =>
                       ref.read(notificationsProvider.notifier).refresh(),

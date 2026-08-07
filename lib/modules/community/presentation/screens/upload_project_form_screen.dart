@@ -7,6 +7,8 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/application/attachment_controller.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/application/community_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/data/community_error_message.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/data/services/upload_service.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_constants.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_models.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_file_upload_box.dart';
@@ -18,7 +20,7 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_text_field.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/form_validators.dart';
 
 /// Storage folder for project screenshots.
-const _attachmentFolder = 'projects';
+const _attachmentFolder = UploadService.projectsFolder;
 
 class UploadProjectFormScreen extends ConsumerStatefulWidget {
   const UploadProjectFormScreen({super.key});
@@ -92,24 +94,19 @@ class _UploadProjectFormScreenState
     if (result.isSuccess) {
       ref.read(attachmentControllerProvider(_attachmentFolder).notifier).clear();
       context.go(RouteNames.communityProjectSubmitted);
+    } else if (isOffline(result.error)) {
+      // Only genuine connectivity failures get the retry screen. A schema or
+      // permission error is not something "Try again" can fix, so it stays
+      // here with a message that says what actually went wrong.
+      context.go(RouteNames.communityNetworkError);
     } else {
-      // Network / server failures get the dedicated retry screen; anything the
-      // user can act on (not signed in, validation) stays here as a message.
-      if (_isConnectivityError(result.error)) {
-        context.go(RouteNames.communityNetworkError);
-      } else {
-        _showMessage(result.message);
-      }
+      _showMessage(
+        describeCommunityError(
+          result.error,
+          fallback: 'Could not submit your project.',
+        ),
+      );
     }
-  }
-
-  bool _isConnectivityError(Object? error) {
-    final text = error.toString().toLowerCase();
-    return text.contains('socket') ||
-        text.contains('network') ||
-        text.contains('timeout') ||
-        text.contains('connection') ||
-        text.contains('failed host lookup');
   }
 
   void _showMessage(String message) {

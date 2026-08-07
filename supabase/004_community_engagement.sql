@@ -100,6 +100,33 @@ CREATE POLICY "question_saves_delete_policy" ON public.question_saves
   FOR DELETE USING (auth.uid() = user_uid);
 
 -- ============================================================================
+-- 2b. Storage policy for community attachments
+-- ============================================================================
+--
+-- Question screenshots and project covers upload to media/community/**.
+-- The bucket is public, so reads already work; this grants signed-in users
+-- INSERT so "Browse files" does not fail with a 403. Scoped to the community/
+-- prefix so it cannot touch events/, banners/ or speaker_images/.
+
+DROP POLICY IF EXISTS "community_attachments_insert" ON storage.objects;
+CREATE POLICY "community_attachments_insert" ON storage.objects
+  FOR INSERT TO authenticated
+  WITH CHECK (
+    bucket_id = 'media'
+    AND (storage.foldername(name))[1] = 'community'
+  );
+
+-- Let a user remove an attachment they uploaded themselves.
+DROP POLICY IF EXISTS "community_attachments_delete_own" ON storage.objects;
+CREATE POLICY "community_attachments_delete_own" ON storage.objects
+  FOR DELETE TO authenticated
+  USING (
+    bucket_id = 'media'
+    AND (storage.foldername(name))[1] = 'community'
+    AND owner = auth.uid()
+  );
+
+-- ============================================================================
 -- 3. Counter triggers
 -- ============================================================================
 

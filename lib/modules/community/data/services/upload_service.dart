@@ -19,7 +19,17 @@ class UploadService {
   final SupabaseClient _supabase;
 
   /// Bucket the community module writes into.
-  static const communityBucket = 'community';
+  ///
+  /// This project has exactly two buckets, `avatars` and `media`. Community
+  /// attachments go into `media` under a `community/` prefix, alongside the
+  /// existing `events/`, `banners/` and `speaker_images/` folders. Do not
+  /// point this at a bucket name that has not been created in Supabase -
+  /// uploads fail with "Bucket not found".
+  static const communityBucket = 'media';
+
+  /// Folders within [communityBucket].
+  static const questionsFolder = 'community/questions';
+  static const projectsFolder = 'community/projects';
 
   static const maxBytes = 10 * 1024 * 1024; // 10 MB
   static const allowedExtensions = ['png', 'jpg', 'jpeg', 'webp', 'gif', 'pdf'];

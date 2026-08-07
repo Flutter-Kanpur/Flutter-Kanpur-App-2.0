@@ -41,6 +41,7 @@ class DiscussionDetailScreen extends ConsumerWidget {
               ),
               Expanded(
                 child: CommunityErrorView(
+                  error: e,
                   message: 'Could not load this discussion.',
                   onRetry: () => ref
                       .read(questionDetailProvider(questionId).notifier)
@@ -301,6 +302,7 @@ class _DetailBodyState extends ConsumerState<_DetailBody> {
         repliesAsync.when(
           loading: () => const CommunityLoadingView(height: 160),
           error: (e, _) => CommunityErrorView(
+            error: e,
             message: 'Could not load replies.',
             onRetry: () =>
                 ref.read(repliesProvider(question.id).notifier).refresh(),

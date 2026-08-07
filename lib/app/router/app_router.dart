@@ -110,6 +110,14 @@ final GoRouter appRouter = GoRouter(
                 GoRoute(
                   path: RouteNames.communityAskQuestionSegment,
                   builder: (context, state) => const AskQuestionScreen(),
+                  routes: [
+                    // Success screen nested here on purpose - see the note on
+                    // RouteNames.communityQuestionPosted.
+                    GoRoute(
+                      path: RouteNames.communityQuestionPostedSegment,
+                      builder: (context, state) => const QuestionPostedScreen(),
+                    ),
+                  ],
                 ),
                 GoRoute(
                   path: RouteNames.communityMembersSegment,
@@ -141,19 +149,17 @@ final GoRouter appRouter = GoRouter(
                   builder: (context, state) => const ProjectSubmittedScreen(),
                 ),
                 GoRoute(
-                  path: RouteNames.communityQuestionPostedSegment,
-                  builder: (context, state) => const QuestionPostedScreen(),
-                ),
-                GoRoute(
                   path: RouteNames.communityNetworkErrorSegment,
                   builder: (context, state) =>
                       const CommunityNetworkErrorScreen(),
                 ),
-                GoRoute(
-                  path: RouteNames.communityNotificationsSegment,
-                  builder: (context, state) => const NotificationsScreen(),
-                ),
               ],
+            ),
+            // Top-level path, kept in this branch so the Community tab stays
+            // selected - see the note on RouteNames.notifications.
+            GoRoute(
+              path: RouteNames.notifications,
+              builder: (context, state) => const NotificationsScreen(),
             ),
           ],
         ),

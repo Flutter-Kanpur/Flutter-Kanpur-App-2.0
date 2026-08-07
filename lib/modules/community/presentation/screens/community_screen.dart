@@ -57,6 +57,7 @@ class CommunityScreen extends ConsumerWidget {
             loading: () => const CommunityLoadingView(height: 280),
             error: (e, _) => CommunityErrorView(
               compact: true,
+              error: e,
               message: 'Could not load discussions.',
               onRetry: () => ref.read(questionFeedProvider.notifier).refresh(),
             ),
@@ -170,8 +171,9 @@ class CommunityScreen extends ConsumerWidget {
           const FkSectionTitle(title: 'Our team'),
           membersAsync.when(
             loading: () => const CommunityLoadingView(height: 72),
-            error: (_, _) => CommunityErrorView(
+            error: (e, _) => CommunityErrorView(
               compact: true,
+              error: e,
               message: 'Could not load members.',
               onRetry: () =>
                   ref.read(communityMembersProvider.notifier).refresh(),
@@ -227,7 +229,7 @@ class _CommunityAppBar extends ConsumerWidget {
           ),
         ),
         IconButton(
-          onPressed: () => context.push(RouteNames.communityNotifications),
+          onPressed: () => context.push(RouteNames.notifications),
           tooltip: 'Notifications',
           icon: Badge(
             isLabelVisible: unread > 0,

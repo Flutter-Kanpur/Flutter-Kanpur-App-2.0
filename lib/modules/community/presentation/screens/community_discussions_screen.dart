@@ -100,6 +100,7 @@ class _CommunityDiscussionsScreenState
                   physics: const AlwaysScrollableScrollPhysics(),
                   children: [
                     CommunityErrorView(
+                      error: e,
                       message: 'Could not load discussions.',
                       onRetry: () =>
                           ref.read(questionFeedProvider.notifier).refresh(),

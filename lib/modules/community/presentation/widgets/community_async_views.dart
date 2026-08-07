@@ -4,29 +4,44 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/data/community_error_message.dart';
 
 /// Full-width error state with a retry action.
 ///
 /// Consolidates the `_ErrorView` / `_ErrorTile` copies that had drifted apart
 /// across the community screens.
+///
+/// Pass [error] as well as [message]: the raw error decides what the user
+/// actually sees. A missing migration reads as "apply the pending migration"
+/// rather than a generic failure, and hides the retry button, because retrying
+/// a schema error can never succeed.
 class CommunityErrorView extends StatelessWidget {
   const CommunityErrorView({
     super.key,
     required this.message,
     required this.onRetry,
+    this.error,
     this.compact = false,
     this.retryLabel = 'Try again',
   });
 
   final String message;
   final VoidCallback onRetry;
+  final Object? error;
 
   /// Inline banner instead of a centred block - used inside carousels.
   final bool compact;
   final String retryLabel;
 
+  String get _resolvedMessage =>
+      describeCommunityError(error, fallback: message);
+
+  bool get _retryable => !isSchemaMismatch(error);
+
   @override
   Widget build(BuildContext context) {
+    final text = _resolvedMessage;
+
     if (compact) {
       return Container(
         padding: AppSpacing.all(AppSpacing.h16),
@@ -40,13 +55,14 @@ class CommunityErrorView extends StatelessWidget {
             SizedBox(width: AppSpacing.h10),
             Expanded(
               child: Text(
-                message,
+                text,
                 style: Theme.of(
                   context,
                 ).textTheme.bodyMedium?.copyWith(color: AppColors.warning700),
               ),
             ),
-            TextButton(onPressed: onRetry, child: Text(retryLabel)),
+            if (_retryable)
+              TextButton(onPressed: onRetry, child: Text(retryLabel)),
           ],
         ),
       );
@@ -57,25 +73,27 @@ class CommunityErrorView extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(
-            Icons.wifi_off_rounded,
+          Icon(
+            _retryable ? Icons.wifi_off_rounded : Icons.storage_rounded,
             size: 48,
             color: AppColors.neutral400,
           ),
           SizedBox(height: AppSpacing.v12),
           Text(
-            message,
+            text,
             textAlign: TextAlign.center,
             style: AppTextStyles.bodyLarge.copyWith(
               color: AppColors.neutral500,
             ),
           ),
-          SizedBox(height: AppSpacing.v16),
-          OutlinedButton.icon(
-            onPressed: onRetry,
-            icon: const Icon(Icons.refresh_rounded, size: 18),
-            label: Text(retryLabel),
-          ),
+          if (_retryable) ...[
+            SizedBox(height: AppSpacing.v16),
+            OutlinedButton.icon(
+              onPressed: onRetry,
+              icon: const Icon(Icons.refresh_rounded, size: 18),
+              label: Text(retryLabel),
+            ),
+          ],
         ],
       ),
     );
