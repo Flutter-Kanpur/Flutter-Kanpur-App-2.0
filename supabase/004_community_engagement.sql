@@ -44,11 +44,12 @@ ADD COLUMN IF NOT EXISTS cover_image_url TEXT;
 -- 1b. Repair missing unique constraints on the like tables
 -- ============================================================================
 --
--- 002 declared question_likes_unique / answer_likes_unique inside its
--- CREATE TABLE IF NOT EXISTS. Live inspection shows both tables carrying only
--- their PK and FKs, so the CREATE was skipped against pre-existing tables and
--- the constraints never landed. Without them a double tap inserts two rows and
--- the counter triggers below would over-count.
+-- Defensive and idempotent: on the live project both constraints are already
+-- present from 002, and this whole section is then a no-op. It stays because
+-- 002 declared them inside CREATE TABLE IF NOT EXISTS, so any environment
+-- where those tables pre-dated 002 would have skipped them - and without the
+-- constraint a double tap inserts two like rows and the counter triggers
+-- below over-count.
 --
 -- De-duplicate first, otherwise ADD CONSTRAINT fails on existing dupes.
 
@@ -107,24 +108,40 @@ CREATE POLICY "question_saves_delete_policy" ON public.question_saves
 -- The bucket is public, so reads already work; this grants signed-in users
 -- INSERT so "Browse files" does not fail with a 403. Scoped to the community/
 -- prefix so it cannot touch events/, banners/ or speaker_images/.
+--
+-- Wrapped so a permissions failure cannot abort this migration.
+-- storage.objects is owned by supabase_storage_admin, and the SQL editor runs
+-- as postgres. On projects where postgres lacks ownership, CREATE POLICY here
+-- raises insufficient_privilege - and because the editor runs the script in a
+-- single transaction, an unhandled error would roll back every schema change
+-- above it. If you see the NOTICE below, add the two policies by hand in
+-- Storage > Policies instead; everything else in this file still applies.
 
-DROP POLICY IF EXISTS "community_attachments_insert" ON storage.objects;
-CREATE POLICY "community_attachments_insert" ON storage.objects
-  FOR INSERT TO authenticated
-  WITH CHECK (
-    bucket_id = 'media'
-    AND (storage.foldername(name))[1] = 'community'
-  );
+DO $$
+BEGIN
+  DROP POLICY IF EXISTS "community_attachments_insert" ON storage.objects;
+  CREATE POLICY "community_attachments_insert" ON storage.objects
+    FOR INSERT TO authenticated
+    WITH CHECK (
+      bucket_id = 'media'
+      AND (storage.foldername(name))[1] = 'community'
+    );
 
--- Let a user remove an attachment they uploaded themselves.
-DROP POLICY IF EXISTS "community_attachments_delete_own" ON storage.objects;
-CREATE POLICY "community_attachments_delete_own" ON storage.objects
-  FOR DELETE TO authenticated
-  USING (
-    bucket_id = 'media'
-    AND (storage.foldername(name))[1] = 'community'
-    AND owner = auth.uid()
-  );
+  -- Let a user remove an attachment they uploaded themselves.
+  DROP POLICY IF EXISTS "community_attachments_delete_own" ON storage.objects;
+  CREATE POLICY "community_attachments_delete_own" ON storage.objects
+    FOR DELETE TO authenticated
+    USING (
+      bucket_id = 'media'
+      AND (storage.foldername(name))[1] = 'community'
+      AND owner = auth.uid()
+    );
+
+  RAISE NOTICE 'Storage policies for media/community/** created.';
+EXCEPTION
+  WHEN insufficient_privilege OR undefined_table OR undefined_object THEN
+    RAISE NOTICE 'SKIPPED storage policies (%). Add them by hand in Storage > Policies on the media bucket. Everything else in this migration still applied.', SQLERRM;
+END $$;
 
 -- ============================================================================
 -- 3. Counter triggers
