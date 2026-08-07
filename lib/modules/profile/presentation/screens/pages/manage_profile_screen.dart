@@ -4,69 +4,51 @@ import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/profile/application/profile_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/profile/domain/profile_models.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/add_role_experience_bottom_sheet.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/add_skills_bottom_sheet.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_error_view.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/manage_profile_header.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/manage_profile_section_card.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/problem_of_day_section.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/translate.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/years_of_experience.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
-
-
-
-class ManageProfileScreen extends StatefulWidget {
+class ManageProfileScreen extends ConsumerStatefulWidget {
   const ManageProfileScreen({super.key});
 
   @override
-  State<ManageProfileScreen> createState() => _ManageProfileScreenState();
+  ConsumerState<ManageProfileScreen> createState() =>
+      _ManageProfileScreenState();
 }
 
-class MockProfile {
-  final String github;
-  final String website;
-  final String linkedin;
+class _ManageProfileScreenState extends ConsumerState<ManageProfileScreen> {
+  // Draft state. Null means "the user has not touched this section", so the
+  // loaded profile shows through — which is why nothing needs seeding from the
+  // async load and there is no seed-vs-load race.
+  List<String>? _draftSkills;
+  int? _draftYears;
 
-  const MockProfile({
-    required this.github,
-    required this.website,
-    required this.linkedin,
-  });
-}
-class _ManageProfileScreenState extends State<ManageProfileScreen> {
-  // ProfileEntity? _draftProfile;
+  // TODO(FKP-116): roles are never persisted — no column exists for them. They
+  // live only until this screen is popped. Once `users.role_tags` (text[]) is
+  // added, fall back to `profile.roleTags` here instead of an empty list and
+  // pass them through to saveSkillsAndExperience.
+  List<String>? _draftRoles;
 
-// Temporary mock data - remove when backend is integrated
-  final String displayName = ProfileConstants.displayName;
-  final String designation = ProfileConstants.designation;
-  final String username = ProfileConstants.username;
-  final String photoUrl = ProfileConstants.photoUrl;
-  final String githubUrl = ProfileConstants.githubUrl;
-  final String websiteUrl = ProfileConstants.websiteUrl;
-  final String linkedinUrl = ProfileConstants.linkedinUrl;
-  final String about = ProfileConstants.about;
-  final String yearsOfExp = ProfileConstants.yearsOfExperience;
+  bool _isSaving = false;
 
-  final List<String> roleTags = ProfileConstants.roleTags;
-  final List<String> skills = ProfileConstants.skills;
-
-  final bool isLoading = ProfileConstants.isLoading;
-
-  final int problemLevel = ProfileConstants.problemLevel;
-  final double problemProgress = ProfileConstants.problemProgress;
-
-  final MockProfile profile = const MockProfile(
-    github: ProfileConstants.githubUrl,
-    website: ProfileConstants.websiteUrl,
-    linkedin: ProfileConstants.linkedinUrl,
-  );
-
+  bool get _hasChanges => _draftSkills != null || _draftYears != null;
 
   @override
   Widget build(BuildContext context) {
+    final profileAsync = ref.watch(myProfileProvider);
+
     return GradientBackground(
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -76,190 +58,191 @@ class _ManageProfileScreenState extends State<ManageProfileScreen> {
           centerTitle: true,
           leading: IconButton(
             onPressed: () => context.pop(),
-            icon: Icon(
-              Icons.arrow_back,
-              size: 22.sp,
-              color: AppColors.blackBase,
-            ),
+            icon: Icon(Icons.arrow_back, size: 22.sp, color: AppColors.blackBase),
           ),
           title: Text(
             translate(context, "profile.manageProfile"),
             style: AppTextStyles.titleMedium,
           ),
         ),
-        body: SingleChildScrollView(
-                  padding: AppSpacing.horizontal(AppSpacing.h20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      ManageProfileHeader(
-                        displayName: displayName,
-                        designation: designation,
-                        username: username,
-                        photoUrl: photoUrl,
-                        githubUrl: profile?.github,
-                        websiteUrl: profile?.website,
-                        linkedinUrl: profile?.linkedin,
-                        onEditProfile: () =>
-                            context.push('/profile/edit-profile'),
-                      ),
-                      SizedBox(height: AppSpacing.v22),
-                      ProblemOfDaySection(
-                        level: 2,
-                        progress: 0.25,
-                        onViewProgress: () =>
-                            context.push(RouteNames.problemOfDay),
-                      ),
-                      SizedBox(height: AppSpacing.v22),
-                      ManageProfileSectionCard(
-                        title: translate(context, "profile.aboutMe"),
-                        child: Text(
-                          about ?? '',
-                          style: AppTextStyles.bodyLarge.copyWith(
-                            color: AppColors.neutral500,
-                            height: 1.5.sp,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: AppSpacing.v22),
-                      ManageProfileSectionCard(
-                        title: translate(context, "profile.roleExperience"),
-                        value: yearsOfExp,
-                        tags: roleTags,
-                        onEdit: () => profile != null
-                            ? _showAddRoleExperienceBottomSheet(context, profile)
-                            : null,
-                      ),
-                      SizedBox(height: AppSpacing.v22),
-                      ManageProfileSectionCard(
-                        title: translate(context, "profile.skills"),
-                        tags: skills,
-                        onEdit: () => profile != null
-                            ? _showAddSkillsBottomSheet(context, profile)
-                            : null,
-                      ),
-                      SizedBox(height: AppSpacing.v22),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: GradientButton(
-                              onTap: () {
-                                // if (_draftProfile != null) {
-                                //   context
-                                //       .read<ProfileBloc>()
-                                //       .add(UpdateProfile(_draftProfile!));
-                                // } else {
-                                //   context.pop();
-                                // }
-                                  context.pop();
-                              },
-                              isLoading: isLoading,
-                              text: translate(context, "profile.saveChanges"),
-                              textStyle: AppTextStyles.titleMedium.copyWith(
-                                color: AppColors.whiteBase,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: TextButton(
-                              onPressed: () => context.pop(),
-                              child: Text(
-                                translate(context, "profile.cancel"),
-                                style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: AppSpacing.v22),
-                    ],
+        body: profileAsync.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (_, _) => FkErrorView(
+            message: translate(context, 'profile.loadError'),
+            onRetry: () => ref.read(myProfileProvider.notifier).refresh(),
+          ),
+          data: (profile) => profile == null
+              ? FkEmptyView(message: translate(context, 'profile.loadError'))
+              : _buildContent(profile),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildContent(ProfileUser profile) {
+    final skills = _draftSkills ?? profile.skills;
+    final roles = _draftRoles ?? const <String>[];
+    final years = _draftYears ?? profile.yearsOfExperience;
+
+    return SingleChildScrollView(
+      padding: AppSpacing.horizontal(AppSpacing.h20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          ManageProfileHeader(
+            displayName: profile.displayLabel,
+            designation: roles.isEmpty ? '' : roles.first,
+            username: profile.handle,
+            photoUrl: profile.photoUrl,
+            githubUrl: profile.githubUrl,
+            websiteUrl: profile.websiteUrl,
+            linkedinUrl: profile.linkedinUrl,
+            onEditProfile: () => context.push(RouteNames.editProfile),
+          ),
+          SizedBox(height: AppSpacing.v22),
+          ProblemOfDaySection(
+            level: 2,
+            progress: 0.25,
+            onViewProgress: () => context.push(RouteNames.problemOfDay),
+          ),
+          SizedBox(height: AppSpacing.v22),
+          ManageProfileSectionCard(
+            title: translate(context, "profile.aboutMe"),
+            child: Text(
+              profile.hasBio
+                  ? profile.bio!
+                  : translate(context, 'profile.noBio'),
+              style: AppTextStyles.bodyLarge.copyWith(
+                color: AppColors.neutral500,
+                height: 1.5.sp,
+              ),
+            ),
+          ),
+          SizedBox(height: AppSpacing.v22),
+          ManageProfileSectionCard(
+            title: translate(context, "profile.roleExperience"),
+            value: yearsOfExperienceLabelFor(context, years),
+            tags: roles,
+            onEdit: () => _showRoleExperienceSheet(roles, years),
+          ),
+          SizedBox(height: AppSpacing.v22),
+          ManageProfileSectionCard(
+            title: translate(context, "profile.skills"),
+            tags: skills,
+            // The card renders nothing for an empty tag list, which reads as a
+            // broken section rather than an empty one.
+            child: skills.isEmpty
+                ? Text(
+                    translate(context, 'profile.noSkills'),
+                    style: AppTextStyles.bodyLarge.copyWith(
+                      color: AppColors.neutral500,
+                    ),
+                  )
+                : null,
+            onEdit: () => _showSkillsSheet(skills),
+          ),
+          SizedBox(height: AppSpacing.v22),
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: GradientButton(
+                  onTap: _isSaving ? () {} : () => _save(profile),
+                  isLoading: _isSaving,
+                  text: translate(context, "profile.saveChanges"),
+                  textStyle: AppTextStyles.titleMedium.copyWith(
+                    color: AppColors.whiteBase,
                   ),
                 ),
               ),
-    );
-  }
-
-  void _showAddSkillsBottomSheet(BuildContext context,  profile) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => AddSkillsBottomSheet(
-        // profile: profile,
-        onSave: (newSkills) {
-          setState(() {
-            // _draftProfile = profile.copyWith(skills: newSkills);
-          });
-        },
+              Expanded(
+                child: TextButton(
+                  // Draft state lives on this State, so popping discards it.
+                  onPressed: _isSaving ? null : () => context.pop(),
+                  child: Text(
+                    translate(context, "profile.cancel"),
+                    style: AppTextStyles.titleMedium.copyWith(
+                      color: AppColors.blackBase,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: AppSpacing.v22),
+        ],
       ),
     );
   }
 
-  void _showAddRoleExperienceBottomSheet(
-      BuildContext context,  profile) {
-    showModalBottomSheet(
+  /// Commits the draft.
+  ///
+  /// Uses the awaited result rather than `ref.listen` on the action controller:
+  /// that controller is shared with Edit Profile, which is pushed on top of
+  /// this screen while it stays mounted, so a listener here would also fire —
+  /// and pop this screen — when Edit Profile saves.
+  Future<void> _save(ProfileUser profile) async {
+    if (!_hasChanges) {
+      context.pop();
+      return;
+    }
+
+    setState(() => _isSaving = true);
+    final saved = await ref
+        .read(profileActionControllerProvider.notifier)
+        .saveSkillsAndExperience(
+          skills: _draftSkills ?? profile.skills,
+          yearsOfExperience: _draftYears ?? profile.yearsOfExperience,
+          current: profile,
+        );
+
+    if (!mounted) return;
+    setState(() => _isSaving = false);
+
+    if (saved) {
+      _showSnack('profile.updateSuccess', AppColors.success600);
+      context.pop();
+    } else {
+      _showSnack('profile.updateError', AppColors.warning600);
+    }
+  }
+
+  void _showSnack(String key, Color background) {
+    ScaffoldMessenger.of(context)
+      ..clearSnackBars()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(translate(context, key)),
+          backgroundColor: background,
+        ),
+      );
+  }
+
+  void _showSkillsSheet(List<String> current) {
+    showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => AddRoleExperienceBottomSheet(
-        // profile: profile,
-        onSave: (newRoles, newExp) {
-          setState(() {
-            // _draftProfile = profile.copyWith(
-            //   roleTags: newRoles,
-            //   yearsOfExperience: newExp,
-            // );
-          });
-        },
+      builder: (_) => AddSkillsBottomSheet(
+        initialSkills: current,
+        onSave: (skills) => setState(() => _draftSkills = skills),
       ),
     );
   }
-}
 
-// have to remove this when integrating backend
-
-class ProfileConstants {
-  static const String displayName = 'Hariom Vishwakarma';
-  static const String designation = 'Flutter Developer';
-  static const String username = '@hariom';
-
-  static const String photoUrl =
-      'https://your-image-url.com/profile.jpg';
-
-  static const String githubUrl =
-      'https://github.com/hariom';
-
-  static const String websiteUrl =
-      'https://hariom.dev';
-
-  static const String linkedinUrl =
-      'https://linkedin.com/in/hariom';
-
-  static const String about =
-      'Passionate Flutter developer with experience in mobile app development, NFC integrations, widgets, and scalable architecture.';
-
-  static const String yearsOfExperience = '1.5 Years';
-
-  static const List<String> roleTags = [
-    'Flutter Developer',
-    'Mobile Developer',
-  ];
-
-  static const List<String> skills = [
-    'Flutter',
-    'Dart',
-    'Firebase',
-    'Git',
-    'REST API',
-    'Figma',
-    'Android',
-    'iOS',
-  ];
-
-  static const int problemLevel = 2;
-  static const double problemProgress = 0.25;
-
-  static const bool isLoading = false;
+  void _showRoleExperienceSheet(List<String> currentRoles, int currentYears) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => AddRoleExperienceBottomSheet(
+        initialRoles: currentRoles,
+        initialYearsOfExperience: currentYears,
+        onSave: (roles, years) => setState(() {
+          _draftRoles = roles;
+          if (years != null) _draftYears = years;
+        }),
+      ),
+    );
+  }
 }

@@ -41,7 +41,6 @@
     "passwordsDoNotMatch": "Passwords do not match",
     "minusError": "Minus"
   },
-
   "authLanding": {
     "screen1Title": "Discover what's happening",
     "screen1SubTitle": "Stay updated with meetups, workshops, and challenges happening in the Flutter Kanpur community.",
@@ -53,7 +52,6 @@
     "next": "Next",
     "getStarted": "Get Started"
   },
-
   "onboarding": {
     "screen1Title": "Let's set up your profile",
     "screen1SubTitle": "Start with the basics.",
@@ -101,7 +99,6 @@
     "redirectToHome": "Redirecting to home...",
     "or": "OR"
   },
-
   "profile": {
     "title": "Edit Profile",
     "manageProfile": "Manage Profile",
@@ -139,9 +136,43 @@
     "yourRank": "Your Rank",
     "leaderboard": "Leaderboard",
     "loginAndSecurity": "Login & Security",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "yearsOfExperience": "Years of experience",
+    "updateError": "Couldn't update your profile. Please try again.",
+    "loadError": "Couldn't load your profile.",
+    "retry": "Try again",
+    "noBio": "No bio added yet.",
+    "noSkills": "No skills added yet."
   },
-
+  "editProfile": {
+    "title": "Edit Profile",
+    "username": "Username",
+    "changePhoto": "Change photo",
+    "aboutMe": "About me",
+    "addBio": "Add a short bio",
+    "workSocialLinks": "Work & social links",
+    "githubHint": "github.com/username",
+    "linkedinHint": "linkedin.com/in/username",
+    "websiteHint": "yourwebsite.com",
+    "yearsOfExperience": "Years of experience",
+    "yearsOptions": {
+      "year_0_1": "0-1 years",
+      "year_1_2": "1-2 years",
+      "year_2_3": "2-3 years",
+      "year_3_5": "3-5 years",
+      "year_5_plus": "5+ years"
+    },
+    "takePhoto": "Take photo",
+    "importGallery": "Import from gallery",
+    "removeCurrentPicture": "Remove current picture",
+    "removePhoto": "Remove?",
+    "removeConfirmation": "Are you sure want to remove the profile photo?",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "photoUploadError": "Couldn't upload your photo. Please try again.",
+    "privacyDisclaimer": "Your links are visible to other community members. You can edit these anytime."
+  },
   "home": {
     "searchHint": "Search Events",
     "whatsNew": "What's new",
@@ -193,15 +224,12 @@
       }
     }
   },
-
   "stringExtensionMethod": "String Extension Method",
-
   "greetings": {
     "morning": "Good Morning",
     "afternoon": "Good Afternoon",
     "evening": "Good Evening"
   },
-
   "months": {
     "1": "January",
     "2": "February",
@@ -216,13 +244,11 @@
     "11": "November",
     "12": "December"
   },
-
   "aboutUs": {
     "aboutUs1": "Flutter Kanpur is a community-driven initiative focused on bringing together Flutter developers, designers, and technology enthusiasts from Kanpur and beyond. Our goal is to create a supportive environment where members can learn, build, and grow together through shared knowledge and collaboration.",
     "aboutUs2": "We organize meetups, workshops, coding challenges, and discussions that help members stay up to date with Flutter, UI/UX, and modern app development practices. Whether you are a beginner exploring Flutter or an experienced professional contributing to open-source or community projects, Flutter Kanpur is a place for you.",
     "aboutUs3": "Beyond events, we aim to build meaningful community products and learning experiences that encourage consistency, participation, and contribution. We believe strong communities are built on inclusivity, curiosity, and mutual respect."
   },
-
   "privacyPolicy": {
     "privacyPolicy1": "Flutter Kanpur respects your privacy and is committed to protecting your personal information. This policy explains how we collect, use, and safeguard data when you use our app and services.",
     "privacyPolicy2": "When you create an account, we may collect basic information such as your name, email address, and profile details. This information is used only to provide core features like events, contests, contributor access, and personalized experiences within the app.",
@@ -230,7 +256,6 @@
     "privacyPolicy4": "We may collect limited usage data to improve app performance, fix issues, and understand how features are used. This data is analyzed in aggregate and does not identify individual users.",
     "privacyPolicy5": "You can update or delete your account information at any time from the app settings. If you have questions or concerns about your data, you can contact the Flutter Kanpur team directly. By using the app, you agree to the practices described in this policy."
   },
-
   "termsOfServices": {
     "termsOfServices1": "By accessing or using the Flutter Kanpur app, you agree to follow these terms. These terms help ensure a safe and respectful experience for all community members.",
     "termsOfServices2": "Flutter Kanpur provides access to community features such as events, contests, learning activities, and contributor tools. You are responsible for how you use these features and for ensuring that your activity follows community guidelines and applicable laws.",
@@ -238,7 +263,6 @@
     "termsOfServices4": "Contributor access and community roles are granted based on application review and may be modified or revoked if guidelines are violated. Flutter Kanpur reserves the right to update or discontinue features as the community evolves. We may update these terms from time to time to reflect changes in features or policies. Continued use of the app after updates indicates acceptance of the revised terms.",
     "termsOfServicesWarning": "If you do not agree with these terms, you should stop using the app."
   },
-
   "community": {
     "title": "Community",
     "discussions": "Discussions",
@@ -285,7 +309,6 @@
       }
     }
   },
-
   "forum": {
     "title": "Forum",
     "newThread": "New Thread",
@@ -301,7 +324,6 @@
     "noReplies": "No replies yet.",
     "deleteConfirm": "Are you sure you want to delete this?"
   },
-
   "events": {
     "title": "Events",
     "upcomingEvents": "Upcoming Events",
@@ -317,7 +339,6 @@
     "registrants": "Registrants",
     "joinNow": "Join Now"
   },
-
   "contests": {
     "title": "Contests",
     "upcomingContests": "Upcoming Contests",
@@ -332,7 +353,6 @@
     "participantCount": "Participants",
     "submitNow": "Submit Now"
   },
-
   "problemOfDay": {
     "title": "Problem of the Day",
     "problemStatement": "Problem Statement",
@@ -346,7 +366,7 @@
     "accepted": "Accepted",
     "attempts": "Attempts"
   },
-  "contributor":{
+  "contributor": {
     "joinAsContributor": "Join as a Contributor",
     "joinDescription": "Help shape the Flutter Kanpur community by contributing your skills, ideas, or time.\n\nContributors work closely with the community team on events, content, and products.",
     "noExperienceRequired": "You don't need prior experience. We value willingness to learn and collaborate.",
@@ -354,7 +374,6 @@
     "learnMore": "Learn more about contributors",
     "applicationTitle": "Contributor Application",
     "reviewDetails": "Please review your details before submitting.",
-
     "fullName": "Full Name",
     "email": "Email",
     "currentRole": "Current Role",
@@ -369,19 +388,15 @@
     "fullNameHint": "Angelica Singh",
     "emailHint": "Eg. angie.work@gmail.com",
     "whyContributeHint": "Tell us why you'd like to contribute...",
-
     "applicationSummary": "Application summary",
     "emailAddress": "Email address",
     "applicationSubmitted": "Application submitted",
     "applicationSubmittedDescription": "Thanks for your interest in contributing!\nOur team will review your application and\ncontact you soon.",
-
     "currentStatus": "Current status: Under review",
     "backToProfile": "Back to Profile",
-
     "alreadyContributor": "You're already a contributor",
     "alreadyContributorDescription": "You already have contributor access\nin the community.",
     "viewContributorResources": "View contributor resources",
-    
     "applicationAlreadySubmitted": "You've already submitted the\napplication",
     "applicationReviewMessage": "Our team will review your application\nand get back to you in 24hrs.",
     "viewApplication": "View application",
@@ -390,7 +405,6 @@
     "submittedOn": "Submitted on",
     "estimatedResponse": "Estimated response",
     "notifyOnUpdate": "We'll notify you once there's an update.",
-    
     "applicationNotApproved": "Application not approved",
     "applicationRejectedDescription": "Thank you for applying. At this time,\nwe're unable to onboard you.",
     "applyAgainInFuture": "You can apply again in the future.",
@@ -399,29 +413,21 @@
     "greeting": "Hi {name},",
     "contributorRole": "{role} Contributor",
     "contributorSince": "Contributor since {date}",
-
     "heresWhatYouCanDo": "Here's what you can do",
-
     "viewBlogs": "View blogs",
     "viewBlogsDescription": "Lorem ipsum dolor sit amet",
-
     "viewProjects": "View projects",
     "viewProjectsDescription": "Lorem ipsum dolor sit amet",
-
     "yourContributionSummary": "Your contribution summary",
-
     "tasksCompleted": "Tasks Completed",
     "eventsContributed": "Events contributed",
     "activeTasks": "Active tasks",
-
     "needHelp": "Need help?",
     "noContributionsYet": "No contributions yet",
     "noContributionsDescription": "You haven't joined as a contributor\nyet.",
-
     "reviewYourApplication": "Review your application",
     "reviewApplicationBanner": "Please review your details before submitting.",
     "editDetails": "Edit details",
-
     "githubLink": "GitHub Link",
     "linkedinLink": "LinkedIn Link",
     "portfolioWebsite": "Portfolio / Website",

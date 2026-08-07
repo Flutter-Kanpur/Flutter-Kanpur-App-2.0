@@ -5,11 +5,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
 
-// import '../../../../services/remote_config_service.dart';
-import '../../../utils/assets_path.dart';
+import 'package:flutter_knp_mobile_app_v2/services/remote_config_service.dart';
+import '../../utils/assets_path.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
-import '../../../utils/translate.dart';
+import '../../utils/translate.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
@@ -18,11 +18,12 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 // import '../bloc/profile_event.dart';
 
 class AddSkillsBottomSheet extends StatefulWidget {
-  // final ProfileEntity profile;
+  /// Skills already on the profile — preselected when the sheet opens.
+  final List<String> initialSkills;
   final Function(List<String> skills) onSave;
   const AddSkillsBottomSheet({
     super.key,
-    // required this.profile,
+    this.initialSkills = const <String>[],
     required this.onSave,
   });
 
@@ -38,13 +39,15 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
   TextEditingController? _inlineAddOtherController;
   final FocusNode _inlineAddOtherFocusNode = FocusNode();
 
-  late final List<String> _predefinedSkills;
+  /// Not `late final`: if Remote Config is unavailable this must degrade to an
+  /// empty suggestion list, not throw LateInitializationError on every build.
+  List<String> _predefinedSkills = const <String>[];
 
   @override
   void initState() {
     super.initState();
-    // _predefinedSkills = RemoteConfigService.instance.onboardingScreen3Options;
-    // _selectedSkills.addAll(widget.profile.skills);
+    _predefinedSkills = RemoteConfigService.instance.onboardingScreen3Options;
+    _selectedSkills.addAll(widget.initialSkills);
     _searchController.addListener(() {
       setState(() => _searchQuery = _searchController.text);
     });
@@ -58,12 +61,26 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
     super.dispose();
   }
 
+  /// Already-selected skills first, then the Remote Config suggestions.
+  ///
+  /// The union matters: a stored skill that isn't in the suggestion list would
+  /// otherwise be invisible here and get silently dropped on save.
+  List<String> get _allSkills => <String>{
+    ..._selectedSkills,
+    ..._predefinedSkills,
+  }.toList();
+
   List<String> get _filteredSkills {
+    final all = _allSkills;
     if (_searchQuery.trim().isEmpty) {
-      return _predefinedSkills.take(5).toList();
+      // Never hide a selected skill behind the default cut-off. `take` caps
+      // itself at the list length, so no clamping against `all.length` (which
+      // would assert when the list is empty).
+      final limit = _selectedSkills.length > 5 ? _selectedSkills.length : 5;
+      return all.take(limit).toList();
     }
     final q = _searchQuery.trim().toLowerCase();
-    return _predefinedSkills.where((s) => s.toLowerCase().contains(q)).toList();
+    return all.where((s) => s.toLowerCase().contains(q)).toList();
   }
 
   void _startInlineAddOther() {
@@ -82,7 +99,17 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
     _inlineAddOtherFocusNode.unfocus();
     setState(() => _showInlineAddOther = false);
     if (value.isEmpty) return;
-    if (_predefinedSkills.any((s) => s.toLowerCase() == value.toLowerCase())) return;
+
+    // Typing a skill that already exists selects it rather than doing nothing.
+    final existing = _allSkills.firstWhere(
+      (s) => s.toLowerCase() == value.toLowerCase(),
+      orElse: () => '',
+    );
+    if (existing.isNotEmpty) {
+      setState(() => _selectedSkills.add(existing));
+      return;
+    }
+
     setState(() {
       _selectedSkills.add(value);
     });

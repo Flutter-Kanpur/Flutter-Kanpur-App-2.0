@@ -4,12 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import '../../../../../utils/assets_path.dart';
 import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../../utils/translate.dart';
+import '../../../../../utils/years_of_experience.dart';
+import '../../../application/profile_provider.dart';
+import '../../../domain/profile_models.dart';
 
+import '../../../../../shared/widgets/fk_error_view.dart';
 import '../../../../../shared/widgets/gradiant_background.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
@@ -17,14 +22,14 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 
-class EditProfileScreen extends StatefulWidget {
+class EditProfileScreen extends ConsumerStatefulWidget {
   const EditProfileScreen({super.key});
 
   @override
-  State<EditProfileScreen> createState() => _EditProfileScreenState();
+  ConsumerState<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
+class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   final _usernameController = TextEditingController();
   final _aboutController = TextEditingController();
   final _githubController = TextEditingController();
@@ -34,19 +39,40 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   File? _imageFile;
 
   static const _aboutMaxLength = 150;
-  String _yearsOfExperience = '0-1 years';
-  // bool _initialized = false;
+
+  /// Index into [kYearsOfExperienceBuckets] — never a label, so a locale change
+  /// mid-edit cannot corrupt what gets saved.
+  int _yearsIndex = 0;
+
+  bool _prefilled = false;
+  bool _isSaving = false;
+  bool _didFirstBuild = false;
 
   @override
   void initState() {
     super.initState();
-    // Load profile when screen starts
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   final authState = context.read<AuthBloc>().state;
-    //   if (authState is Authenticated) {
-    //     context.read<ProfileBloc>().add(LoadProfile(authState.user.id));
-    //   }
-    // });
+    // `listenManual` covers both cases in one path: the provider already holds
+    // cached data (the common case, since this screen is reached from Manage
+    // Profile), and data arriving later. Because it runs outside `build`, no
+    // controller is ever mutated mid-build.
+    ref.listenManual<AsyncValue<ProfileUser?>>(
+      myProfileProvider,
+      (previous, next) => next.whenData(_prefillOnce),
+      fireImmediately: true,
+    );
+  }
+
+  void _prefillOnce(ProfileUser? profile) {
+    if (_prefilled || profile == null) return;
+    _prefilled = true;
+    _usernameController.text = profile.username ?? '';
+    _aboutController.text = profile.bio ?? '';
+    _githubController.text = profile.githubUrl ?? '';
+    _linkedInController.text = profile.linkedinUrl ?? '';
+    _websiteController.text = profile.websiteUrl ?? '';
+    _yearsIndex = yearsOfExperienceIndexFor(profile.yearsOfExperience);
+
+    if (_didFirstBuild) setState(() {});
   }
 
   @override
@@ -58,27 +84,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _websiteController.dispose();
     super.dispose();
   }
-
-  // void _prefillFromProfile( profile, String? authEmail) {
-  //   if (_initialized || profile == null) return;
-  //   if (profile.fullName == null &&
-  //       profile.about == null &&
-  //       profile.github == null) {}
-  //
-  //   _initialized = true;
-  //   final emailPrefix = authEmail?.split('@').first ?? '';
-  //
-  //   _usernameController.text = profile.fullName ?? '';
-  //
-  //   _aboutController.text = profile.about ?? '';
-  //
-  //   _githubController.text = profile.github ?? 'github.com/$emailPrefix';
-  //   _linkedInController.text =
-  //       profile.linkedin ?? 'linkedin.com/in/$emailPrefix';
-  //   _websiteController.text = profile.website ?? '';
-  //
-  //   _yearsOfExperience = profile.yearsOfExperience ?? '0-1 years';
-  // }
 
   InputDecoration _decoration(String hint, {Widget? prefixIcon}) {
     return InputDecoration(
@@ -103,20 +108,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  static List<String> _getYearsOfExperienceOptions(BuildContext context) => [
-        translate(context, "editProfile.yearsOptions.year_0_1"),
-        translate(context, "editProfile.yearsOptions.year_1_2"),
-        translate(context, "editProfile.yearsOptions.year_2_3"),
-        translate(context, "editProfile.yearsOptions.year_3_5"),
-        translate(context, "editProfile.yearsOptions.year_5_plus"),
-      ];
-
   void _showYearsOfExperienceBottomSheet(BuildContext context) {
+    final labels = yearsOfExperienceLabels(context);
     showCustomDropdown(
       context: context,
-      items: _getYearsOfExperienceOptions(context),
-      selectedValue: _yearsOfExperience,
-      onSelected: (value) => setState(() => _yearsOfExperience = value),
+      items: labels,
+      selectedValue: labels[_yearsIndex],
+      onSelected: (value) {
+        final index = labels.indexOf(value);
+        if (index != -1) setState(() => _yearsIndex = index);
+      },
     );
   }
 
@@ -270,71 +271,48 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  // Future<void> _submit(BuildContext context) async {
-  //   // final authState = context.read<AuthBloc>().state;
-  //   // if (authState is! Authenticated) return;
-  //   // final profileState = context.read<ProfileBloc>().state;
-  //   // final existing =
-  //   //     profileState is ProfileLoaded ? profileState.profile : null;
-  //   final userId = 1;
-  //   final nameValue = _usernameController.text.trim();
+  Future<void> _submit(ProfileUser? current) async {
+    setState(() => _isSaving = true);
 
-  //   // String? photoUrl = _imageFile != null
-  //   //     ? null
-  //   //     : (authState.user.photoURL ?? existing?.photoUrl);
+    final saved = await ref
+        .read(profileActionControllerProvider.notifier)
+        .saveProfileDetails(
+          ProfileDraft(
+            username: _nullIfBlank(_usernameController.text),
+            bio: _nullIfBlank(_aboutController.text),
+            githubUrl: _nullIfBlank(_githubController.text),
+            linkedinUrl: _nullIfBlank(_linkedInController.text),
+            websiteUrl: _nullIfBlank(_websiteController.text),
+            yearsOfExperience: yearsOfExperienceValueAt(_yearsIndex),
+          ),
+          current: current,
+        );
 
-  //   String? photoUrl = "https://www.magnific.com/free-photos-vectors/user-profile";
+    if (!mounted) return;
+    setState(() => _isSaving = false);
 
-  //   // if (_imageFile != null) {
-  //   //   try {
-  //   //     final storageRef = FirebaseStorage.instance
-  //   //         .ref()
-  //   //         .child('profile_images')
-  //   //         .child('$userId.jpg');
-  //   //     await storageRef.putFile(_imageFile!);
-  //   //     photoUrl = await storageRef.getDownloadURL();
-  //   //   } catch (e) {
-  //   //     debugPrint("Error uploading photo: $e");
-  //   //     if (mounted) {
-  //   //       ScaffoldMessenger.of(context).showSnackBar(
-  //   //         SnackBar(
-  //   //             content:
-  //   //                 Text(translate(context, "editProfile.photoUploadError"))),
-  //   //       );
-  //   //     }
-  //   //     return;
-  //   //   }
-  //   // }
+    if (saved) {
+      _showSuccessOverlay(context);
+    } else {
+      // Keep the form contents so a retry costs nothing.
+      ScaffoldMessenger.of(context)
+        ..clearSnackBars()
+        ..showSnackBar(
+          SnackBar(
+            content: Text(translate(context, 'profile.updateError')),
+            backgroundColor: AppColors.warning600,
+          ),
+        );
+    }
+  }
 
-  //   final entity = ProfileEntity(
-  //     userId: userId,
-  //     fullName: nameValue,
-  //     displayName: nameValue,
-  //     photoUrl: photoUrl,
-  //     username: nameValue.toLowerCase().replaceAll(' ', '_'),
-  //     about: _aboutController.text.trim().isEmpty
-  //         ? null
-  //         : _aboutController.text.trim(),
-  //     yearsOfExperience: _yearsOfExperience,
-  //     github: _githubController.text.trim().isEmpty
-  //         ? null
-  //         : _githubController.text.trim(),
-  //     linkedin: _linkedInController.text.trim().isEmpty
-  //         ? null
-  //         : _linkedInController.text.trim(),
-  //     website: _websiteController.text.trim().isEmpty
-  //         ? null
-  //         : _websiteController.text.trim(),
-  //     skills: existing?.skills ?? [],
-  //     roleTags: existing?.roleTags ?? [],
-  //   );
-  //   context.read<ProfileBloc>().add(UpdateProfile(entity));
-  // }
+  String? _nullIfBlank(String value) =>
+      value.trim().isEmpty ? null : value.trim();
 
   @override
   Widget build(BuildContext context) {
-    String photoUrl = "https://www.magnific.com/free-photos-vectors/user-profile";
-    String displayName = "John Doe";
+    _didFirstBuild = true;
+    final profileAsync = ref.watch(myProfileProvider);
     return GradientBackground(
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -352,7 +330,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w500),
           ),
         ),
-        body: SingleChildScrollView(
+        body: profileAsync.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (_, _) => FkErrorView(
+            message: translate(context, 'profile.loadError'),
+            onRetry: () => ref.read(myProfileProvider.notifier).refresh(),
+          ),
+          data: (profile) => _buildForm(context, profile),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildForm(BuildContext context, ProfileUser? profile) {
+    final photoUrl = profile?.photoUrl;
+    final displayName = profile?.displayLabel ?? '';
+
+    return SingleChildScrollView(
                   padding:
                       EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v16),
                   child: Column(
@@ -493,7 +487,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  _yearsOfExperience,
+                                  yearsOfExperienceLabels(context)[_yearsIndex],
                                   style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase),
                                 ),
                               ),
@@ -550,9 +544,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           Expanded(
                             flex: 2,
                             child: GradientButton(
-                              isLoading: false,
-                              // onTap: () => _submit(context),
-                              onTap: (){},
+                              isLoading: _isSaving,
+                              // GradientButton.onTap is non-nullable, so guard
+                              // a double-submit with a no-op rather than null.
+                              onTap: _isSaving ? () {} : () => _submit(profile),
                               text: translate(context, "editProfile.submit"),
                               textStyle: AppTextStyles.bodyLarge.copyWith(color: AppBorders.tertiary),
                               height: 50.h,
@@ -561,7 +556,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ),
                           Expanded(
                             child: TextButton(
-                              onPressed: () => context.pop(),
+                              onPressed: _isSaving ? null : () => context.pop(),
                               child: Text(
                                 translate(context, "editProfile.cancel"),
                                 style: AppTextStyles.bodyLarge.copyWith(color: AppColors.blackBase),
@@ -573,15 +568,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       SizedBox(height: AppSpacing.v22),
                     ],
                   ),
-                ),
-          ),
-    );
+                );
   }
 
   void _showSuccessOverlay(BuildContext context) {
     showDialog(
       context: context,
-      barrierColor: AppColors.blackBase.withOpacity(0.7),
+      barrierColor: AppColors.blackBase.withValues(alpha: 0.7),
       barrierDismissible: false,
       builder: (context) => Material(
         type: MaterialType.transparency,

@@ -41,7 +41,6 @@
     "passwordsDoNotMatch": "पासवर्ड मेल नहीं खाते",
     "minusError": "माइनस"
   },
-
   "authLanding": {
     "screen1Title": "जानें क्या हो रहा है",
     "screen1SubTitle": "Flutter Kanpur समुदाय में होने वाले मीटअप, वर्कशॉप और चुनौतियों से अपडेट रहें।",
@@ -53,7 +52,6 @@
     "next": "आगे",
     "getStarted": "शुरू करें"
   },
-
   "onboarding": {
     "screen1Title": "आइए आपकी प्रोफ़ाइल सेट करें",
     "screen1SubTitle": "बुनियादी जानकारी से शुरुआत करें।",
@@ -101,7 +99,6 @@
     "redirectToHome": "होम में लौटा जा रहा है...",
     "or": "या"
   },
-
   "profile": {
     "title": "Edit Profile",
     "manageProfile": "प्रोफाइल प्रबंधित करें",
@@ -139,9 +136,43 @@
     "yourRank": "आपकी रैंक",
     "leaderboard": "लीडरबोर्ड",
     "loginAndSecurity": "लॉगिन और सुरक्षा",
-    "notifications": "सूचनाएं"
+    "notifications": "सूचनाएं",
+    "yearsOfExperience": "अनुभव के वर्ष",
+    "updateError": "आपकी प्रोफ़ाइल अपडेट नहीं हो सकी। कृपया पुनः प्रयास करें।",
+    "loadError": "आपकी प्रोफ़ाइल लोड नहीं हो सकी।",
+    "retry": "पुनः प्रयास करें",
+    "noBio": "अभी तक कोई परिचय नहीं जोड़ा गया।",
+    "noSkills": "अभी तक कोई कौशल नहीं जोड़ा गया।"
   },
-
+  "editProfile": {
+    "title": "प्रोफ़ाइल संपादित करें",
+    "username": "यूज़रनेम",
+    "changePhoto": "फोटो बदलें",
+    "aboutMe": "मेरे बारे में",
+    "addBio": "एक छोटा परिचय जोड़ें",
+    "workSocialLinks": "कार्य और सोशल लिंक",
+    "githubHint": "github.com/username",
+    "linkedinHint": "linkedin.com/in/username",
+    "websiteHint": "yourwebsite.com",
+    "yearsOfExperience": "अनुभव के वर्ष",
+    "yearsOptions": {
+      "year_0_1": "0-1 वर्ष",
+      "year_1_2": "1-2 वर्ष",
+      "year_2_3": "2-3 वर्ष",
+      "year_3_5": "3-5 वर्ष",
+      "year_5_plus": "5+ वर्ष"
+    },
+    "takePhoto": "फोटो लें",
+    "importGallery": "गैलरी से इम्पोर्ट करें",
+    "removeCurrentPicture": "वर्तमान फोटो हटाएं",
+    "removePhoto": "हटाएं?",
+    "removeConfirmation": "क्या आप वाकई प्रोफ़ाइल फोटो हटाना चाहते हैं?",
+    "delete": "हटाएं",
+    "cancel": "रद्द करें",
+    "submit": "सबमिट करें",
+    "photoUploadError": "आपकी फोटो अपलोड नहीं हो सकी। कृपया पुनः प्रयास करें।",
+    "privacyDisclaimer": "आपके लिंक अन्य समुदाय सदस्यों को दिखाई देते हैं। आप इन्हें कभी भी संपादित कर सकते हैं।"
+  },
   "home": {
     "searchHint": "इवेंट्स खोजें",
     "whatsNew": "नया क्या है",
@@ -193,15 +224,12 @@
       }
     }
   },
-
   "stringExtensionMethod": "String Extension Method",
-
   "greetings": {
     "morning": "सुप्रभात",
     "afternoon": "शुभ दोपहर",
     "evening": "शुभ संध्या"
   },
-
   "months": {
     "1": "जनवरी",
     "2": "फरवरी",
@@ -216,13 +244,11 @@
     "11": "नवंबर",
     "12": "दिसंबर"
   },
-
   "aboutUs": {
     "aboutUs1": "Flutter Kanpur एक समुदाय आधारित पहल है जिसका उद्देश्य कानपुर और अन्य स्थानों के Flutter डेवलपर्स, डिज़ाइनर्स और तकनीक प्रेमियों को एक साथ लाना है। हमारा लक्ष्य ऐसा सहयोगी वातावरण बनाना है जहाँ सदस्य ज्ञान साझा करके सीख सकें, निर्माण कर सकें और साथ मिलकर आगे बढ़ सकें।",
     "aboutUs2": "हम मीटअप, वर्कशॉप, कोडिंग चुनौतियाँ और चर्चाएँ आयोजित करते हैं, जो सदस्यों को Flutter, UI/UX और आधुनिक ऐप डेवलपमेंट से जुड़े नवीनतम अभ्यासों से अपडेट रहने में मदद करती हैं। चाहे आप Flutter सीखना शुरू कर रहे हों या ओपन सोर्स और सामुदायिक प्रोजेक्ट्स में योगदान देने वाले अनुभवी प्रोफेशनल हों, फ्लटर कानपुर आपके लिए एक उपयुक्त मंच है।",
     "aboutUs3": "कार्यक्रमों के अलावा, हमारा उद्देश्य ऐसे सामुदायिक उत्पाद और सीखने के अनुभव तैयार करना है जो निरंतरता, सहभागिता और योगदान को बढ़ावा दें। हमारा मानना है कि एक मजबूत समुदाय समावेशिता, जिज्ञासा और पारस्परिक सम्मान पर आधारित होता है।"
   },
-
   "privacyPolicy": {
     "privacyPolicy1": "Flutter Kanpur आपकी गोपनीयता का सम्मान करता है और आपकी व्यक्तिगत जानकारी की सुरक्षा के लिए प्रतिबद्ध है। यह नीति बताती है कि हमारे ऐप और सेवाओं का उपयोग करते समय हम आपकी जानकारी कैसे एकत्रित, उपयोग और सुरक्षित रखते हैं।",
     "privacyPolicy2": "जब आप एक खाता बनाते हैं, तो हम आपका नाम, ईमेल पता और प्रोफ़ाइल विवरण जैसी मूलभूत जानकारी एकत्र कर सकते हैं। इस जानकारी का उपयोग केवल ऐप की मुख्य सुविधाएँ, जैसे इवेंट्स, प्रतियोगिताएँ, योगदानकर्ता पहुँच और व्यक्तिगत अनुभव प्रदान करने के लिए किया जाता है।",
@@ -230,7 +256,6 @@
     "privacyPolicy4": "ऐप के प्रदर्शन को बेहतर बनाने, समस्याओं का समाधान करने और यह समझने के लिए कि सुविधाओं का उपयोग कैसे किया जा रहा है, हम सीमित उपयोग संबंधी डेटा एकत्र कर सकते हैं। इस डेटा का विश्लेषण समग्र रूप से किया जाता है और इससे किसी व्यक्तिगत उपयोगकर्ता की पहचान नहीं होती।",
     "privacyPolicy5": "आप ऐप की सेटिंग्स से किसी भी समय अपनी खाता जानकारी अपडेट या हटाने का विकल्प चुन सकते हैं। यदि आपके डेटा से संबंधित कोई प्रश्न या चिंता हो, तो आप सीधे फ्लटर कानपुर टीम से संपर्क कर सकते हैं। ऐप का उपयोग करके आप इस नीति में वर्णित प्रक्रियाओं से सहमत होते हैं।"
   },
-
   "termsOfServices": {
     "termsOfServices1": "Flutter Kanpur ऐप का उपयोग या एक्सेस करके आप इन नियमों और शर्तों का पालन करने के लिए सहमत होते हैं। ये नियम सभी समुदाय सदस्यों के लिए सुरक्षित और सम्मानजनक अनुभव सुनिश्चित करने के लिए बनाए गए हैं।",
     "termsOfServices2": "Flutter Kanpur समुदाय से जुड़ी सुविधाएँ जैसे इवेंट्स, प्रतियोगिताएँ, सीखने की गतिविधियाँ और योगदानकर्ता टूल्स उपलब्ध कराता है। इन सुविधाओं का उपयोग कैसे किया जाता है और आपकी गतिविधियाँ सामुदायिक दिशानिर्देशों तथा लागू कानूनों के अनुरूप हैं, इसकी जिम्मेदारी आपकी है।",
@@ -238,7 +263,6 @@
     "termsOfServices4": "योगदानकर्ता की पहुँच और सामुदायिक भूमिकाएँ आवेदन की समीक्षा के आधार पर प्रदान की जाती हैं और यदि दिशानिर्देशों का उल्लंघन किया जाता है तो उन्हें बदला या वापस लिया जा सकता है। फ्लटर कानपुर समुदाय के विकास के साथ सुविधाओं को अपडेट या बंद करने का अधिकार सुरक्षित रखता है। समय-समय पर इन नियमों को नई सुविधाओं या नीतियों के अनुसार अपडेट किया जा सकता है। अपडेट के बाद ऐप का निरंतर उपयोग इन संशोधित नियमों की स्वीकृति माना जाएगा।",
     "termsOfServicesWarning": "यदि आप इन नियमों और शर्तों से सहमत नहीं हैं, तो आपको ऐप का उपयोग बंद कर देना चाहिए।"
   },
-
   "community": {
     "title": "समुदाय",
     "discussions": "चर्चाएं",
@@ -285,7 +309,6 @@
       }
     }
   },
-
   "forum": {
     "title": "मंच",
     "newThread": "नया विषय",
@@ -301,7 +324,6 @@
     "noReplies": "अभी कोई जवाब नहीं।",
     "deleteConfirm": "क्या आप सुनिश्चित हैं कि आप इसे हटाना चाहते हैं?"
   },
-
   "events": {
     "title": "इवेंट",
     "upcomingEvents": "आगामी इवेंट",
@@ -317,7 +339,6 @@
     "registrants": "पंजीकृत लोग",
     "joinNow": "अभी शामिल हों"
   },
-
   "contests": {
     "title": "प्रतियोगिताएं",
     "upcomingContests": "आगामी प्रतियोगिताएं",
@@ -332,7 +353,6 @@
     "participantCount": "प्रतिभागी",
     "submitNow": "अभी सबमिट करें"
   },
-
   "problemOfDay": {
     "title": "दिन की समस्या",
     "problemStatement": "समस्या विवरण",
@@ -346,7 +366,7 @@
     "accepted": "स्वीकृत",
     "attempts": "प्रयास"
   },
-  "contributor":{
+  "contributor": {
     "joinAsContributor": "Join as a Contributor",
     "joinDescription": "Help shape the Flutter Kanpur community by contributing your skills, ideas, or time.\n\nContributors work closely with the community team on events, content, and products.",
     "noExperienceRequired": "You don't need prior experience. We value willingness to learn and collaborate.",
@@ -354,7 +374,6 @@
     "learnMore": "Learn more about contributors",
     "applicationTitle": "Contributor Application",
     "reviewDetails": "Please review your details before submitting.",
-
     "fullName": "Full Name",
     "email": "Email",
     "currentRole": "Current Role",
@@ -369,19 +388,15 @@
     "fullNameHint": "Angelica Singh",
     "emailHint": "Eg. angie.work@gmail.com",
     "whyContributeHint": "Tell us why you'd like to contribute...",
-
     "applicationSummary": "Application summary",
     "emailAddress": "Email address",
     "applicationSubmitted": "Application submitted",
     "applicationSubmittedDescription": "Thanks for your interest in contributing!\nOur team will review your application and\ncontact you soon.",
-
     "currentStatus": "Current status: Under review",
     "backToProfile": "Back to Profile",
-
     "alreadyContributor": "You're already a contributor",
     "alreadyContributorDescription": "You already have contributor access\nin the community.",
     "viewContributorResources": "View contributor resources",
-    
     "applicationAlreadySubmitted": "You've already submitted the\napplication",
     "applicationReviewMessage": "Our team will review your application\nand get back to you in 24hrs.",
     "viewApplication": "View application",
@@ -390,7 +405,6 @@
     "submittedOn": "Submitted on",
     "estimatedResponse": "Estimated response",
     "notifyOnUpdate": "We'll notify you once there's an update.",
-    
     "applicationNotApproved": "Application not approved",
     "applicationRejectedDescription": "Thank you for applying. At this time,\nwe're unable to onboard you.",
     "applyAgainInFuture": "You can apply again in the future.",
@@ -399,39 +413,30 @@
     "greeting": "Hi {name},",
     "contributorRole": "{role} Contributor",
     "contributorSince": "Contributor since {date}",
-
     "heresWhatYouCanDo": "Here's what you can do",
-
     "viewBlogs": "View blogs",
     "viewBlogsDescription": "Lorem ipsum dolor sit amet",
-
     "viewProjects": "View projects",
     "viewProjectsDescription": "Lorem ipsum dolor sit amet",
-
     "yourContributionSummary": "Your contribution summary",
-
     "tasksCompleted": "Tasks Completed",
     "eventsContributed": "Events contributed",
     "activeTasks": "Active tasks",
-
     "needHelp": "Need help?",
     "noContributionsYet": "No contributions yet",
     "noContributionsDescription": "You haven't joined as a contributor\nyet.",
-
     "reviewYourApplication": "Review your application",
     "reviewApplicationBanner": "Please review your details before submitting.",
     "editDetails": "Edit details",
-
     "githubLink": "GitHub Link",
     "linkedinLink": "LinkedIn Link",
     "portfolioWebsite": "Portfolio / Website",
     "viewContributorGuidelines": "योगदानकर्ता दिशानिर्देश देखें",
     "reportIssue": "समस्या की रिपोर्ट करें",
-        "fieldRequired": "{field} आवश्यक है।",
+    "fieldRequired": "{field} आवश्यक है।",
     "invalidUrl": "कृपया एक मान्य URL दर्ज करें।",
     "whyContributeTooShort": "कृपया कम से कम 20 अक्षरों में बताएं कि आप योगदान क्यों देना चाहते हैं।"
   },
-
   "common": {
     "lastUpdated": "अंतिम अपडेट: {}",
     "lastUpdatedDate": "अप्रैल 2026"
