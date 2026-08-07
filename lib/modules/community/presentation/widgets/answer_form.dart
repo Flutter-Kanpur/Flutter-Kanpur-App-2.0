@@ -11,8 +11,10 @@ import 'package:flutter_knp_mobile_app_v2/utils/form_validators.dart';
 
 /// Reply composer shown under a discussion.
 ///
-/// Collapsed it is a single "Write a reply" box; focusing it reveals the code
-/// snippet field and the post button, matching the Figma flow.
+/// The post button is always visible. It used to appear only after the field
+/// took focus, which left no visible way to submit a reply - the control the
+/// user needed was hidden behind the interaction it was meant to complete.
+/// Only the optional code-snippet field is progressive now.
 class AnswerForm extends ConsumerStatefulWidget {
   const AnswerForm({
     super.key,
@@ -127,9 +129,11 @@ class _AnswerFormState extends ConsumerState<AnswerForm> {
               controller: _codeController,
               maxLines: 4,
             ),
-            SizedBox(height: AppSpacing.v16),
-            Row(
-              children: [
+          ],
+          SizedBox(height: AppSpacing.v12),
+          Row(
+            children: [
+              if (_expanded) ...[
                 TextButton(
                   onPressed: _submitting
                       ? null
@@ -142,17 +146,17 @@ class _AnswerFormState extends ConsumerState<AnswerForm> {
                   child: const Text('Cancel'),
                 ),
                 SizedBox(width: AppSpacing.h12),
-                Expanded(
-                  child: FkPrimaryButton(
-                    label: 'Post reply',
-                    icon: null,
-                    isLoading: _submitting,
-                    onPressed: _submit,
-                  ),
-                ),
               ],
-            ),
-          ],
+              Expanded(
+                child: FkPrimaryButton(
+                  label: 'Post reply',
+                  icon: Icons.send_rounded,
+                  isLoading: _submitting,
+                  onPressed: _submit,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

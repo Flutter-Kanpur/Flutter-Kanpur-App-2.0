@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_result_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
 
 class ProjectSubmittedScreen extends StatelessWidget {
   const ProjectSubmittedScreen({super.key});
@@ -17,6 +18,7 @@ class ProjectSubmittedScreen extends StatelessWidget {
           'you once it is approved.',
       icon: Icons.check_rounded,
       color: AppColors.primary500,
+      imageAsset: AssetsPath.successTick,
       buttonLabel: 'View my projects',
       onPressed: () => context.go(RouteNames.communityProjects),
       secondaryLabel: 'Back to community',
@@ -35,6 +37,7 @@ class QuestionPostedScreen extends StatelessWidget {
       message: 'Your question is now visible to the community.',
       icon: Icons.check_rounded,
       color: AppColors.primary500,
+      imageAsset: AssetsPath.successTick,
       buttonIcon: Icons.visibility_outlined,
       buttonLabel: 'View discussion',
       onPressed: () => context.go(RouteNames.communityDiscussions),

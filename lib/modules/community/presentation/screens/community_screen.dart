@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
@@ -19,6 +20,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_section_title.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/external_links.dart';
 
 /// Runs a like / bookmark toggle and reports failure.
@@ -279,9 +281,10 @@ class _CommunityAppBar extends ConsumerWidget {
             isLabelVisible: unread > 0,
             label: Text(unread > 99 ? '99+' : '$unread'),
             backgroundColor: AppColors.warning600,
-            child: const Icon(
-              Icons.notifications_none_rounded,
-              color: AppColors.neutral950,
+            child: SvgPicture.asset(
+              AssetsPath.notificationIcon,
+              width: 24,
+              height: 24,
             ),
           ),
         ),

@@ -357,12 +357,29 @@ class CommunityRepository {
     final projectId = inserted['id'] as String?;
     if (projectId == null || submission.techStack.isEmpty) return;
 
-    await _client
-        .from(DatabaseTables.projectTechStack)
-        .insert([
-          for (final tech in submission.techStack)
-            {'project_id': projectId, 'tech_name': tech},
-        ]);
+    // The two writes are not in one transaction, so a failure here would
+    // otherwise strand a pending_review project with no tech stack and no way
+    // for the user to retry cleanly. Roll the project back and surface the
+    // original error.
+    try {
+      await _client
+          .from(DatabaseTables.projectTechStack)
+          .insert([
+            for (final tech in submission.techStack)
+              {'project_id': projectId, 'tech_name': tech},
+          ]);
+    } catch (_) {
+      try {
+        await _client
+            .from(DatabaseTables.projects)
+            .delete()
+            .eq('id', projectId)
+            .eq('owner_uid', userId);
+      } catch (_) {
+        // Best effort - the original error is the one worth reporting.
+      }
+      rethrow;
+    }
   }
 
   Future<void> submitQuestion(CommunityQuestionDraft draft) async {
