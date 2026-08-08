@@ -72,14 +72,6 @@ dependencies:
       url: https://github.com/Flutter-Kanpur/readmeApp.git
       ref: release-1.0.1
 
-  # Blogs product (Flutter Kanpur ReadMe)
-  # Use path while iterating on package-asset fixes; switch back to git after push.
-  Readme:
-    path: ../readmeApp
-    # git:
-    #   url: https://github.com/Flutter-Kanpur/readmeApp.git
-    #   ref: main
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
