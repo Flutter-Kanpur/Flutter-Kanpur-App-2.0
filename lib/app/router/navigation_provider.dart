@@ -1,25 +1,29 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../modules/auth/application/auth_state_manager.dart';
+import 'package:flutter_knp_mobile_app_v2/core/storage/app_prefs.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/auth/application/auth_state_manager.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/auth/data/services/user_service.dart';
 import 'route_names.dart';
 
-// ============================================================================
-// ENUM: Navigation Route
-// ============================================================================
-enum NavigationRoute {
-  splash,
-  authLanding,
-  home,
-}
+enum NavigationRoute { splash, authLanding, signIn, onboarding, home }
 
-// ============================================================================
-// PROVIDER: Determine next route based on auth state (for splash/app startup)
-// ============================================================================
 final nextRouteProvider = FutureProvider<NavigationRoute>((ref) async {
   try {
     final user = await ref.watch(currentUserProvider.future);
-    return user == null ? NavigationRoute.authLanding : NavigationRoute.home;
+
+    if (user != null) {
+      final completed = await UserService().isOnboardingCompleted();
+      return completed ? NavigationRoute.home : NavigationRoute.onboarding;
+    }
+
+    final hasSeenLanding = await AppPrefs.getHasSeenLanding();
+    return hasSeenLanding
+        ? NavigationRoute.signIn
+        : NavigationRoute.authLanding;
   } catch (_) {
-    return NavigationRoute.authLanding;
+    final hasSeenLanding = await AppPrefs.getHasSeenLanding();
+    return hasSeenLanding
+        ? NavigationRoute.signIn
+        : NavigationRoute.authLanding;
   }
 });
 
@@ -29,13 +33,15 @@ final splashRouteProvider = FutureProvider<String>((ref) async {
   return ref.read(routePathProvider(nextRoute));
 });
 
-// ============================================================================
-// PROVIDER: Get route path from NavigationRoute
-// ============================================================================
-final routePathProvider = Provider.family<String, NavigationRoute>((ref, route) {
+final routePathProvider = Provider.family<String, NavigationRoute>((
+  ref,
+  route,
+) {
   final routePaths = {
     NavigationRoute.splash: RouteNames.splash,
     NavigationRoute.authLanding: RouteNames.authLanding,
+    NavigationRoute.signIn: RouteNames.signIn,
+    NavigationRoute.onboarding: RouteNames.onboardingNavigation,
     NavigationRoute.home: RouteNames.home,
   };
 

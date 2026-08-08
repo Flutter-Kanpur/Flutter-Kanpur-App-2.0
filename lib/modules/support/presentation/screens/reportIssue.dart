@@ -35,7 +35,10 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
           backgroundColor: Colors.transparent,
           title: Text(
             translate(context, "profile_support.title"),
-            style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w600),
+            style: AppTextStyles.titleLarge.copyWith(
+              color: AppColors.blackBase,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
@@ -56,9 +59,7 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
                   child: IntrinsicHeight(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        _buildReportForm(),
-                      ],
+                      children: [_buildReportForm()],
                     ),
                   ),
                 ),
@@ -104,8 +105,10 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(translate(context, "profile_support.issue_type"),
-            style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
+        Text(
+          translate(context, "profile_support.issue_type"),
+          style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase),
+        ),
         SizedBox(height: AppSpacing.v10),
         GestureDetector(
           onTap: () {
@@ -116,7 +119,9 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
                 translate(context, "profile_support.issueTypes.account_issue"),
                 translate(context, "profile_support.issueTypes.payment_issue"),
                 translate(
-                    context, "profile_support.issueTypes.feature_request"),
+                  context,
+                  "profile_support.issueTypes.feature_request",
+                ),
                 translate(context, "profile_support.issueTypes.other"),
               ],
               selectedValue: selectedIssue,
@@ -124,7 +129,10 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
             );
           },
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v16),
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSpacing.h16,
+              vertical: AppSpacing.v16,
+            ),
             decoration: BoxDecoration(
               color: AppColors.whiteBase.withOpacity(0.9),
               borderRadius: AppRadius.all04,
@@ -136,11 +144,16 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
                   child: Text(
                     selectedIssue ??
                         translate(
-                            context, "profile_support.select_placeholder"),
+                          context,
+                          "profile_support.select_placeholder",
+                        ),
                     style: selectedIssue == null
                         ? AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.neutral300)
-                        : AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase),
+                            color: AppColors.neutral300,
+                          )
+                        : AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.blackBase,
+                          ),
                   ),
                 ),
                 const Icon(Icons.keyboard_arrow_down),
@@ -156,33 +169,35 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(translate(context, "profile_support.describe_issue"),
-            style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
+        Text(
+          translate(context, "profile_support.describe_issue"),
+          style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase),
+        ),
         SizedBox(height: AppSpacing.v10),
         TextFormField(
           maxLines: 5,
           decoration: InputDecoration(
             hintText: translate(context, "profile_support.describe_issue_hint"),
-            hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase)
+            hintStyle: AppTextStyles.bodyMedium
+                .copyWith(color: AppColors.blackBase)
                 .copyWith(color: AppColors.neutral300),
             filled: true,
             fillColor: AppColors.whiteBase.withOpacity(0.9),
-            contentPadding:
-            AppSpacing.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v6),
+            contentPadding: AppSpacing.symmetric(
+              horizontal: AppSpacing.h16,
+              vertical: AppSpacing.v6,
+            ),
             border: OutlineInputBorder(
               borderRadius: AppRadius.all04,
-              borderSide:
-              BorderSide(color: AppBorders.secondary),
+              borderSide: BorderSide(color: AppBorders.secondary),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: AppRadius.all04,
-              borderSide:
-              BorderSide(color: AppBorders.secondary),
+              borderSide: BorderSide(color: AppBorders.secondary),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: AppRadius.all04,
-              borderSide:
-              const BorderSide(color: AppBorders.blue),
+              borderSide: const BorderSide(color: AppBorders.blue),
             ),
           ),
         ),
@@ -194,8 +209,10 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(translate(context, "profile_support.upload_optional"),
-            style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
+        Text(
+          translate(context, "profile_support.upload_optional"),
+          style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase),
+        ),
         SizedBox(height: AppSpacing.v10),
         Container(
           width: double.infinity,
@@ -203,7 +220,10 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
             radius: 14.r,
             strokeWidth: 1.2,
             color: AppColors.neutral100,
-            padding: EdgeInsets.symmetric(horizontal: AppSpacing.h10, vertical: AppSpacing.v16),
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSpacing.h10,
+              vertical: AppSpacing.v16,
+            ),
             child: Column(
               children: [
                 SvgPicture.asset(
@@ -215,24 +235,29 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
                 SizedBox(height: AppSpacing.v10),
                 Text(
                   translate(context, "profile_support.choose_file_hint"),
-                  style: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase)
+                  style: AppTextStyles.bodyMedium
+                      .copyWith(color: AppColors.blackBase)
                       .copyWith(color: AppColors.neutral300),
                 ),
                 SizedBox(height: AppSpacing.v12),
                 OutlinedButton(
-                  onPressed: _pickFile,
+                  // onPressed: _pickFile,
+                  onPressed: (){},
                   style: OutlinedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     foregroundColor: AppColors.blackBase,
-                    side: BorderSide(
-                        color: AppBorders.secondary),
+                    side: BorderSide(color: AppBorders.secondary),
                     shape: RoundedRectangleBorder(
-                        borderRadius: AppRadius.all02),
-                    padding:
-                    AppSpacing.symmetric(horizontal: AppSpacing.h18, vertical: AppSpacing.v8),
+                      borderRadius: AppRadius.all02,
+                    ),
+                    padding: AppSpacing.symmetric(
+                      horizontal: AppSpacing.h18,
+                      vertical: AppSpacing.v8,
+                    ),
                   ),
-                  child:
-                  Text(translate(context, "profile_support.browse_files")),
+                  child: Text(
+                    translate(context, "profile_support.browse_files"),
+                  ),
                 ),
               ],
             ),
@@ -243,52 +268,69 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
   }
 
   Widget _buildUploadCards() {
-    return Column(children: [
-      if (pickedFile != null) ...[
-        SizedBox(height: AppSpacing.v10),
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                pickedFile!.name,
-                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase),
-                overflow: TextOverflow.ellipsis,
+    return Column(
+      children: [
+        if (pickedFile != null) ...[
+          SizedBox(height: AppSpacing.v10),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  pickedFile!.name,
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.blackBase,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-            ),
-            SizedBox(width: AppSpacing.h12),
-            isUploading
-                ? SizedBox(
-                width: 24.w,
-                height: 24.w,
-                child: CircularProgressIndicator(strokeWidth: 2))
-                : ElevatedButton(
-              onPressed: _uploadFile,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary500,
-                shape: RoundedRectangleBorder(
-                    borderRadius: AppRadius.all02),
-                padding:
-                AppSpacing.symmetric(horizontal: AppSpacing.h12, vertical: AppSpacing.v8),
-              ),
-              child: Text(translate(context, "profile_support.upload"),
-                  style: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase)
-                      .copyWith(color: AppColors.whiteBase)),
-            )
-          ],
-        )
+              SizedBox(width: AppSpacing.h12),
+              isUploading
+                  ? SizedBox(
+                      width: 24.w,
+                      height: 24.w,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : ElevatedButton(
+                      onPressed: _uploadFile,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary500,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: AppRadius.all02,
+                        ),
+                        padding: AppSpacing.symmetric(
+                          horizontal: AppSpacing.h12,
+                          vertical: AppSpacing.v8,
+                        ),
+                      ),
+                      child: Text(
+                        translate(context, "profile_support.upload"),
+                        style: AppTextStyles.bodyMedium
+                            .copyWith(color: AppColors.blackBase)
+                            .copyWith(color: AppColors.whiteBase),
+                      ),
+                    ),
+            ],
+          ),
+        ],
       ],
-    ]);
+    );
   }
 
   Widget _buildSubmitButton() {
     return Container(
-      margin: EdgeInsets.only(left: AppSpacing.h10, right: AppSpacing.h10, bottom: AppSpacing.v10),
+      margin: EdgeInsets.only(
+        left: AppSpacing.h10,
+        right: AppSpacing.h10,
+        bottom: AppSpacing.v10,
+      ),
       child: Stack(
         alignment: Alignment.center,
         children: [
           GradientButton(
             height: 45.h,
-            textStyle: AppTextStyles.titleMedium.copyWith(color: AppColors.whiteBase),
+            textStyle: AppTextStyles.titleMedium.copyWith(
+              color: AppColors.whiteBase,
+            ),
             text: translate(context, "profile_support.submit_report"),
             onTap: () {},
           ),
@@ -296,7 +338,10 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
             right: 60.w,
             child: Container(
               padding: EdgeInsets.only(left: AppSpacing.h6),
-              child: const Icon(Icons.arrow_forward, color: AppColors.whiteBase),
+              child: const Icon(
+                Icons.arrow_forward,
+                color: AppColors.whiteBase,
+              ),
             ),
           ),
         ],
@@ -316,19 +361,19 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
     );
   }
 
-  Future<void> _pickFile() async {
-    try {
-      final result = await FilePicker.pickFiles(withData: true);
-      if (result != null && result.files.isNotEmpty) {
-        setState(() {
-          pickedFile = result.files.first;
-        });
-      }
-    } catch (e) {
-      // ignore: avoid_print
-      print('File pick error: $e');
-    }
-  }
+  // Future<void> _pickFile() async {
+  //   try {
+  //     final result = await FilePicker.pickFiles(withData: true);
+  //     if (result != null && result.files.isNotEmpty) {
+  //       setState(() {
+  //         pickedFile = result.files.first;
+  //       });
+  //     }
+  //   } catch (e) {
+  //     // ignore: avoid_print
+  //     print('File pick error: $e');
+  //   }
+  // }
 
   Future<void> _uploadFile() async {
     if (pickedFile == null) return;
@@ -338,14 +383,14 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
       await Future.delayed(const Duration(seconds: 2));
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content:
-            Text(translate(context, 'profile_support.uploaded_success'))),
+          content: Text(translate(context, 'profile_support.uploaded_success')),
+        ),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content:
-            Text(translate(context, 'profile_support.uploaded_failed'))),
+          content: Text(translate(context, 'profile_support.uploaded_failed')),
+        ),
       );
     } finally {
       setState(() => isUploading = false);
@@ -390,8 +435,7 @@ Future<void> showCustomDropdown({
                   vertical: AppSpacing.v16,
                 ),
                 decoration: BoxDecoration(
-                  color:
-                  isSelected ? AppColors.primary100 : Colors.transparent,
+                  color: isSelected ? AppColors.primary100 : Colors.transparent,
                   borderRadius: AppRadius.all04,
                 ),
                 child: Row(
@@ -399,7 +443,9 @@ Future<void> showCustomDropdown({
                   children: [
                     Text(
                       item,
-                      style: AppTextStyles.bodyLarge.copyWith(color: AppColors.blackBase),
+                      style: AppTextStyles.bodyLarge.copyWith(
+                        color: AppColors.blackBase,
+                      ),
                     ),
                     if (isSelected) const Icon(Icons.check, size: 20),
                   ],

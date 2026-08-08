@@ -29,7 +29,12 @@ class MyContestsScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(AppSpacing.h20, AppSpacing.h8, AppSpacing.h20, 0),
+                padding: EdgeInsets.fromLTRB(
+                  AppSpacing.h20,
+                  AppSpacing.h8,
+                  AppSpacing.h20,
+                  0,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -44,11 +49,19 @@ class MyContestsScreen extends ConsumerWidget {
                       ),
                     ),
                     SizedBox(height: AppSpacing.v16),
-                    Text('My Contests', style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold)),
+                    Text(
+                      'My Contests',
+                      style: AppTextStyles.headlineSmall.copyWith(
+                        color: AppColors.blackBase,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     SizedBox(height: AppSpacing.v8),
                     Text(
                       "Contests you've participated in or registered for.",
-                      style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
+                      style: AppTextStyles.bodyLarge.copyWith(
+                        color: AppColors.neutral500,
+                      ),
                     ),
                   ],
                 ),
@@ -66,29 +79,42 @@ class MyContestsScreen extends ConsumerWidget {
                 child: contests.isEmpty
                     ? Center(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: AppSpacing.h22),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: AppSpacing.h22,
+                          ),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
                                 'No contests yet',
-                                style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold),
+                                style: AppTextStyles.titleLarge.copyWith(
+                                  color: AppColors.blackBase,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               SizedBox(height: AppSpacing.v8),
                               Text(
                                 "You haven't participated in any contests yet. "
                                 'Join one to get started.',
                                 textAlign: TextAlign.center,
-                                style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
+                                style: AppTextStyles.bodyLarge.copyWith(
+                                  color: AppColors.neutral500,
+                                ),
                               ),
                             ],
                           ),
                         ),
                       )
                     : ListView.separated(
-                        padding: EdgeInsets.fromLTRB(AppSpacing.h20, 0, AppSpacing.h20, AppSpacing.h22),
+                        padding: EdgeInsets.fromLTRB(
+                          AppSpacing.h20,
+                          0,
+                          AppSpacing.h20,
+                          AppSpacing.h22,
+                        ),
                         itemCount: contests.length,
-                        separatorBuilder: (_, __) => SizedBox(height: AppSpacing.v16),
+                        separatorBuilder: (_, __) =>
+                            SizedBox(height: AppSpacing.v16),
                         itemBuilder: (context, index) {
                           final contest = contests[index];
                           return MyContestCard(

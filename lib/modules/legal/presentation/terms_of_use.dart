@@ -14,68 +14,75 @@ class TermsOfUse extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GradientBackground(
-        child: Scaffold(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          centerTitle: true,
           backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            centerTitle: true,
-            backgroundColor: Colors.transparent,
-            title: Text(
-                translate(context, "profile_terms_of_use.title"),
-                style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w600)),
-            leading: IconButton(
-              onPressed: () => Navigator.of(context).pop(),
-              icon: const Icon(Icons.arrow_back),
+          title: Text(
+            translate(context, "profile_terms_of_use.title"),
+            style: AppTextStyles.titleLarge.copyWith(
+              color: AppColors.blackBase,
+              fontWeight: FontWeight.w600,
             ),
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              spacing: AppSpacing.h10,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildContentContainer(
-                  showBackground: false,
-                  body: translate(
-                      context, "profile_terms_of_use.body_1"),
-                ),
-                _buildContentContainer(
-                  showBackground: false,
-                  body: translate(
-                      context, "profile_terms_of_use.body_2"),
-                ),
-                _buildContentContainer(
-                  showBackground: false,
-                  body: translate(
-                      context, "profile_terms_of_use.body_3"),
-                ),
-                _buildContentContainer(
-                  showBackground: false,
-                  body: translate(
-                      context, "profile_terms_of_use.body_4"),
-                ),
-                _buildWarningContainer(
-                  body: translate(
-                      context, "profile_terms_of_use.warning"),
-                ),
-                _buildLastUpdatedWidget(context)
-              ],
-            ),
+          leading: IconButton(
+            onPressed: () => Navigator.of(context).pop(),
+            icon: const Icon(Icons.arrow_back),
           ),
-        ));
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            spacing: AppSpacing.h10,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildContentContainer(
+                showBackground: false,
+                body: translate(context, "profile_terms_of_use.body_1"),
+              ),
+              _buildContentContainer(
+                showBackground: false,
+                body: translate(context, "profile_terms_of_use.body_2"),
+              ),
+              _buildContentContainer(
+                showBackground: false,
+                body: translate(context, "profile_terms_of_use.body_3"),
+              ),
+              _buildContentContainer(
+                showBackground: false,
+                body: translate(context, "profile_terms_of_use.body_4"),
+              ),
+              _buildWarningContainer(
+                body: translate(context, "profile_terms_of_use.warning"),
+              ),
+              _buildLastUpdatedWidget(context),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 
-Widget _buildContentContainer(
-    {String? title, required String body, bool showBackground = true}) {
+Widget _buildContentContainer({
+  String? title,
+  required String body,
+  bool showBackground = true,
+}) {
   return Container(
     decoration: !showBackground
         ? null
         : BoxDecoration(
-        color: AppColors.primary50,
-        borderRadius: AppRadius.all05),
+            color: AppColors.primary50,
+            borderRadius: AppRadius.all05,
+          ),
     width: double.infinity,
     padding: !showBackground
         ? EdgeInsets.zero
-        : EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v10),
+        : EdgeInsets.symmetric(
+            horizontal: AppSpacing.h16,
+            vertical: AppSpacing.v10,
+          ),
     margin: EdgeInsets.only(left: AppSpacing.h10, right: AppSpacing.h10),
     child: Column(
       spacing: AppSpacing.h8,
@@ -84,13 +91,11 @@ Widget _buildContentContainer(
         if (title != null && title.isNotEmpty)
           Text(
             title,
-            style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)
+            style: AppTextStyles.titleMedium
+                .copyWith(color: AppColors.blackBase)
                 .copyWith(fontWeight: FontWeight.w500),
           ),
-        Text(
-          body,
-          style: AppTextStyles.bodyLarge.copyWith(height: 1.5),
-        )
+        Text(body, style: AppTextStyles.bodyLarge.copyWith(height: 1.5)),
       ],
     ),
   );
@@ -99,7 +104,10 @@ Widget _buildContentContainer(
 Widget _buildWarningContainer({required String body}) {
   return Container(
     margin: EdgeInsets.only(left: AppSpacing.h10, right: AppSpacing.h10),
-    padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v16),
+    padding: EdgeInsets.symmetric(
+      horizontal: AppSpacing.h16,
+      vertical: AppSpacing.v16,
+    ),
     decoration: BoxDecoration(
       color: AppColors.warning600.withValues(alpha: 0.1),
       borderRadius: AppRadius.all03,
@@ -107,13 +115,13 @@ Widget _buildWarningContainer({required String body}) {
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(Icons.warning_rounded,
-            color: AppColors.warning600, size: 22.sp),
+        Icon(Icons.warning_rounded, color: AppColors.warning600, size: 22.sp),
         SizedBox(width: AppSpacing.h8),
         Expanded(
           child: Text(
             body,
-            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500)
+            style: AppTextStyles.bodyMedium
+                .copyWith(color: AppColors.neutral500)
                 .copyWith(color: AppColors.warning600, height: 1.4),
           ),
         ),
@@ -128,7 +136,8 @@ Widget _buildLastUpdatedWidget(BuildContext context) {
     padding: EdgeInsets.only(bottom: AppSpacing.v10),
     child: Text(
       translate(context, "profile_terms_of_use.last_updated"),
-      style: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase)
+      style: AppTextStyles.bodyMedium
+          .copyWith(color: AppColors.blackBase)
           .copyWith(fontWeight: FontWeight.w400),
     ),
   );

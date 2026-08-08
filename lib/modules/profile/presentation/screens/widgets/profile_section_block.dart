@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
@@ -20,7 +19,12 @@ class ProfileSectionBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: AppSpacing.only(left: AppSpacing.h20, top: 0, right: AppSpacing.h20, bottom: AppSpacing.v20),
+      padding: AppSpacing.only(
+        left: AppSpacing.h20,
+        top: 0,
+        right: AppSpacing.h20,
+        bottom: AppSpacing.v20,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

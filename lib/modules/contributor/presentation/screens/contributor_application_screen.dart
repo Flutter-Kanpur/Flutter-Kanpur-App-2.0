@@ -172,10 +172,8 @@ class _ContributorApplicationScreenState
                   label: "contributor.currentRole".tr(),
                   value: currentRole,
                   items: roles,
-                  validator: (value) => _requiredValidator(
-                    value,
-                    'contributor.currentRole'.tr(),
-                  ),
+                  validator: (value) =>
+                      _requiredValidator(value, 'contributor.currentRole'.tr()),
                   onChanged: (value) {
                     setState(() {
                       currentRole = value;
@@ -255,7 +253,10 @@ class _ContributorApplicationScreenState
                       return const SizedBox.shrink();
                     }
                     return Padding(
-                      padding: EdgeInsets.only(top: AppSpacing.v8, left: AppSpacing.h4),
+                      padding: EdgeInsets.only(
+                        top: AppSpacing.v8,
+                        left: AppSpacing.h4,
+                      ),
                       child: Text(
                         field.errorText!,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(

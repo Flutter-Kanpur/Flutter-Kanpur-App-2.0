@@ -23,7 +23,6 @@ class OnboardingBottomButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-
         GradientButton(
           text: buttonText,
           onTap: onPrimaryTap,
@@ -32,7 +31,6 @@ class OnboardingBottomButtons extends StatelessWidget {
         ),
 
         if (showSecondaryButton) ...[
-
           16.verticalSpace,
 
           GestureDetector(
@@ -42,7 +40,9 @@ class OnboardingBottomButtons extends StatelessWidget {
               child: Text(
                 'onboarding.skipForNow'.tr(),
 
-                style: AppTextStyles.titleSmall.copyWith(color: AppColors.blackBase),
+                style: AppTextStyles.titleSmall.copyWith(
+                  color: AppColors.blackBase,
+                ),
               ),
             ),
           ),

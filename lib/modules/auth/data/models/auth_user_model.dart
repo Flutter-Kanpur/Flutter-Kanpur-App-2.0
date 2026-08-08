@@ -31,9 +31,9 @@ class AuthUserModel extends AuthUser {
     required bool isEmailVerified,
   }) {
     return {
-      AuthConstants.uidField:           uid,
-      AuthConstants.emailField:         email,
-      AuthConstants.usernameField:      username.toLowerCase().trim(),
+      AuthConstants.uidField: uid,
+      AuthConstants.emailField: email,
+      AuthConstants.usernameField: username.toLowerCase().trim(),
       AuthConstants.emailVerifiedField: isEmailVerified,
     };
   }

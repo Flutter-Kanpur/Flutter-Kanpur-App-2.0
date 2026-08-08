@@ -63,7 +63,10 @@ class MyEventCard extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v6),
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSpacing.h16,
+                  vertical: AppSpacing.v6,
+                ),
                 decoration: BoxDecoration(
                   color: statusColor.withValues(alpha: 0.2),
                   borderRadius: AppRadius.all09,
@@ -82,7 +85,9 @@ class MyEventCard extends ConsumerWidget {
                     SizedBox(width: AppSpacing.h6),
                     Text(
                       event.statusLabel,
-                      style: AppTextStyles.bodyMedium.copyWith(color: statusColor),
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: statusColor,
+                      ),
                     ),
                   ],
                 ),
@@ -105,18 +110,28 @@ class MyEventCard extends ConsumerWidget {
             ],
           ),
           SizedBox(height: AppSpacing.v12),
-          Text(event.title, style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w500)),
+          Text(
+            event.title,
+            style: AppTextStyles.titleLarge.copyWith(
+              color: AppColors.blackBase,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
           SizedBox(height: AppSpacing.v8),
           Text(
             event.dateTimeLocation,
-            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.success600),
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.success600,
+            ),
           ),
           SizedBox(height: AppSpacing.v8),
           Text(
             event.description,
             maxLines: expanded ? null : 2,
             overflow: expanded ? TextOverflow.visible : TextOverflow.ellipsis,
-            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500),
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.neutral500,
+            ),
           ),
           if (!expanded)
             GestureDetector(
@@ -125,7 +140,12 @@ class MyEventCard extends ConsumerWidget {
                   .toggle(),
               child: Padding(
                 padding: EdgeInsets.only(top: AppSpacing.v2),
-                child: Text('see more', style: AppTextStyles.bodyMedium.copyWith(color: AppColors.primary500)),
+                child: Text(
+                  'see more',
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.primary500,
+                  ),
+                ),
               ),
             ),
           SizedBox(height: AppSpacing.v16),
@@ -136,7 +156,10 @@ class MyEventCard extends ConsumerWidget {
                   text: isPast ? 'Give feedback' : 'View Details',
                   height: 48.h,
                   onTap: onViewDetails,
-                  textStyle: AppTextStyles.labelLarge.copyWith(color: AppColors.whiteBase, fontWeight: FontWeight.w600),
+                  textStyle: AppTextStyles.labelLarge.copyWith(
+                    color: AppColors.whiteBase,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               if (isPast) ...[
@@ -150,9 +173,7 @@ class MyEventCard extends ConsumerWidget {
                       width: 48.w,
                       height: 48.h,
                       decoration: BoxDecoration(
-                        border: Border.all(
-                          color: AppBorders.primary,
-                        ),
+                        border: Border.all(color: AppBorders.primary),
                         borderRadius: AppRadius.all09,
                       ),
                       child: Icon(

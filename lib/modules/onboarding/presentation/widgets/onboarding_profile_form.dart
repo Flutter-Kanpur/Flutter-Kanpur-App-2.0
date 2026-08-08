@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
@@ -36,9 +35,7 @@ class OnboardingProfileForm extends StatelessWidget {
         focusedBorder: OutlineInputBorder(
           borderRadius: AppRadius.all03,
 
-          borderSide: const BorderSide(
-            color: AppBorders.primary,
-          ),
+          borderSide: const BorderSide(color: AppBorders.primary),
         ),
       ),
     );

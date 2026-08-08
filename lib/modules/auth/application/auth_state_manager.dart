@@ -10,17 +10,9 @@ class UserInfo {
   final String? email;
   final String? displayName;
 
-  const UserInfo({
-    this.userId,
-    this.email,
-    this.displayName,
-  });
+  const UserInfo({this.userId, this.email, this.displayName});
 
-  UserInfo copyWith({
-    String? userId,
-    String? email,
-    String? displayName,
-  }) {
+  UserInfo copyWith({String? userId, String? email, String? displayName}) {
     return UserInfo(
       userId: userId ?? this.userId,
       email: email ?? this.email,
@@ -69,54 +61,55 @@ final currentUserProvider = FutureProvider<UserInfo?>((ref) async {
 // ============================================================================
 
 /// Sign in with email and password.
-final signInProvider = Provider<
-    Future<void> Function({
-      required String email,
-      required String password,
-    })>((ref) {
-  return ({required String email, required String password}) async {
-    final authService = ref.read(authServiceProvider);
+final signInProvider =
+    Provider<
+      Future<void> Function({required String email, required String password})
+    >((ref) {
+      return ({required String email, required String password}) async {
+        final authService = ref.read(authServiceProvider);
 
-    final response = await authService.signIn(
-      email: email,
-      password: password,
-    );
+        final response = await authService.signIn(
+          email: email,
+          password: password,
+        );
 
-    if (!response.success) {
-      throw Exception(response.errorMessage ?? 'Sign in failed');
-    }
+        if (!response.success) {
+          throw Exception(response.errorMessage ?? 'Sign in failed');
+        }
 
-    ref.invalidate(currentUserProvider);
-  };
-});
+        ref.invalidate(currentUserProvider);
+      };
+    });
 
 /// Sign up with email, password, and display name
-final signUpProvider = Provider<
-    Future<void> Function({
-      required String email,
-      required String password,
-      required String displayName,
-    })>((ref) {
-  return ({
-    required String email,
-    required String password,
-    required String displayName,
-  }) async {
-    final authService = ref.read(authServiceProvider);
+final signUpProvider =
+    Provider<
+      Future<void> Function({
+        required String email,
+        required String password,
+        required String displayName,
+      })
+    >((ref) {
+      return ({
+        required String email,
+        required String password,
+        required String displayName,
+      }) async {
+        final authService = ref.read(authServiceProvider);
 
-    final response = await authService.signUp(
-      email: email,
-      password: password,
-      displayName: displayName,
-    );
+        final response = await authService.signUp(
+          email: email,
+          password: password,
+          displayName: displayName,
+        );
 
-    if (!response.success) {
-      throw Exception(response.errorMessage ?? 'Sign up failed');
-    }
+        if (!response.success) {
+          throw Exception(response.errorMessage ?? 'Sign up failed');
+        }
 
-    ref.invalidate(currentUserProvider);
-  };
-});
+        ref.invalidate(currentUserProvider);
+      };
+    });
 
 /// Sign out user. This is an action provider, not a cached FutureProvider,
 /// so every logout tap executes a fresh sign-out.
@@ -158,10 +151,7 @@ final currentUserIdProvider = Provider<String?>((ref) {
 /// Get current user email
 final currentUserEmailProvider = Provider<String?>((ref) {
   final currentUser = ref.watch(currentUserProvider);
-  return currentUser.maybeWhen(
-    data: (user) => user?.email,
-    orElse: () => null,
-  );
+  return currentUser.maybeWhen(data: (user) => user?.email, orElse: () => null);
 });
 
 /// Get current user display name

@@ -41,11 +41,7 @@ class CommunityErrorLogger {
         'action': action,
         'entity_type': entityType,
         'status': 'error',
-        'metadata': {
-          'error': error,
-          'stack_trace': stackTrace,
-          ...?metadata,
-        },
+        'metadata': {'error': error, 'stack_trace': stackTrace, ...?metadata},
         'created_at': DateTime.now().toIso8601String(),
       });
     } catch (e) {

@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
@@ -15,16 +14,12 @@ class OnboardingSearchField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: 'onboarding.searchRolesHint'.tr(),
 
-        prefixIcon: const Icon(
-          Icons.search,
-        ),
+        prefixIcon: const Icon(Icons.search),
 
         filled: true,
         fillColor: AppColors.neutral50,
 
-        contentPadding: EdgeInsets.symmetric(
-          vertical: AppSpacing.v16,
-        ),
+        contentPadding: EdgeInsets.symmetric(vertical: AppSpacing.v16),
 
         border: OutlineInputBorder(
           borderRadius: AppRadius.all09,
@@ -39,9 +34,7 @@ class OnboardingSearchField extends StatelessWidget {
         focusedBorder: OutlineInputBorder(
           borderRadius: AppRadius.all09,
 
-          borderSide: const BorderSide(
-            color: AppBorders.primary,
-          ),
+          borderSide: const BorderSide(color: AppBorders.primary),
         ),
       ),
     );

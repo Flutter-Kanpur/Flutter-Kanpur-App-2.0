@@ -31,28 +31,24 @@ class OnboardingExperienceDropdown extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: AppRadius.all03,
 
-          border: Border.all(
-            color: AppBorders.secondary,
-          ),
+          border: Border.all(color: AppBorders.secondary),
         ),
 
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
           children: [
-
             Text(
               selectedValue.isEmpty
                   ? 'onboarding.yearsOfExperience'.tr()
                   : selectedValue,
 
-              style: AppTextStyles.titleSmall.copyWith(color: AppColors.blackBase),
+              style: AppTextStyles.titleSmall.copyWith(
+                color: AppColors.blackBase,
+              ),
             ),
 
-            Icon(
-              Icons.keyboard_arrow_down_rounded,
-              size: 24.sp,
-            ),
+            Icon(Icons.keyboard_arrow_down_rounded, size: 24.sp),
           ],
         ),
       ),

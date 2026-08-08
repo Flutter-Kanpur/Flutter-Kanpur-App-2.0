@@ -20,7 +20,12 @@ class ContributorRejectedScreen extends StatelessWidget {
     return GradientBackground(
       child: SafeArea(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(AppSpacing.h20, AppSpacing.h18, AppSpacing.h20, 24),
+          padding: EdgeInsets.fromLTRB(
+            AppSpacing.h20,
+            AppSpacing.h18,
+            AppSpacing.h20,
+            24,
+          ),
           child: Column(
             children: [
               FkHeader(
@@ -68,7 +73,11 @@ class ContributorRejectedScreen extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.info, color: AppColors.pending400, size: 18),
+                    const Icon(
+                      Icons.info,
+                      color: AppColors.pending400,
+                      size: 18,
+                    ),
                     SizedBox(width: AppSpacing.h8),
                     Expanded(
                       child: Text(

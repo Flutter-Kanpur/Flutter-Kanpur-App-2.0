@@ -18,7 +18,10 @@ class ContributorSkillChip extends StatelessWidget {
     return Chip(
       shape: RoundedRectangleBorder(borderRadius: AppRadius.all05),
       backgroundColor: AppColors.whiteBase,
-      label: Text(label, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.whiteBase)),
+      label: Text(
+        label,
+        style: AppTextStyles.bodyMedium.copyWith(color: AppColors.whiteBase),
+      ),
       deleteIcon: const Icon(Icons.close, size: 18, color: AppColors.whiteBase),
       onDeleted: onDeleted,
     );

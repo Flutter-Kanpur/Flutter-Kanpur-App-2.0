@@ -4,7 +4,6 @@ import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/p
 import 'package:flutter_knp_mobile_app_v2/utils/translate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../shared/widgets/gradient_background.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
@@ -92,7 +91,8 @@ class _ContactCommunityTeamScreenState
       // TODO: implement send logic
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text(translate(context, 'contactCommunity.sendMessage'))),
+          content: Text(translate(context, 'contactCommunity.sendMessage')),
+        ),
       );
     }
   }
@@ -112,7 +112,10 @@ class _ContactCommunityTeamScreenState
           ),
           title: Text(
             translate(context, 'contactCommunity.title'),
-            style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w600),
+            style: AppTextStyles.titleLarge.copyWith(
+              color: AppColors.blackBase,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
         body: SafeArea(
@@ -129,9 +132,7 @@ class _ContactCommunityTeamScreenState
                   child: IntrinsicHeight(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        _buildContactForm(),
-                      ],
+                      children: [_buildContactForm()],
                     ),
                   ),
                 ),
@@ -192,8 +193,10 @@ class _ContactCommunityTeamScreenState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(translate(context, 'contactCommunity.subject'),
-            style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
+        Text(
+          translate(context, 'contactCommunity.subject'),
+          style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase),
+        ),
         SizedBox(height: AppSpacing.v10),
         GestureDetector(
           onTap: () {
@@ -205,7 +208,10 @@ class _ContactCommunityTeamScreenState
             );
           },
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v16),
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSpacing.h16,
+              vertical: AppSpacing.v16,
+            ),
             decoration: BoxDecoration(
               color: AppColors.whiteBase.withOpacity(0.9),
               borderRadius: AppRadius.all04,
@@ -217,11 +223,16 @@ class _ContactCommunityTeamScreenState
                   child: Text(
                     selectedSubject ??
                         translate(
-                            context, 'contactCommunity.selectPlaceholder'),
+                          context,
+                          'contactCommunity.selectPlaceholder',
+                        ),
                     style: selectedSubject == null
                         ? AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.neutral300)
-                        : AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase),
+                            color: AppColors.neutral300,
+                          )
+                        : AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.blackBase,
+                          ),
                   ),
                 ),
                 const Icon(Icons.keyboard_arrow_down),
@@ -239,8 +250,12 @@ class _ContactCommunityTeamScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(translate(context, 'contactCommunity.message'),
-              style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
+          Text(
+            translate(context, 'contactCommunity.message'),
+            style: AppTextStyles.titleMedium.copyWith(
+              color: AppColors.blackBase,
+            ),
+          ),
           SizedBox(height: AppSpacing.v10),
           TextFormField(
             focusNode: _messageFocusNode,
@@ -248,26 +263,26 @@ class _ContactCommunityTeamScreenState
             maxLines: 5,
             decoration: InputDecoration(
               hintText: translate(context, 'contactCommunity.messageHint'),
-              hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase)
+              hintStyle: AppTextStyles.bodyMedium
+                  .copyWith(color: AppColors.blackBase)
                   .copyWith(color: AppColors.neutral300),
               filled: true,
               fillColor: AppColors.whiteBase.withOpacity(0.9),
-              contentPadding:
-              AppSpacing.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v12),
+              contentPadding: AppSpacing.symmetric(
+                horizontal: AppSpacing.h16,
+                vertical: AppSpacing.v12,
+              ),
               border: OutlineInputBorder(
                 borderRadius: AppRadius.all04,
-                borderSide:
-                BorderSide(color: AppBorders.secondary),
+                borderSide: BorderSide(color: AppBorders.secondary),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: AppRadius.all04,
-                borderSide:
-                BorderSide(color: AppBorders.secondary),
+                borderSide: BorderSide(color: AppBorders.secondary),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: AppRadius.all04,
-                borderSide:
-                const BorderSide(color: AppBorders.blue),
+                borderSide: const BorderSide(color: AppBorders.blue),
               ),
             ),
           ),
@@ -282,34 +297,38 @@ class _ContactCommunityTeamScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(translate(context, 'contactCommunity.fullName'),
-              style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
+          Text(
+            translate(context, 'contactCommunity.fullName'),
+            style: AppTextStyles.titleMedium.copyWith(
+              color: AppColors.blackBase,
+            ),
+          ),
           SizedBox(height: AppSpacing.v10),
           TextFormField(
             focusNode: _nameFocusNode,
             controller: _nameController,
             decoration: InputDecoration(
               hintText: translate(context, 'contactCommunity.nameHint'),
-              hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase)
+              hintStyle: AppTextStyles.bodyMedium
+                  .copyWith(color: AppColors.blackBase)
                   .copyWith(color: AppColors.neutral300),
               filled: true,
               fillColor: AppColors.whiteBase.withOpacity(0.9),
-              contentPadding:
-              EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v16),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: AppSpacing.h16,
+                vertical: AppSpacing.v16,
+              ),
               border: OutlineInputBorder(
                 borderRadius: AppRadius.all04,
-                borderSide:
-                BorderSide(color: AppBorders.secondary),
+                borderSide: BorderSide(color: AppBorders.secondary),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: AppRadius.all04,
-                borderSide:
-                BorderSide(color: AppBorders.secondary),
+                borderSide: BorderSide(color: AppBorders.secondary),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: AppRadius.all04,
-                borderSide:
-                const BorderSide(color: AppBorders.blue),
+                borderSide: const BorderSide(color: AppBorders.blue),
               ),
             ),
             validator: (value) {
@@ -333,8 +352,12 @@ class _ContactCommunityTeamScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(translate(context, 'contactCommunity.email'),
-              style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase)),
+          Text(
+            translate(context, 'contactCommunity.email'),
+            style: AppTextStyles.titleMedium.copyWith(
+              color: AppColors.blackBase,
+            ),
+          ),
           SizedBox(height: AppSpacing.v10),
           TextFormField(
             focusNode: _emailFocusNode,
@@ -342,26 +365,26 @@ class _ContactCommunityTeamScreenState
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
               hintText: translate(context, 'contactCommunity.emailHint'),
-              hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.blackBase)
+              hintStyle: AppTextStyles.bodyMedium
+                  .copyWith(color: AppColors.blackBase)
                   .copyWith(color: AppColors.neutral300),
               filled: true,
               fillColor: AppColors.whiteBase.withOpacity(0.9),
-              contentPadding:
-              EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v16),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: AppSpacing.h16,
+                vertical: AppSpacing.v16,
+              ),
               border: OutlineInputBorder(
                 borderRadius: AppRadius.all04,
-                borderSide:
-                BorderSide(color: AppBorders.secondary),
+                borderSide: BorderSide(color: AppBorders.secondary),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: AppRadius.all04,
-                borderSide:
-                BorderSide(color: AppBorders.secondary),
+                borderSide: BorderSide(color: AppBorders.secondary),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: AppRadius.all04,
-                borderSide:
-                const BorderSide(color: AppBorders.blue),
+                borderSide: const BorderSide(color: AppBorders.blue),
               ),
             ),
             validator: (value) {
@@ -388,16 +411,15 @@ class _ContactCommunityTeamScreenState
         children: [
           GradientButton(
             height: 50.h,
-            textStyle: AppTextStyles.titleMedium.copyWith(color: AppColors.whiteBase),
+            textStyle: AppTextStyles.titleMedium.copyWith(
+              color: AppColors.whiteBase,
+            ),
             text: translate(context, 'contactCommunity.sendMessage'),
             onTap: _submit,
           ),
           Positioned(
             right: 60.w,
-            child: const Icon(
-              Icons.arrow_forward,
-              color: AppColors.whiteBase,
-            ),
+            child: const Icon(Icons.arrow_forward, color: AppColors.whiteBase),
           ),
         ],
       ),

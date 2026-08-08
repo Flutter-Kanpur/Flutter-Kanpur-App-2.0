@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_models.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_models.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_author_row.dart';
 
 class DiscussionListItem extends StatelessWidget {
   const DiscussionListItem({
@@ -18,6 +19,8 @@ class DiscussionListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final answers = question.answerCount;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -33,57 +36,37 @@ class DiscussionListItem extends StatelessWidget {
           children: [
             Text(
               question.title,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AppColors.primary500,
-                    height: 1.4,
-                  ),
+                color: AppColors.primary500,
+                height: 1.4,
+              ),
             ),
+            if (question.imageUrl != null && question.imageUrl!.isNotEmpty) ...[
+              SizedBox(height: AppSpacing.v12),
+              ClipRRect(
+                borderRadius: AppRadius.all02,
+                child: Image.network(
+                  question.imageUrl!,
+                  height: 120,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, _, _) => const SizedBox.shrink(),
+                ),
+              ),
+            ],
             SizedBox(height: AppSpacing.v18),
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 18,
-                  backgroundColor: AppColors.warning300,
-                  backgroundImage: question.authorPhotoUrl != null
-                      ? NetworkImage(question.authorPhotoUrl!)
-                      : null,
-                  child: question.authorPhotoUrl == null
-                      ? Text(
-                          question.authorName.isNotEmpty
-                              ? question.authorName[0].toUpperCase()
-                              : '?',
-                          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.whiteBase),
-                        )
-                      : null,
-                ),
-                SizedBox(width: AppSpacing.h10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        question.authorName,
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w800,
-                            ),
-                      ),
-                      Text(
-                        question.createdLabel,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall
-                            ?.copyWith(color: AppColors.neutral400),
-                      ),
-                    ],
-                  ),
-                ),
-                Text(
-                  '${question.answerCount} answers',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.neutral500,
-                      ),
-                ),
-              ],
+            CommunityAuthorRow(
+              name: question.authorName,
+              subtitle: question.createdLabel,
+              photoUrl: question.authorPhotoUrl,
+              trailing: Text(
+                answers == 1 ? '1 answer' : '$answers answers',
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: AppColors.neutral500),
+              ),
             ),
           ],
         ),

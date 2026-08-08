@@ -16,7 +16,10 @@ class ProfileTile extends StatelessWidget {
     required this.onTap,
     this.textColor,
     this.iconColor,
-  }) : assert(icon != null || iconSvgPath != null, 'Provide either icon or iconSvgPath');
+  }) : assert(
+         icon != null || iconSvgPath != null,
+         'Provide either icon or iconSvgPath',
+       );
 
   final IconData? icon;
   final String? iconSvgPath;
@@ -48,7 +51,10 @@ class ProfileTile extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: AppSpacing.symmetric(horizontal: AppSpacing.h20, vertical: AppSpacing.v12),
+          padding: AppSpacing.symmetric(
+            horizontal: AppSpacing.h20,
+            vertical: AppSpacing.v12,
+          ),
           child: Row(
             children: [
               iconWidget,

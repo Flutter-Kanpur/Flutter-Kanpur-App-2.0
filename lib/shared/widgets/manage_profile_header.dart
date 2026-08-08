@@ -49,10 +49,7 @@ class ManageProfileHeader extends StatelessWidget {
           padding: AppSpacing.all(AppSpacing.h2),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(
-              color: AppBorders.blue,
-              width: 2.5.r,
-            ),
+            border: Border.all(color: AppBorders.blue, width: 2.5.r),
           ),
           child: CircleAvatar(
             radius: 48.r,
@@ -63,7 +60,10 @@ class ManageProfileHeader extends StatelessWidget {
             child: photoUrl == null || photoUrl!.isEmpty
                 ? Text(
                     displayName.isNotEmpty ? displayName[0].toUpperCase() : '?',
-                    style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w600),
+                    style: AppTextStyles.titleLarge.copyWith(
+                      color: AppColors.blackBase,
+                      fontWeight: FontWeight.w600,
+                    ),
                   )
                 : null,
           ),
@@ -71,23 +71,22 @@ class ManageProfileHeader extends StatelessWidget {
         SizedBox(height: AppSpacing.v12),
         Text(
           displayName,
-          style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold),
+          style: AppTextStyles.headlineSmall.copyWith(
+            color: AppColors.blackBase,
+            fontWeight: FontWeight.bold,
+          ),
           textAlign: TextAlign.center,
         ),
         SizedBox(height: AppSpacing.v8),
         Text(
           designation,
-          style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.neutral500,
-          ),
+          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500),
           textAlign: TextAlign.center,
         ),
         SizedBox(height: AppSpacing.v4),
         Text(
           username,
-          style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.neutral300,
-          ),
+          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral300),
           textAlign: TextAlign.center,
         ),
         SizedBox(height: AppSpacing.v12),
@@ -100,7 +99,9 @@ class ManageProfileHeader extends StatelessWidget {
           ),
           child: Text(
             translate(context, "profile.editProfile"),
-            style: AppTextStyles.bodyLarge.copyWith(color: AppColors.primary500),
+            style: AppTextStyles.bodyLarge.copyWith(
+              color: AppColors.primary500,
+            ),
           ),
         ),
         SizedBox(height: AppSpacing.v16),
@@ -135,11 +136,7 @@ class ManageProfileHeader extends StatelessWidget {
 }
 
 class ProfileSocialIcon extends StatelessWidget {
-  const ProfileSocialIcon({
-    super.key,
-    required this.svgAsset,
-    this.onTap,
-  });
+  const ProfileSocialIcon({super.key, required this.svgAsset, this.onTap});
 
   final String svgAsset;
   final VoidCallback? onTap;
@@ -163,7 +160,10 @@ class ProfileSocialIcon extends StatelessWidget {
             padding: AppSpacing.all(AppSpacing.h10),
             child: SvgPicture.asset(
               svgAsset,
-              colorFilter: const ColorFilter.mode(AppColors.blackBase, BlendMode.srcIn),
+              colorFilter: const ColorFilter.mode(
+                AppColors.blackBase,
+                BlendMode.srcIn,
+              ),
             ),
           ),
         ),

@@ -55,9 +55,10 @@ class DeviceService {
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) return;
 
-      await _supabase.from('users').update({
-        'last_login_at': DateTime.now().toIso8601String(),
-      }).eq('uid', userId);
+      await _supabase
+          .from('users')
+          .update({'last_login_at': DateTime.now().toIso8601String()})
+          .eq('uid', userId);
     } catch (e) {
       print('[DeviceService] Error logging login: $e');
     }

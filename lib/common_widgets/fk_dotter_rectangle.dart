@@ -26,10 +26,7 @@ class DottedRoundedRect extends StatelessWidget {
         strokeWidth: strokeWidth,
         radius: radius,
       ),
-      child: Container(
-        padding: padding,
-        child: child,
-      ),
+      child: Container(padding: padding, child: child),
     );
   }
 }
@@ -39,8 +36,11 @@ class _DottedRRectPainter extends CustomPainter {
   final double strokeWidth;
   final double radius;
 
-  _DottedRRectPainter(
-      {required this.color, required this.strokeWidth, required this.radius});
+  _DottedRRectPainter({
+    required this.color,
+    required this.strokeWidth,
+    required this.radius,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -62,8 +62,10 @@ class _DottedRRectPainter extends CustomPainter {
       double distance = 0.0;
       while (distance < metric.length) {
         final next = distance + dashWidth;
-        final extract =
-        metric.extractPath(distance, next.clamp(0.0, metric.length));
+        final extract = metric.extractPath(
+          distance,
+          next.clamp(0.0, metric.length),
+        );
         canvas.drawPath(extract, paint);
         distance = next + dashSpace;
       }

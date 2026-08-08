@@ -69,7 +69,12 @@ class EventCardComponent extends StatelessWidget {
         children: [
           // Hero image with overlay status badge
           Padding(
-            padding: AppSpacing.only(left: AppSpacing.h16, top: AppSpacing.v16, right: AppSpacing.h16, bottom: AppSpacing.v12),
+            padding: AppSpacing.only(
+              left: AppSpacing.h16,
+              top: AppSpacing.v16,
+              right: AppSpacing.h16,
+              bottom: AppSpacing.v12,
+            ),
             child: ClipRRect(
               borderRadius: AppRadius.all05,
               child: Stack(
@@ -81,10 +86,7 @@ class EventCardComponent extends StatelessWidget {
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
-                        colors: [
-                          AppColors.primary50,
-                          AppColors.primary50,
-                        ],
+                        colors: [AppColors.primary50, AppColors.primary50],
                       ),
                     ),
                   ),
@@ -110,14 +112,20 @@ class EventCardComponent extends StatelessWidget {
                         color: statusColor,
                         borderRadius: AppRadius.all09,
                       ),
-                      child: Text(status, style: AppTextStyles.labelMedium.copyWith(color: AppColors.whiteBase, fontWeight: FontWeight.w600)),
+                      child: Text(
+                        status,
+                        style: AppTextStyles.labelMedium.copyWith(
+                          color: AppColors.whiteBase,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
           ),
-         
+
           // Organization section
           Padding(
             padding: AppSpacing.horizontal(AppSpacing.h20),
@@ -129,13 +137,25 @@ class EventCardComponent extends StatelessWidget {
           // Title
           Padding(
             padding: AppSpacing.horizontal(AppSpacing.h16),
-            child: Text(title, style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w500)),
+            child: Text(
+              title,
+              style: AppTextStyles.titleLarge.copyWith(
+                color: AppColors.blackBase,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ),
           10.verticalSpace,
           // Date/Time
           Padding(
             padding: AppSpacing.horizontal(AppSpacing.h16),
-            child: Text(dateTime, style: AppTextStyles.labelLarge.copyWith(color: AppColors.primary500, fontWeight: FontWeight.w600)),
+            child: Text(
+              dateTime,
+              style: AppTextStyles.labelLarge.copyWith(
+                color: AppColors.primary500,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
           10.verticalSpace,
           // Description
@@ -143,7 +163,9 @@ class EventCardComponent extends StatelessWidget {
             padding: AppSpacing.horizontal(AppSpacing.h16),
             child: Text(
               description,
-              style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral400),
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.neutral400,
+              ),
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),
@@ -158,7 +180,10 @@ class EventCardComponent extends StatelessWidget {
                   child: GradientButton(
                     onTap: onButtonPressed,
                     text: buttonText,
-                    textStyle: AppTextStyles.labelLarge.copyWith(color: AppColors.whiteBase, fontWeight: FontWeight.w600),
+                    textStyle: AppTextStyles.labelLarge.copyWith(
+                      color: AppColors.whiteBase,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
                 if (showEyeIcon) ...[

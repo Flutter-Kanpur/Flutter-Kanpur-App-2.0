@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_back_button.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_header.dart';
-import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_back_button.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_header.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradient_background.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';

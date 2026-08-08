@@ -39,7 +39,6 @@ class OnboardingImagePickerSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
 
         children: [
-
           _buildTile(
             icon: Icons.photo_library_outlined,
             title: 'onboarding.importFromGallery'.tr(),
@@ -73,13 +72,11 @@ class OnboardingImagePickerSheet extends StatelessWidget {
     required VoidCallback onTap,
     bool isDelete = false,
   }) {
-
     return GestureDetector(
       onTap: onTap,
 
       child: Row(
         children: [
-
           Icon(
             icon,
             size: 24.sp,
@@ -91,7 +88,9 @@ class OnboardingImagePickerSheet extends StatelessWidget {
           Text(
             title,
 
-            style: AppTextStyles.titleMedium.copyWith(color: isDelete ? AppColors.warning600 : AppColors.blackBase),
+            style: AppTextStyles.titleMedium.copyWith(
+              color: isDelete ? AppColors.warning600 : AppColors.blackBase,
+            ),
           ),
         ],
       ),

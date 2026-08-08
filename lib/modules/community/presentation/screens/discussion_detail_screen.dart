@@ -1,129 +1,231 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/application/community_provider.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_models.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/answer_card.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/answer_comments_sheet.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/answer_form.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_async_views.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_author_row.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen_top_bar.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_status_chip.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/count_format.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/external_links.dart';
 
-class DiscussionDetailScreen extends ConsumerStatefulWidget {
+class DiscussionDetailScreen extends ConsumerWidget {
+  const DiscussionDetailScreen({super.key, required this.questionId});
+
   final String questionId;
 
-  const DiscussionDetailScreen({
-    super.key,
-    required this.questionId,
-  });
-
   @override
-  ConsumerState<DiscussionDetailScreen> createState() =>
-      _DiscussionDetailScreenState();
-}
-
-class _DiscussionDetailScreenState extends ConsumerState<DiscussionDetailScreen> {
-  bool _showAnswerForm = false;
-  int _currentPage = 0;
-  final int _answersPerPage = 5;
-
-  @override
-  Widget build(BuildContext context) {
-    final questionAsync = ref.watch(questionDetailProvider(widget.questionId));
-    final currentUserIdAsync = ref.watch(currentUserIdProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final questionAsync = ref.watch(questionDetailProvider(questionId));
 
     return questionAsync.when(
-      loading: () => const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      ),
+      loading: () =>
+          const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, _) => Scaffold(
-        appBar: AppBar(
-          leading: BackButton(
-            onPressed: () => context.go(RouteNames.communityDiscussions),
+        body: SafeArea(
+          child: Column(
+            children: [
+              FkScreenTopBar(
+                title: 'Discussion',
+                fallbackPath: RouteNames.communityDiscussions,
+              ),
+              Expanded(
+                child: CommunityErrorView(
+                  error: e,
+                  message: 'Could not load this discussion.',
+                  onRetry: () => ref
+                      .read(questionDetailProvider(questionId).notifier)
+                      .refresh(),
+                ),
+              ),
+            ],
           ),
         ),
-        body: Center(child: Text('Error: $e')),
       ),
       data: (question) {
         if (question == null) {
           return Scaffold(
-            appBar: AppBar(
-              leading: BackButton(
-                onPressed: () => context.go(RouteNames.communityDiscussions),
+            body: SafeArea(
+              child: Column(
+                children: [
+                  FkScreenTopBar(
+                    title: 'Discussion',
+                    fallbackPath: RouteNames.communityDiscussions,
+                  ),
+                  const Expanded(
+                    child: CommunityEmptyView(
+                      icon: Icons.help_outline_rounded,
+                      message: 'This discussion is no longer available.',
+                    ),
+                  ),
+                ],
               ),
             ),
-            body: const Center(child: Text('Question not found')),
           );
         }
-        return _DetailBody(
-          question: question,
-          currentUserId: currentUserIdAsync.maybeWhen(
-            data: (id) => id,
-            orElse: () => null,
-          ),
-          showAnswerForm: _showAnswerForm,
-          onToggleAnswerForm: () {
-            setState(() => _showAnswerForm = !_showAnswerForm);
-          },
-          currentPage: _currentPage,
-          answersPerPage: _answersPerPage,
-          onPageChanged: (page) {
-            setState(() => _currentPage = page);
-          },
-        );
+        return _DetailBody(question: question);
       },
     );
   }
 }
 
-class _DetailBody extends ConsumerWidget {
-  const _DetailBody({
-    required this.question,
-    required this.showAnswerForm,
-    required this.onToggleAnswerForm,
-    required this.currentPage,
-    required this.answersPerPage,
-    required this.onPageChanged,
-    this.currentUserId,
-  });
+class _DetailBody extends ConsumerStatefulWidget {
+  const _DetailBody({required this.question});
 
   final CommunityQuestion question;
-  final bool showAnswerForm;
-  final VoidCallback onToggleAnswerForm;
-  final int currentPage;
-  final int answersPerPage;
-  final Function(int) onPageChanged;
-  final String? currentUserId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final repliesAsync = ref.watch(repliesProvider(question.id));
+  ConsumerState<_DetailBody> createState() => _DetailBodyState();
+}
+
+class _DetailBodyState extends ConsumerState<_DetailBody> {
+  CommunityQuestion get _question => widget.question;
+
+  Future<void> _toggleLike() async {
+    final error = await ref
+        .read(communityEngagementProvider)
+        .toggleQuestionLike(_question);
+    _notifyOnFailure(error, 'Could not update your like.');
+  }
+
+  Future<void> _toggleSave() async {
+    final error = await ref
+        .read(communityEngagementProvider)
+        .toggleQuestionSave(_question);
+    _notifyOnFailure(error, 'Could not update your bookmark.');
+  }
+
+  Future<void> _toggleAnswerLike(CommunityReply reply) async {
+    final error = await ref
+        .read(communityEngagementProvider)
+        .toggleAnswerLike(questionId: _question.id, reply: reply);
+    _notifyOnFailure(error, 'Could not update your like.');
+  }
+
+  void _notifyOnFailure(Object? error, String fallback) {
+    if (error == null || !mounted) return;
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(
+            // CommunityAuthException already reads as a sentence; anything
+            // else is a raw Postgrest/socket dump, so use the fallback.
+            error.toString().startsWith('You need to be signed in')
+                ? error.toString()
+                : fallback,
+          ),
+          backgroundColor: AppColors.warning600,
+        ),
+      );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final repliesAsync = ref.watch(repliesProvider(_question.id));
+    final currentUserId = ref.watch(currentUserIdProvider);
+    final question = _question;
 
     return FkScreen(
-      padding: EdgeInsets.fromLTRB(AppSpacing.h22, AppSpacing.h12, AppSpacing.h22, 96),
+      padding: EdgeInsets.fromLTRB(
+        AppSpacing.h16,
+        AppSpacing.v12,
+        AppSpacing.h16,
+        96,
+      ),
       children: [
-        _TopBar(
+        FkScreenTopBar(
           title: 'Discussion',
-          onBack: () => context.go(RouteNames.communityDiscussions),
+          fallbackPath: RouteNames.communityDiscussions,
+          trailing: PopupMenuButton<String>(
+            icon: const Icon(Icons.more_horiz, color: AppColors.neutral950),
+            shape: RoundedRectangleBorder(borderRadius: AppRadius.all03),
+            onSelected: (value) {
+              switch (value) {
+                case 'save':
+                  _toggleSave();
+                case 'guidelines':
+                  context.push(RouteNames.communityGuidelines);
+                case 'discord':
+                  openExternalUrlOrNotify(
+                    context,
+                    ExternalLinks.discordInvite,
+                  );
+              }
+            },
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 'save',
+                child: ListTile(
+                  dense: true,
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(
+                    question.isSaved
+                        ? Icons.bookmark
+                        : Icons.bookmark_outline,
+                  ),
+                  title: Text(question.isSaved ? 'Remove bookmark' : 'Save'),
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'guidelines',
+                child: ListTile(
+                  dense: true,
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(Icons.rule_rounded),
+                  title: Text('Community guidelines'),
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'discord',
+                child: ListTile(
+                  dense: true,
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(Icons.discord_outlined),
+                  title: Text('Ask on Discord'),
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: AppSpacing.v18),
+
+        FkPrimaryButton(
+          label: 'Start a new discussion',
+          onPressed: () => context.push(RouteNames.communityAskQuestion),
         ),
         SizedBox(height: AppSpacing.v22),
+
         Text(
           question.title,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.w600,
             height: 1.25,
           ),
         ),
-        SizedBox(height: AppSpacing.v16),
-        if (question.tag.isNotEmpty)
+
+        if (question.tags.isNotEmpty) ...[
+          SizedBox(height: AppSpacing.v16),
           Wrap(
             spacing: AppSpacing.h8,
             runSpacing: AppSpacing.v8,
-            children: [FkStatusChip(label: question.tag)],
+            children: question.tags
+                .map((tag) => FkStatusChip(label: tag))
+                .toList(),
           ),
+        ],
+
         SizedBox(height: AppSpacing.v18),
         Text(
           question.body,
@@ -132,116 +234,125 @@ class _DetailBody extends ConsumerWidget {
             height: 1.45,
           ),
         ),
+
+        if (question.imageUrl != null && question.imageUrl!.isNotEmpty) ...[
+          SizedBox(height: AppSpacing.v18),
+          ClipRRect(
+            borderRadius: AppRadius.all03,
+            child: Image.network(
+              question.imageUrl!,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              errorBuilder: (_, _, _) => const SizedBox.shrink(),
+            ),
+          ),
+        ],
+
         SizedBox(height: AppSpacing.v18),
-        _AuthorRow(
+        CommunityAuthorRow(
           name: question.authorName,
-          subtitle: question.createdLabel,
+          subtitle: 'Posted ${question.createdLabel}',
           photoUrl: question.authorPhotoUrl,
         ),
-        const Divider(height: 30),
 
-        // Answers Section
+        SizedBox(height: AppSpacing.v12),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Answers',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
+            _QuestionAction(
+              icon: question.isLiked
+                  ? Icons.favorite
+                  : Icons.favorite_border_outlined,
+              color: question.isLiked
+                  ? AppColors.warning600
+                  : AppColors.neutral500,
+              label: formatCount(question.likeCount),
+              onTap: _toggleLike,
             ),
-            ElevatedButton.icon(
-              onPressed: onToggleAnswerForm,
-              icon: const Icon(Icons.add),
-              label: const Text('Answer'),
+            SizedBox(width: AppSpacing.h16),
+            _QuestionAction(
+              icon: Icons.chat_bubble_outline,
+              color: AppColors.neutral500,
+              label: formatCount(question.answerCount),
+              onTap: null,
+            ),
+            const Spacer(),
+            _QuestionAction(
+              icon: question.isSaved
+                  ? Icons.bookmark
+                  : Icons.bookmark_outline,
+              color: AppColors.primary500,
+              label: formatCount(question.saveCount),
+              onTap: _toggleSave,
             ),
           ],
         ),
+
+        const Divider(height: 30),
+
+        Text(
+          'Responses ${formatCount(question.answerCount)}',
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+        ),
         SizedBox(height: AppSpacing.v16),
 
-        // Answer Form
-        if (showAnswerForm) ...[
-          AnswerForm(
-            questionId: question.id,
-            onSubmitted: onToggleAnswerForm,
-          ),
-          SizedBox(height: AppSpacing.v22),
-        ],
+        AnswerForm(questionId: question.id),
+        SizedBox(height: AppSpacing.v22),
 
-        // Answers List
         repliesAsync.when(
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (e, _) => Center(
-            child: Text('Error loading answers: $e'),
+          loading: () => const CommunityLoadingView(height: 160),
+          error: (e, _) => CommunityErrorView(
+            error: e,
+            message: 'Could not load replies.',
+            onRetry: () =>
+                ref.read(repliesProvider(question.id).notifier).refresh(),
           ),
-          data: (replies) {
-            if (replies.isEmpty) {
-              return Padding(
-                padding: EdgeInsets.symmetric(vertical: AppSpacing.v22),
-                child: Center(
-                  child: Text('No answers yet. Be the first to answer!'),
-                ),
+          data: (feed) {
+            if (feed.replies.isEmpty) {
+              return const CommunityEmptyView(
+                icon: Icons.mode_comment_outlined,
+                message: 'No replies yet.\nBe the first to answer!',
               );
             }
 
-            final pageSize = answersPerPage;
-            final totalPages = (replies.length / pageSize).ceil();
-            final startIndex = currentPage * pageSize;
-            final endIndex = (startIndex + pageSize).clamp(0, replies.length);
-            final pageReplies = replies.sublist(startIndex, endIndex);
-
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  'Responses ${replies.length}',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.neutral500,
+                ...feed.replies.map(
+                  (reply) => AnswerCard(
+                    reply: reply,
+                    isOwnAnswer: reply.authorId == currentUserId,
+                    onLike: () => _toggleAnswerLike(reply),
+                    onReply: () => showAnswerCommentsSheet(
+                      context,
+                      questionId: question.id,
+                      answer: reply,
+                    ),
+                    onDelete: reply.authorId == currentUserId
+                        ? () => ref
+                              .read(communityActionControllerProvider.notifier)
+                              .deleteAnswer(reply.id, question.id)
+                        : null,
                   ),
                 ),
-                SizedBox(height: AppSpacing.v16),
-                ...pageReplies.map((reply) => AnswerCard(
-                  answerId: reply.id,
-                  authorName: reply.authorName,
-                  authorPhotoUrl: reply.authorPhotoUrl,
-                  body: reply.body,
-                  createdAt: reply.createdLabel,
-                  likeCount: reply.likeCount,
-                  isOwnAnswer: reply.authorId == currentUserId,
-                  onLike: () {
-                    ref
-                        .read(communityActionControllerProvider.notifier)
-                        .likeAnswer(reply.id, question.id);
-                  },
-                  onDelete: reply.authorId == currentUserId
-                      ? () {
-                          ref
-                              .read(communityActionControllerProvider.notifier)
-                              .deleteAnswer(reply.id, question.id);
-                        }
-                      : null,
-                )),
-
-                if (totalPages > 1) ...[
-                  SizedBox(height: AppSpacing.v22),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (currentPage > 0)
-                        ElevatedButton(
-                          onPressed: () => onPageChanged(currentPage - 1),
-                          child: const Text('← Previous'),
-                        ),
-                      SizedBox(width: AppSpacing.h16),
-                      Text('Page ${currentPage + 1} of $totalPages'),
-                      SizedBox(width: AppSpacing.h16),
-                      if (currentPage < totalPages - 1)
-                        ElevatedButton(
-                          onPressed: () => onPageChanged(currentPage + 1),
-                          child: const Text('Next →'),
-                        ),
-                    ],
+                // "Show replies" pages in five at a time rather than loading
+                // every answer up front.
+                if (feed.hasMore)
+                  TextButton(
+                    onPressed: feed.isLoadingMore
+                        ? null
+                        : () => ref
+                              .read(repliesProvider(question.id).notifier)
+                              .loadMore(),
+                    child: feed.isLoadingMore
+                        ? const SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Text('Show replies'),
                   ),
-                ],
               ],
             );
           },
@@ -251,79 +362,43 @@ class _DetailBody extends ConsumerWidget {
   }
 }
 
-class _TopBar extends StatelessWidget {
-  const _TopBar({required this.title, required this.onBack});
-
-  final String title;
-  final VoidCallback onBack;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        IconButton(onPressed: onBack, icon: const Icon(Icons.arrow_back)),
-        Expanded(
-          child: Text(
-            title,
-            textAlign: TextAlign.center,
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge
-                ?.copyWith(fontWeight: FontWeight.w700),
-          ),
-        ),
-        IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz)),
-      ],
-    );
-  }
-}
-
-class _AuthorRow extends StatelessWidget {
-  const _AuthorRow({
-    required this.name,
-    required this.subtitle,
-    this.photoUrl,
+class _QuestionAction extends StatelessWidget {
+  const _QuestionAction({
+    required this.icon,
+    required this.color,
+    required this.label,
+    required this.onTap,
   });
 
-  final String name;
-  final String subtitle;
-  final String? photoUrl;
+  final IconData icon;
+  final Color color;
+  final String label;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        CircleAvatar(
-          backgroundColor: AppColors.warning300,
-          backgroundImage:
-              photoUrl != null ? NetworkImage(photoUrl!) : null,
-          child: photoUrl == null
-              ? Text(name.isNotEmpty ? name[0].toUpperCase() : '?',
-                  style: AppTextStyles.bodyMedium.copyWith(color: AppColors.whiteBase))
-              : null,
+    return InkWell(
+      onTap: onTap,
+      borderRadius: AppRadius.all02,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: AppSpacing.h6,
+          vertical: AppSpacing.v6,
         ),
-        SizedBox(width: AppSpacing.h12),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
+            Icon(icon, size: 20, color: color),
+            SizedBox(width: AppSpacing.h6),
             Text(
-              name,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleSmall
-                  ?.copyWith(fontWeight: FontWeight.w700),
-            ),
-            Text(
-              subtitle,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: AppColors.neutral400),
+              label,
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: AppColors.neutral600),
             ),
           ],
         ),
-      ],
+      ),
     );
   }
 }
-

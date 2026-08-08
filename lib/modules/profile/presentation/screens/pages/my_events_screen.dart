@@ -29,7 +29,12 @@ class MyEventsScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(AppSpacing.h20, AppSpacing.h8, AppSpacing.h20, 0),
+                padding: EdgeInsets.fromLTRB(
+                  AppSpacing.h20,
+                  AppSpacing.h8,
+                  AppSpacing.h20,
+                  0,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -44,11 +49,19 @@ class MyEventsScreen extends ConsumerWidget {
                       ),
                     ),
                     SizedBox(height: AppSpacing.v16),
-                    Text('My Events', style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold)),
+                    Text(
+                      'My Events',
+                      style: AppTextStyles.headlineSmall.copyWith(
+                        color: AppColors.blackBase,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     SizedBox(height: AppSpacing.v8),
                     Text(
                       "Events you've registered for and attended.",
-                      style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
+                      style: AppTextStyles.bodyLarge.copyWith(
+                        color: AppColors.neutral500,
+                      ),
                     ),
                   ],
                 ),
@@ -66,20 +79,27 @@ class MyEventsScreen extends ConsumerWidget {
                 child: events.isEmpty
                     ? Center(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: AppSpacing.h22),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: AppSpacing.h22,
+                          ),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
                                 selectedTab.emptyHeading,
                                 textAlign: TextAlign.center,
-                                style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold),
+                                style: AppTextStyles.titleLarge.copyWith(
+                                  color: AppColors.blackBase,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               SizedBox(height: AppSpacing.v8),
                               Text(
                                 selectedTab.emptySubheading,
                                 textAlign: TextAlign.center,
-                                style: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
+                                style: AppTextStyles.bodyLarge.copyWith(
+                                  color: AppColors.neutral500,
+                                ),
                               ),
                               SizedBox(height: AppSpacing.v20),
                               SizedBox(
@@ -99,9 +119,15 @@ class MyEventsScreen extends ConsumerWidget {
                         ),
                       )
                     : ListView.separated(
-                        padding: EdgeInsets.fromLTRB(AppSpacing.h20, 0, AppSpacing.h20, AppSpacing.h22),
+                        padding: EdgeInsets.fromLTRB(
+                          AppSpacing.h20,
+                          0,
+                          AppSpacing.h20,
+                          AppSpacing.h22,
+                        ),
                         itemCount: events.length,
-                        separatorBuilder: (_, __) => SizedBox(height: AppSpacing.v16),
+                        separatorBuilder: (_, __) =>
+                            SizedBox(height: AppSpacing.v16),
                         itemBuilder: (context, index) {
                           final event = events[index];
                           return MyEventCard(

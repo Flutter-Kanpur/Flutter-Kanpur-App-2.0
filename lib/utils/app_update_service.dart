@@ -28,7 +28,9 @@ class AppUpdateService {
 
     try {
       final status = await newVersion.getVersionStatus();
-      debugPrint('App Update Status: ${status?.localVersion} -> ${status?.storeVersion}');
+      debugPrint(
+        'App Update Status: ${status?.localVersion} -> ${status?.storeVersion}',
+      );
       if (status != null && status.canUpdate) {
         if (context.mounted) {
           _showUpdateDialog(context, status);
@@ -52,9 +54,11 @@ class AppUpdateService {
               borderRadius: AppRadius.all04,
               side: const BorderSide(color: AppBorders.blue),
             ),
-            title:  Text(
+            title: Text(
               'Update Available',
-              style: AppTextStyles.titleMedium.copyWith(color: AppColors.whiteBase),
+              style: AppTextStyles.titleMedium.copyWith(
+                color: AppColors.whiteBase,
+              ),
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -62,18 +66,27 @@ class AppUpdateService {
               children: [
                 Text(
                   'A new version (${status.storeVersion}) is available. Please update the app to enjoy the latest features and bug fixes.',
-                  style: AppTextStyles.bodyMedium.copyWith(color: AppColors.whiteBase.withValues(alpha: 0.70)),
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.whiteBase.withValues(alpha: 0.70),
+                  ),
                 ),
                 SizedBox(height: AppSpacing.v8),
                 Text(
                   'Current Version: ${status.localVersion}',
-                  style: AppTextStyles.bodySmall.copyWith(color: AppColors.whiteBase.withValues(alpha: 0.38)),
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.whiteBase.withValues(alpha: 0.38),
+                  ),
                 ),
               ],
             ),
             actions: <Widget>[
               TextButton(
-                child: Text('Later', style: AppTextStyles.bodyMedium.copyWith(color: AppColors.whiteBase.withValues(alpha: 0.54))),
+                child: Text(
+                  'Later',
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.whiteBase.withValues(alpha: 0.54),
+                  ),
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -99,9 +112,10 @@ class AppUpdateService {
   void _launchStore() async {
     final String url;
     if (Platform.isAndroid) {
-      url = "https://play.google.com/store/search?q=flutter%20kanpur&c=apps&hl=en";
+      url =
+          "https://play.google.com/store/search?q=flutter%20kanpur&c=apps&hl=en";
     } else if (Platform.isIOS) {
-       url = "https://apps.apple.com/";
+      url = "https://apps.apple.com/";
     } else {
       return;
     }
