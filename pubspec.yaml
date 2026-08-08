@@ -70,7 +70,7 @@ dependencies:
   Readme:
     git:
       url: https://github.com/Flutter-Kanpur/readmeApp.git
-      ref: main
+      ref: release-1.0.1
 
 dev_dependencies:
   flutter_test:

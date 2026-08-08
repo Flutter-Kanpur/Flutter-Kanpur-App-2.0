@@ -8,7 +8,7 @@ class FkBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton.filledTonal(
+    return IconButton(
       onPressed: () {
         if (context.canPop()) {
           context.pop();

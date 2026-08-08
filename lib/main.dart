@@ -1,3 +1,4 @@
+import 'package:Readme/core/config/readme_host.dart';
 import 'package:Readme/core/network/readme_supabase.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,9 @@ Future<void> main() async {
   if (readmeUrl.isNotEmpty && readmeKey.isNotEmpty) {
     ReadmeSupabase.bind(SupabaseClient(readmeUrl, readmeKey));
   }
+
+  // Hide logout / delete account / app version — account lives in Kanpur.
+  ReadmeHost.configure(embedded: true);
 
   runApp(
     ProviderScope(
