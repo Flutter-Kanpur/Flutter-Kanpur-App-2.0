@@ -20,6 +20,7 @@ abstract class AppSpacing {
   AppSpacing._();
 
   // ── Horizontal (width / left / right) ─────────────────────────────────────
+  static double get h1 => 1.r;
   static double get h2 => 2.r;
   static double get h4 => 4.r;
   static double get h6 => 6.r;

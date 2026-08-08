@@ -62,15 +62,13 @@ class AuthOptionsScreen extends ConsumerWidget {
                     12.horizontalSpace,
                     Text(
                       'auth.continueWithGoogle'.tr(),
-                      style: AppTextStyles.titleMedium.copyWith(
-                        color: AppColors.blackBase,
-                      ),
+                      style: AppTextStyles.titleMedium
                     ),
                   ],
                 ),
               ),
 
-              16.verticalSpace,
+              10.verticalSpace,
 
               _AuthOptionButton(
                 onPressed: () => context.push(RouteNames.signIn),
@@ -85,9 +83,7 @@ class AuthOptionsScreen extends ConsumerWidget {
                     12.horizontalSpace,
                     Text(
                       'auth.signInWithEmail'.tr(),
-                      style: AppTextStyles.titleMedium.copyWith(
-                        color: AppColors.blackBase,
-                      ),
+                      style: AppTextStyles.titleMedium
                     ),
                   ],
                 ),
@@ -98,13 +94,13 @@ class AuthOptionsScreen extends ConsumerWidget {
               Row(
                 children: [
                   Expanded(
-                    child: Divider(color: AppBorders.primary, thickness: 1),
+                    child: Divider(color: AppColors.borderSecondary, thickness: 1),
                   ),
                   Padding(
                     padding: AppSpacing.horizontal(AppSpacing.h12),
                     child: Text(
                       'onboarding.or'.tr(),
-                      style: AppTextStyles.titleMedium.copyWith(
+                      style: AppTextStyles.titleSmall.copyWith(
                         color: AppColors.blackBase,
                       ),
                     ),
@@ -182,8 +178,7 @@ class AuthOptionsScreen extends ConsumerWidget {
       child: Text(
         'auth.signInSubTitle'.tr(),
         textAlign: TextAlign.center,
-        style: AppTextStyles.bodyLarge.copyWith(
-          height: 1.5,
+        style: AppTextStyles.titleMedium.copyWith(
           color: AppColors.neutral500,
         ),
       ),
@@ -212,8 +207,8 @@ class _AuthOptionButton extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: AppRadius.all03,
               border: Border.all(
-                color: AppBorders.primary,
-                width: AppSpacing.h2,
+                color: AppColors.borderSecondary,
+                width: AppSpacing.h1,
               ),
             ),
             padding: AppSpacing.horizontal(AppSpacing.h16),

@@ -28,53 +28,82 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   late TextEditingController passwordController;
   late GlobalKey<FormState> formKey;
   bool isLoading = false;
+  final _emailFocusNode = FocusNode();
+  final _passwordFocusNode = FocusNode();
+  final _emailFieldKey = GlobalKey();
+  final _passwordFieldKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
+
     emailController = TextEditingController();
     passwordController = TextEditingController();
+
+    _emailFocusNode.addListener(_onFieldChanged);
+    _passwordFocusNode.addListener(_onFieldChanged);
+
+    emailController.addListener(_onFieldChanged);
+    passwordController.addListener(_onFieldChanged);
+
     formKey = GlobalKey<FormState>();
+  }
+
+
+  void _onFieldChanged() {
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
   void dispose() {
+    _emailFocusNode.removeListener(_onFieldChanged);
+    _passwordFocusNode.removeListener(_onFieldChanged);
+
+    emailController.removeListener(_onFieldChanged);
+    passwordController.removeListener(_onFieldChanged);
+
     emailController.dispose();
     passwordController.dispose();
+
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return GradientBackground(
-      child: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppSpacing.h16,
-            vertical: AppSpacing.v10,
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
+            leading: IconButton(
+              onPressed: () => context.pop(),
+              icon: const Icon(Icons.arrow_back),
+              padding: EdgeInsets.zero,
+            ),
           ),
+          body: SafeArea(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16),
           child: Form(
             key: formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: IconButton(
-                    onPressed: () => context.pop(),
-                    icon: const Icon(Icons.arrow_back),
-                    padding: EdgeInsets.zero,
-                  ),
-                ),
-                80.verticalSpace,
                 _buildMascot(),
                 40.verticalSpace,
                 _buildHeaderText(),
                 45.verticalSpace,
-                _buildEmailField(emailController),
-                18.verticalSpace,
-                _buildPasswordField(passwordController),
-                70.verticalSpace,
+                _buildEmailField(controller: emailController, focusNode: _emailFocusNode),
+                10.verticalSpace,
+                _buildPasswordField(controller: passwordController, focusNode : _passwordFocusNode),
+                40.verticalSpace,
                 _buildSignInButton(
                   context,
                   ref,
@@ -85,12 +114,13 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 ),
                 24.verticalSpace,
                 _buildSignUpText(context),
+                20.verticalSpace,
               ],
             ),
           ),
         ),
       ),
-    );
+        ));
   }
 
   Widget _buildMascot() {
@@ -106,9 +136,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
       children: [
         Text(
           'auth.welcomeBack'.tr(),
-          style: AppTextStyles.titleLarge.copyWith(
+          style: AppTextStyles.headlineSmall.copyWith(
             color: AppColors.blackBase,
-            fontWeight: FontWeight.w700,
           ),
         ),
         14.verticalSpace,
@@ -117,9 +146,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           child: Text(
             'auth.welcomeBackSubTitle'.tr(),
             textAlign: TextAlign.center,
-            style: AppTextStyles.bodyMedium.copyWith(
+            style: AppTextStyles.titleMedium.copyWith(
               color: AppColors.neutral500,
-              height: 1.5,
             ),
           ),
         ),
@@ -127,14 +155,24 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     );
   }
 
-  Widget _buildEmailField(TextEditingController controller) {
+  Widget _buildEmailField({required TextEditingController controller,required FocusNode focusNode }) {
     return CustomTextField(
+      key: _emailFieldKey,
       text: 'auth.emailAddress'.tr(),
       controller: controller,
+      focusNode: focusNode,
       keyboardType: TextInputType.emailAddress,
-      showBorder: true,
-      borderColor: AppColors.neutral100,
-      fillColor: AppColors.neutral50,
+      showTickIcon: controller.text.isNotEmpty && (focusNode.hasFocus == false),
+      // showBorder:
+      // focusNode.hasFocus || controller.text.isNotEmpty,
+      // borderColor: focusNode.hasFocus
+      //     ? AppColors.primary500
+      //     : controller.text.isNotEmpty
+      //     ? AppColors.whiteBase
+      //     : const Color(0xFFF6F6F6),
+      // fillColor: focusNode.hasFocus || controller.text.isNotEmpty
+      //     ? Colors.transparent
+      //     : const Color(0xFFF6F6F6),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'auth.emailRequired'.tr();
@@ -147,14 +185,24 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     );
   }
 
-  Widget _buildPasswordField(TextEditingController controller) {
+  Widget _buildPasswordField({required TextEditingController controller,required FocusNode focusNode}) {
+
     return CustomTextField(
+      key: _passwordFieldKey,
       text: 'auth.password'.tr(),
       controller: controller,
+      focusNode: focusNode,
       isPassword: true,
-      showBorder: true,
-      borderColor: AppColors.neutral100,
-      fillColor: AppColors.neutral50,
+      // showBorder:
+      // focusNode.hasFocus || controller.text.isNotEmpty,
+      // borderColor: focusNode.hasFocus
+      //     ? AppColors.primary500
+      //     : controller.text.isNotEmpty
+      //     ? AppColors.communityBorderColorV2
+      //     : const Color(0xFFF6F6F6),
+      // fillColor: focusNode.hasFocus || controller.text.isNotEmpty
+      //     ? Colors.transparent
+      //     : const Color(0xFFF6F6F6),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'auth.passwordRequired'.tr();
@@ -241,15 +289,14 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         child: Text.rich(
           TextSpan(
             text: '${'auth.dontHaveAccount'.tr()} ',
-            style: AppTextStyles.bodyMedium.copyWith(
+            style: AppTextStyles.titleMedium.copyWith(
               color: AppColors.neutral500,
             ),
             children: [
               TextSpan(
-                text: 'auth.signUpNow'.tr(),
-                style: AppTextStyles.bodyMedium.copyWith(
+                text: 'auth.createAccountNow'.tr(),
+                style: AppTextStyles.titleMedium.copyWith(
                   color: AppColors.primary500,
-                  fontWeight: FontWeight.w700,
                 ),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => context.pushReplacement(RouteNames.signUp),
