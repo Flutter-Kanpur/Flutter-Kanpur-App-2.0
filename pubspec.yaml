@@ -43,7 +43,12 @@ dependencies:
   flutter_svg: ^2.3.0
   flutter_screenutil: ^5.9.3
   google_fonts: ^7.1.0
-  google_sign_in: ^7.2.0
+  # Commented out: never imported, and it pulled GoogleSignIn 9 -> AppCheckCore
+  # 11 -> GoogleUtilities 8.x, which conflicts with firebase_messaging's
+  # GoogleUtilities ~> 7.8 and broke every iOS pod install. Google auth goes
+  # through Supabase browser OAuth (AuthRemoteDataSource.signInWithGoogle),
+  # which needs no native SDK. Re-enable only alongside a Firebase 11.x bump.
+  # google_sign_in: ^7.2.0
   image_picker: ^1.2.2
   carousel_slider: ^5.1.2
   new_version_plus: ^0.1.1
