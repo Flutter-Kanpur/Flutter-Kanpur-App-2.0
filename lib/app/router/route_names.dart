@@ -14,6 +14,7 @@ class RouteNames {
   static const home = '/home';
   static const community = '/community';
   static const events = '/events';
+  static const explore = '/explore';
   static const blogs = '/blogs';
   static const profile = '/profile';
 
