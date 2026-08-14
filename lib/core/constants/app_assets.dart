@@ -6,5 +6,5 @@ class AppAssets {
   static const successIcon = 'assets/icons/success_icon.svg';
   static const avatarIcon = 'assets/icons/avatar.svg';
   static const searchIcon = 'assets/icons/search.svg';
-static const crossIcon = 'assets/icons/cross.svg';
+  static const crossIcon = 'assets/icons/cross.svg';
 }

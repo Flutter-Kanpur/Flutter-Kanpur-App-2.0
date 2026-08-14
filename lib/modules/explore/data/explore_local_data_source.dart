@@ -61,10 +61,7 @@ class ExploreLocalDataSource {
       photoUrl: 'https://i.pravatar.cc/150?img=11',
     ),
     CoreTeamMember(name: 'John', photoUrl: 'https://i.pravatar.cc/150?img=12'),
-    CoreTeamMember(
-      name: 'Smith',
-      photoUrl: 'https://i.pravatar.cc/150?img=13',
-    ),
+    CoreTeamMember(name: 'Smith', photoUrl: 'https://i.pravatar.cc/150?img=13'),
     CoreTeamMember(
       name: 'Samuel',
       photoUrl: 'https://i.pravatar.cc/150?img=14',

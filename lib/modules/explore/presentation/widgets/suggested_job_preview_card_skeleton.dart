@@ -32,9 +32,7 @@ class SuggestedJobPreviewCardSkeleton extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const Expanded(
-                    child: FkSkeletonBlock(height: 24, radius: 8),
-                  ),
+                  const Expanded(child: FkSkeletonBlock(height: 24, radius: 8)),
                   SizedBox(width: AppSpacing.h12),
                   const FkSkeletonBlock(width: 62, height: 24, radius: 12),
                 ],
@@ -63,9 +61,7 @@ class SuggestedJobPreviewCardSkeleton extends StatelessWidget {
                 children: [
                   const FkSkeletonBlock(width: 32, height: 32, radius: 8),
                   SizedBox(width: AppSpacing.h8),
-                  const Expanded(
-                    child: FkSkeletonBlock(height: 16, radius: 4),
-                  ),
+                  const Expanded(child: FkSkeletonBlock(height: 16, radius: 4)),
                 ],
               ),
             ],

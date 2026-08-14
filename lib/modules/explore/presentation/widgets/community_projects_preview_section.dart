@@ -41,7 +41,8 @@ class CommunityProjectsPreviewSection extends ConsumerWidget {
             message: 'Could not load community projects.',
             error: error,
             compact: true,
-            onRetry: () => ref.invalidate(exploreCommunityProjectPreviewsProvider),
+            onRetry: () =>
+                ref.invalidate(exploreCommunityProjectPreviewsProvider),
           ),
           data: (projects) {
             if (projects.isEmpty) return const SizedBox.shrink();

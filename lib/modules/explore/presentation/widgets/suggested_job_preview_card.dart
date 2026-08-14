@@ -44,9 +44,7 @@ class _SuggestedJobPreviewCardState extends State<SuggestedJobPreviewCard> {
                 ),
               ),
               Material(
-                color: _isSaved
-                    ? AppColors.primary500
-                    : Colors.transparent,
+                color: _isSaved ? AppColors.primary500 : Colors.transparent,
                 shape: RoundedRectangleBorder(
                   borderRadius: AppRadius.all09,
                   side: _isSaved
@@ -93,7 +91,10 @@ class _SuggestedJobPreviewCardState extends State<SuggestedJobPreviewCard> {
             spacing: AppSpacing.h8,
             runSpacing: AppSpacing.v8,
             children: job.tags
-                .map((tag) => FkStatusChip(label: tag, color: AppColors.neutral500))
+                .map(
+                  (tag) =>
+                      FkStatusChip(label: tag, color: AppColors.neutral500),
+                )
                 .toList(),
           ),
           SizedBox(height: AppSpacing.v12),

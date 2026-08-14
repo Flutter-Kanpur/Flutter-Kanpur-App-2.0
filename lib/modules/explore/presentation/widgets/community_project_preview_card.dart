@@ -64,7 +64,10 @@ class _CommunityProjectPreviewCardState
             spacing: AppSpacing.h8,
             runSpacing: AppSpacing.v8,
             children: project.techStack
-                .map((tech) => FkStatusChip(label: tech, color: AppColors.neutral500))
+                .map(
+                  (tech) =>
+                      FkStatusChip(label: tech, color: AppColors.neutral500),
+                )
                 .toList(),
           ),
           SizedBox(height: AppSpacing.v12),
@@ -139,10 +142,7 @@ class _CommunityProjectPreviewCardState
                 ),
               ),
               SizedBox(width: AppSpacing.h6),
-              _IconButtonCircle(
-                assetPath: AssetsPath.githubSvg,
-                onTap: () {},
-              ),
+              _IconButtonCircle(assetPath: AssetsPath.githubSvg, onTap: () {}),
               SizedBox(width: AppSpacing.h6),
               _IconButtonCircle(assetPath: AssetsPath.linkIcon, onTap: () {}),
               SizedBox(width: AppSpacing.h6),
