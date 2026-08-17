@@ -368,19 +368,19 @@ await ref.read(onboardingProvider.notifier).setStep(1);
       nameController.text.isNotEmpty &&
       nameController.text.length > 4,
   text: 'onboarding.fullName'.tr(),
-  showBorder: _hasError ||
-      nameFocusNode.hasFocus ||
-      nameController.text.isNotEmpty,
-  borderColor: _hasError
-      ? AppColors.warning600
-      : nameFocusNode.hasFocus
-          ? AppColors.primary500
-          : AppColors.neutral100,
-  fillColor: _hasError ||
-          nameFocusNode.hasFocus ||
-          nameController.text.isNotEmpty
-      ? Colors.transparent
-      : AppColors.neutral50,
+  // showBorder: _hasError ||
+  //     nameFocusNode.hasFocus ||
+  //     nameController.text.isNotEmpty,
+  // borderColor: _hasError
+  //     ? AppColors.warning600
+  //     : nameFocusNode.hasFocus
+  //         ? AppColors.primary500
+  //         : AppColors.neutral100,
+  // fillColor: _hasError ||
+  //         nameFocusNode.hasFocus ||
+  //         nameController.text.isNotEmpty
+  //     ? Colors.transparent
+  //     : AppColors.neutral50,
 ),
           ),
           if (_hasError)

@@ -114,7 +114,6 @@ class _ContactCommunityTeamScreenState
             translate(context, 'contactCommunity.title'),
             style: AppTextStyles.titleLarge.copyWith(
               color: AppColors.blackBase,
-              fontWeight: FontWeight.w600,
             ),
           ),
         ),
@@ -183,7 +182,7 @@ class _ContactCommunityTeamScreenState
       children: [
         Text(
           translate(context, 'contactCommunity.subtitle'),
-          style: AppTextStyles.bodyLarge.copyWith(height: 1.5),
+          style: AppTextStyles.titleMedium.copyWith(height: 1.5),
         ),
       ],
     );
@@ -416,10 +415,6 @@ class _ContactCommunityTeamScreenState
             ),
             text: translate(context, 'contactCommunity.sendMessage'),
             onTap: _submit,
-          ),
-          Positioned(
-            right: 60.w,
-            child: const Icon(Icons.arrow_forward, color: AppColors.whiteBase),
           ),
         ],
       ),

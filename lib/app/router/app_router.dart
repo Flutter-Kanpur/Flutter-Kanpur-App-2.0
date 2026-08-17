@@ -18,9 +18,11 @@ import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/community_result_screens.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/community_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/discussion_detail_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/notifications_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/upload_project_form_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/upload_project_landing_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/events/presentation/screens/events_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/explore/presentation/screens/explore_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/screens/home_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/onboarding/presentation/screens/onboarding_navigation_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/onboarding/presentation/screens/onboarding_success_screen.dart';
@@ -109,6 +111,14 @@ final GoRouter appRouter = GoRouter(
                 GoRoute(
                   path: RouteNames.communityAskQuestionSegment,
                   builder: (context, state) => const AskQuestionScreen(),
+                  routes: [
+                    // Success screen nested here on purpose - see the note on
+                    // RouteNames.communityQuestionPosted.
+                    GoRoute(
+                      path: RouteNames.communityQuestionPostedSegment,
+                      builder: (context, state) => const QuestionPostedScreen(),
+                    ),
+                  ],
                 ),
                 GoRoute(
                   path: RouteNames.communityMembersSegment,
@@ -146,15 +156,21 @@ final GoRouter appRouter = GoRouter(
                 ),
               ],
             ),
+            // Top-level path, kept in this branch so the Community tab stays
+            // selected - see the note on RouteNames.notifications.
+            GoRoute(
+              path: RouteNames.notifications,
+              builder: (context, state) => const NotificationsScreen(),
+            ),
           ],
         ),
 
-        /// Events
+        /// Explore (bottom-nav tab; was aliased to EventsScreen, now its own dashboard)
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: RouteNames.events,
-              builder: (context, state) => const EventsScreen(),
+              path: RouteNames.explore,
+              builder: (context, state) => const ExploreScreen(),
             ),
           ],
         ),
@@ -221,6 +237,18 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: RouteNames.problemOfDay,
               builder: (context, state) => const ProblemOfDayScreen(),
+            ),
+          ],
+        ),
+
+        /// Events (no longer a bottom-nav tab; reached by pushing from the
+        /// Explore dashboard's "Events" participation tile, same hidden-branch
+        /// treatment as MyEvents/MyContests above.
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.events,
+              builder: (context, state) => const EventsScreen(),
             ),
           ],
         ),

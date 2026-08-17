@@ -18,6 +18,10 @@ class DatabaseTables {
   static const featuredResources = 'featured_resources';
   static const questions = 'questions';
   static const answers = 'answers';
+  static const questionLikes = 'question_likes';
+  static const questionSaves = 'question_saves';
+  static const answerLikes = 'answer_likes';
+  static const answerComments = 'answer_comments';
   static const communityMemberships = 'community_memberships';
   static const contests = 'contests';
   static const contestProblems = 'contest_problems';

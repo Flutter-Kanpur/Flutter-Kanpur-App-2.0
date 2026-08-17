@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
-import '../../../utils/translate.dart';
+import '../../utils/translate.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
@@ -30,10 +31,7 @@ class ManageProfileSectionCard extends StatelessWidget {
       children: [
         Text(
           title,
-          style: AppTextStyles.titleMedium.copyWith(
-            color: AppColors.blackBase,
-            fontWeight: FontWeight.w800,
-          ),
+          style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w800),
         ),
         if (value != null) ...[
           SizedBox(height: AppSpacing.v8),
@@ -44,7 +42,10 @@ class ManageProfileSectionCard extends StatelessWidget {
             ),
           ),
         ],
-        if (child != null) ...[SizedBox(height: AppSpacing.v8), child!],
+        if (child != null) ...[
+          SizedBox(height: AppSpacing.v8),
+          child!,
+        ],
         if (tags != null && tags!.isNotEmpty) ...[
           SizedBox(height: AppSpacing.v12),
           Wrap(
@@ -78,10 +79,7 @@ class _SectionPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: AppSpacing.symmetric(
-        horizontal: AppSpacing.h20,
-        vertical: AppSpacing.v10,
-      ),
+      padding: AppSpacing.symmetric(horizontal: AppSpacing.h20, vertical: AppSpacing.v10),
       decoration: BoxDecoration(
         color: AppColors.whiteBase,
         border: Border.all(color: AppBorders.secondary),
@@ -89,7 +87,9 @@ class _SectionPill extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral900),
+        style: AppTextStyles.bodyMedium.copyWith(
+          color: AppColors.neutral900,
+        ),
       ),
     );
   }

@@ -1,197 +1,158 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/auth/data/services/auth_service.dart';
+import 'package:flutter_knp_mobile_app_v2/core/database/database_tables.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/data/repositories/community_repository.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_models.dart';
 
+/// Reads and writes for answers (replies) and their likes / comments.
+///
+/// Note on columns: the join tables key off `user_uid`, not `user_id` — an
+/// earlier version used the latter, so every like failed against Postgres.
+///
+/// Like and comment counters are maintained by triggers (migration 004), so
+/// nothing here writes `like_count` / `comment_count` directly.
 class AnswerService {
-  final SupabaseClient _client = Supabase.instance.client;
-  final AuthService _authService = AuthService();
+  AnswerService({SupabaseClient? client})
+    : _client = client ?? Supabase.instance.client;
 
-  Future<bool> submitAnswer({
+  final SupabaseClient _client;
+
+  String? get _currentUserId => _client.auth.currentUser?.id;
+
+  String _requireUser() {
+    final id = _currentUserId;
+    if (id == null) throw const CommunityAuthException();
+    return id;
+  }
+
+  Future<void> submitAnswer({
     required String questionId,
     required String body,
     String? codeSnippet,
     String? imageUrl,
   }) async {
-    try {
-      final currentUser = _authService.getCurrentUser();
-      if (currentUser == null) throw Exception('User not authenticated');
+    final userId = _requireUser();
 
-      await _client.from('answers').insert({
-        'question_id': questionId,
-        'author_uid': currentUser.id,
-        'body': body,
-        'code_snippet': codeSnippet,
-        'image_url': imageUrl,
-        'like_count': 0,
-        'view_count': 0,
-        'created_at': DateTime.now().toIso8601String(),
-      });
-
-      return true;
-    } catch (e) {
-      print('❌ Error submitting answer: $e');
-      rethrow;
-    }
+    await _client.from(DatabaseTables.answers).insert({
+      'question_id': questionId,
+      'author_uid': userId,
+      'body': body,
+      'code_snippet': codeSnippet,
+      'image_url': imageUrl,
+    });
   }
 
-  Future<List<Map<String, dynamic>>> getAnswersForQuestion(
-    String questionId,
-  ) async {
-    try {
-      final data = await _client
-          .from('answers')
-          .select('''
-            id,
-            question_id,
-            body,
-            code_snippet,
-            image_url,
-            author_uid,
-            author:author_uid(id, display_name, username, photo_url),
-            like_count,
-            view_count,
-            created_at,
-            updated_at
-          ''')
-          .eq('question_id', questionId)
-          .eq('is_deleted', false)
-          .order('like_count', ascending: false)
-          .order('created_at', ascending: false);
+  /// Adds or removes a like. Returns the resulting liked state.
+  Future<bool> toggleLike({
+    required String answerId,
+    required bool currentlyLiked,
+  }) async {
+    final userId = _requireUser();
 
-      print('✅ Fetched ${(data as List).length} answers');
-      return List<Map<String, dynamic>>.from(data as List);
-    } catch (e) {
-      print('❌ Error fetching answers: $e');
-      rethrow;
-    }
-  }
-
-  Future<bool> likeAnswer({required String answerId}) async {
-    try {
-      final currentUser = _authService.getCurrentUser();
-      if (currentUser == null) throw Exception('User not authenticated');
-
-      // Check if already liked
-      final existing = await _client
-          .from('answer_likes')
-          .select()
-          .eq('answer_id', answerId)
-          .eq('user_id', currentUser.id);
-
-      if ((existing as List).isNotEmpty) {
-        print('⚠️ Already liked this answer');
-        return false;
-      }
-
-      // Insert like
-      await _client.from('answer_likes').insert({
-        'answer_id': answerId,
-        'user_id': currentUser.id,
-        'created_at': DateTime.now().toIso8601String(),
-      });
-
-      // Increment like count
-      await _client.rpc(
-        'increment_answer_likes',
-        params: {'answer_id': answerId},
-      );
-
-      print('✅ Answer liked successfully');
-      return true;
-    } catch (e) {
-      print('❌ Error liking answer: $e');
-      rethrow;
-    }
-  }
-
-  Future<bool> unlikeAnswer({required String answerId}) async {
-    try {
-      final currentUser = _authService.getCurrentUser();
-      if (currentUser == null) throw Exception('User not authenticated');
-
+    if (currentlyLiked) {
       await _client
-          .from('answer_likes')
+          .from(DatabaseTables.answerLikes)
           .delete()
           .eq('answer_id', answerId)
-          .eq('user_id', currentUser.id);
-
-      // Decrement like count
-      await _client.rpc(
-        'decrement_answer_likes',
-        params: {'answer_id': answerId},
-      );
-
-      print('✅ Answer unliked successfully');
-      return true;
-    } catch (e) {
-      print('❌ Error unliking answer: $e');
-      rethrow;
+          .eq('user_uid', userId);
+      return false;
     }
+
+    await _client.from(DatabaseTables.answerLikes).insert({
+      'answer_id': answerId,
+      'user_uid': userId,
+    });
+    return true;
   }
 
-  Future<bool> deleteAnswer(String answerId) async {
+  Future<bool> hasLiked(String answerId) async {
+    final userId = _currentUserId;
+    if (userId == null) return false;
     try {
-      final currentUser = _authService.getCurrentUser();
-      if (currentUser == null) throw Exception('User not authenticated');
-
-      // Soft delete - mark as deleted
-      await _client
-          .from('answers')
-          .update({'is_deleted': true})
-          .eq('id', answerId)
-          .eq('author_uid', currentUser.id);
-
-      print('✅ Answer deleted successfully');
-      return true;
-    } catch (e) {
-      print('❌ Error deleting answer: $e');
-      rethrow;
+      final data =
+          await _client
+                  .from(DatabaseTables.answerLikes)
+                  .select('id')
+                  .eq('answer_id', answerId)
+                  .eq('user_uid', userId)
+              as List<dynamic>;
+      return data.isNotEmpty;
+    } catch (_) {
+      return false;
     }
   }
 
-  Future<bool> updateAnswer({
+  /// Soft delete — the row stays for audit, `is_deleted` hides it and the
+  /// trigger decrements the parent question's answer_count.
+  Future<void> deleteAnswer(String answerId) async {
+    final userId = _requireUser();
+
+    await _client
+        .from(DatabaseTables.answers)
+        .update({'is_deleted': true, 'updated_at': _now()})
+        .eq('id', answerId)
+        .eq('author_uid', userId);
+  }
+
+  Future<void> updateAnswer({
     required String answerId,
     required String body,
     String? codeSnippet,
     String? imageUrl,
   }) async {
-    try {
-      final currentUser = _authService.getCurrentUser();
-      if (currentUser == null) throw Exception('User not authenticated');
+    final userId = _requireUser();
 
-      await _client
-          .from('answers')
-          .update({
-            'body': body,
-            'code_snippet': codeSnippet,
-            'image_url': imageUrl,
-            'updated_at': DateTime.now().toIso8601String(),
-          })
-          .eq('id', answerId)
-          .eq('author_uid', currentUser.id);
-
-      print('✅ Answer updated successfully');
-      return true;
-    } catch (e) {
-      print('❌ Error updating answer: $e');
-      rethrow;
-    }
+    await _client
+        .from(DatabaseTables.answers)
+        .update({
+          'body': body,
+          'code_snippet': codeSnippet,
+          'image_url': imageUrl,
+          'updated_at': _now(),
+        })
+        .eq('id', answerId)
+        .eq('author_uid', userId);
   }
 
-  Future<bool> checkIfUserLikedAnswer({required String answerId}) async {
-    try {
-      final currentUser = _authService.getCurrentUser();
-      if (currentUser == null) return false;
+  // ─── Comments on an answer ────────────────────────────────────────────────
 
-      final data = await _client
-          .from('answer_likes')
-          .select()
-          .eq('answer_id', answerId)
-          .eq('user_id', currentUser.id);
+  Future<List<CommunityReply>> fetchComments(String answerId) async {
+    final data =
+        await _client
+                .from(DatabaseTables.answerComments)
+                .select('''id, body, created_at, author_uid,
+                   author:users!author_uid(uid, display_name, username, photo_url)''')
+                .eq('answer_id', answerId)
+                .eq('is_deleted', false)
+                .order('created_at', ascending: true)
+            as List<dynamic>;
 
-      return (data as List).isNotEmpty;
-    } catch (e) {
-      print('❌ Error checking like status: $e');
-      return false;
-    }
+    return data
+        .map((m) => CommunityReply.fromMap(m as Map<String, dynamic>))
+        .toList();
   }
+
+  Future<void> submitComment({
+    required String answerId,
+    required String body,
+  }) async {
+    final userId = _requireUser();
+
+    await _client.from(DatabaseTables.answerComments).insert({
+      'answer_id': answerId,
+      'author_uid': userId,
+      'body': body,
+    });
+  }
+
+  Future<void> deleteComment(String commentId) async {
+    final userId = _requireUser();
+
+    await _client
+        .from(DatabaseTables.answerComments)
+        .update({'is_deleted': true, 'updated_at': _now()})
+        .eq('id', commentId)
+        .eq('author_uid', userId);
+  }
+
+  String _now() => DateTime.now().toUtc().toIso8601String();
 }

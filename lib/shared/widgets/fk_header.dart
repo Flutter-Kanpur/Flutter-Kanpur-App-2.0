@@ -1,48 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class FkHeader extends StatelessWidget {
   const FkHeader({
     super.key,
     required this.title,
-    required this.subtitle,
+    this.subtitle,
     this.leading,
     this.trailing,
   });
 
   final String title;
-  final String subtitle;
+  final String? subtitle;
   final Widget? leading;
   final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        if (leading != null) ...[leading!, SizedBox(width: AppSpacing.h12)],
+        if (leading != null) ...[leading!, SizedBox(width: AppSpacing.h2)],
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                title,
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.blackBase,
-                ),
-              ),
-              SizedBox(height: AppSpacing.v6),
-              Text(
-                subtitle,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: AppColors.neutral500,
-                  height: 1.35,
-                ),
-              ),
+              Text(title, style: AppTextStyles.titleMedium),
+              if (subtitle != null && subtitle!.isNotEmpty)
+                Text(subtitle!, style: AppTextStyles.titleSmall),
             ],
           ),
         ),
