@@ -18,24 +18,19 @@ class FkHeader extends StatelessWidget {
   final Widget? trailing;
 
   @override
-  Widget build(BuildContext context) {;
+  Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        if (leading != null) ...[leading!, SizedBox(width: AppSpacing.h12)],
+        if (leading != null) ...[leading!, SizedBox(width: AppSpacing.h2)],
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                title,
-                style: AppTextStyles.titleLarge
-              ),
-
-              Text(
-                subtitle ?? "",
-                style: AppTextStyles.titleMedium
-              ),
+              Text(title, style: AppTextStyles.titleMedium),
+              if (subtitle != null && subtitle!.isNotEmpty)
+                Text(subtitle!, style: AppTextStyles.titleSmall),
             ],
           ),
         ),

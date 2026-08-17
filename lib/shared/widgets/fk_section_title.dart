@@ -44,7 +44,6 @@ class FkSectionTitle extends StatelessWidget {
                 actionLabel!,
                 style: AppTextStyles.bodyMedium.copyWith(
                   color: AppColors.primary500,
-                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),

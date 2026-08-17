@@ -110,7 +110,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                   formKey,
                   emailController,
                   passwordController,
-                  isLoading,
                 ),
                 24.verticalSpace,
                 _buildSignUpText(context),
@@ -193,16 +192,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
       controller: controller,
       focusNode: focusNode,
       isPassword: true,
-      // showBorder:
-      // focusNode.hasFocus || controller.text.isNotEmpty,
-      // borderColor: focusNode.hasFocus
-      //     ? AppColors.primary500
-      //     : controller.text.isNotEmpty
-      //     ? AppColors.communityBorderColorV2
-      //     : const Color(0xFFF6F6F6),
-      // fillColor: focusNode.hasFocus || controller.text.isNotEmpty
-      //     ? Colors.transparent
-      //     : const Color(0xFFF6F6F6),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'auth.passwordRequired'.tr();
@@ -221,18 +210,17 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     GlobalKey<FormState> formKey,
     TextEditingController emailController,
     TextEditingController passwordController,
-    bool isLoading,
   ) {
     return SizedBox(
       width: double.infinity,
       height: 52.h,
       child: GradientButton(
-        text: isLoading ? 'auth.signingIn'.tr() : 'auth.login'.tr(),
+        text: this.isLoading ? 'auth.signingIn'.tr() : 'auth.login'.tr(),
         textStyle: AppTextStyles.bodyLarge.copyWith(
           color: AppColors.whiteBase,
           fontWeight: FontWeight.w600,
         ),
-        onTap: isLoading
+        onTap: this.isLoading
             ? () {}
             : () async {
                 if (!formKey.currentState!.validate()) return;

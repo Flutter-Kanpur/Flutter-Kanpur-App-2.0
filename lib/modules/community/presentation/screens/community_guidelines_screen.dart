@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/border_shadow_container.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_back_button.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_header.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
@@ -25,7 +27,7 @@ class CommunityGuidelinesScreen extends StatelessWidget {
           SizedBox(height: AppSpacing.v18),
           Text(
             "community.communityGuidelines.about".tr(),
-            style: theme.textTheme.bodyLarge,
+            style: AppTextStyles.titleMedium,
           ),
           SizedBox(height: AppSpacing.v22),
           SizedBox(
@@ -39,14 +41,14 @@ class CommunityGuidelinesScreen extends StatelessWidget {
                       "community.communityGuidelines.respectAndConduct.description"
                           .tr(),
                 ),
-                SizedBox(height: AppSpacing.v18),
+                SizedBox(height: AppSpacing.v10),
                 _ContainerBackground(
                   title: "community.communityGuidelines.inclusivity.title".tr(),
                   description:
                       "community.communityGuidelines.inclusivity.description"
                           .tr(),
                 ),
-                SizedBox(height: AppSpacing.v18),
+                SizedBox(height: AppSpacing.v10),
                 _ContainerBackground(
                   title:
                       "community.communityGuidelines.meaningfulParticipation.title"
@@ -55,7 +57,7 @@ class CommunityGuidelinesScreen extends StatelessWidget {
                       "community.communityGuidelines.meaningfulParticipation.description"
                           .tr(),
                 ),
-                SizedBox(height: AppSpacing.v18),
+                SizedBox(height: AppSpacing.v10),
                 _ContainerBackground(
                   title:
                       "community.communityGuidelines.responsibleSharing.title"
@@ -64,7 +66,7 @@ class CommunityGuidelinesScreen extends StatelessWidget {
                       "community.communityGuidelines.responsibleSharing.description"
                           .tr(),
                 ),
-                SizedBox(height: AppSpacing.v18),
+                SizedBox(height: AppSpacing.v10),
                 _ContainerBackground(
                   title: "community.communityGuidelines.privacyAndTrust.title"
                       .tr(),
@@ -72,12 +74,12 @@ class CommunityGuidelinesScreen extends StatelessWidget {
                       "community.communityGuidelines.privacyAndTrust.description"
                           .tr(),
                 ),
-                SizedBox(height: AppSpacing.v18),
+                SizedBox(height: AppSpacing.v16),
                 Text(
                   "common.lastUpdated".tr(
                     args: ["common.lastUpdatedDate".tr()],
                   ),
-                  style: theme.textTheme.titleLarge,
+                  style: AppTextStyles.titleMedium,
                 ),
               ],
             ),
@@ -101,14 +103,14 @@ class _ContainerBackground extends StatelessWidget {
       padding: AppSpacing.all(AppSpacing.h18),
       decoration: BoxDecoration(
         color: AppColors.primary50,
-        borderRadius: AppRadius.all02,
+        borderRadius: AppRadius.all04,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: theme.textTheme.titleLarge),
+          Text(title, style: AppTextStyles.titleMedium),
           SizedBox(height: AppSpacing.v10),
-          Text(description, style: theme.textTheme.bodyLarge),
+          Text(description, style: AppTextStyles.bodyLarge),
         ],
       ),
     );

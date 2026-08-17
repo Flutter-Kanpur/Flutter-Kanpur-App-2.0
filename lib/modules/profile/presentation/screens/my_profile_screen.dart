@@ -1,3 +1,4 @@
+import 'package:Readme/core/router/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
@@ -102,7 +103,7 @@ class MyProfileScreen extends ConsumerWidget {
                         ProfileTile(
                           iconSvgPath: AssetsPath.profileCommunityGuidelines,
                           title: 'Community Guidelines',
-                          onTap: () => context.push('/profile/community-guidelines'),
+                          onTap: () => context.push(RouteNames.communityGuidelines),
                         ),
                       ],
                     ),
