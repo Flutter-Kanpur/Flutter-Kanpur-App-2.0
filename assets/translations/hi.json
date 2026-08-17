@@ -148,56 +148,121 @@
   },
 
   "home": {
-    "searchHint": "इवेंट्स खोजें",
-    "whatsNew": "नया क्या है",
-    "seeAll": "सभी देखें",
-    "filtersBottomSheetPlaceholder": "फिल्टर शीट यहां खुलेगी",
-    "filterTabs": {
-      "filters": "फ़िल्टर",
-      "myEvents": "मेरे इवेंट्स",
-      "announcements": "घोषणाएँ",
-      "upcoming": "आगामी",
-      "past": "पिछले"
-    },
-    "bottomNav": {
-      "home": "होम",
-      "community": "कम्युनिटी",
-      "explore": "एक्सप्लोर",
-      "profile": "प्रोफ़ाइल"
-    },
-    "events": {
-      "upcoming": "आगामी",
-      "organization": "Flutter Kanpur",
-      "button": "लाइव जुड़ें  ->",
-      "first": {
-        "title": "लॉन्च इवेंट",
-        "description": "उद्योग विशेषज्ञों के साथ नए रुझानों और तकनीकी क्षेत्र में सर्वोत्तम प्रथाओं पर एक रोचक सत्र में शामिल हों।",
-        "dateTime": "रवि, 7 अप्रैल • 4:00 PM • कानपुर"
+  "searchHint": "इवेंट खोजें",
+  "whatsNew": "नया क्या है",
+  "seeAll": "सभी देखें",
+  "filtersBottomSheetPlaceholder": "फ़िल्टर बॉटम शीट यहाँ खुलेगी",
+
+  "search": {
+    "title": "खोजें",
+    "results": "खोज परिणाम",
+    "noResults": "कोई इवेंट नहीं मिला",
+    "trending": "ट्रेंडिंग खोजें",
+    "recent": "हाल की खोजें",
+    "clearAll": "सभी साफ़ करें",
+    "exploreMore": "और देखें"
+  },
+
+  "filters": {
+    "title": "फ़िल्टर",
+    "sections": {
+      "statusBased": {
+        "title": "स्थिति के आधार पर",
+        "options": {
+          "upcoming": "आगामी",
+          "today": "आज",
+          "live": "लाइव",
+          "past": "पिछले"
+        }
       },
-      "second": {
-        "title": "Figma से Flutter तक: प्रैक्टिकल वर्कफ़्लो",
-        "description": "यह सत्र वास्तविक दुनिया के परिदृश्यों में स्केल करने वाले Flutter ऐप्लिकेशन बनाने पर केंद्रित है...और देखें",
-        "dateTime": "रवि, 7 अप्रैल • 4:00 PM • कानपुर"
+      "modeFormat": {
+        "title": "मोड / प्रारूप",
+        "options": {
+          "online": "ऑनलाइन",
+          "offline": "ऑफ़लाइन"
+        }
+      },
+      "timeBased": {
+        "title": "समय के आधार पर",
+        "options": {
+          "thisWeek": "इस सप्ताह",
+          "thisMonth": "इस महीने"
+        }
+      },
+      "access": {
+        "title": "पहुँच",
+        "options": {
+          "free": "निःशुल्क",
+          "openToAll": "सभी के लिए खुला"
+        }
+      },
+      "interestType": {
+        "title": "रुचि / प्रकार",
+        "options": {
+          "flutter": "Flutter",
+          "uiUx": "UI / UX",
+          "advanced": "उन्नत",
+          "beginnerFriendly": "शुरुआती लोगों के लिए",
+          "design": "डिज़ाइन"
+        }
       }
     },
-    "announcements": {
-      "first": {
-        "title": "डिज़ाइन चैलेंज 2026",
-        "body": "एक रोमांचक डिज़ाइन चैलेंज में शामिल हों! शानदार UI/UX डिज़ाइन बनाएं और आकर्षक पुरस्कार जीतें!",
-        "button": "विवरण देखें"
-      },
-      "second": {
-        "title": "Flutter वर्कशॉप",
-        "body": "उद्योग विशेषज्ञों से उन्नत Flutter पैटर्न और सर्वोत्तम प्रथाएँ सीखें।",
-        "button": "अभी रजिस्टर करें"
-      },
-      "third": {
-        "title": "हैकाथॉन 2026",
-        "body": "नवाचारपूर्ण समाधान बनाएं और अन्य डेवलपर्स के साथ प्रतिस्पर्धा करें और रोमांचक पुरस्कार जीतें।",
-        "button": "साइन अप करें"
-      }
+    "actions": {
+      "clear": "साफ़ करें",
+      "apply": "लागू करें",
+      "applyWithCount": "लागू करें ({})"
     }
   },
+
+  "filterTabs": {
+    "filters": "फ़िल्टर",
+    "myEvents": "मेरे इवेंट",
+    "announcements": "घोषणाएँ",
+    "upcoming": "आगामी",
+    "past": "पिछले"
+  },
+
+  "bottomNav": {
+    "home": "होम",
+    "community": "कम्युनिटी",
+    "explore": "एक्सप्लोर",
+    "profile": "प्रोफ़ाइल"
+  },
+
+  "events": {
+    "upcoming": "आगामी",
+    "organization": "Flutter Kanpur",
+    "button": "विवरण देखें  ->",
+    "first": {
+      "title": "लॉन्च इवेंट",
+      "description": "टेक इकोसिस्टम में नए ट्रेंड और प्रैक्टिस पर चर्चा करने वाले इंडस्ट्री स्पीकर्स के साथ एक ज्ञानवर्धक सत्र में शामिल हों।",
+      "dateTime": "रवि, 7 अप्रैल • शाम 4:00 बजे • कानपुर"
+    },
+    "second": {
+      "title": "Figma से Flutter तक: प्रैक्टिकल वर्कफ़्लो",
+      "description": "यह सत्र वास्तविक परिस्थितियों में स्केलेबल Flutter एप्लिकेशन बनाने पर केंद्रित है...और देखें",
+      "dateTime": "रवि, 7 अप्रैल • शाम 4:00 बजे • कानपुर"
+    }
+  },
+
+  "announcements": {
+    "first": {
+      "title": "डिज़ाइन चैलेंज 2026",
+      "body": "हमारे रोमांचक डिज़ाइन चैलेंज में शामिल हों! शानदार UI/UX डिज़ाइन बनाएँ और बेहतरीन इनाम जीतें!",
+      "button": "विवरण देखें"
+    },
+    "second": {
+      "title": "Flutter वर्कशॉप",
+      "body": "इंडस्ट्री एक्सपर्ट्स से एडवांस्ड Flutter पैटर्न और बेस्ट प्रैक्टिस सीखें।",
+      "button": "अभी रजिस्टर करें"
+    },
+    "third": {
+      "title": "हैकाथॉन 2026",
+      "body": "नए और इनोवेटिव समाधान बनाएँ और रोमांचक इनामों के लिए अन्य डेवलपर्स के साथ प्रतिस्पर्धा करें।",
+      "button": "साइन अप करें"
+    }
+  }
+},
 
   "stringExtensionMethod": "String Extension Method",
 
