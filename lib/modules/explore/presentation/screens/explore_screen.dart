@@ -30,7 +30,6 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
     final heroSlides = ref.watch(heroBannerSlidesProvider);
-    final coreTeam = ref.watch(coreTeamMembersProvider);
 
     return GradientBackground(
       child: Scaffold(
@@ -66,10 +65,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                             context.push(RouteNames.communityProjects),
                       ),
                       SizedBox(height: AppSpacing.v12),
-                      CoreTeamPreviewSection(
-                        members: coreTeam,
-                        onViewAllTap: () {},
-                      ),
+                      CoreTeamPreviewSection(onViewAllTap: () {}),
                       SizedBox(height: AppSpacing.v12),
                       SuggestedJobsPreviewSection(onViewAllTap: () {}),
                       SizedBox(height: AppSpacing.v12),

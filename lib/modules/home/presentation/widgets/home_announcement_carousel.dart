@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
@@ -91,12 +92,14 @@ class _AnnouncementCard extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            // Background: SVG or network image
+            // Background: SVG or network image. CachedNetworkImage keeps the
+            // decoded image on disk/memory so re-scrolling the carousel or
+            // revisiting this screen doesn't re-download it.
             if (hasImage)
-              Image.network(
-                bgImage,
+              CachedNetworkImage(
+                imageUrl: bgImage,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => SvgPicture.asset(
+                errorWidget: (_, __, ___) => SvgPicture.asset(
                   AssetsPath.announcementcardbg,
                   fit: BoxFit.cover,
                 ),

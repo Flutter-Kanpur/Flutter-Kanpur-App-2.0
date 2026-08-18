@@ -1,5 +1,4 @@
 import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/community_project_preview.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/core_team_member.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/suggested_job.dart';
 
 /// Sample-data source for the Explore dashboard preview sections. Mirrors the
@@ -54,23 +53,6 @@ class ExploreLocalDataSource {
       ),
     ];
   }
-
-  static List<CoreTeamMember> fetchCoreTeamMembers() => const [
-    CoreTeamMember(
-      name: 'Cameron',
-      photoUrl: 'https://i.pravatar.cc/150?img=11',
-    ),
-    CoreTeamMember(name: 'John', photoUrl: 'https://i.pravatar.cc/150?img=12'),
-    CoreTeamMember(name: 'Smith', photoUrl: 'https://i.pravatar.cc/150?img=13'),
-    CoreTeamMember(
-      name: 'Samuel',
-      photoUrl: 'https://i.pravatar.cc/150?img=14',
-    ),
-    CoreTeamMember(
-      name: 'Cameron',
-      photoUrl: 'https://i.pravatar.cc/150?img=15',
-    ),
-  ];
 
   /// Async + artificial delay for the same reason as
   /// [fetchCommunityProjectPreviews] - keeps the loading/skeleton state
