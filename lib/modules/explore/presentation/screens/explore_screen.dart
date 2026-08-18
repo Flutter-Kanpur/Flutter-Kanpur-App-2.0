@@ -7,7 +7,6 @@ import 'package:flutter_knp_mobile_app_v2/modules/explore/application/explore_pr
 import 'package:flutter_knp_mobile_app_v2/modules/explore/presentation/widgets/community_projects_preview_section.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/presentation/widgets/core_team_preview_section.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/presentation/widgets/participation_activities_section.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/explore/presentation/widgets/suggested_jobs_preview_section.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/widgets/home_announcement_carousel.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
@@ -30,7 +29,6 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
     final heroSlides = ref.watch(heroBannerSlidesProvider);
-    final coreTeam = ref.watch(coreTeamMembersProvider);
 
     return GradientBackground(
       child: Scaffold(
@@ -66,12 +64,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                             context.push(RouteNames.communityProjects),
                       ),
                       SizedBox(height: AppSpacing.v12),
-                      CoreTeamPreviewSection(
-                        members: coreTeam,
-                        onViewAllTap: () {},
-                      ),
-                      SizedBox(height: AppSpacing.v12),
-                      SuggestedJobsPreviewSection(onViewAllTap: () {}),
+                      CoreTeamPreviewSection(onViewAllTap: () {}),
                       SizedBox(height: AppSpacing.v12),
                     ],
                   ),

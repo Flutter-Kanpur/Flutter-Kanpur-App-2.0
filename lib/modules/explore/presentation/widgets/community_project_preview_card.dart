@@ -8,6 +8,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/community_proje
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_card.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_status_chip.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/external_links.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 /// Richer preview card than the real CommunityProjectCard (which has no
@@ -121,6 +122,9 @@ class _CommunityProjectPreviewCardState
             children: [
               Expanded(
                 child: ElevatedButton(
+                  // project.id isn't consumed yet - no project detail screen
+                  // exists to navigate to - but it's on the model and ready
+                  // to pass through once that screen is built.
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.blackBase,
@@ -141,12 +145,35 @@ class _CommunityProjectPreviewCardState
                   ),
                 ),
               ),
-              SizedBox(width: AppSpacing.h6),
-              _IconButtonCircle(assetPath: AssetsPath.githubSvg, onTap: () {}),
-              SizedBox(width: AppSpacing.h6),
-              _IconButtonCircle(assetPath: AssetsPath.linkIcon, onTap: () {}),
-              SizedBox(width: AppSpacing.h6),
-              _IconButtonCircle(assetPath: AssetsPath.liveIcon, onTap: () {}),
+              // Each icon only shows when its URL exists on the project row,
+              // and opens it in-app (LaunchMode.inAppBrowserView) rather than
+              // switching to a separate browser app.
+              if (project.githubUrl != null &&
+                  project.githubUrl!.isNotEmpty) ...[
+                SizedBox(width: AppSpacing.h6),
+                _IconButtonCircle(
+                  assetPath: AssetsPath.githubSvg,
+                  onTap: () =>
+                      openInAppUrlOrNotify(context, project.githubUrl!),
+                ),
+              ],
+              if (project.figmaUrl != null &&
+                  project.figmaUrl!.isNotEmpty) ...[
+                SizedBox(width: AppSpacing.h6),
+                _IconButtonCircle(
+                  assetPath: AssetsPath.linkIcon,
+                  onTap: () =>
+                      openInAppUrlOrNotify(context, project.figmaUrl!),
+                ),
+              ],
+              if (project.liveUrl != null && project.liveUrl!.isNotEmpty) ...[
+                SizedBox(width: AppSpacing.h6),
+                _IconButtonCircle(
+                  assetPath: AssetsPath.liveIcon,
+                  onTap: () =>
+                      openInAppUrlOrNotify(context, project.liveUrl!),
+                ),
+              ],
             ],
           ),
         ],
