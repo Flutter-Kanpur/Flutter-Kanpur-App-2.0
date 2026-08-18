@@ -1,4 +1,3 @@
-import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/community_project_preview.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/suggested_job.dart';
 
 /// Sample-data source for the Explore dashboard preview sections. Mirrors the
@@ -31,33 +30,9 @@ class ExploreLocalDataSource {
     },
   ];
 
-  /// Still async (returns a Future) even though the data is now a plain Dart
-  /// literal, so the provider/skeleton-loading architecture built around it
-  /// doesn't change. The short artificial delay keeps the loading/skeleton
-  /// state visible during manual testing.
-  static Future<List<CommunityProjectPreview>>
-  fetchCommunityProjectPreviews() async {
-    await Future.delayed(const Duration(milliseconds: 600));
-    return const [
-      CommunityProjectPreview(
-        title: 'Event Management Dashboard',
-        techStack: ['Flutter', 'REST API', 'Dart'],
-        authorName: 'Angelica Singh',
-        postedOn: '21 Jan 2026',
-      ),
-      CommunityProjectPreview(
-        title: 'Event Management Dashboard',
-        techStack: ['Flutter', 'REST API', 'Dart'],
-        authorName: 'Angelica Singh',
-        postedOn: '21 Jan 2026',
-      ),
-    ];
-  }
-
-  /// Async + artificial delay for the same reason as
-  /// [fetchCommunityProjectPreviews] - keeps the loading/skeleton state
-  /// visible during manual testing and matches the provider architecture
-  /// a real API-backed version would need.
+  /// Async + artificial delay - keeps the loading/skeleton state visible
+  /// during manual testing and matches the provider architecture a real
+  /// API-backed version would need.
   static Future<List<SuggestedJob>> fetchSuggestedJobs() async {
     await Future.delayed(const Duration(milliseconds: 600));
     return const [

@@ -1,4 +1,5 @@
 import 'package:flutter_knp_mobile_app_v2/core/database/database_tables.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/community_project_preview.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/core_team_member.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -32,6 +33,31 @@ class ExploreRepository {
 
     return (data as List<dynamic>)
         .map((m) => CoreTeamMember.fromMap(m as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// `projects` joined with `project_tech_stack` (tech chip names) and
+  /// `users` (owner display name), restricted to `status = 'active'` and the
+  /// newest [limit] rows - the only table/columns
+  /// CommunityProjectsPreviewSection renders.
+  Future<List<CommunityProjectPreview>> fetchLatestCommunityProjects({
+    int limit = 2,
+  }) async {
+    final data = await _client
+        .from(DatabaseTables.projects)
+        .select(
+          'title, created_at, '
+          'project_tech_stack(tech_name), '
+          'owner:users!owner_uid(display_name, full_name)',
+        )
+        .eq('status', 'active')
+        .order('created_at', ascending: false)
+        .limit(limit);
+
+    return (data as List<dynamic>)
+        .map(
+          (p) => CommunityProjectPreview.fromMap(p as Map<String, dynamic>),
+        )
         .toList();
   }
 }

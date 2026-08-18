@@ -6,9 +6,9 @@ import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/suggested_job.d
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // heroBannerSlidesProvider is still a synchronous plain Provider - there is
-// nothing to await for that sample data yet. Community projects and suggested
-// jobs simulate an async fetch (see ExploreLocalDataSource); core team is a
-// real Supabase fetch (see ExploreRepository). All three use
+// nothing to await for that sample data yet. Suggested jobs still simulate an
+// async fetch (see ExploreLocalDataSource); core team and community projects
+// are both real Supabase fetches (see ExploreRepository). All three use
 // AsyncNotifierProvider - the same pattern the real `communityProjectsProvider`
 // uses - with loading/error/data handled via `.when()` in their preview
 // sections.
@@ -31,7 +31,7 @@ class ExploreCommunityProjectPreviewsNotifier
     extends AsyncNotifier<List<CommunityProjectPreview>> {
   @override
   Future<List<CommunityProjectPreview>> build() =>
-      ExploreLocalDataSource.fetchCommunityProjectPreviews();
+      ref.read(exploreRepositoryProvider).fetchLatestCommunityProjects();
 }
 
 /// Paginated core team state - mirrors CommunityProvider's ReplyFeedState/

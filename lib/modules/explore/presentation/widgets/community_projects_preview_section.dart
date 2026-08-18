@@ -8,8 +8,9 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_section_title.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Watches [exploreCommunityProjectPreviewsProvider] directly (rather than
-/// receiving a list prop) since that provider is now JSON-asset backed and
-/// async - loading/error/data all need to be handled here.
+/// receiving a list prop) since that provider is a real Supabase fetch (see
+/// ExploreRepository.fetchLatestCommunityProjects) - loading/error/data all
+/// need to be handled here.
 class CommunityProjectsPreviewSection extends ConsumerWidget {
   const CommunityProjectsPreviewSection({
     super.key,
@@ -45,7 +46,19 @@ class CommunityProjectsPreviewSection extends ConsumerWidget {
                 ref.invalidate(exploreCommunityProjectPreviewsProvider),
           ),
           data: (projects) {
-            if (projects.isEmpty) return const SizedBox.shrink();
+            if (projects.isEmpty) {
+              // Matches CoreTeamPreviewSection's empty state: SizedBox +
+              // width:infinity so CommunityEmptyView centers across the full
+              // section width instead of shrink-wrapping (the outer Column is
+              // left-aligned).
+              return const SizedBox(
+                width: double.infinity,
+                child: CommunityEmptyView(
+                  icon: Icons.folder_open_outlined,
+                  message: 'No community projects to show yet.',
+                ),
+              );
+            }
             return Column(
               children: [
                 for (final project in projects)
