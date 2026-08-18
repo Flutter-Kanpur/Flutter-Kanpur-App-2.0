@@ -7,27 +7,23 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
-class HomeFilterTabs extends StatefulWidget {
+class HomeFilterTabs extends StatelessWidget {
   const HomeFilterTabs({
     super.key,
     required this.selectedFilterIndex,
     required this.onFilterSelected,
     required this.onFiltersTap,
+    required this.onFilterCleared,
     this.selectedFiltersCount = 0,
   });
 
   final int selectedFilterIndex;
   final ValueChanged<int> onFilterSelected;
   final VoidCallback onFiltersTap;
+  final ValueChanged<int> onFilterCleared;
 
-  /// Number of filters currently selected in the bottom sheet (shown on "Filters" chip when > 0).
   final int selectedFiltersCount;
 
-  @override
-  State<HomeFilterTabs> createState() => _HomeFilterTabsState();
-}
-
-class _HomeFilterTabsState extends State<HomeFilterTabs> {
   @override
   Widget build(BuildContext context) {
     final filters = [
@@ -44,15 +40,15 @@ class _HomeFilterTabsState extends State<HomeFilterTabs> {
       child: Row(
         children: List.generate(filters.length, (index) {
           final isFilterChip = index != 0;
-          final isSelected =
-              isFilterChip && widget.selectedFilterIndex == index;
+          final isSelected = isFilterChip && selectedFilterIndex == index;
+
           return Padding(
             padding: EdgeInsets.only(right: AppSpacing.h8),
             child: InnerShadowContainer(
               borderColor: isSelected
                   ? AppColors.primary500
                   : AppColors.neutral100,
-              shadowColor: AppColors.primary500.withOpacity(0.05),
+              shadowColor: AppColors.primary500.withValues(alpha: 0.05),
               isShadowBottomLeft: true,
               isShadowBottomRight: true,
               isShadowTopLeft: true,
@@ -67,56 +63,71 @@ class _HomeFilterTabsState extends State<HomeFilterTabs> {
                   color: Colors.transparent,
                   child: FilterChip(
                     showCheckmark: false,
+
                     avatar: index == 0
                         ? const Icon(
                             Icons.filter_list_rounded,
                             color: AppColors.blackBase,
                           )
                         : null,
+
                     label: Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          index == 0 && widget.selectedFiltersCount > 0
-                              ? '${filters[index]} (${widget.selectedFiltersCount})'
+                          index == 0 && selectedFiltersCount > 0
+                              ? '${filters[index]} ($selectedFiltersCount)'
                               : filters[index],
                           style: AppTextStyles.bodyMedium.copyWith(
                             color: AppColors.blackBase,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
+
                         if (isSelected) ...[
                           SizedBox(width: AppSpacing.h4),
-                          Icon(
-                            Icons.close,
-                            size: 16.sp,
-                            color: AppColors.blackBase,
+
+                          GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () {
+                              onFilterCleared(index);
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.all(2.w),
+                              child: Icon(
+                                Icons.close,
+                                size: 16.sp,
+                                color: AppColors.blackBase,
+                              ),
+                            ),
                           ),
                         ],
                       ],
                     ),
+
                     selected: isSelected,
+
                     onSelected: (_) {
                       if (index == 0) {
-                        widget.onFiltersTap();
+                        onFiltersTap();
                       } else {
-                        widget.onFilterSelected(index);
+                        onFilterSelected(index);
                       }
                     },
+
                     backgroundColor: AppColors.whiteBase,
                     selectedColor: AppColors.whiteBase,
+
                     labelStyle: AppTextStyles.bodyMedium.copyWith(
                       color: AppColors.blackBase,
                       fontWeight: FontWeight.w500,
                     ),
+
                     shape: RoundedRectangleBorder(
                       borderRadius: AppRadius.all02,
-                      side: const BorderSide(
-                        color: Colors.transparent,
-                        // width: isSelected ? 1.5 : 0,
-                      ),
+                      side: const BorderSide(color: Colors.transparent),
                     ),
                   ),
                 ),

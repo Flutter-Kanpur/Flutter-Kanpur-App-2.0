@@ -10,6 +10,10 @@ class EventEntity extends Equatable {
   final DateTime? fromTime;
   final DateTime? toTime;
   final String type; // 'past' or 'upcoming'
+  final String mode; // 'Online' / 'Offline'
+  final bool isFree;
+  final bool isOpenToAll;
+  final List<String> interests;
   final String? speakerName;
   final String? speakerImage;
   final String? speakerIntro;
@@ -35,6 +39,10 @@ class EventEntity extends Equatable {
     this.speakerTwitter,
     this.hostName,
     this.hostImage,
+    required this.mode,
+    required this.isFree,
+    required this.isOpenToAll,
+    this.interests = const [],
   });
 
   bool get isUpcoming {
@@ -202,5 +210,9 @@ class EventEntity extends Equatable {
     speakerTwitter,
     hostName,
     hostImage,
+    mode,
+    isFree,
+    isOpenToAll,
+    interests,
   ];
 }

@@ -182,56 +182,120 @@
     "privacyDisclaimer": "Your links are visible to other community members. You can edit these anytime."
   },
   "home": {
-    "searchHint": "Search Events",
-    "whatsNew": "What's new",
-    "seeAll": "See all",
-    "filtersBottomSheetPlaceholder": "Filters bottom sheet will open here",
-    "filterTabs": {
-      "filters": "Filters",
-      "myEvents": "My events",
-      "announcements": "Announcements",
-      "upcoming": "Upcoming",
-      "past": "Past"
-    },
-    "bottomNav": {
-      "home": "Home",
-      "community": "Community",
-      "explore": "Explore",
-      "profile": "Profile"
-    },
-    "events": {
-      "upcoming": "Upcoming",
-      "organization": "Flutter Kanpur",
-      "button": "Join live  ->",
-      "first": {
-        "title": "Launch Event",
-        "description": "Join us on an insightful session with industry speakers discussing new trends and practices in tech ecosystem.",
-        "dateTime": "Sun, 7 Apr • 4:00 PM • Kanpur"
+  "searchHint": "Search Events",
+  "whatsNew": "What's new",
+  "seeAll": "See all",
+  "filtersBottomSheetPlaceholder": "Filters bottom sheet will open here",
+
+  "search": {
+    "title": "Search",
+    "results": "Search results",
+    "noResults": "No events found",
+    "trending": "Trending searches",
+    "recent": "Recent searches",
+    "clearAll": "Clear all",
+    "exploreMore": "Explore more"
+  },
+
+  "filters": {
+    "title": "Filters",
+    "sections": {
+      "statusBased": {
+        "title": "Status-based",
+        "options": {
+          "upcoming": "Upcoming",
+          "today":"Today",
+          "live": "Live",
+          "past": "Past"
+        }
       },
-      "second": {
-        "title": "From Figma to Flutter: Practical Workflow",
-        "description": "This session focuses on building the Flutter applications that scale in real-world scenario...see more",
-        "dateTime": "Sun, 7 Apr • 4:00 PM • Kanpur"
+      "modeFormat": {
+        "title": "Mode / Format",
+        "options": {
+          "online": "Online",
+          "offline": "Offline"
+        }
+      },
+      "timeBased": {
+        "title": "Time-based",
+        "options": {
+          "thisWeek": "This Week",
+          "thisMonth": "This Month"
+        }
+      },
+      "access": {
+        "title": "Access",
+        "options": {
+          "free": "Free",
+          "openToAll": "Open to All"
+        }
+      },
+      "interestType": {
+        "title": "Interest / Type",
+        "options": {
+          "flutter": "Flutter",
+          "uiUx": "UI / UX",
+          "advanced": "Advanced",
+          "beginnerFriendly": "Beginner Friendly",
+          "design": "Design"
+        }
       }
     },
-    "announcements": {
-      "first": {
-        "title": "Design Challenge 2026",
-        "body": "Join us for an exciting design challenge! Create Stunning UI/UX design and win amazing prize!",
-        "button": "View Details"
-      },
-      "second": {
-        "title": "Flutter Workshop",
-        "body": "Learn advanced Flutter patterns and best practices from industry experts.",
-        "button": "Register Now"
-      },
-      "third": {
-        "title": "Hackathon 2026",
-        "body": "Build innovative solutions and compete with other developers for exciting prizes.",
-        "button": "Sign Up"
-      }
+    "actions": {
+      "clear": "Clear",
+      "apply": "Apply",
+      "applyWithCount": "Apply ({})"
     }
   },
+
+  "filterTabs": {
+    "filters": "Filters",
+    "myEvents": "My events",
+    "announcements": "Announcements",
+    "upcoming": "Upcoming",
+    "past": "Past"
+  },
+
+  "bottomNav": {
+    "home": "Home",
+    "community": "Community",
+    "explore": "Explore",
+    "profile": "Profile"
+  },
+
+  "events": {
+    "upcoming": "Upcoming",
+    "organization": "Flutter Kanpur",
+    "button": "View Details  ->",
+    "first": {
+      "title": "Launch Event",
+      "description": "Join us on an insightful session with industry speakers discussing new trends and practices in tech ecosystem.",
+      "dateTime": "Sun, 7 Apr • 4:00 PM • Kanpur"
+    },
+    "second": {
+      "title": "From Figma to Flutter: Practical Workflow",
+      "description": "This session focuses on building the Flutter applications that scale in real-world scenario...see more",
+      "dateTime": "Sun, 7 Apr • 4:00 PM • Kanpur"
+    }
+  },
+  "announcements": {
+    "first": {
+      "title": "Design Challenge 2026",
+      "body": "Join us for an exciting design challenge! Create Stunning UI/UX design and win amazing prize!",
+      "button": "View Details"
+    },
+    "second": {
+      "title": "Flutter Workshop",
+      "body": "Learn advanced Flutter patterns and best practices from industry experts.",
+      "button": "Register Now"
+    },
+    "third": {
+      "title": "Hackathon 2026",
+      "body": "Build innovative solutions and compete with other developers for exciting prizes.",
+      "button": "Sign Up"
+    }
+  }
+},
   "stringExtensionMethod": "String Extension Method",
   "greetings": {
     "morning": "Good Morning",
