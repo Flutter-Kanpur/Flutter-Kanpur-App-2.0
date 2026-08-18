@@ -46,7 +46,7 @@ class ExploreRepository {
     final data = await _client
         .from(DatabaseTables.projects)
         .select(
-          'title, created_at, '
+          'id, title, created_at, github_url, figma_url, live_url, '
           'project_tech_stack(tech_name), '
           'owner:users!owner_uid(display_name, full_name)',
         )

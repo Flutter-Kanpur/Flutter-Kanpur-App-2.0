@@ -2,13 +2,11 @@ import 'package:flutter_knp_mobile_app_v2/modules/explore/data/explore_local_dat
 import 'package:flutter_knp_mobile_app_v2/modules/explore/data/repositories/explore_repository.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/community_project_preview.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/core_team_member.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/suggested_job.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // heroBannerSlidesProvider is still a synchronous plain Provider - there is
-// nothing to await for that sample data yet. Suggested jobs still simulate an
-// async fetch (see ExploreLocalDataSource); core team and community projects
-// are both real Supabase fetches (see ExploreRepository). All three use
+// nothing to await for that sample data yet. Core team and community
+// projects are both real Supabase fetches (see ExploreRepository), using
 // AsyncNotifierProvider - the same pattern the real `communityProjectsProvider`
 // uses - with loading/error/data handled via `.when()` in their preview
 // sections.
@@ -119,15 +117,4 @@ class CoreTeamMembersNotifier extends AsyncNotifier<CoreTeamMembersState> {
       state = AsyncData(current.copyWith(isLoadingMore: false));
     }
   }
-}
-
-final suggestedJobsProvider =
-    AsyncNotifierProvider<ExploreSuggestedJobsNotifier, List<SuggestedJob>>(
-      ExploreSuggestedJobsNotifier.new,
-    );
-
-class ExploreSuggestedJobsNotifier extends AsyncNotifier<List<SuggestedJob>> {
-  @override
-  Future<List<SuggestedJob>> build() =>
-      ExploreLocalDataSource.fetchSuggestedJobs();
 }

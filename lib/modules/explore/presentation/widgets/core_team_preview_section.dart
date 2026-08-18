@@ -10,7 +10,7 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_section_title.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Watches [coreTeamMembersProvider] directly (rather than receiving a list
-/// prop), matching CommunityProjectsPreviewSection/SuggestedJobsPreviewSection
+/// prop), matching CommunityProjectsPreviewSection
 /// now that this is a real Supabase fetch (community_memberships joined with
 /// users) instead of sample data. Stateful only for the horizontal
 /// ScrollController driving pagination - same on-scroll pattern as
