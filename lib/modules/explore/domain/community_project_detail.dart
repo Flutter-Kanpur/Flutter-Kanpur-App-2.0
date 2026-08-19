@@ -23,17 +23,10 @@ class CommunityProjectDetail {
   final String? githubUrl;
   final String? figmaUrl;
   final String? liveUrl;
-
-  /// Set only when the viewer isn't `owner_uid` and has an active
-  /// `project_members` row for this project - see
-  /// ExploreRepository.fetchProjectById.
   final DateTime? sharedOn;
 
-  /// [map] is one row of `projects` joined with `project_tech_stack` via
-  /// `project_tech_stack(tech_name)` and `users` (owner) via
-  /// `owner:users!owner_uid(display_name, full_name)` - same conventions as
-  /// CommunityProjectPreview.fromMap, plus the detail-only columns
-  /// (summary/description/cover_image_url) that card doesn't need.
+  /// Maps a `projects` row joined with `project_tech_stack` and `users`
+  /// (owner), plus the detail-only summary/description/cover fields.
   factory CommunityProjectDetail.fromMap(
     Map<String, dynamic> map, {
     DateTime? sharedOn,

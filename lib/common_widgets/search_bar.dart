@@ -16,14 +16,10 @@ class CommonSearchBar extends StatefulWidget {
   final bool readOnly;
   final VoidCallback? onTap;
 
-  /// Opt-in (default false, so existing call sites are unaffected): while
-  /// the field is focused, the bar switches to a dark (black bg/white text
-  /// and icons) style instead of the default white one.
+  /// While focused, switches to a dark style. Opt-in, default false.
   final bool darkenOnFocus;
 
-  /// Swaps the mic icon to a filled/active state - e.g. while a caller's
-  /// speech-to-text session is listening. Purely visual; the caller owns
-  /// the actual listening state.
+  /// Swaps the mic icon to a filled/active state. Purely visual.
   final bool isListening;
 
   const CommonSearchBar({

@@ -43,9 +43,7 @@ class AppPrefs {
     await prefs.remove(_onboardingDraftKey);
   }
 
-  /// Ids of projects the user has liked - keyed by `projects.id`. There is no
-  /// server-side like table for projects (unlike questions/answers), so this
-  /// is purely local, client-side state.
+  /// Ids of liked projects - no server-side like table, so purely local.
   static Future<Set<String>> getLikedProjectIds() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getStringList(_likedProjectIdsKey)?.toSet() ?? {};

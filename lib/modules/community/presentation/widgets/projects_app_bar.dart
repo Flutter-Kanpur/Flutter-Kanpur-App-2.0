@@ -4,11 +4,9 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_back_button.dart';
 
-/// Centered "Projects" title + back arrow, matching the Figma header - used
-/// on both the projects list and a project's detail screen (both keep the
-/// same fixed title regardless of which project is open). `FkHeader` is
-/// always left-aligned with an optional subtitle, which doesn't match this
-/// design, so this is its own small widget instead.
+/// Centered "Projects" title + back arrow, shared by the projects list and
+/// a project's detail screen. `FkHeader` is always left-aligned with an
+/// optional subtitle, so this is its own small widget instead.
 class ProjectsAppBar extends StatelessWidget {
   const ProjectsAppBar({super.key});
 

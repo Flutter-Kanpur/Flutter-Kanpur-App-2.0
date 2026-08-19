@@ -9,12 +9,8 @@ import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/core_team_membe
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
-// heroBannerSlidesProvider is still a synchronous plain Provider - there is
-// nothing to await for that sample data yet. Core team and community
-// projects are both real Supabase fetches (see ExploreRepository), using
-// AsyncNotifierProvider - the same pattern the real `communityProjectsProvider`
-// uses - with loading/error/data handled via `.when()` in their preview
-// sections.
+// heroBannerSlidesProvider stays a plain Provider (sample data, nothing to
+// await). Everything else here is a real Supabase fetch.
 
 final heroBannerSlidesProvider = Provider<List<Map<String, String?>>>(
   (ref) => ExploreLocalDataSource.fetchHeroBannerSlides(),
@@ -37,11 +33,8 @@ class ExploreCommunityProjectPreviewsNotifier
       ref.read(exploreRepositoryProvider).fetchLatestCommunityProjects();
 }
 
-/// Paginated view of the same `projects` feed, for the full "Projects"
-/// screen. Seeds from whatever [exploreCommunityProjectPreviewsProvider] has
-/// already loaded (the Explore dashboard's 2 newest projects) instead of
-/// re-fetching them, then pages in the rest underneath - same
-/// hasMore/isLoadingMore shape as [CoreTeamMembersState].
+/// Paginated projects list for the full "Projects" screen. Seeds from
+/// [exploreCommunityProjectPreviewsProvider] instead of re-fetching.
 class CommunityProjectsPagedState {
   const CommunityProjectsPagedState({
     this.projects = const [],
@@ -74,8 +67,7 @@ final communityProjectsPagedProvider =
 
 class CommunityProjectsPagedNotifier
     extends AsyncNotifier<CommunityProjectsPagedState> {
-  /// Matches the Explore dashboard preview's own count - the design only
-  /// shows these 2 before a "Load more" tap.
+  /// Matches the Explore dashboard preview's own count.
   static const initialCount = 2;
   static const pageSize = 10;
 
@@ -87,13 +79,10 @@ class CommunityProjectsPagedNotifier
   Future<CommunityProjectsPagedState> _load() async {
     final seed = ref.read(exploreCommunityProjectPreviewsProvider).value;
     if (seed != null && seed.isNotEmpty) {
-      // Reuse what the Explore dashboard already fetched instead of
-      // re-querying the same first rows. Whether there's anything beyond
-      // these isn't known yet - "Load more" finds out on tap.
+      // Reuse what the dashboard already fetched instead of re-querying.
       return CommunityProjectsPagedState(projects: seed, hasMore: true);
     }
-    // No dashboard state to seed from (e.g. a deep link straight into this
-    // screen) - fetch the first page directly, same count as the preview.
+    // No seed available (e.g. a deep link) - fetch the first page directly.
     final rows = await _repo.fetchLatestCommunityProjects(
       limit: initialCount,
     );
@@ -103,11 +92,8 @@ class CommunityProjectsPagedNotifier
     );
   }
 
-  /// Pull-to-refresh. Re-fetches however many projects are already loaded
-  /// (not just [initialCount]) so a "Load more" tap the user already made
-  /// isn't undone by refreshing - only the data itself is refreshed, not the
-  /// pagination progress. Assigns the result directly so the current list
-  /// stays on screen while reloading, same as QuestionFeedNotifier.refresh.
+  /// Pull-to-refresh - re-fetches however many projects are already loaded,
+  /// so pagination progress isn't lost.
   Future<void> refresh() async {
     final current = state.value;
     if (current == null || current.isLoadingMore) return;
@@ -149,10 +135,8 @@ class CommunityProjectsPagedNotifier
     }
   }
 
-  /// "View less" - once every page has been loaded (`hasMore == false`) and
-  /// the list has grown past [initialCount], this collapses it back down to
-  /// the first [initialCount] rows already in memory (no re-fetch) and
-  /// re-opens `hasMore` so a "Load more" tap resumes pagination from there.
+  /// "View less" - collapses back down to [initialCount] rows already in
+  /// memory and reopens `hasMore`.
   void collapse() {
     final current = state.value;
     if (current == null || current.projects.length <= initialCount) return;
@@ -166,13 +150,9 @@ class CommunityProjectsPagedNotifier
   }
 }
 
-/// The `TextEditingController` backing the Projects search field. Owned
-/// here (not a local `State` field) so the whole screen can stay a plain
-/// `ConsumerWidget` with every bit of state - including this controller and
-/// the voice-search listening flag - managed through Riverpod. `autoDispose`
-/// because a `TextEditingController` must be disposed like any other
-/// controller; the screen's own `ref.watch` of it is what keeps it alive
-/// for exactly as long as the screen is mounted.
+/// `TextEditingController` for the Projects search field, owned here so
+/// the screen can stay a plain `ConsumerWidget`. `autoDispose` disposes it
+/// when the screen stops watching it.
 final projectSearchControllerProvider =
     Provider.autoDispose<TextEditingController>((ref) {
       final controller = TextEditingController();
@@ -180,20 +160,15 @@ final projectSearchControllerProvider =
       return controller;
     });
 
-/// The `SpeechToText` instance for voice search. Deliberately *not*
-/// `autoDispose` - nothing keeps a persistent `ref.watch` on it (only
-/// `ProjectSearchNotifier.toggleListening` reads it on demand), and an
-/// unwatched `autoDispose` provider would be torn down and recreated on
-/// almost every read, losing the plugin's own `initialize()` cache.
+/// `SpeechToText` instance for voice search. Not `autoDispose` - nothing
+/// keeps a persistent watch on it, so it would be recreated on every read.
 final _speechToTextProvider = Provider<stt.SpeechToText>((ref) {
   final speech = stt.SpeechToText();
   ref.onDispose(speech.cancel);
   return speech;
 });
 
-/// Search over the full `projects` table (title `ilike`), not just whatever
-/// [communityProjectsPagedProvider] happens to have paged in - see
-/// [ProjectSearchNotifier.setQuery].
+/// Search state over the full `projects` table (title `ilike`).
 class ProjectSearchState {
   const ProjectSearchState({
     this.query = '',
@@ -205,10 +180,8 @@ class ProjectSearchState {
   final String query;
   final List<CommunityProjectPreview> results;
 
-  /// True once the debounced backend request has actually been sent and is
-  /// still in flight - `results` is left untouched (still whatever it was
-  /// before) until this flips back to false, so the UI shows a skeleton
-  /// instead of a stale or locally-guessed list under the live query label.
+  /// True while the debounced request is in flight; `results` is left
+  /// untouched until it resolves.
   final bool isSearching;
 
   /// True while a voice-search session is actively listening.
@@ -241,8 +214,7 @@ class ProjectSearchNotifier extends Notifier<ProjectSearchState> {
 
   Timer? _debounce;
 
-  /// Guards against an in-flight request finishing after a newer one has
-  /// already started (or the query was cleared) and clobbering it.
+  /// Guards a stale in-flight request from clobbering a newer one.
   int _requestId = 0;
 
   ExploreRepository get _repo => ref.read(exploreRepositoryProvider);
@@ -256,26 +228,13 @@ class ProjectSearchNotifier extends Notifier<ProjectSearchState> {
     return const ProjectSearchState();
   }
 
-  /// Called on every keystroke. Sets `query` and `isSearching` immediately
-  /// (so the "Results for" label is always accurate the instant it changes)
-  /// but deliberately does *not* touch `results` here - it stays whatever it
-  /// last was, hidden behind the loading state, until the debounced `ilike`
-  /// request actually resolves.
-  ///
-  /// An earlier version filled `results` with a client-side filter of
-  /// whatever was already loaded, as an instant preview while the debounce
-  /// settled. That's what caused the bug: `query` had already moved on to
-  /// the newly-typed text while `results` still reflected that local-only
-  /// guess (not a real search for it) - the two could visibly disagree.
-  /// Showing a skeleton until the real results land avoids that entirely.
+  /// Sets `query` immediately; `results` waits for the debounced request.
   void setQuery(String query) {
     _debounce?.cancel();
     final trimmed = query.trim();
 
     if (trimmed.isEmpty) {
       _requestId++;
-      // copyWith, not a fresh ProjectSearchState() - preserves isListening,
-      // e.g. when this is called mid-voice-session with an empty result.
       state = state.copyWith(query: '', results: const [], isSearching: false);
       return;
     }
@@ -290,9 +249,7 @@ class ProjectSearchNotifier extends Notifier<ProjectSearchState> {
     _debounce = Timer(_debounceDuration, () => _runSearch(trimmed, requestId));
   }
 
-  /// Skips the debounce and searches immediately - used for a keyboard
-  /// submit and for filter-chip taps, both deliberate one-shot actions
-  /// rather than continuous typing.
+  /// Skips the debounce - for keyboard submit and filter-chip taps.
   Future<void> submit(String query) async {
     _debounce?.cancel();
     final trimmed = query.trim();
@@ -310,11 +267,8 @@ class ProjectSearchNotifier extends Notifier<ProjectSearchState> {
     await _runSearch(trimmed, requestId);
   }
 
-  /// Filter chip tap - fills the search box with that label and searches on
-  /// it, exactly as if it had been typed; tapping the already-selected chip
-  /// clears it. Nothing else about it is special-cased. Owning the
-  /// controller here (rather than the widget) is what lets a chip tap update
-  /// the visible text without the screen needing any local state of its own.
+  /// Fills the search box with the chip's label and searches; tapping the
+  /// selected chip again clears it.
   void selectFilter(String? label) {
     if (label == null) {
       _controller.clear();
@@ -325,9 +279,8 @@ class ProjectSearchNotifier extends Notifier<ProjectSearchState> {
     }
   }
 
-  /// Toggles a voice-search session. `SpeechToText.initialize()` is
-  /// idempotent (cached after the first successful call), so this is cheap
-  /// to call every time rather than tracking init state separately.
+  /// Toggles a voice-search session. `initialize()` is idempotent, so it's
+  /// safe to call every time.
   Future<void> toggleListening() async {
     if (state.isListening) {
       await _speech.stop();
@@ -394,7 +347,6 @@ final projectDetailProvider =
 class ProjectDetailNotifier extends AsyncNotifier<CommunityProjectDetail> {
   ProjectDetailNotifier(this.projectId);
 
-  /// Riverpod 3 hands a family's argument to the notifier constructor.
   final String projectId;
 
   @override
@@ -402,10 +354,8 @@ class ProjectDetailNotifier extends AsyncNotifier<CommunityProjectDetail> {
       ref.read(exploreRepositoryProvider).fetchProjectById(projectId);
 }
 
-/// Paginated core team state - mirrors CommunityProvider's ReplyFeedState/
-/// RepliesNotifier shape (page of items + hasMore/isLoadingMore flags) so
-/// scroll-triggered pagination in the preview section follows the same
-/// pattern as the rest of the app.
+/// Paginated core team state, same shape as CommunityProvider's
+/// ReplyFeedState.
 class CoreTeamMembersState {
   const CoreTeamMembersState({
     this.members = const [],
@@ -460,8 +410,7 @@ class CoreTeamMembersNotifier extends AsyncNotifier<CoreTeamMembersState> {
     state = await AsyncValue.guard(_loadFirstPage);
   }
 
-  /// Appends the next page. No-ops while one is already in flight, at the end
-  /// of the list, or before the first page has arrived.
+  /// Appends the next page; no-ops if already loading or at the end.
   Future<void> loadMore() async {
     final current = state.value;
     if (current == null || !current.hasMore || current.isLoadingMore) return;

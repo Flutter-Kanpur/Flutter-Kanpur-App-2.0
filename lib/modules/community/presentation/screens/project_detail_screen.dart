@@ -10,6 +10,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/upload_project_cta_card.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/application/explore_providers.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/community_project_detail.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_dashed_divider.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_icon_button_circle.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_skeleton_block.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_skeleton_pulse.dart';
@@ -21,8 +22,8 @@ import 'package:flutter_knp_mobile_app_v2/utils/short_date_format.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-/// "View project details" on a [CommunityProjectPreviewCard] via
-/// `/community/projects/:projectId` - a plain path param, the same shape
+/// Single project, reached from "View project details" via
+/// `/community/projects/:projectId` - a plain path param, same shape
 /// `DiscussionDetailScreen` already uses.
 class ProjectDetailScreen extends ConsumerWidget {
   const ProjectDetailScreen({super.key, required this.projectId});
@@ -123,7 +124,7 @@ class _ProjectDetailContent extends StatelessWidget {
           ),
         ),
         SizedBox(height: AppSpacing.v16),
-        const _DashedDivider(),
+        const FkDashedDivider(),
         SizedBox(height: AppSpacing.v20),
         if (project.description.isNotEmpty) ...[
           Text(
@@ -211,6 +212,7 @@ class _ProjectDetailContent extends StatelessWidget {
   }
 }
 
+/// Cover-image thumbnail; tap opens a full-screen pinch-zoom view.
 class _ScreenshotThumbnail extends StatelessWidget {
   const _ScreenshotThumbnail({required this.imageUrl});
 
@@ -246,9 +248,6 @@ class _ScreenshotThumbnail extends StatelessWidget {
   }
 }
 
-/// Full-screen pinch-zoom view for the cover image. No lightbox package is a
-/// dependency yet, and one image doesn't need one - InteractiveViewer covers
-/// it.
 class _ExpandedScreenshotView extends StatelessWidget {
   const _ExpandedScreenshotView({required this.imageUrl});
 
@@ -280,42 +279,6 @@ class _ExpandedScreenshotView extends StatelessWidget {
       ),
     );
   }
-}
-
-/// Matches the dashed rule under "Project by [Name]" in the Figma - same
-/// 6/6 dash convention as DottedRoundedRect (common_widgets/fk_dotter_rectangle.dart),
-/// but a single horizontal line rather than a full rounded-rect border.
-class _DashedDivider extends StatelessWidget {
-  const _DashedDivider();
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: 1,
-      child: CustomPaint(painter: _DashedLinePainter()),
-    );
-  }
-}
-
-class _DashedLinePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    const dashWidth = 6.0;
-    const dashSpace = 6.0;
-    final paint = Paint()
-      ..color = AppColors.neutral200
-      ..strokeWidth = 1;
-
-    double x = 0;
-    while (x < size.width) {
-      canvas.drawLine(Offset(x, 0), Offset(x + dashWidth, 0), paint);
-      x += dashWidth + dashSpace;
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 class _ProjectDetailSkeleton extends StatelessWidget {

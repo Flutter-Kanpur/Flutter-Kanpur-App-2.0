@@ -4,10 +4,8 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart';
 
-/// Lavender "Upload project" call-to-action card, used on both the projects
-/// list and a project's detail screen with different copy. Takes `onPressed`
-/// rather than a route itself, same as [FkPrimaryButton], so it isn't tied to
-/// a specific caller's navigation method (`.go` vs `.push`).
+/// "Upload project" CTA card, used on both the projects list and detail
+/// screen with different copy.
 class UploadProjectCtaCard extends StatelessWidget {
   const UploadProjectCtaCard({
     super.key,
@@ -43,9 +41,6 @@ class UploadProjectCtaCard extends StatelessWidget {
           Text(subtitle, textAlign: TextAlign.center),
           SizedBox(height: AppSpacing.v18),
           SizedBox(
-            // Wide enough for the longer of the two labels this card ships
-            // with ("Upload a new project") to stay on one line - shared by
-            // both callers, so they stay visually consistent with each other.
             width: 260,
             child: FkPrimaryButton(
               label: buttonLabel,

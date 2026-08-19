@@ -13,11 +13,8 @@ import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/external_links.dart';
 import 'package:go_router/go_router.dart';
 
-/// Richer preview card than the real CommunityProjectCard (which has no
-/// author/date/CTA fields) - used on both the Explore dashboard preview and
-/// the full "Projects" screen. The like heart is persisted locally (there is
-/// no server-side like table for projects) via [AppPrefs.getLikedProjectIds]/
-/// [AppPrefs.setLikedProjectIds], keyed by `project.id`.
+/// Project preview card with author/date/links and a locally-persisted like
+/// (no server-side like table for projects).
 class CommunityProjectPreviewCard extends StatefulWidget {
   const CommunityProjectPreviewCard({super.key, required this.project});
 
@@ -169,9 +166,6 @@ class _CommunityProjectPreviewCardState
                   ),
                 ),
               ),
-              // Each icon only shows when its URL exists on the project row,
-              // and opens it in-app (LaunchMode.inAppBrowserView) rather than
-              // switching to a separate browser app.
               if (project.githubUrl != null &&
                   project.githubUrl!.isNotEmpty) ...[
                 SizedBox(width: AppSpacing.h6),

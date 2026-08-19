@@ -12,8 +12,7 @@ class CommunityProjectPreview {
     this.liveUrl,
   });
 
-  /// `projects.id` - passed through to the `/community/projects/:projectId`
-  /// route by "View project details".
+  /// `projects.id`, used to route to the detail screen.
   final String id;
   final String title;
   final List<String> techStack;
@@ -23,12 +22,8 @@ class CommunityProjectPreview {
   final String? figmaUrl;
   final String? liveUrl;
 
-  /// [map] is one row of `projects` joined with `project_tech_stack` via
-  /// `project_tech_stack(tech_name)` and `users` (owner) via
-  /// `owner:users!owner_uid(display_name, full_name)` - only the columns
-  /// CommunityProjectPreviewCard renders. `authorName` prefers `display_name`
-  /// (falling back to `full_name`, then a placeholder), same convention as
-  /// CoreTeamMember.fromMap.
+  /// Maps a `projects` row joined with `project_tech_stack` and `users`
+  /// (owner). `authorName` falls back from `display_name` to `full_name`.
   factory CommunityProjectPreview.fromMap(Map<String, dynamic> map) {
     final owner = map['owner'] as Map<String, dynamic>?;
     final displayName = owner?['display_name'] as String?;

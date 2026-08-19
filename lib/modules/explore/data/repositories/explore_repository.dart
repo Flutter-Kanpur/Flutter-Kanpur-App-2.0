@@ -4,21 +4,14 @@ import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/community_proje
 import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/core_team_member.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-/// Real (Supabase-backed) data for Explore sections that have moved off
-/// [ExploreLocalDataSource]'s sample data. Kept as a separate class so the
-/// remaining sample-data sections are unaffected as they migrate one at a
-/// time - mirrors CommunityRepository's constructor/query style.
 class ExploreRepository {
   ExploreRepository({SupabaseClient? client})
     : _client = client ?? Supabase.instance.client;
 
   final SupabaseClient _client;
 
-  /// `community_memberships` joined with `users`, restricted to only the
-  /// columns the Core Team preview needs: community_key/role/membership_status
-  /// from the membership row, display_name/full_name/photo_url from the user.
-  /// No status filter yet - fetches every row - and paginated via
-  /// [limit]/[offset] the same way CommunityRepository.fetchReplies does.
+  /// `community_memberships` joined with `users`, paginated via
+  /// [limit]/[offset].
   Future<List<CoreTeamMember>> fetchCoreTeamMembers({
     int limit = 10,
     int offset = 0,
@@ -37,12 +30,8 @@ class ExploreRepository {
         .toList();
   }
 
-  /// `projects` joined with `project_tech_stack` (tech chip names) and
-  /// `users` (owner display name), restricted to `status = 'active'`,
-  /// [_visibleProjectIds] (owned or shared - see there), and the newest
-  /// [limit] rows starting at [offset] - the only table/columns
-  /// CommunityProjectsPreviewSection (and the paginated all-projects screen)
-  /// render.
+  /// Newest active projects owned by or shared with the current user (see
+  /// [_visibleProjectIds]), paginated via [limit]/[offset].
   Future<List<CommunityProjectPreview>> fetchLatestCommunityProjects({
     int limit = 2,
     int offset = 0,
@@ -69,10 +58,8 @@ class ExploreRepository {
         .toList();
   }
 
-  /// Same shape/columns/visibility rule as [fetchLatestCommunityProjects],
-  /// but matched against [query] server-side (`ilike` on `title`) instead of
-  /// just the newest rows - the actual search, not a frontend-only filter of
-  /// whatever happens to already be loaded.
+  /// Same visibility rule as [fetchLatestCommunityProjects], filtered by
+  /// `title ilike` [query].
   Future<List<CommunityProjectPreview>> searchProjects(
     String query, {
     int limit = 20,
@@ -100,15 +87,7 @@ class ExploreRepository {
         .toList();
   }
 
-  /// Ids of every project visible to the current user: owned by them
-  /// (`owner_uid`), or shared with them via an active `project_members` row.
-  /// "Community Projects" is no longer a public browse of every active
-  /// project - it's the signed-in user's own plus whatever's been shared
-  /// with them, same membership concept [_fetchSharedOn] already uses for
-  /// the detail screen. Two lightweight id-only queries, rather than one
-  /// query trying to OR across a joined table - this keeps the actual data
-  /// query (in [fetchLatestCommunityProjects]/[searchProjects]) down to a
-  /// plain `id IN (...)` filter.
+  /// Ids of projects owned by or shared with the current user.
   Future<List<String>> _visibleProjectIds() async {
     final currentUserId = _client.auth.currentUser?.id;
     if (currentUserId == null) return [];
@@ -130,14 +109,7 @@ class ExploreRepository {
     return ids.toList();
   }
 
-  /// Single `projects` row by id, same join columns as
-  /// [fetchLatestCommunityProjects] plus the detail-only fields (summary/
-  /// description/cover_image_url). `owner_uid` is selected only to decide
-  /// [_fetchSharedOn] below - it isn't exposed on [CommunityProjectDetail].
-  ///
-  /// There's no server-side "is this shared with me" flag, so it's derived
-  /// here: if the viewer isn't the owner, look up their `project_members`
-  /// row for this project - an active one's `joined_at` becomes `sharedOn`.
+  /// Single project by id, plus [_fetchSharedOn] for the "Shared on" date.
   Future<CommunityProjectDetail> fetchProjectById(String projectId) async {
     final data = await _client
         .from(DatabaseTables.projects)
