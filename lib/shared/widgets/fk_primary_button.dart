@@ -18,6 +18,41 @@ class FkPrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final labelText = Text(
+      label,
+      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+        color: AppColors.whiteBase,
+        fontWeight: FontWeight.w500,
+      ),
+    );
+
+    // TextButton.icon always reserves the icon's layout space, even when
+    // `icon` is null (Icon(null) still lays out as an empty same-size box) -
+    // that phantom space was pushing the label off-center. Plain TextButton
+    // (no icon slot at all) is used whenever there's no icon to show.
+    final Widget button;
+    if (isLoading) {
+      button = TextButton.icon(
+        onPressed: null,
+        iconAlignment: IconAlignment.end,
+        icon: const SizedBox(
+          width: 16,
+          height: 16,
+          child: CircularProgressIndicator(strokeWidth: 2),
+        ),
+        label: labelText,
+      );
+    } else if (icon != null) {
+      button = TextButton.icon(
+        onPressed: onPressed,
+        iconAlignment: IconAlignment.end,
+        icon: Icon(icon, color: AppColors.whiteBase),
+        label: labelText,
+      );
+    } else {
+      button = TextButton(onPressed: onPressed, child: labelText);
+    }
+
     return SizedBox(
       height: 50,
       width: double.infinity,
@@ -33,24 +68,7 @@ class FkPrimaryButton extends StatelessWidget {
             ),
           ],
         ),
-        child: TextButton.icon(
-          onPressed: isLoading ? null : onPressed,
-          iconAlignment: IconAlignment.end,
-          icon: isLoading
-              ? const SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : Icon(icon, color: AppColors.whiteBase),
-          label: Text(
-            label,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: AppColors.whiteBase,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
+        child: button,
       ),
     );
   }

@@ -8,6 +8,7 @@ class AppPrefs {
 
   static const _hasSeenLandingKey = 'has_seen_landing';
   static const _onboardingDraftKey = 'onboarding_draft';
+  static const _likedProjectIdsKey = 'liked_project_ids';
 
   static Future<bool> getHasSeenLanding() async {
     final prefs = await SharedPreferences.getInstance();
@@ -40,5 +41,18 @@ class AppPrefs {
   static Future<void> clearOnboardingDraft() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_onboardingDraftKey);
+  }
+
+  /// Ids of projects the user has liked - keyed by `projects.id`. There is no
+  /// server-side like table for projects (unlike questions/answers), so this
+  /// is purely local, client-side state.
+  static Future<Set<String>> getLikedProjectIds() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList(_likedProjectIdsKey)?.toSet() ?? {};
+  }
+
+  static Future<void> setLikedProjectIds(Set<String> ids) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(_likedProjectIdsKey, ids.toList());
   }
 }

@@ -3,6 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/data/repositories/community_repository.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/data/services/answer_service.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/domain/community_models.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/explore/application/explore_providers.dart';
 
 // --- Repository -------------------------------------------------------------
 
@@ -549,6 +550,10 @@ class CommunityActionController extends AsyncNotifier<void> {
     );
     if (result.isSuccess) {
       ref.invalidate(communityProjectsProvider);
+      // Explore's model/repo also surfaces projects (once approved &
+      // status='active') - keep both in sync with the same invalidation.
+      ref.invalidate(exploreCommunityProjectPreviewsProvider);
+      ref.invalidate(communityProjectsPagedProvider);
     }
     return result;
   }

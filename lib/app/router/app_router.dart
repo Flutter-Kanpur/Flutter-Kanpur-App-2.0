@@ -19,6 +19,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/community_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/discussion_detail_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/notifications_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/project_detail_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/upload_project_form_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/upload_project_landing_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/events/presentation/screens/events_screen.dart';
@@ -127,6 +128,14 @@ final GoRouter appRouter = GoRouter(
                 GoRoute(
                   path: RouteNames.communityProjectsSegment,
                   builder: (context, state) => const CommunityProjectsScreen(),
+                  routes: [
+                    GoRoute(
+                      path: ':projectId',
+                      builder: (context, state) => ProjectDetailScreen(
+                        projectId: state.pathParameters['projectId'] ?? '',
+                      ),
+                    ),
+                  ],
                 ),
                 GoRoute(
                   path: RouteNames.communityGuidelinesSegment,
