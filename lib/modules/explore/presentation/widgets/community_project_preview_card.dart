@@ -4,55 +4,26 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
-import 'package:flutter_knp_mobile_app_v2/core/storage/app_prefs.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/explore/application/explore_providers.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/community_project_preview.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_card.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_icon_button_circle.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_status_chip.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/external_links.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-/// Project preview card with author/date/links and a locally-persisted like
-/// (no server-side like table for projects).
-class CommunityProjectPreviewCard extends StatefulWidget {
+/// No server-side like table for projects.
+class CommunityProjectPreviewCard extends ConsumerWidget {
   const CommunityProjectPreviewCard({super.key, required this.project});
 
   final CommunityProjectPreview project;
 
   @override
-  State<CommunityProjectPreviewCard> createState() =>
-      _CommunityProjectPreviewCardState();
-}
-
-class _CommunityProjectPreviewCardState
-    extends State<CommunityProjectPreviewCard> {
-  bool _isLiked = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadLikedState();
-  }
-
-  Future<void> _loadLikedState() async {
-    final ids = await AppPrefs.getLikedProjectIds();
-    if (!mounted) return;
-    setState(() => _isLiked = ids.contains(widget.project.id));
-  }
-
-  Future<void> _toggleLiked() async {
-    final next = !_isLiked;
-    setState(() => _isLiked = next);
-
-    final ids = await AppPrefs.getLikedProjectIds();
-    next ? ids.add(widget.project.id) : ids.remove(widget.project.id);
-    await AppPrefs.setLikedProjectIds(ids);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final project = widget.project;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isLiked = (ref.watch(likedProjectIdsProvider).value ?? const {})
+        .contains(project.id);
 
     return FkCard(
       child: Column(
@@ -71,10 +42,12 @@ class _CommunityProjectPreviewCardState
                 ),
               ),
               IconButton(
-                onPressed: _toggleLiked,
+                onPressed: () => ref
+                    .read(likedProjectIdsProvider.notifier)
+                    .toggle(project.id),
                 icon: Icon(
-                  _isLiked ? Icons.favorite : Icons.favorite_border,
-                  color: _isLiked ? AppColors.errorFg : AppColors.neutral400,
+                  isLiked ? Icons.favorite : Icons.favorite_border,
+                  color: isLiked ? AppColors.errorFg : AppColors.neutral400,
                   size: 20,
                 ),
                 padding: EdgeInsets.zero,

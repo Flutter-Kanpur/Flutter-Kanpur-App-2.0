@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/common_widgets/search_bar.dart';
@@ -13,6 +11,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets
 import 'package:flutter_knp_mobile_app_v2/modules/explore/application/explore_providers.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/presentation/widgets/community_project_preview_card.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/presentation/widgets/community_project_preview_card_skeleton.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_load_more_button.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -182,7 +181,7 @@ class _PagedProjectsList extends ConsumerWidget {
           CommunityProjectPreviewCardSkeleton(),
           CommunityProjectPreviewCardSkeleton(),
         ] else if (state.hasMore)
-          _LoadMoreButton(
+          FkLoadMoreButton(
             label: 'Load more',
             icon: Icons.keyboard_arrow_down_rounded,
             onTap: () =>
@@ -190,7 +189,7 @@ class _PagedProjectsList extends ConsumerWidget {
           )
         else if (state.projects.length >
             CommunityProjectsPagedNotifier.initialCount)
-          _LoadMoreButton(
+          FkLoadMoreButton(
             label: 'View less',
             icon: Icons.keyboard_arrow_up_rounded,
             onTap: () =>
@@ -266,59 +265,6 @@ class _EmptyProjectsView extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-/// Pagination pill - "Load more" or "View less" depending on [label]/[icon].
-class _LoadMoreButton extends StatelessWidget {
-  const _LoadMoreButton({
-    required this.label,
-    required this.icon,
-    required this.onTap,
-  });
-
-  final String label;
-  final IconData icon;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: AppSpacing.v6),
-      child: Center(
-        child: Material(
-          color: AppColors.whiteBase,
-          borderRadius: AppRadius.all09,
-          child: InkWell(
-            onTap: onTap,
-            borderRadius: AppRadius.all09,
-            child: Container(
-              padding: AppSpacing.symmetric(
-                horizontal: AppSpacing.h18,
-                vertical: AppSpacing.v10,
-              ),
-              decoration: BoxDecoration(
-                border: AppBorders.allSecondary(),
-                borderRadius: AppRadius.all09,
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(icon, size: 18, color: AppColors.blackBase),
-                  SizedBox(width: AppSpacing.h4),
-                  Text(
-                    label,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyMedium?.copyWith(color: AppColors.blackBase),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
       ),
     );
   }

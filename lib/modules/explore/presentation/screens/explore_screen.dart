@@ -55,7 +55,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                     children: [
                       ParticipationActivitiesSection(
                         onEventsTap: () => context.push(RouteNames.events),
-                        onContestsTap: () {},
+                        onContestsTap: () => context.push(RouteNames.contests),
                         onOpenCallsTap: () {},
                       ),
                       SizedBox(height: AppSpacing.v12),
