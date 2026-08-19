@@ -30,6 +30,10 @@
     <string>Flutter Kanpur uses your calendar to add contest schedules you choose to save.</string>
     <key>NSCalendarsFullAccessUsageDescription</key>
     <string>Flutter Kanpur uses your calendar to add contest schedules you choose to save.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Flutter Kanpur uses your microphone for voice search on the Projects screen.</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>Flutter Kanpur uses speech recognition to turn your voice search into text.</string>
     <key>UIApplicationSceneManifest</key>
     <dict>
       <key>UIApplicationSupportsMultipleScenes</key>

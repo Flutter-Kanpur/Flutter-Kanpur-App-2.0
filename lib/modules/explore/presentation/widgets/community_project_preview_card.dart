@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/core/storage/app_prefs.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/community_project_preview.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_card.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_icon_button_circle.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_status_chip.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/external_links.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
-/// Richer preview card than the real CommunityProjectCard (which has no
-/// author/date/CTA fields) - built fresh for the Explore dashboard using
-/// sample data. The like heart is decorative local state, not persisted.
+/// Project preview card with author/date/links and a locally-persisted like
+/// (no server-side like table for projects).
 class CommunityProjectPreviewCard extends StatefulWidget {
   const CommunityProjectPreviewCard({super.key, required this.project});
 
@@ -27,6 +28,27 @@ class CommunityProjectPreviewCard extends StatefulWidget {
 class _CommunityProjectPreviewCardState
     extends State<CommunityProjectPreviewCard> {
   bool _isLiked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLikedState();
+  }
+
+  Future<void> _loadLikedState() async {
+    final ids = await AppPrefs.getLikedProjectIds();
+    if (!mounted) return;
+    setState(() => _isLiked = ids.contains(widget.project.id));
+  }
+
+  Future<void> _toggleLiked() async {
+    final next = !_isLiked;
+    setState(() => _isLiked = next);
+
+    final ids = await AppPrefs.getLikedProjectIds();
+    next ? ids.add(widget.project.id) : ids.remove(widget.project.id);
+    await AppPrefs.setLikedProjectIds(ids);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +71,7 @@ class _CommunityProjectPreviewCardState
                 ),
               ),
               IconButton(
-                onPressed: () => setState(() => _isLiked = !_isLiked),
+                onPressed: _toggleLiked,
                 icon: Icon(
                   _isLiked ? Icons.favorite : Icons.favorite_border,
                   color: _isLiked ? AppColors.errorFg : AppColors.neutral400,
@@ -122,10 +144,9 @@ class _CommunityProjectPreviewCardState
             children: [
               Expanded(
                 child: ElevatedButton(
-                  // project.id isn't consumed yet - no project detail screen
-                  // exists to navigate to - but it's on the model and ready
-                  // to pass through once that screen is built.
-                  onPressed: () {},
+                  onPressed: () => context.push(
+                    '${RouteNames.communityProjects}/${project.id}',
+                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.blackBase,
                     foregroundColor: AppColors.whiteBase,
@@ -145,13 +166,10 @@ class _CommunityProjectPreviewCardState
                   ),
                 ),
               ),
-              // Each icon only shows when its URL exists on the project row,
-              // and opens it in-app (LaunchMode.inAppBrowserView) rather than
-              // switching to a separate browser app.
               if (project.githubUrl != null &&
                   project.githubUrl!.isNotEmpty) ...[
                 SizedBox(width: AppSpacing.h6),
-                _IconButtonCircle(
+                FkIconButtonCircle(
                   assetPath: AssetsPath.githubSvg,
                   onTap: () =>
                       openInAppUrlOrNotify(context, project.githubUrl!),
@@ -160,7 +178,7 @@ class _CommunityProjectPreviewCardState
               if (project.figmaUrl != null &&
                   project.figmaUrl!.isNotEmpty) ...[
                 SizedBox(width: AppSpacing.h6),
-                _IconButtonCircle(
+                FkIconButtonCircle(
                   assetPath: AssetsPath.linkIcon,
                   onTap: () =>
                       openInAppUrlOrNotify(context, project.figmaUrl!),
@@ -168,7 +186,7 @@ class _CommunityProjectPreviewCardState
               ],
               if (project.liveUrl != null && project.liveUrl!.isNotEmpty) ...[
                 SizedBox(width: AppSpacing.h6),
-                _IconButtonCircle(
+                FkIconButtonCircle(
                   assetPath: AssetsPath.liveIcon,
                   onTap: () =>
                       openInAppUrlOrNotify(context, project.liveUrl!),
@@ -177,37 +195,6 @@ class _CommunityProjectPreviewCardState
             ],
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _IconButtonCircle extends StatelessWidget {
-  const _IconButtonCircle({required this.assetPath, required this.onTap});
-
-  final String assetPath;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: AppColors.whiteBase,
-      shape: CircleBorder(side: BorderSide(color: AppBorders.secondary)),
-      child: InkWell(
-        onTap: onTap,
-        customBorder: const CircleBorder(),
-        child: Padding(
-          padding: EdgeInsets.all(AppSpacing.h10),
-          child: SvgPicture.asset(
-            assetPath,
-            width: 16,
-            height: 16,
-            colorFilter: const ColorFilter.mode(
-              AppColors.neutral700,
-              BlendMode.srcIn,
-            ),
-          ),
-        ),
       ),
     );
   }

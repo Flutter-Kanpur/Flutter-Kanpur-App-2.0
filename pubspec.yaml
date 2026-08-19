@@ -50,6 +50,7 @@ dependencies:
   # Was already imported by manage_profile_header / app_update_service and
   # resolving only as a transitive dependency.
   url_launcher: ^6.3.1
+  speech_to_text: ^7.3.0
 
   # Blogs product (Flutter Kanpur ReadMe)
   Readme:

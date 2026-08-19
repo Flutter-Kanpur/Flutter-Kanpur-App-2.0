@@ -6,7 +6,7 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
-class CommonSearchBar extends StatelessWidget {
+class CommonSearchBar extends StatefulWidget {
   final TextEditingController? controller;
   final String? hintText;
   final ValueChanged<String>? onChanged;
@@ -15,6 +15,12 @@ class CommonSearchBar extends StatelessWidget {
   final FocusNode? focusNode;
   final bool readOnly;
   final VoidCallback? onTap;
+
+  /// While focused, switches to a dark style. Opt-in, default false.
+  final bool darkenOnFocus;
+
+  /// Swaps the mic icon to a filled/active state. Purely visual.
+  final bool isListening;
 
   const CommonSearchBar({
     super.key,
@@ -26,15 +32,52 @@ class CommonSearchBar extends StatelessWidget {
     this.focusNode,
     this.readOnly = false,
     this.onTap,
+    this.darkenOnFocus = false,
+    this.isListening = false,
   });
 
   @override
+  State<CommonSearchBar> createState() => _CommonSearchBarState();
+}
+
+class _CommonSearchBarState extends State<CommonSearchBar> {
+  FocusNode? _ownedFocusNode;
+  bool _isFocused = false;
+
+  FocusNode get _focusNode => widget.focusNode ?? _ownedFocusNode!;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.focusNode == null) {
+      _ownedFocusNode = FocusNode();
+    }
+    _focusNode.addListener(_handleFocusChange);
+  }
+
+  @override
+  void dispose() {
+    _focusNode.removeListener(_handleFocusChange);
+    _ownedFocusNode?.dispose();
+    super.dispose();
+  }
+
+  void _handleFocusChange() {
+    if (!widget.darkenOnFocus) return;
+    setState(() => _isFocused = _focusNode.hasFocus);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final isDark = widget.darkenOnFocus && _isFocused;
+    final fg = isDark ? AppColors.whiteBase : AppColors.blackBase;
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16),
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
         decoration: BoxDecoration(
-          color: AppColors.whiteBase,
+          color: isDark ? AppColors.blackBase : AppColors.whiteBase,
           borderRadius: AppRadius.all07,
           boxShadow: [
             BoxShadow(
@@ -51,28 +94,24 @@ class CommonSearchBar extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Icon(
-                Icons.search_rounded,
-                size: 20.sp,
-                color: AppColors.blackBase,
-              ),
+              Icon(Icons.search_rounded, size: 20.sp, color: fg),
               12.horizontalSpace,
               Expanded(
                 child: TextField(
-                  controller: controller,
-                  focusNode: focusNode,
-                  readOnly: readOnly,
-                  onTap: onTap,
-                  onChanged: onChanged,
-                  onSubmitted: onSubmitted,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.blackBase,
-                  ),
+                  controller: widget.controller,
+                  focusNode: _focusNode,
+                  readOnly: widget.readOnly,
+                  onTap: widget.onTap,
+                  onChanged: widget.onChanged,
+                  onSubmitted: widget.onSubmitted,
+                  cursorColor: fg,
+                  style: AppTextStyles.bodyMedium.copyWith(color: fg),
                   decoration: InputDecoration(
                     hintText:
-                        hintText ?? translate(context, 'common.searchEvents'),
+                        widget.hintText ??
+                        translate(context, 'common.searchEvents'),
                     hintStyle: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.neutral500,
+                      color: isDark ? AppColors.neutral400 : AppColors.neutral500,
                     ),
                     border: InputBorder.none,
                     enabledBorder: InputBorder.none,
@@ -82,17 +121,13 @@ class CommonSearchBar extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
-                color: AppColors.blackBase,
-                width: AppSpacing.v2,
-                height: 25,
-              ),
+              Container(color: fg, width: AppSpacing.v2, height: 25),
               8.horizontalSpace,
               GestureDetector(
-                onTap: onMicTap,
+                onTap: widget.onMicTap,
                 child: Icon(
-                  Icons.mic_none,
-                  color: AppColors.blackBase,
+                  widget.isListening ? Icons.mic : Icons.mic_none,
+                  color: widget.isListening ? AppColors.primary500 : fg,
                   size: 20.sp,
                 ),
               ),
