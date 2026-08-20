@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter_knp_mobile_app_v2/core/storage/app_prefs.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/data/explore_local_data_source.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/data/repositories/explore_repository.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/community_project_detail.dart';
@@ -19,6 +20,25 @@ final heroBannerSlidesProvider = Provider<List<Map<String, String?>>>(
 final exploreRepositoryProvider = Provider<ExploreRepository>(
   (ref) => ExploreRepository(),
 );
+
+/// Liked-project ids - no server-side like table, so persisted via [AppPrefs].
+final likedProjectIdsProvider =
+    AsyncNotifierProvider<LikedProjectIdsNotifier, Set<String>>(
+      LikedProjectIdsNotifier.new,
+    );
+
+class LikedProjectIdsNotifier extends AsyncNotifier<Set<String>> {
+  @override
+  Future<Set<String>> build() => AppPrefs.getLikedProjectIds();
+
+  Future<void> toggle(String projectId) async {
+    final current = state.value ?? const {};
+    final next = Set<String>.from(current);
+    next.contains(projectId) ? next.remove(projectId) : next.add(projectId);
+    state = AsyncData(next);
+    await AppPrefs.setLikedProjectIds(next);
+  }
+}
 
 final exploreCommunityProjectPreviewsProvider =
     AsyncNotifierProvider<

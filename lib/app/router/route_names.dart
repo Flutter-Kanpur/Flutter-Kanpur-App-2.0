@@ -72,6 +72,10 @@ class RouteNames {
   static const myContests = '/profile/my-contests';
   static const problemOfDay = '/profile/problem-of-day';
 
+  /// Browse-all contests, reached by pushing from the Explore dashboard's
+  /// "Contests" participation tile.
+  static const contests = '/contests';
+
   /// Legal
   static const aboutFlutterKanpur = '/profile/about-flutter-kanpur';
   static const privacyPolicy = '/profile/privacy-policy';
