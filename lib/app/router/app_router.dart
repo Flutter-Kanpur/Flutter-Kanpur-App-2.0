@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/shell_with_bottom_nav.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/readme_host_routes.dart';
+import 'package:flutter_knp_mobile_app_v2/app/router/community_upload_routes.dart';
 
 import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/auth_landing_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/auth_options_screen.dart';
@@ -20,8 +21,6 @@ import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/discussion_detail_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/notifications_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/project_detail_screen.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/upload_project_form_screen.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/upload_project_landing_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/events/presentation/screens/events_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/presentation/screens/contests_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/presentation/screens/explore_screen.dart';
@@ -142,22 +141,6 @@ final GoRouter appRouter = GoRouter(
                   path: RouteNames.communityGuidelinesSegment,
                   builder: (context, state) =>
                       const CommunityGuidelinesScreen(),
-                ),
-                GoRoute(
-                  path: RouteNames.communityUploadProjectSegment,
-                  builder: (context, state) =>
-                      const UploadProjectLandingScreen(),
-                  routes: [
-                    GoRoute(
-                      path: RouteNames.communityUploadProjectFormSegment,
-                      builder: (context, state) =>
-                          const UploadProjectFormScreen(),
-                    ),
-                  ],
-                ),
-                GoRoute(
-                  path: RouteNames.communityProjectSubmittedSegment,
-                  builder: (context, state) => const ProjectSubmittedScreen(),
                 ),
                 GoRoute(
                   path: RouteNames.communityNetworkErrorSegment,
@@ -437,5 +420,8 @@ final GoRouter appRouter = GoRouter(
 
     /// Embedded ReadMe overlays (blog detail, create, etc.)
     ...readmeHostRoutes(rootNavigatorKey: rootNavigatorKey),
+
+    /// Upload-project flow (root overlay — safe to open from any tab).
+    ...communityUploadRoutes(rootNavigatorKey: rootNavigatorKey),
   ],
 );

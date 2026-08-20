@@ -1,13 +1,5 @@
 {
-  // Point the Dart/Flutter extension at the fvm-pinned SDK (3.41.0 / Dart 3.11).
-  // Without this, VS Code picks up whatever `flutter` is on PATH — currently
-  // 3.32.4 / Dart 3.8.1, which fails pubspec's `sdk: ^3.11.0` with a version
-  // solving error. Relative path, so it resolves for anyone who has run
-  // `fvm install` (it reads the pinned version from .fvmrc).
-  "dart.flutterSdkPath": ".fvm/flutter_sdk",
-
-  // Keep the symlinked SDK out of search results, the file explorer and the
-  // file watcher — otherwise VS Code indexes the entire Flutter SDK.
+  "dart.flutterSdkPath": ".fvm/versions/3.44.9",
   "search.exclude": {
     "**/.fvm/versions": true
   },
@@ -17,7 +9,6 @@
   "files.exclude": {
     "**/.fvm/versions": true
   },
-
   "flutterTools.displayGetxContextMenu": false,
   "flutterTools.displayMobxContextMenu": false,
   "flutterTools.displayRiverpodContextMenu": false,

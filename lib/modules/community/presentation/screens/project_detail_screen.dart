@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_knp_mobile_app_v2/app/router/community_upload_routes.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
@@ -205,7 +206,7 @@ class _ProjectDetailContent extends StatelessWidget {
           subtitle:
               'Upload your project and let the community inspired by your work.',
           buttonLabel: 'Upload a new project',
-          onPressed: () => context.go(RouteNames.communityUploadProject),
+          onPressed: () => openCommunityUploadProject(context),
         ),
       ],
     );

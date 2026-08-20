@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:flutter_knp_mobile_app_v2/app/router/community_upload_routes.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
@@ -164,7 +165,7 @@ class CommunityScreen extends ConsumerWidget {
                     body:
                         'Share your projects with the community to showcase your work.',
                     onTap: () =>
-                        context.push(RouteNames.communityUploadProject),
+                        openCommunityUploadProject(context),
                   ),
                 ),
                 SizedBox(width: AppSpacing.h12),

@@ -195,6 +195,25 @@ class CommunityProjectsNotifier extends AsyncNotifier<List<CommunityProject>> {
   }
 }
 
+/// Current user's projects waiting for community-team approval.
+final myPendingProjectsProvider =
+    AsyncNotifierProvider<MyPendingProjectsNotifier, List<CommunityProject>>(
+      MyPendingProjectsNotifier.new,
+    );
+
+class MyPendingProjectsNotifier extends AsyncNotifier<List<CommunityProject>> {
+  @override
+  Future<List<CommunityProject>> build() =>
+      ref.read(communityRepositoryProvider).fetchMyProjectsPendingReview();
+
+  Future<void> refresh() async {
+    state = await AsyncValue.guard(
+      () =>
+          ref.read(communityRepositoryProvider).fetchMyProjectsPendingReview(),
+    );
+  }
+}
+
 // --- Question detail --------------------------------------------------------
 
 final questionDetailProvider =
@@ -550,6 +569,7 @@ class CommunityActionController extends AsyncNotifier<void> {
     );
     if (result.isSuccess) {
       ref.invalidate(communityProjectsProvider);
+      ref.invalidate(myPendingProjectsProvider);
       // Explore's model/repo also surfaces projects (once approved &
       // status='active') - keep both in sync with the same invalidation.
       ref.invalidate(exploreCommunityProjectPreviewsProvider);

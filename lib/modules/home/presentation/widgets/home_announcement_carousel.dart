@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_knp_mobile_app_v2/app/router/community_upload_routes.dart';
+import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeAnnouncementCarousel extends StatelessWidget {
   const HomeAnnouncementCarousel({
@@ -78,6 +81,7 @@ class _AnnouncementCard extends StatelessWidget {
     final title = announcement['title'] ?? '';
     final body = announcement['body'] ?? '';
     final btnText = announcement['btn_text'] ?? '';
+    final btnUrl = announcement['btn_url']?.trim();
     final bgImage = announcement['background_image'];
     final hasImage = bgImage != null && bgImage.isNotEmpty;
 
@@ -116,7 +120,9 @@ class _AnnouncementCard extends StatelessWidget {
                 left: 20.w,
                 bottom: 20.h,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: btnUrl == null || btnUrl.isEmpty
+                      ? null
+                      : () => _onAnnouncementAction(context, btnUrl),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.whiteBase,
                     foregroundColor: AppColors.primary600,
@@ -176,7 +182,9 @@ class _AnnouncementCard extends StatelessWidget {
                     8.verticalSpace,
                     if (btnText.isNotEmpty)
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: btnUrl == null || btnUrl.isEmpty
+                            ? null
+                            : () => _onAnnouncementAction(context, btnUrl),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.whiteBase,
                           foregroundColor: AppColors.primary600,
@@ -205,6 +213,25 @@ class _AnnouncementCard extends StatelessWidget {
       ),
     );
   }
+}
+
+void _onAnnouncementAction(BuildContext context, String target) {
+  if (target == RouteNames.communityUploadProject ||
+      target.startsWith('${RouteNames.communityUploadProject}/')) {
+    openCommunityUploadProject(context);
+    return;
+  }
+
+  if (target == RouteNames.home ||
+      target == RouteNames.community ||
+      target == RouteNames.explore ||
+      target == RouteNames.blogs ||
+      target == RouteNames.profile) {
+    context.go(target);
+    return;
+  }
+
+  context.push(target);
 }
 
 class _CarouselIndicators extends StatelessWidget {

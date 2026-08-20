@@ -288,6 +288,28 @@ class CommunityRepository {
         .toList();
   }
 
+  /// Projects the signed-in user has submitted and are awaiting team review.
+  Future<List<CommunityProject>> fetchMyProjectsPendingReview() async {
+    final userId = _currentUserId;
+    if (userId == null) return const [];
+
+    final data = await _client
+        .from(DatabaseTables.projects)
+        .select(
+          'id, title, summary, status, github_url, live_url, cover_image_url, '
+          'created_at, owner:users!owner_uid(display_name, username), '
+          'project_tech_stack(tech_name)',
+        )
+        .eq('is_deleted', false)
+        .eq('owner_uid', userId)
+        .eq('status', 'pending_review')
+        .order('created_at', ascending: false);
+
+    return (data as List<dynamic>)
+        .map((m) => CommunityProject.fromMap(m as Map<String, dynamic>))
+        .toList();
+  }
+
   // ─── Engagement ───────────────────────────────────────────────────────────
 
   /// Adds or removes a like. Returns the resulting liked state.

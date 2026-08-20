@@ -14,7 +14,7 @@ class ExploreLocalDataSource {
           'Connect with developers, designers, and learners. Participate in '
           'events, learn together, and contribute to community projects.',
       'btn_text': 'Join community',
-      'btn_url': '',
+      'btn_url': '/community',
       'background_image': null,
     },
     {
@@ -23,7 +23,7 @@ class ExploreLocalDataSource {
           'Upload your projects, get feedback from the community, and get '
           'discovered by other builders in Flutter Kanpur.',
       'btn_text': 'Upload a project',
-      'btn_url': '',
+      'btn_url': '/community/upload-project',
       'background_image': null,
     },
   ];

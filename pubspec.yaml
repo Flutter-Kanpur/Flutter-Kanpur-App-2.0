@@ -17,6 +17,7 @@ dependencies:
   flutter_secure_storage: ^10.2.0
   supabase_flutter: ^2.12.4
   flutter_dotenv: ^6.0.1
+  flutter_quill: ^11.5.1
   flutter_riverpod: ^3.3.1
   easy_localization: ^3.0.8
   flutter_kanpur_ui_kit: ^0.0.13

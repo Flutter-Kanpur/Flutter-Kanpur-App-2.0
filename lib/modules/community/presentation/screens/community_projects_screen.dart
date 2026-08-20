@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
+import 'package:flutter_knp_mobile_app_v2/app/router/community_upload_routes.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
@@ -15,7 +15,6 @@ import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_load_more_button.dar
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 /// Full "Projects" list. Seeds from [communityProjectsPagedProvider];
 /// typing/voice/a filter chip switches to [projectSearchProvider] instead.
@@ -143,8 +142,7 @@ class CommunityProjectsScreen extends ConsumerWidget {
                           subtitle:
                               'Upload your project and let the community inspired by your work.',
                           buttonLabel: 'Upload project',
-                          onPressed: () =>
-                              context.go(RouteNames.communityUploadProject),
+                          onPressed: () => openCommunityUploadProject(context),
                         ),
                       ),
                     ),
@@ -261,7 +259,7 @@ class _EmptyProjectsView extends StatelessWidget {
             child: FkPrimaryButton(
               label: 'Upload your project',
               icon: null,
-              onPressed: () => context.go(RouteNames.communityUploadProject),
+              onPressed: () => openCommunityUploadProject(context),
             ),
           ),
         ],
