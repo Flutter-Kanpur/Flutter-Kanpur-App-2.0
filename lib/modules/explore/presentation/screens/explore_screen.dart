@@ -64,7 +64,9 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                             context.push(RouteNames.communityProjects),
                       ),
                       SizedBox(height: AppSpacing.v12),
-                      CoreTeamPreviewSection(onViewAllTap: () {}),
+                      CoreTeamPreviewSection(
+                        onViewAllTap: () => context.push(RouteNames.coreTeam),
+                      ),
                       SizedBox(height: AppSpacing.v12),
                     ],
                   ),
@@ -99,7 +101,6 @@ class _ExploreAppBar extends StatelessWidget {
               'Explore',
               style: AppTextStyles.titleLarge.copyWith(
                 color: AppColors.blackBase,
-                fontWeight: FontWeight.w600,
               ),
             ),
           ),

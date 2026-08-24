@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:go_router/go_router.dart';
 
 class FkBackButton extends StatelessWidget {
@@ -16,7 +17,7 @@ class FkBackButton extends StatelessWidget {
           context.go(fallbackPath);
         }
       },
-      icon: const Icon(Icons.arrow_back_rounded),
+      icon: const Icon(Icons.arrow_back_rounded,color: AppColors.blackBase,),
     );
   }
 }

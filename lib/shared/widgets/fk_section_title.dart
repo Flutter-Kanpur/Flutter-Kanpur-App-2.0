@@ -25,7 +25,6 @@ class FkSectionTitle extends StatelessWidget {
             child: Text(
               title,
               style: AppTextStyles.titleMedium.copyWith(
-                fontWeight: FontWeight.w600,
                 color: AppColors.neutral950,
               ),
             ),

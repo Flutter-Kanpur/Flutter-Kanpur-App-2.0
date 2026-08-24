@@ -86,7 +86,7 @@ class CommunityScreen extends ConsumerWidget {
                     .toList() ??
                 const [],
           ),
-
+          SizedBox(height: AppSpacing.v12),
           FkSectionTitle(
             title: 'Featured discussions',
             actionLabel: 'Explore all',
@@ -270,7 +270,6 @@ class _CommunityAppBar extends ConsumerWidget {
           child: Text(
             'Community',
             style: AppTextStyles.titleLarge.copyWith(
-              fontWeight: FontWeight.w600,
               color: AppColors.neutral950,
             ),
           ),

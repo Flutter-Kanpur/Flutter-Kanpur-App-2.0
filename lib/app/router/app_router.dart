@@ -23,6 +23,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/project_detail_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/events/presentation/screens/events_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/presentation/screens/contests_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/explore/presentation/screens/core_team.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/presentation/screens/explore_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/screens/home_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/onboarding/presentation/screens/onboarding_navigation_screen.dart';
@@ -241,6 +242,16 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: RouteNames.contests,
               builder: (context, state) => const ContestsScreen(),
+            ),
+          ],
+        ),
+
+        /// Core team (browse-all; reached from Explore dashboard preview).
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.coreTeam,
+              builder: (context, state) => const CoreTeamScreen(),
             ),
           ],
         ),

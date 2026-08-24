@@ -76,6 +76,10 @@ class RouteNames {
   /// "Contests" participation tile.
   static const contests = '/contests';
 
+  /// Browse-all core team, reached from the Explore dashboard's core-team
+  /// preview "View all" action.
+  static const coreTeam = '/core-team';
+
   /// Legal
   static const aboutFlutterKanpur = '/profile/about-flutter-kanpur';
   static const privacyPolicy = '/profile/privacy-policy';

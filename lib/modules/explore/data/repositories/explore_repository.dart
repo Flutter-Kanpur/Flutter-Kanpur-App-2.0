@@ -19,9 +19,14 @@ class ExploreRepository {
     final data = await _client
         .from(DatabaseTables.communityMemberships)
         .select(
-          'community_key, role, membership_status, '
-          'user:users!user_uid(display_name, full_name, photo_url)',
+          'community_key, role, membership_status, joined_at, '
+          'user:users!user_uid('
+          'display_name, full_name, username, photo_url, bio, '
+          'github_url, linkedin_url, website_url, '
+          'user_skills(skill_name)'
+          ')',
         )
+        .eq('membership_status', 'active')
         .order('joined_at', ascending: false)
         .range(offset, offset + limit - 1);
 

@@ -4,11 +4,8 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_back_button.dart';
 
-/// Centered "Projects" title + back arrow, shared by the projects list and
-/// a project's detail screen. `FkHeader` is always left-aligned with an
-/// optional subtitle, so this is its own small widget instead.
-class ProjectsAppBar extends StatelessWidget {
-  const ProjectsAppBar({super.key});
+class CoreTeamAppBar extends StatelessWidget {
+  const CoreTeamAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +19,14 @@ class ProjectsAppBar extends StatelessWidget {
           const FkBackButton(),
           Expanded(
             child: Text(
-              'Projects',
+              'Core team',
               textAlign: TextAlign.center,
               style: AppTextStyles.titleLarge.copyWith(
                 color: AppColors.blackBase,
+
               ),
             ),
           ),
-          // Balances the back button so the title is visually centered.
           const SizedBox(width: 48),
         ],
       ),

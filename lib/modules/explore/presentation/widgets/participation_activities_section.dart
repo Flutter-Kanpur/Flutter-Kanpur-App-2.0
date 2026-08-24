@@ -40,29 +40,38 @@ class ParticipationActivitiesSection extends StatelessWidget {
               child: ContributorActionCard(
                 icon: Icons.code,
                 iconAsset: AssetsPath.codeIcon,
-                title: 'Contests',
-                subtitle: 'Coding challenges and sprints.',
-                onTap: onContestsTap,
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: AppSpacing.v12),
-        Row(
-          children: [
-            Expanded(
-              child: ContributorActionCard(
-                icon: Icons.code,
-                iconAsset: AssetsPath.codeIcon,
                 title: 'Open Calls',
                 subtitle: 'Speakers, volunteers, and contributors.',
                 onTap: onOpenCallsTap,
               ),
             ),
-            SizedBox(width: AppSpacing.h12),
-            const Expanded(child: SizedBox.shrink()),
+            // Expanded(
+            //   child: ContributorActionCard(
+            //     icon: Icons.code,
+            //     iconAsset: AssetsPath.codeIcon,
+            //     title: 'Contests',
+            //     subtitle: 'Coding challenges and sprints.',
+            //     onTap: onContestsTap,
+            //   ),
+            // ),
           ],
         ),
+        // SizedBox(height: AppSpacing.v12),
+        // Row(
+        //   children: [
+        //     Expanded(
+        //       child: ContributorActionCard(
+        //         icon: Icons.code,
+        //         iconAsset: AssetsPath.codeIcon,
+        //         title: 'Open Calls',
+        //         subtitle: 'Speakers, volunteers, and contributors.',
+        //         onTap: onOpenCallsTap,
+        //       ),
+        //     ),
+        //     SizedBox(width: AppSpacing.h12),
+        //     const Expanded(child: SizedBox.shrink()),
+        //   ],
+        // ),
       ],
     );
   }
