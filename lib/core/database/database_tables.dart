@@ -36,5 +36,6 @@ class DatabaseTables {
   static const userDevices = 'user_devices';
   static const notifications = 'notifications';
   static const siteConfig = 'site_config';
+  static const homeCarouselSlides = 'home_carousel_slides';
   static const auditLogs = 'audit_logs';
 }

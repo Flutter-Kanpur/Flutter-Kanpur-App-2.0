@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_knp_mobile_app_v2/core/storage/app_prefs.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/explore/data/explore_local_data_source.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/home/application/home_carousel_providers.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/data/repositories/explore_repository.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/community_project_detail.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/community_project_preview.dart';
@@ -10,11 +10,10 @@ import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/core_team_membe
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
-// heroBannerSlidesProvider stays a plain Provider (sample data, nothing to
-// await). Everything else here is a real Supabase fetch.
+// Carousel slides are fetched from Supabase (`home_carousel_slides`).
 
 final heroBannerSlidesProvider = Provider<List<Map<String, String?>>>(
-  (ref) => ExploreLocalDataSource.fetchHeroBannerSlides(),
+  (ref) => ref.watch(exploreCarouselSlidesProvider).value ?? const [],
 );
 
 final exploreRepositoryProvider = Provider<ExploreRepository>(

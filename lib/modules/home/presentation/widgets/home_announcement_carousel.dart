@@ -10,7 +10,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/external_links.dart';
 import 'package:go_router/go_router.dart';
+import 'package:video_player/video_player.dart';
 
 class HomeAnnouncementCarousel extends StatelessWidget {
   const HomeAnnouncementCarousel({
@@ -20,7 +22,8 @@ class HomeAnnouncementCarousel extends StatelessWidget {
     required this.onPageChanged,
   });
 
-  /// Each map has keys: title, body, btn_text, btn_url, background_image (nullable).
+  /// Each map has keys: title, body, btn_text, btn_url, background_image,
+  /// video_url (nullable), content_type (image | video | text).
   final List<Map<String, String?>> announcements;
   final int currentPage;
   final ValueChanged<int> onPageChanged;
@@ -83,7 +86,10 @@ class _AnnouncementCard extends StatelessWidget {
     final btnText = announcement['btn_text'] ?? '';
     final btnUrl = announcement['btn_url']?.trim();
     final bgImage = announcement['background_image'];
-    final hasImage = bgImage != null && bgImage.isNotEmpty;
+    final videoUrl = announcement['video_url']?.trim();
+    final hasVideo = videoUrl != null && videoUrl.isNotEmpty;
+    final hasImage = !hasVideo && bgImage != null && bgImage.isNotEmpty;
+    final hasMedia = hasVideo || hasImage;
 
     return Container(
       margin: AppSpacing.horizontal(AppSpacing.h16),
@@ -96,10 +102,10 @@ class _AnnouncementCard extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            // Background: SVG or network image. CachedNetworkImage keeps the
-            // decoded image on disk/memory so re-scrolling the carousel or
-            // revisiting this screen doesn't re-download it.
-            if (hasImage)
+            // Background: video, network image, or default SVG.
+            if (hasVideo)
+              _CarouselVideoBackground(videoUrl: videoUrl)
+            else if (hasImage)
               CachedNetworkImage(
                 imageUrl: bgImage,
                 fit: BoxFit.cover,
@@ -114,8 +120,8 @@ class _AnnouncementCard extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
 
-            // Image-only mode: just a button anchored to the bottom-left
-            if (hasImage)
+            // Media mode: button anchored to the bottom-left.
+            if (hasMedia)
               Positioned(
                 left: 20.w,
                 bottom: 20.h,
@@ -215,10 +221,69 @@ class _AnnouncementCard extends StatelessWidget {
   }
 }
 
+class _CarouselVideoBackground extends StatefulWidget {
+  const _CarouselVideoBackground({required this.videoUrl});
+
+  final String videoUrl;
+
+  @override
+  State<_CarouselVideoBackground> createState() =>
+      _CarouselVideoBackgroundState();
+}
+
+class _CarouselVideoBackgroundState extends State<_CarouselVideoBackground> {
+  late final VideoPlayerController _controller;
+  bool _initialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl))
+      ..setLooping(true)
+      ..setVolume(0)
+      ..initialize().then((_) {
+        if (!mounted) return;
+        setState(() => _initialized = true);
+        _controller.play();
+      });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_initialized) {
+      return SvgPicture.asset(
+        AssetsPath.announcementcardbg,
+        fit: BoxFit.cover,
+      );
+    }
+
+    return FittedBox(
+      fit: BoxFit.cover,
+      clipBehavior: Clip.hardEdge,
+      child: SizedBox(
+        width: _controller.value.size.width,
+        height: _controller.value.size.height,
+        child: VideoPlayer(_controller),
+      ),
+    );
+  }
+}
+
 void _onAnnouncementAction(BuildContext context, String target) {
   if (target == RouteNames.communityUploadProject ||
       target.startsWith('${RouteNames.communityUploadProject}/')) {
     openCommunityUploadProject(context);
+    return;
+  }
+
+  if (target.startsWith('http://') || target.startsWith('https://')) {
+    openInAppUrlOrNotify(context, target);
     return;
   }
 

@@ -85,4 +85,22 @@ const appTableSchemas = <AppTableSchema>[
     purpose: 'Admin/user action trail with before/after JSON metadata.',
     fields: ['id', 'actor_uid', 'action', 'entity_type', 'metadata'],
   ),
+  AppTableSchema(
+    name: 'home_carousel_slides',
+    module: 'home',
+    purpose: 'Server-driven home/explore carousel slides from admin panel.',
+    fields: [
+      'id',
+      'screen',
+      'content_type',
+      'image_url',
+      'video_url',
+      'title',
+      'body',
+      'btn_text',
+      'btn_url',
+      'sort_order',
+      'is_active',
+    ],
+  ),
 ];

@@ -7,6 +7,7 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/common_widgets/search_bar.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/home/application/home_carousel_providers.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/home/application/home_providers.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/home/domain/entities/event_entity.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/screens/home_search_screen.dart';
@@ -25,32 +26,14 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final homeState = ref.watch(homeProvider);
     final homeNotifier = ref.read(homeProvider.notifier);
+    final carouselAsync = ref.watch(homeCarouselSlidesProvider);
 
     final events = homeState.filteredEvents;
 
-    final announcements = [
-      {
-        'title': 'home.announcements.first.title'.tr(),
-        'body': 'home.announcements.first.body'.tr(),
-        'btn_text': 'home.announcements.first.button'.tr(),
-        'btn_url': '',
-        'background_image': null,
-      },
-      {
-        'title': 'home.announcements.second.title'.tr(),
-        'body': 'home.announcements.second.body'.tr(),
-        'btn_text': 'home.announcements.second.button'.tr(),
-        'btn_url': '',
-        'background_image': null,
-      },
-      {
-        'title': 'home.announcements.third.title'.tr(),
-        'body': 'home.announcements.third.body'.tr(),
-        'btn_text': 'home.announcements.third.button'.tr(),
-        'btn_url': '',
-        'background_image': null,
-      },
-    ];
+    final announcements = carouselAsync.maybeWhen(
+      data: (slides) => slides,
+      orElse: () => const <Map<String, String?>>[],
+    );
 
     return GradientBackground(
       child: Scaffold(

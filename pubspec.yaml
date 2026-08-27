@@ -48,6 +48,7 @@ dependencies:
   flutter_image_compress: ^2.4.0
   path_provider: ^2.1.5
   path: ^1.9.1
+  video_player: ^2.10.0
   # Was already imported by manage_profile_header / app_update_service and
   # resolving only as a transitive dependency.
   url_launcher: ^6.3.1
