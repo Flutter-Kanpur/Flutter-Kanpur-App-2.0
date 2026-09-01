@@ -39,11 +39,18 @@ class HomeScreen extends ConsumerWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+          child: RefreshIndicator(
+            onRefresh: () async {
+              await Future.wait([
+                ref.read(homeProvider.notifier).refresh(),
+                ref.read(homeCarouselSlidesProvider.notifier).refresh(),
+              ]);
+            },
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                 const HomeAppBar(),
 
                 // --------------------------------------------------
@@ -56,6 +63,15 @@ class HomeScreen extends ConsumerWidget {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (_) => const HomeSearchScreen(),
+                      ),
+                    );
+                  },
+                  onMicTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const HomeSearchScreen(
+                          autoStartVoiceSearch: true,
+                        ),
                       ),
                     );
                   },
@@ -161,14 +177,15 @@ class HomeScreen extends ConsumerWidget {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildEventCard(BuildContext context, EventEntity event) {
     final status = event.eventStatus;
 
     return EventCardComponent(
-      assetPath: event.cover ?? '',
+      assetPath: event.coverImageUrl ?? event.cover ?? '',
       status: status['label'] as String,
       statusColor: Color(status['color'] as int),
       organization: event.hostName ?? 'Flutter Kanpur',
