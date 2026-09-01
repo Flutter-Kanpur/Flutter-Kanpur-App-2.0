@@ -13,7 +13,12 @@ import 'package:flutter_knp_mobile_app_v2/modules/home/domain/entities/event_ent
 import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/widgets/search_event_result_tile.dart';
 
 class HomeSearchScreen extends ConsumerStatefulWidget {
-  const HomeSearchScreen({super.key});
+  final bool autoStartVoiceSearch;
+
+  const HomeSearchScreen({
+    super.key,
+    this.autoStartVoiceSearch = false,
+  });
 
   @override
   ConsumerState<HomeSearchScreen> createState() => _HomeSearchScreenState();
@@ -21,6 +26,18 @@ class HomeSearchScreen extends ConsumerStatefulWidget {
 
 class _HomeSearchScreenState extends ConsumerState<HomeSearchScreen> {
   final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.autoStartVoiceSearch) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          ref.read(homeProvider.notifier).toggleListening(_searchController);
+        }
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -110,6 +127,12 @@ class _HomeSearchScreenState extends ConsumerState<HomeSearchScreen> {
               CommonSearchBar(
                 controller: _searchController,
                 hintText: 'home.searchHint'.tr(),
+                isListening: homeState.isListening,
+                onMicTap: () {
+                  ref
+                      .read(homeProvider.notifier)
+                      .toggleListening(_searchController);
+                },
                 onChanged: (value) {
                   ref.read(homeProvider.notifier).setSearchQuery(value);
                 },

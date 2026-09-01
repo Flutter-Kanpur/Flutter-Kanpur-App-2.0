@@ -45,6 +45,139 @@ class EventEntity extends Equatable {
     this.interests = const [],
   });
 
+  factory EventEntity.fromMap(Map<String, dynamic> map) {
+    DateTime? parseDateTime(dynamic value) {
+      if (value == null) return null;
+      if (value is DateTime) return value;
+      if (value is String) return DateTime.tryParse(value);
+      return null;
+    }
+
+    List<String> parseInterests(dynamic value) {
+      if (value == null) return const [];
+      if (value is List) return value.map((e) => e.toString()).toList();
+      if (value is String) {
+        return value
+            .split(',')
+            .map((e) => e.trim())
+            .where((e) => e.isNotEmpty)
+            .toList();
+      }
+      return const [];
+    }
+
+    final fromTime = parseDateTime(
+      map['from_time'] ?? map['start_at'] ?? map['start_time'],
+    );
+    final toTime = parseDateTime(
+      map['to_time'] ?? map['end_at'] ?? map['end_time'],
+    );
+
+    return EventEntity(
+      id: map['id']?.toString() ?? '',
+      category: map['category'] as String? ??
+          map['event_type'] as String? ??
+          'Technology',
+      title: map['title'] as String? ?? '',
+      description: map['description'] as String? ?? '',
+      shortDescription: map['short_description'] as String? ??
+          map['summary'] as String?,
+      cover: map['cover'] as String? ??
+          map['cover_image_url'] as String? ??
+          map['image_url'] as String?,
+      fromTime: fromTime,
+      toTime: toTime,
+      type: map['type'] as String? ??
+          (fromTime != null && fromTime.isBefore(DateTime.now())
+              ? 'past'
+              : 'upcoming'),
+      mode: map['mode'] as String? ??
+          (map['is_online'] == true ? 'Online' : 'Offline'),
+      isFree: map['is_free'] as bool? ??
+          (map['fee'] == null || map['fee'] == 0 || map['fee'] == '0'),
+      isOpenToAll: map['is_open_to_all'] as bool? ?? true,
+      interests: parseInterests(map['interests'] ?? map['tags']),
+      speakerName: map['speaker_name'] as String?,
+      speakerImage: map['speaker_image'] as String?,
+      speakerIntro: map['speaker_intro'] as String?,
+      speakerLinkedin: map['speaker_linkedin'] as String?,
+      speakerTwitter: map['speaker_twitter'] as String?,
+      hostName: map['host_name'] as String? ?? 'Flutter Kanpur',
+      hostImage: map['host_image'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'category': category,
+      'title': title,
+      'description': description,
+      'short_description': shortDescription,
+      'cover': cover,
+      'from_time': fromTime?.toIso8601String(),
+      'to_time': toTime?.toIso8601String(),
+      'type': type,
+      'mode': mode,
+      'is_free': isFree,
+      'is_open_to_all': isOpenToAll,
+      'interests': interests,
+      'speaker_name': speakerName,
+      'speaker_image': speakerImage,
+      'speaker_intro': speakerIntro,
+      'speaker_linkedin': speakerLinkedin,
+      'speaker_twitter': speakerTwitter,
+      'host_name': hostName,
+      'host_image': hostImage,
+    };
+  }
+
+  EventEntity copyWith({
+    String? id,
+    String? category,
+    String? title,
+    String? description,
+    String? shortDescription,
+    String? cover,
+    DateTime? fromTime,
+    DateTime? toTime,
+    String? type,
+    String? mode,
+    bool? isFree,
+    bool? isOpenToAll,
+    List<String>? interests,
+    String? speakerName,
+    String? speakerImage,
+    String? speakerIntro,
+    String? speakerLinkedin,
+    String? speakerTwitter,
+    String? hostName,
+    String? hostImage,
+  }) {
+    return EventEntity(
+      id: id ?? this.id,
+      category: category ?? this.category,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      shortDescription: shortDescription ?? this.shortDescription,
+      cover: cover ?? this.cover,
+      fromTime: fromTime ?? this.fromTime,
+      toTime: toTime ?? this.toTime,
+      type: type ?? this.type,
+      mode: mode ?? this.mode,
+      isFree: isFree ?? this.isFree,
+      isOpenToAll: isOpenToAll ?? this.isOpenToAll,
+      interests: interests ?? this.interests,
+      speakerName: speakerName ?? this.speakerName,
+      speakerImage: speakerImage ?? this.speakerImage,
+      speakerIntro: speakerIntro ?? this.speakerIntro,
+      speakerLinkedin: speakerLinkedin ?? this.speakerLinkedin,
+      speakerTwitter: speakerTwitter ?? this.speakerTwitter,
+      hostName: hostName ?? this.hostName,
+      hostImage: hostImage ?? this.hostImage,
+    );
+  }
+
   bool get isUpcoming {
     if (fromTime == null) return true;
     final now = DateTime.now();
@@ -128,7 +261,7 @@ class EventEntity extends Equatable {
     final minute = fromTime!.minute;
     final period = hour >= 12 ? 'PM' : 'AM';
     final hour12 = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
-    return '${hour12}:${minute.toString().padLeft(2, '0')} $period';
+    return '$hour12:${minute.toString().padLeft(2, '0')} $period';
   }
 
   String _getMonthName(int month) {

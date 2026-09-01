@@ -6,6 +6,7 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
 
 class EventCardComponent extends StatelessWidget {
   const EventCardComponent({
@@ -23,7 +24,7 @@ class EventCardComponent extends StatelessWidget {
     this.onEyeIconPressed,
   });
 
-  /// Path to the image asset (e.g., 'assets/launch_event.png')
+  /// Path to the image asset or network URL
   final String assetPath;
 
   /// Status text (e.g., 'Upcoming', 'Ongoing')
@@ -55,6 +56,33 @@ class EventCardComponent extends StatelessWidget {
 
   /// Callback when eye icon is pressed (optional)
   final VoidCallback? onEyeIconPressed;
+
+  Widget _buildCoverImage(String path) {
+    if (path.isEmpty) {
+      return Image.asset(AssetsPath.launcheventpng, fit: BoxFit.cover);
+    }
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return Image.network(
+        path,
+        fit: BoxFit.cover,
+        alignment: Alignment.center,
+        errorBuilder: (context, error, stackTrace) => Image.asset(
+          AssetsPath.launcheventpng,
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+    final normalizedPath = path.startsWith('assets/') ? path : 'assets/$path';
+    return Image.asset(
+      normalizedPath,
+      fit: BoxFit.cover,
+      alignment: Alignment.center,
+      errorBuilder: (context, error, stackTrace) => Image.asset(
+        AssetsPath.launcheventpng,
+        fit: BoxFit.cover,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,15 +118,10 @@ class EventCardComponent extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     height: 180.h,
-                    //padding: AppSpacing.symmetric(horizontal: AppSpacing.h4, vertical: AppSpacing.v2),
-                    child: Image.asset(
-                      assetPath,
-                      fit: BoxFit.cover,
-                      alignment: Alignment.center,
-                    ),
+                    child: _buildCoverImage(assetPath),
                   ),
                   Positioned(
                     top: 10.h,

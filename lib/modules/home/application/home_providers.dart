@@ -1,8 +1,22 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:flutter_knp_mobile_app_v2/modules/home/application/home_state.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/home/application/data/mock/home_mock_data.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/home/data/repositories/home_events_repository.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/home/domain/entities/event_entity.dart';
+
+final _speechToTextProvider = Provider<stt.SpeechToText>((ref) {
+  final speech = stt.SpeechToText();
+  ref.onDispose(speech.cancel);
+  return speech;
+});
+
+final homeEventsRepositoryProvider = Provider<HomeEventsRepository>(
+  (ref) => HomeEventsRepository(),
+);
 
 final homeProvider = NotifierProvider<HomeNotifier, HomeState>(
   HomeNotifier.new,
@@ -13,7 +27,47 @@ class HomeNotifier extends Notifier<HomeState> {
   HomeState build() {
     final initialEvents = HomeMockData.events;
 
+    // Trigger async load from Supabase backend in background
+    Future.microtask(() => loadEvents());
+
     return HomeState(events: initialEvents, isLoading: false);
+  }
+
+  HomeEventsRepository get _repo => ref.read(homeEventsRepositoryProvider);
+  stt.SpeechToText get _speech => ref.read(_speechToTextProvider);
+
+  // --------------------------------------------------
+  // Supabase Data Fetching
+  // --------------------------------------------------
+
+  Future<void> loadEvents() async {
+    state = state.copyWith(isLoading: true);
+
+    try {
+      final fetchedEvents = await _repo.fetchEvents();
+
+      final currentUserId = Supabase.instance.client.auth.currentUser?.id;
+      Set<String> registeredIds = const {};
+
+      if (currentUserId != null) {
+        registeredIds = await _repo.fetchMyRegisteredEventIds(currentUserId);
+      }
+
+      state = state.copyWith(
+        isLoading: false,
+        events: fetchedEvents.isNotEmpty ? fetchedEvents : (state.events.isNotEmpty ? state.events : HomeMockData.events),
+        registeredEventIds: registeredIds,
+      );
+    } catch (_) {
+      state = state.copyWith(
+        isLoading: false,
+        events: state.events.isNotEmpty ? state.events : HomeMockData.events,
+      );
+    }
+  }
+
+  Future<void> refresh() async {
+    await loadEvents();
   }
 
   // --------------------------------------------------
@@ -282,6 +336,43 @@ class HomeNotifier extends Notifier<HomeState> {
 
   void clearRecentSearches() {
     state = state.copyWith(recentSearches: const []);
+  }
+
+  /// Toggles a voice-search session.
+  Future<void> toggleListening(TextEditingController controller) async {
+    if (state.isListening) {
+      await _speech.stop();
+      state = state.copyWith(isListening: false);
+      return;
+    }
+
+    final available = await _speech.initialize(
+      onStatus: (status) {
+        if (status == 'done' || status == 'notListening') {
+          state = state.copyWith(isListening: false);
+        }
+      },
+      onError: (_) => state = state.copyWith(isListening: false),
+    );
+    if (!available) return;
+
+    state = state.copyWith(isListening: true);
+    await _speech.listen(
+      onResult: (result) {
+        controller.value = TextEditingValue(
+          text: result.recognizedWords,
+          selection: TextSelection.collapsed(
+            offset: result.recognizedWords.length,
+          ),
+        );
+        setSearchQuery(result.recognizedWords);
+      },
+      listenOptions: stt.SpeechListenOptions(
+        listenMode: stt.ListenMode.search,
+        partialResults: true,
+        cancelOnError: true,
+      ),
+    );
   }
 
   // --------------------------------------------------
