@@ -104,10 +104,10 @@ class _ExploreAppBar extends StatelessWidget {
               ),
             ),
           ),
-          IconButton(
-            onPressed: onNotificationsTap,
-            icon: SvgPicture.asset(AssetsPath.notification),
-          ),
+          // IconButton(
+          //   onPressed: onNotificationsTap,
+          //   icon: SvgPicture.asset(AssetsPath.notification),
+          // ),
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.more_vert),

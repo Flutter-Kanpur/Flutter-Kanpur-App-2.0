@@ -54,12 +54,12 @@ class HomeAppBar extends StatelessWidget {
               ],
             ),
           ),
-          SvgPicture.asset(AssetsPath.notification, fit: BoxFit.cover),
-          IconButton(
-            icon: const Icon(Icons.more_vert),
-            onPressed: () {},
-            color: AppColors.blackBase,
-          ),
+          // SvgPicture.asset(AssetsPath.notification, fit: BoxFit.cover),
+          // IconButton(
+          //   icon: const Icon(Icons.more_vert),
+          //   onPressed: () {},
+          //   color: AppColors.blackBase,
+          // ),
         ],
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/border_shadow_container.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/translate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
@@ -77,61 +78,68 @@ class _CommonSearchBarState extends State<CommonSearchBar> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),
         decoration: BoxDecoration(
-          color: isDark ? AppColors.blackBase : AppColors.whiteBase,
-          borderRadius: AppRadius.all07,
+
           boxShadow: [
             BoxShadow(
               color: AppColors.primary500.withOpacity(0.2),
-              blurRadius: 8,
+              blurRadius: AppRadius.r07,
               offset: const Offset(0, 1),
             ),
           ],
         ),
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppSpacing.h16,
-            vertical: AppSpacing.v16,
-          ),
-          child: Row(
-            children: [
-              Icon(Icons.search_rounded, size: 20.sp, color: fg),
-              12.horizontalSpace,
-              Expanded(
-                child: TextField(
-                  controller: widget.controller,
-                  focusNode: _focusNode,
-                  readOnly: widget.readOnly,
-                  onTap: widget.onTap,
-                  onChanged: widget.onChanged,
-                  onSubmitted: widget.onSubmitted,
-                  cursorColor: fg,
-                  style: AppTextStyles.bodyMedium.copyWith(color: fg),
-                  decoration: InputDecoration(
-                    hintText:
-                        widget.hintText ??
-                        translate(context, 'common.searchEvents'),
-                    hintStyle: AppTextStyles.bodyMedium.copyWith(
-                      color: isDark ? AppColors.neutral400 : AppColors.neutral500,
+        child: InnerShadowContainer(
+          shadowColor: const Color(0XFFB3C4FF).withValues(alpha: 0.08),
+          isShadowBottomLeft: true,
+          isShadowBottomRight: true,
+          isShadowTopLeft: true,
+          isShadowTopRight: true,
+          borderRadius: AppRadius.r07,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSpacing.h16,
+              vertical: AppSpacing.v16,
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.search_rounded, size: 20.sp, color: fg),
+                12.horizontalSpace,
+                Expanded(
+                  child: TextField(
+                    controller: widget.controller,
+                    focusNode: _focusNode,
+                    readOnly: widget.readOnly,
+                    onTap: widget.onTap,
+                    onChanged: widget.onChanged,
+                    onSubmitted: widget.onSubmitted,
+                    cursorColor: fg,
+                    style: AppTextStyles.bodyMedium.copyWith(color: fg),
+                    decoration: InputDecoration(
+                      hintText:
+                          widget.hintText ??
+                          translate(context, 'common.searchEvents'),
+                      hintStyle: AppTextStyles.titleMedium.copyWith(
+                        color: isDark ? AppColors.neutral300 : AppColors.neutral400,
+                      ),
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      isDense: true,
+                      contentPadding: EdgeInsets.zero,
                     ),
-                    border: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    isDense: true,
-                    contentPadding: EdgeInsets.zero,
                   ),
                 ),
-              ),
-              Container(color: fg, width: AppSpacing.v2, height: 25),
-              8.horizontalSpace,
-              GestureDetector(
-                onTap: widget.onMicTap,
-                child: Icon(
-                  widget.isListening ? Icons.mic : Icons.mic_none,
-                  color: widget.isListening ? AppColors.primary500 : fg,
-                  size: 20.sp,
+                Container(color: fg, width: AppSpacing.v2, height: 25),
+                8.horizontalSpace,
+                GestureDetector(
+                  onTap: widget.onMicTap,
+                  child: Icon(
+                    widget.isListening ? Icons.mic : Icons.mic_none,
+                    color: widget.isListening ? AppColors.primary500 : fg,
+                    size: 20.sp,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

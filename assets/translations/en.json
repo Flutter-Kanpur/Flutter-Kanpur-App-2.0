@@ -182,13 +182,13 @@
     "privacyDisclaimer": "Your links are visible to other community members. You can edit these anytime."
   },
   "home": {
-  "searchHint": "Search Events",
+  "searchHint": "Search for events...",
   "whatsNew": "What's new",
   "seeAll": "See all",
   "filtersBottomSheetPlaceholder": "Filters bottom sheet will open here",
 
   "search": {
-    "title": "Search",
+    "title": "Back to home",
     "results": "Search results",
     "noResults": "No events found",
     "trending": "Trending searches",

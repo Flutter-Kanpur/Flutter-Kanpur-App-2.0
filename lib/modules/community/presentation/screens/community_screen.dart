@@ -68,7 +68,12 @@ class CommunityScreen extends ConsumerWidget {
         ]);
       },
       child: FkScreen(
-        padding: EdgeInsets.fromLTRB(AppSpacing.h22, 0, AppSpacing.h22, 96),
+        padding: EdgeInsets.fromLTRB(
+          AppSpacing.h22,
+          AppSpacing.h20,
+          AppSpacing.h8,
+          AppSpacing.h8,
+        ),
         children: [
           const _CommunityAppBar(),
           SizedBox(height: AppSpacing.v18),
@@ -274,20 +279,20 @@ class _CommunityAppBar extends ConsumerWidget {
             ),
           ),
         ),
-        IconButton(
-          onPressed: () => context.push(RouteNames.notifications),
-          tooltip: 'Notifications',
-          icon: Badge(
-            isLabelVisible: unread > 0,
-            label: Text(unread > 99 ? '99+' : '$unread'),
-            backgroundColor: AppColors.warning600,
-            child: SvgPicture.asset(
-              AssetsPath.notificationIcon,
-              width: 24,
-              height: 24,
-            ),
-          ),
-        ),
+        // IconButton(
+        //   onPressed: () => context.push(RouteNames.notifications),
+        //   tooltip: 'Notifications',
+        //   icon: Badge(
+        //     isLabelVisible: unread > 0,
+        //     label: Text(unread > 99 ? '99+' : '$unread'),
+        //     backgroundColor: AppColors.warning600,
+        //     child: SvgPicture.asset(
+        //       AssetsPath.notificationIcon,
+        //       width: 24,
+        //       height: 24,
+        //     ),
+        //   ),
+        // ),
         _CommunityOverflowMenu(),
       ],
     );

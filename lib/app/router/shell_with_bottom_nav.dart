@@ -80,7 +80,7 @@ class ShellWithBottomNav extends StatelessWidget {
                   splashFactory: NoSplash.splashFactory,
                 ),
                 child: BottomNavigationBar(
-                  backgroundColor: AppColors.whiteBase,
+                  backgroundColor: Color(0XFFFAFCFF),
                   currentIndex: currentIndex,
                   onTap: (index) => navigationShell.goBranch(index),
                   type: BottomNavigationBarType.fixed,

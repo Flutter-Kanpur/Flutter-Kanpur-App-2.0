@@ -82,7 +82,7 @@ class EventEntity extends Equatable {
       description: map['description'] as String? ?? '',
       shortDescription: map['short_description'] as String? ??
           map['summary'] as String?,
-      cover: map['cover'] as String? ??
+      cover: map['banner_url'] as String? ??
           map['cover_image_url'] as String? ??
           map['image_url'] as String?,
       fromTime: fromTime,

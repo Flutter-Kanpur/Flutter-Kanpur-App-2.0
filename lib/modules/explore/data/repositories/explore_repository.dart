@@ -35,24 +35,21 @@ class ExploreRepository {
         .toList();
   }
 
-  /// Newest active projects owned by or shared with the current user (see
-  /// [_visibleProjectIds]), paginated via [limit]/[offset].
+  static const _projectListSelect =
+      'id, title, created_at, github_url, figma_url, live_url, '
+      'project_tech_stack(tech_name), '
+      'owner:users!owner_uid(display_name, full_name)';
+
+  /// Newest admin-approved (`status = active`) projects, public to all users.
   Future<List<CommunityProjectPreview>> fetchLatestCommunityProjects({
     int limit = 2,
     int offset = 0,
   }) async {
-    final ids = await _visibleProjectIds();
-    if (ids.isEmpty) return [];
-
     final data = await _client
         .from(DatabaseTables.projects)
-        .select(
-          'id, title, created_at, github_url, figma_url, live_url, '
-          'project_tech_stack(tech_name), '
-          'owner:users!owner_uid(display_name, full_name)',
-        )
-        .inFilter('id', ids)
+        .select(_projectListSelect)
         .eq('status', 'active')
+        .eq('is_deleted', false)
         .order('created_at', ascending: false)
         .range(offset, offset + limit - 1);
 
@@ -63,24 +60,16 @@ class ExploreRepository {
         .toList();
   }
 
-  /// Same visibility rule as [fetchLatestCommunityProjects], filtered by
-  /// `title ilike` [query].
+  /// Public approved projects filtered by `title ilike` [query].
   Future<List<CommunityProjectPreview>> searchProjects(
     String query, {
     int limit = 20,
   }) async {
-    final ids = await _visibleProjectIds();
-    if (ids.isEmpty) return [];
-
     final data = await _client
         .from(DatabaseTables.projects)
-        .select(
-          'id, title, created_at, github_url, figma_url, live_url, '
-          'project_tech_stack(tech_name), '
-          'owner:users!owner_uid(display_name, full_name)',
-        )
-        .inFilter('id', ids)
+        .select(_projectListSelect)
         .eq('status', 'active')
+        .eq('is_deleted', false)
         .ilike('title', '%$query%')
         .order('created_at', ascending: false)
         .limit(limit);
@@ -92,29 +81,7 @@ class ExploreRepository {
         .toList();
   }
 
-  /// Ids of projects owned by or shared with the current user.
-  Future<List<String>> _visibleProjectIds() async {
-    final currentUserId = _client.auth.currentUser?.id;
-    if (currentUserId == null) return [];
-
-    final owned = await _client
-        .from(DatabaseTables.projects)
-        .select('id')
-        .eq('owner_uid', currentUserId);
-    final shared = await _client
-        .from(DatabaseTables.projectMembers)
-        .select('project_id')
-        .eq('user_uid', currentUserId)
-        .eq('active', true);
-
-    final ids = <String>{
-      ...(owned as List<dynamic>).map((r) => r['id'] as String),
-      ...(shared as List<dynamic>).map((r) => r['project_id'] as String),
-    };
-    return ids.toList();
-  }
-
-  /// Single project by id, plus [_fetchSharedOn] for the "Shared on" date.
+  /// Single approved project by id, plus [_fetchSharedOn] for the "Shared on" date.
   Future<CommunityProjectDetail> fetchProjectById(String projectId) async {
     final data = await _client
         .from(DatabaseTables.projects)
@@ -125,6 +92,8 @@ class ExploreRepository {
           'owner:users!owner_uid(display_name, full_name)',
         )
         .eq('id', projectId)
+        .eq('status', 'active')
+        .eq('is_deleted', false)
         .single();
 
     final sharedOn = await _fetchSharedOn(
