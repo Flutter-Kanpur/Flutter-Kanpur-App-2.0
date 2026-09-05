@@ -12,6 +12,7 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 class HelpCenterScreen extends StatefulWidget {
   const HelpCenterScreen({super.key});
@@ -24,6 +25,9 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
   int expandedIndex = 0;
   final TextEditingController _searchController = TextEditingController();
   String _query = '';
+  final stt.SpeechToText _speech = stt.SpeechToText();
+  bool _isListening = false;
+  bool _speechReady = false;
 
   List<Map<String, String>> _getFaqs(BuildContext context) {
     return [
@@ -40,6 +44,13 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
         'a': translate(context, 'helpCenter.faq3.a'),
       },
     ];
+  }
+
+  @override
+  void dispose() {
+    _speech.stop();
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -75,9 +86,8 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                   _query = v.trim();
                   expandedIndex = -1;
                 }),
-                onMicTap: () {
-                  // TODO: add voice input handling
-                },
+                onMicTap: _toggleListening,
+                isListening: _isListening,
               ),
 
               SizedBox(height: AppSpacing.v22),
@@ -100,54 +110,54 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
               SizedBox(height: AppSpacing.v16),
 
               SingleChildScrollView(
-  scrollDirection: Axis.horizontal,
-  padding: AppSpacing.horizontal(AppSpacing.h20),
-  child: IntrinsicHeight(
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-                    CategoryCard(
-                      title: translate(context, 'helpCenter.category1.title'),
-                      description: translate(
-                        context,
-                        'helpCenter.category1.desc',
+                scrollDirection: Axis.horizontal,
+                padding: AppSpacing.horizontal(AppSpacing.h20),
+                child: IntrinsicHeight(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      CategoryCard(
+                        title: translate(context, 'helpCenter.category1.title'),
+                        description: translate(
+                          context,
+                          'helpCenter.category1.desc',
+                        ),
                       ),
-                    ),
-                    SizedBox(width: AppSpacing.h12),
-                    CategoryCard(
-                      title: translate(context, 'helpCenter.category2.title'),
-                      description: translate(
-                        context,
-                        'helpCenter.category2.desc',
+                      SizedBox(width: AppSpacing.h12),
+                      CategoryCard(
+                        title: translate(context, 'helpCenter.category2.title'),
+                        description: translate(
+                          context,
+                          'helpCenter.category2.desc',
+                        ),
                       ),
-                    ),
-                    SizedBox(width: AppSpacing.h12),
-                    CategoryCard(
-                      title: translate(context, 'helpCenter.category3.title'),
-                      description: translate(
-                        context,
-                        'helpCenter.category3.desc',
+                      SizedBox(width: AppSpacing.h12),
+                      CategoryCard(
+                        title: translate(context, 'helpCenter.category3.title'),
+                        description: translate(
+                          context,
+                          'helpCenter.category3.desc',
+                        ),
                       ),
-                    ),
-                    SizedBox(width: AppSpacing.h12),
-                    CategoryCard(
-                      title: translate(context, 'helpCenter.category4.title'),
-                      description: translate(
-                        context,
-                        'helpCenter.category4.desc',
+                      SizedBox(width: AppSpacing.h12),
+                      CategoryCard(
+                        title: translate(context, 'helpCenter.category4.title'),
+                        description: translate(
+                          context,
+                          'helpCenter.category4.desc',
+                        ),
                       ),
-                    ),
-                    SizedBox(width: AppSpacing.h12),
-                    CategoryCard(
-                      title: translate(context, 'helpCenter.category5.title'),
-                      description: translate(
-                        context,
-                        'helpCenter.category5.desc',
+                      SizedBox(width: AppSpacing.h12),
+                      CategoryCard(
+                        title: translate(context, 'helpCenter.category5.title'),
+                        description: translate(
+                          context,
+                          'helpCenter.category5.desc',
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
               ),
 
               SizedBox(height: AppSpacing.v22),
@@ -292,9 +302,45 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
     });
   }
 
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
+  Future<void> _toggleListening() async {
+    if (_isListening) {
+      await _speech.stop();
+      if (mounted) setState(() => _isListening = false);
+      return;
+    }
+
+    if (!_speechReady) {
+      _speechReady = await _speech.initialize(
+        onStatus: (status) {
+          if (status == 'done' || status == 'notListening') {
+            if (mounted) setState(() => _isListening = false);
+          }
+        },
+        onError: (_) {
+          if (mounted) setState(() => _isListening = false);
+        },
+      );
+    }
+    if (!_speechReady || !mounted) return;
+
+    setState(() => _isListening = true);
+    await _speech.listen(
+      onResult: (result) {
+        final words = result.recognizedWords;
+        _searchController.value = TextEditingValue(
+          text: words,
+          selection: TextSelection.collapsed(offset: words.length),
+        );
+        setState(() {
+          _query = words.trim();
+          expandedIndex = -1;
+        });
+      },
+      listenOptions: stt.SpeechListenOptions(
+        listenMode: stt.ListenMode.search,
+        partialResults: true,
+        cancelOnError: true,
+      ),
+    );
   }
 }
