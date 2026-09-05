@@ -19,9 +19,16 @@ class AboutFlutterKanpur extends StatelessWidget {
     final usedTextTheme = AppTextStyles.titleMedium;
     return GradientBackground(
       child: FkScreen(
-        children: [
+  padding: EdgeInsets.fromLTRB(
+    AppSpacing.h16,
+    AppSpacing.h18,
+    AppSpacing.h16,
+    24,
+  ),
+  children: [
           FkHeader(
-            title: 'About Flutter Kanpur',
+            	
+title: 'profile.aboutFlutterKanpur'.tr(),
             leading: FkBackButton(),
           ),
           SizedBox(height: AppSpacing.v22),

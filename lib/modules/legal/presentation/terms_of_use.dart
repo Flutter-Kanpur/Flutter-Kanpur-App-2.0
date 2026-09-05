@@ -31,8 +31,9 @@ class TermsOfUse extends StatelessWidget {
             icon: const Icon(Icons.arrow_back),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Column(
+      body: SingleChildScrollView(
+  padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16),
+  child: Column(
             spacing: AppSpacing.h10,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

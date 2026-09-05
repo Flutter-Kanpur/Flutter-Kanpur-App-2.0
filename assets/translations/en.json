@@ -109,9 +109,21 @@
   },
   "profile": {
     "title": "Edit Profile",
+    "myProfileTitle": "My Profile",
+    "sectionAccount": "Account",
+    "sectionMyActivity": "My Activity",
+    "sectionCommunity": "Community",
+    "sectionAchievements": "Achievements",
+    "sectionSupport": "Support",
+    "sectionAboutLegal": "About & Legal",
+    "sectionAccountActions": "Account Actions",
     "manageProfile": "Manage Profile",
     "editProfile": "Edit profile",
     "problemOfDay": "Problem of the Day",
+    "problemsSolved": "Problems solved",
+    "guestProfile": "Guest Profile",
+    "flutterKanpurDeveloper": "Flutter Kanpur Developer",
+    "termsOfService": "Terms of Service",
     "lv": "Lv.",
     "viewProgress": "View progress",
     "aboutMe": "About me",
@@ -128,7 +140,13 @@
     "enterSkill": "Enter skill",
     "enterRole": "Enter role",
     "logout": "Log out",
+    "logoutTitle": "Log out?",
+    "logoutMessage": "You'll need to log in again to access your account.",
+    "logoutFailed": "Logout failed. Please try again.",
     "deleteAccount": "Delete account",
+    "deleteAccountTitle": "Delete your account",
+    "deleteAccountMessage": "Deleting your account will permanently remove your data.",
+    "deleteAccountFailed": "Couldn't delete account. Please try again.",
     "helpCenter": "Help Center",
     "contactCommunity": "Contact Community Team",
     "reportIssue": "Report an Issue",
@@ -586,6 +604,7 @@
   },
   "helpCenter": {
     "title": "Help Center",
+    "searchHint": "Search for events...",
     "quickHelpTitle": "Quick Help Categories",
     "faq1": {
       "q": "How do I register for an event?",
@@ -641,7 +660,10 @@
       "payment_issue": "Payment Issue",
       "feature_request": "Feature Request",
       "other": "Other"
-    }
+    },
+    "uploading": "Uploading...",
+    "completed": "Completed",
+    "onlyImagesAllowed": "Please select a JPG, JPEG, or PNG file."
   },
   "common": {
     "lastUpdated": "Last updated: {}",

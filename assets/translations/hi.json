@@ -108,10 +108,22 @@
     "websiteLinkDetected": "वेबसाइट लिंक मिला।"
   },
   "profile": {
-    "title": "Edit Profile",
+    "title": "प्रोफ़ाइल संपादित करें",
+    "myProfileTitle": "मेरी प्रोफ़ाइल",
+    "sectionAccount": "खाता",
+    "sectionMyActivity": "मेरी गतिविधि",
+    "sectionCommunity": "समुदाय",
+    "sectionAchievements": "उपलब्धियाँ",
+    "sectionSupport": "सहायता",
+    "sectionAboutLegal": "परिचय और कानूनी",
+    "sectionAccountActions": "खाता कार्रवाई",
     "manageProfile": "प्रोफाइल प्रबंधित करें",
     "editProfile": "प्रोफ़ाइल संपादित करें",
     "problemOfDay": "दिन की समस्या",
+    "problemsSolved": "हल की गई समस्याएँ",
+    "guestProfile": "अतिथि प्रोफ़ाइल",
+    "flutterKanpurDeveloper": "Flutter Kanpur डेवलपर",
+    "termsOfService": "सेवा की शर्तें",
     "lv": "स्तर",
     "viewProgress": "प्रगति देखें",
     "aboutMe": "मेरे बारे में",
@@ -128,7 +140,13 @@
     "enterSkill": "कौशल दर्ज करें",
     "enterRole": "भूमिका दर्ज करें",
     "logout": "लॉग आउट",
+    "logoutTitle": "लॉग आउट?",
+    "logoutMessage": "अपने खाते तक पहुँचने के लिए आपको फिर से लॉग इन करना होगा।",
+    "logoutFailed": "लॉग आउट नहीं हो सका। कृपया फिर से कोशिश करें।",
     "deleteAccount": "खाता हटाएं",
+    "deleteAccountTitle": "अपना खाता हटाएं",
+    "deleteAccountMessage": "खाता हटाने से आपका डेटा स्थायी रूप से हट जाएगा।",
+    "deleteAccountFailed": "खाता नहीं हटाया जा सका। कृपया फिर से कोशिश करें।",
     "helpCenter": "सहायता केंद्र",
     "contactCommunity": "समुदाय टीम से संपर्क करें",
     "reportIssue": "समस्या की रिपोर्ट करें",
@@ -510,6 +528,58 @@
     "fieldRequired": "{field} आवश्यक है।",
     "invalidUrl": "कृपया एक मान्य URL दर्ज करें।",
     "whyContributeTooShort": "कृपया कम से कम 20 अक्षरों में बताएं कि आप योगदान क्यों देना चाहते हैं।"
+  },
+  "messageSent": {
+    "title": "संदेश भेजा गया",
+    "subtitle": "संपर्क करने के लिए धन्यवाद। हमारी टीम जल्द ही आपसे संपर्क करेगी।",
+    "backToProfile": "प्रोफ़ाइल पर वापस जाएँ"
+  },
+  "messageNotSent": {
+    "title": "संदेश नहीं भेजा गया",
+    "subtitle": "आपका संदेश नहीं भेजा जा सका। कृपया फिर से कोशिश करें।",
+    "backToProfile": "फिर से कोशिश करें"
+  },
+  "reportSubmitted": {
+    "title": "रिपोर्ट जमा हो गई",
+    "subtitle": "रिपोर्ट करने के लिए धन्यवाद। हमारी टीम इस समस्या की समीक्षा करेगी।",
+    "reportAnother": "एक और समस्या रिपोर्ट करें",
+    "goToProfile": "प्रोफ़ाइल पर जाएँ"
+  },
+  "reportFailed": {
+    "title": "विफल",
+    "subtitle": "आपकी रिपोर्ट जमा नहीं हो सकी।",
+    "tryAgain": "फिर से कोशिश करें"
+  },
+  "helpCenter": {
+    "title": "सहायता केंद्र",
+    "searchHint": "इवेंट खोजें...",
+    "quickHelpTitle": "त्वरित सहायता श्रेणियाँ",
+    "stillNeedHelp": "अभी भी मदद चाहिए?",
+    "cantFind": "जो खोज रहे हैं वह नहीं मिला?",
+    "contactButton": "समुदाय टीम से संपर्क करें"
+  },
+  "profile_support": {
+    "title": "समस्या की रिपोर्ट करें",
+    "subtitle": "प्रश्न, मार्गदर्शन या सहायता के लिए Flutter Kanpur टीम से संपर्क करें।",
+    "issue_type": "समस्या का प्रकार",
+    "select_placeholder": "-चयन करें-",
+    "describe_issue": "समस्या का वर्णन करें",
+    "describe_issue_hint": "बताएँ कि क्या हुआ और आपने समस्या कहाँ अनुभव की।",
+    "upload_optional": "स्क्रीनशॉट या फ़ाइल अपलोड करें (वैकल्पिक)",
+    "choose_file_hint": "फ़ाइल चुनें या यहाँ खींचकर छोड़ें।",
+    "browse_files": "फ़ाइलें ब्राउज़ करें",
+    "uploading": "अपलोड हो रहा है...",
+    "completed": "पूर्ण",
+    "onlyImagesAllowed": "कृपया केवल JPG, JPEG या PNG फ़ाइल चुनें।",
+    "submit_report": "रिपोर्ट जमा करें",
+    "cancel": "रद्द करें",
+    "issueTypes": {
+      "bug_report": "बग रिपोर्ट",
+      "account_issue": "खाता समस्या",
+      "payment_issue": "भुगतान समस्या",
+      "feature_request": "फीचर अनुरोध",
+      "other": "अन्य"
+    }
   },
   "common": {
     "lastUpdated": "अंतिम अपडेट: {}",

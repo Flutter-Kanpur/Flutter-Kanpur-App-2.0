@@ -12,6 +12,13 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/network_connectivity_service.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/support/data/support_service.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/screens/app_feedback_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
 
 class ReportAnIssueScreen extends StatefulWidget {
   const ReportAnIssueScreen({super.key});
@@ -24,6 +31,47 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
   String? selectedIssue;
   PlatformFile? pickedFile;
   bool isUploading = false;
+  final TextEditingController _descriptionController = TextEditingController();
+
+@override
+void dispose() {
+  _descriptionController.dispose();
+  super.dispose();
+}
+void _showReportSuccess() {
+  context.push(
+    RouteNames.feedback,
+    extra: AppFeedbackScreen(
+      image: AssetsPath.successTick,
+      title: 'reportSubmitted.title'.tr(),
+      subtitle: 'reportSubmitted.subtitle'.tr(),
+      buttonText: 'reportSubmitted.reportAnother'.tr(),
+      buttonIcon: Icons.arrow_back,
+      isSuccess: true,
+      onPressed: () => context.canPop()
+          ? context.pop()
+          : context.go(RouteNames.reportAnIssue),
+      secondaryText: 'reportSubmitted.goToProfile'.tr(),
+      onSecondaryPressed: () => context.go(RouteNames.profile),
+    ),
+  );
+}
+
+void _showReportFailure() {
+  context.push(
+    RouteNames.feedback,
+    extra: AppFeedbackScreen(
+      image: AssetsPath.failureImage,
+      title: 'reportFailed.title'.tr(),
+      subtitle: 'reportFailed.subtitle'.tr(),
+      buttonText: 'reportFailed.tryAgain'.tr(),
+      isSuccess: false,
+      onPressed: () => context.canPop()
+          ? context.pop()
+          : context.go(RouteNames.reportAnIssue),
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -175,6 +223,7 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
         ),
         SizedBox(height: AppSpacing.v10),
         TextFormField(
+          controller: _descriptionController,
           maxLines: 5,
           decoration: InputDecoration(
             hintText: translate(context, "profile_support.describe_issue_hint"),
@@ -332,7 +381,8 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
               color: AppColors.whiteBase,
             ),
             text: translate(context, "profile_support.submit_report"),
-            onTap: () {},
+            onTap: _submitReport,
+            
           ),
           Positioned(
             right: 60.w,
@@ -361,19 +411,52 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
     );
   }
 
-  // Future<void> _pickFile() async {
-  //   try {
-  //     final result = await FilePicker.pickFiles(withData: true);
-  //     if (result != null && result.files.isNotEmpty) {
-  //       setState(() {
-  //         pickedFile = result.files.first;
-  //       });
-  //     }
-  //   } catch (e) {
-  //     // ignore: avoid_print
-  //     print('File pick error: $e');
-  //   }
-  // }
+
+  Future<void> _submitReport() async {
+  if (selectedIssue == null || selectedIssue!.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          translate(context, 'profile_support.select_placeholder'),
+        ),
+      ),
+    );
+    return;
+  }
+
+  try {
+    final online =
+        await NetworkConnectivityService.instance.checkInternetConnection();
+    if (!mounted) return;
+    if (!online) {
+     _showReportFailure();
+      return;
+    }
+
+    final description = _descriptionController.text.trim();
+    if (description.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            translate(context, 'profile_support.describe_issue_hint'),
+          ),
+        ),
+      );
+      return;
+    }
+
+    final ok = await SupportService().sendIssueReport(
+      issueType: selectedIssue!,
+      description: description,
+    );
+    if (!mounted) return;
+    ok ? _showReportSuccess() : _showReportFailure();
+
+  } catch (_) {
+    if (!mounted) return;
+      _showReportFailure();
+  }
+}
 
   Future<void> _uploadFile() async {
     if (pickedFile == null) return;

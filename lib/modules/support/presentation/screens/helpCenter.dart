@@ -70,7 +70,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
 
               CommonSearchBar(
                 controller: _searchController,
-                hintText: 'Search for events...',
+                hintText: translate(context, 'helpCenter.searchHint'),
                 onChanged: (v) => setState(() {
                   _query = v.trim();
                   expandedIndex = -1;
@@ -99,12 +99,13 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
 
               SizedBox(height: AppSpacing.v16),
 
-              SizedBox(
-                height: 120.h,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  padding: AppSpacing.horizontal(AppSpacing.h20),
-                  children: [
+              SingleChildScrollView(
+  scrollDirection: Axis.horizontal,
+  padding: AppSpacing.horizontal(AppSpacing.h20),
+  child: IntrinsicHeight(
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
                     CategoryCard(
                       title: translate(context, 'helpCenter.category1.title'),
                       description: translate(
@@ -146,6 +147,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                     ),
                   ],
                 ),
+              ),
               ),
 
               SizedBox(height: AppSpacing.v22),
