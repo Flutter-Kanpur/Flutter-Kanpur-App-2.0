@@ -50,6 +50,7 @@ class _ContactCommunityTeamScreenState
   final GlobalKey _nameFieldKey = GlobalKey();
   final GlobalKey _emailFieldKey = GlobalKey();
   final GlobalKey _messageFieldKey = GlobalKey();
+  bool isSubmitting = false;
 
  @override
 void initState() {
@@ -86,7 +87,7 @@ void _showContactFailure() {
       image: AssetsPath.failureImage,
       title: 'messageNotSent.title'.tr(),
       subtitle: 'messageNotSent.subtitle'.tr(),
-      buttonText: 'messageNotSent.backToProfile'.tr(), // "Try again" in en.json
+      buttonText: 'messageNotSent.backToProfile'.tr(), 
       isSuccess: false,
       onPressed: () => context.canPop()
           ? context.pop()
@@ -151,14 +152,20 @@ void _prefillOnce(ProfileUser? profile) {
   }
 
   Future<void> _submit() async {
+  if (isSubmitting) return;
   if (!(_formKey.currentState?.validate() ?? false)) return;
   if (selectedSubject == null || selectedSubject!.isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(translate(context, 'contactCommunity.selectPlaceholder'))),
+      SnackBar(
+        content: Text(
+          translate(context, 'contactCommunity.selectPlaceholder'),
+        ),
+      ),
     );
     return;
   }
 
+  setState(() => isSubmitting = true);
   try {
     final online =
         await NetworkConnectivityService.instance.checkInternetConnection();
@@ -179,6 +186,8 @@ void _prefillOnce(ProfileUser? profile) {
   } catch (_) {
     if (!mounted) return;
     _showContactFailure();
+  } finally {
+    if (mounted) setState(() => isSubmitting = false);
   }
 }
 
@@ -494,13 +503,14 @@ void _prefillOnce(ProfileUser? profile) {
         alignment: Alignment.center,
         children: [
           GradientButton(
-            height: 50.h,
-            textStyle: AppTextStyles.titleMedium.copyWith(
-              color: AppColors.whiteBase,
-            ),
-            text: translate(context, 'contactCommunity.sendMessage'),
-            onTap: _submit,
-          ),
+  height: 50.h,
+  textStyle: AppTextStyles.titleMedium.copyWith(
+    color: AppColors.whiteBase,
+  ),
+  text: translate(context, 'contactCommunity.sendMessage'),
+  isLoading: isSubmitting,
+  onTap: isSubmitting ? () {} : _submit,
+),
         ],
       ),
     );
