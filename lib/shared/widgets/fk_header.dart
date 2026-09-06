@@ -28,7 +28,7 @@ class FkHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(title, style: AppTextStyles.titleMedium),
+              Text(title, style: AppTextStyles.titleLarge),
               if (subtitle != null && subtitle!.isNotEmpty)
                 Text(subtitle!, style: AppTextStyles.titleSmall),
             ],

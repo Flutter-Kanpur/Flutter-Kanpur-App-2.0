@@ -255,6 +255,7 @@ class CommunityScreen extends ConsumerWidget {
               ),
             ],
           ),
+          SizedBox(height: 4 * AppSpacing.v22),
         ],
       ),
     );

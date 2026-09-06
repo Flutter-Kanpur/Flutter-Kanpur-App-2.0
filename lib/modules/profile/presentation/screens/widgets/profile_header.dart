@@ -73,7 +73,6 @@ class ProfileHeader extends StatelessWidget {
                   displayName,
                   style: AppTextStyles.titleLarge.copyWith(
                     color: AppColors.blackBase,
-                    fontWeight: FontWeight.w700,
                   ),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
@@ -98,7 +97,7 @@ class ProfileHeader extends StatelessWidget {
                     'profile.editProfile'.tr(),
                     style: AppTextStyles.bodyMedium.copyWith(
                       color: AppColors.primary500,
-                      fontWeight: FontWeight.w500,
+
                     ),
                   ),
                 ),

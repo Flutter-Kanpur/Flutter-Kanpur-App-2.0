@@ -254,6 +254,7 @@ class CommunityRepository {
         .toList();
   }
 
+  /// Active contributors for the Community screen (`community_memberships`).
   Future<List<CommunityMember>> fetchMembers({int limit = 50}) async {
     final data = await _client
         .from(DatabaseTables.communityMemberships)

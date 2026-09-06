@@ -11,7 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Watches [coreTeamMembersProvider] directly (rather than receiving a list
 /// prop), matching CommunityProjectsPreviewSection
-/// now that this is a real Supabase fetch (community_memberships joined with
+/// now that this is a real Supabase fetch (`core_team_members` joined with
 /// users) instead of sample data. Stateful only for the horizontal
 /// ScrollController driving pagination - same on-scroll pattern as
 /// CommunityDiscussionsScreen.

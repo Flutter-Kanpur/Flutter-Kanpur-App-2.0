@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/contributor/application/contributor_application_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/contributor/domain/contributor_application_draft.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/profile/application/profile_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/profile/domain/profile_models.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_back_button.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_header.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_text_field.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../widgets/contributor_dropdown_field.dart';
@@ -15,16 +20,16 @@ import '../widgets/contributor_profile_links.dart';
 import '../widgets/contributor_skill_chip.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 
-class ContributorApplicationScreen extends StatefulWidget {
+class ContributorApplicationScreen extends ConsumerStatefulWidget {
   const ContributorApplicationScreen({super.key});
 
   @override
-  State<ContributorApplicationScreen> createState() =>
+  ConsumerState<ContributorApplicationScreen> createState() =>
       _ContributorApplicationScreenState();
 }
 
 class _ContributorApplicationScreenState
-    extends State<ContributorApplicationScreen> {
+    extends ConsumerState<ContributorApplicationScreen> {
   final _formKey = GlobalKey<FormState>();
   final _skillsFieldKey = GlobalKey<FormFieldState<List<String>>>();
 
@@ -64,6 +69,9 @@ class _ContributorApplicationScreenState
   final weeklyHoursList = ["2-4 hours", "4-6 hours", "6-10 hours", "10+ hours"];
 
   final List<String> selectedSkills = [];
+
+  bool _prefilledFromProfile = false;
+  bool _restoredFromDraft = false;
 
   String? _requiredValidator(String? value, String field) {
     if (value == null || value.trim().isEmpty) {
@@ -108,6 +116,85 @@ class _ContributorApplicationScreenState
       return 'contributor.whyContributeMinLength'.tr();
     }
     return null;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    final existingDraft = ref.read(contributorApplicationDraftProvider);
+    if (existingDraft != null) {
+      _restoreFromDraft(existingDraft);
+    } else {
+      ref.listenManual<AsyncValue<ProfileUser?>>(
+        myProfileProvider,
+        (_, next) => next.whenData(_prefillFromProfile),
+        fireImmediately: true,
+      );
+    }
+  }
+
+  void _restoreFromDraft(ContributorApplicationDraft draft) {
+    if (_restoredFromDraft) return;
+    _restoredFromDraft = true;
+
+    fullNameController.text = draft.fullName;
+    emailController.text = draft.email;
+    githubController.text = draft.githubUrl ?? '';
+    linkedinController.text = draft.linkedinUrl ?? '';
+    portfolioController.text = draft.websiteUrl ?? '';
+    whyController.text = draft.whyContribute ?? '';
+
+    selectedSkills
+      ..clear()
+      ..addAll(draft.skills);
+
+    setState(() {
+      currentRole = draft.currentRole;
+      contribution = draft.contributionArea;
+      experience = draft.experienceLevel;
+      weeklyHours = draft.weeklyHours;
+    });
+  }
+
+  void _prefillFromProfile(ProfileUser? profile) {
+    if (_prefilledFromProfile || profile == null) return;
+    _prefilledFromProfile = true;
+
+    _setIfEmpty(fullNameController, profile.displayLabel);
+    _setIfEmpty(emailController, profile.email);
+    _setIfEmpty(githubController, profile.githubUrl);
+    _setIfEmpty(linkedinController, profile.linkedinUrl);
+    _setIfEmpty(portfolioController, profile.websiteUrl);
+
+    if (mounted) setState(() {});
+  }
+
+  void _setIfEmpty(TextEditingController controller, String? value) {
+    if (controller.text.trim().isNotEmpty) return;
+    final trimmed = value?.trim();
+    if (trimmed == null || trimmed.isEmpty) return;
+    controller.text = trimmed;
+  }
+
+  ContributorApplicationDraft _buildDraft() {
+    return ContributorApplicationDraft(
+      fullName: fullNameController.text.trim(),
+      email: emailController.text.trim(),
+      currentRole: currentRole ?? '',
+      contributionArea: contribution ?? '',
+      skills: List<String>.from(selectedSkills),
+      experienceLevel: experience ?? '',
+      weeklyHours: weeklyHours ?? '',
+      githubUrl: _nullIfBlank(githubController.text),
+      linkedinUrl: _nullIfBlank(linkedinController.text),
+      websiteUrl: _nullIfBlank(portfolioController.text),
+      whyContribute: _nullIfBlank(whyController.text),
+    );
+  }
+
+  String? _nullIfBlank(String value) {
+    final trimmed = value.trim();
+    return trimmed.isEmpty ? null : trimmed;
   }
 
   @override
@@ -331,6 +418,9 @@ class _ContributorApplicationScreenState
                   icon: Icons.arrow_forward_rounded,
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      ref
+                          .read(contributorApplicationDraftProvider.notifier)
+                          .save(_buildDraft());
                       context.push(RouteNames.reviewApplication);
                     }
                   },

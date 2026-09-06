@@ -103,4 +103,23 @@ const appTableSchemas = <AppTableSchema>[
       'is_active',
     ],
   ),
+  AppTableSchema(
+    name: 'community_memberships',
+    module: 'community',
+    purpose: 'Active contributors shown on the Community screen carousel.',
+    fields: ['user_uid', 'role', 'membership_status', 'community_key', 'joined_at'],
+  ),
+  AppTableSchema(
+    name: 'core_team_members',
+    module: 'explore',
+    purpose: 'Core / organising team shown on Explore and Core Team screens.',
+    fields: [
+      'user_uid',
+      'role',
+      'team_section',
+      'is_lead',
+      'sort_order',
+      'is_active',
+    ],
+  ),
 ];
