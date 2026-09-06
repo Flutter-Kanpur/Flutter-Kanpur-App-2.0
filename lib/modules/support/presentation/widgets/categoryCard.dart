@@ -30,24 +30,25 @@ class CategoryCard extends StatelessWidget {
           color: AppColors.primary50,
           borderRadius: AppRadius.all04,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: AppTextStyles.titleMedium.copyWith(
-                color: AppColors.blackBase,
-              ),
-            ),
-            SizedBox(height: AppSpacing.v6),
-            Text(
-              description,
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.neutral400,
-              ),
-            ),
-          ],
-        ),
+       child: Column(
+  mainAxisSize: MainAxisSize.min,
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Text(
+      title,
+      style: AppTextStyles.titleMedium.copyWith(
+        color: AppColors.blackBase,
+      ),
+    ),
+    SizedBox(height: AppSpacing.v6),
+    Text(
+      description,
+      style: AppTextStyles.bodyMedium.copyWith(
+        color: AppColors.neutral400,
+      ),
+    ),
+  ],
+),
       ),
     );
   }

@@ -31,8 +31,9 @@ class PrivacyPolicy extends StatelessWidget {
           ),
         ),
         body: SingleChildScrollView(
-          child: Column(
-            spacing: AppSpacing.h10,
+  padding: EdgeInsets.symmetric(horizontal: AppSpacing.h16),
+  child: Column(
+            spacing: 0,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildContentContainer(

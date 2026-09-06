@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+    <defs>
+        <!-- Main 3D Sphere Gradient -->
+        <radialGradient id="sphereGrad" cx="38%" cy="30%" r="65%" fx="35%" fy="26%">
+            <stop offset="0%" stop-color="#ff7f7b" />
+            <stop offset="22%" stop-color="#ea4d49" />
+            <stop offset="65%" stop-color="#cc2529" />
+            <stop offset="90%" stop-color="#991118" />
+            <stop offset="100%" stop-color="#73070d" />
+        </radialGradient>
+
+        <!-- Small Sphere Gradient (Bottom Right) -->
+        <radialGradient id="smallSphereGrad" cx="35%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="#ff7b78" />
+            <stop offset="45%" stop-color="#d62b2e" />
+            <stop offset="100%" stop-color="#78080e" />
+        </radialGradient>
+
+        <!-- Tiny Accent Sphere Gradient -->
+        <radialGradient id="tinySphereGrad" cx="35%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="#ff9b98" />
+            <stop offset="60%" stop-color="#cb2b2f" />
+            <stop offset="100%" stop-color="#8a0f13" />
+        </radialGradient>
+
+        <!-- Soft Drop Shadows -->
+        <filter id="shadowSphere" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="18" stdDeviation="16" flood-color="#a3161c" flood-opacity="0.32" />
+        </filter>
+
+        <filter id="shadowFloating" x="-30%" y="-30%" width="160%" height="160%">
+            <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#800a0f" flood-opacity="0.25" />
+        </filter>
+
+        <filter id="iconGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#000000" flood-opacity="0.12" />
+        </filter>
+    </defs>
+
+    <!-- Background Ribbons & Floating Confetti (Behind Sphere) -->
+    <g fill="none" stroke-linecap="round">
+        <!-- Arch behind top -->
+        <path d="M 215 138 C 215 110, 245 102, 258 126" stroke="#f0d5d6" stroke-width="14" opacity="0.65" />
+
+        <!-- Left curly ribbon -->
+        <path d="M 160 135 C 130 145, 115 178, 126 205 C 138 234, 160 215, 150 188 C 142 165, 128 205, 138 270 C 143 300, 122 360, 138 375"
+            stroke="#ea7578" stroke-width="2.6" />
+
+        <!-- Right curly ribbon -->
+        <path d="M 378 139 C 400 144, 410 168, 400 205 C 388 250, 360 280, 375 340 C 385 378, 410 368, 386 374"
+            stroke="#ea7578" stroke-width="2.6" />
+
+        <!-- Background translucent dots -->
+        <circle cx="180" cy="150" r="7" fill="#e8b8ba" opacity="0.5" />
+        <circle cx="395" cy="265" r="7.5" fill="#d99b9e" opacity="0.4" />
+        <circle cx="406" cy="298" r="4.5" fill="#e8b8ba" opacity="0.55" />
+        <circle cx="230" cy="425" r="5" fill="#e8b8ba" opacity="0.6" />
+        <circle cx="340" cy="400" r="7.5" fill="#ecd0d2" opacity="0.7" />
+        <circle cx="160" cy="370" r="3.5" fill="#d99b9e" opacity="0.6" />
+    </g>
+
+    <!-- Main 3D Sphere -->
+    <circle cx="250" cy="265" r="112" fill="url(#sphereGrad)" filter="url(#shadowSphere)" />
+
+    <!-- Specular Sheen on Main Sphere -->
+    <ellipse cx="230" cy="180" rx="42" ry="24" fill="#ffffff" opacity="0.14" transform="rotate(-22 230 180)" />
+
+    <!-- Floating Satellites & Accent Spheres -->
+    <g>
+        <!-- Top-center small red sphere -->
+        <circle cx="293" cy="130" r="8" fill="url(#tinySphereGrad)" filter="url(#shadowFloating)" />
+
+        <!-- Top small dot -->
+        <circle cx="338" cy="126" r="5" fill="url(#tinySphereGrad)" />
+        <circle cx="355" cy="165" r="4" fill="url(#tinySphereGrad)" />
+
+        <!-- Left middle small red sphere -->
+        <circle cx="123" cy="254" r="5.5" fill="url(#tinySphereGrad)" filter="url(#shadowFloating)" />
+
+        <!-- Right side small sphere -->
+        <circle cx="414" cy="225" r="6.5" fill="url(#tinySphereGrad)" filter="url(#shadowFloating)" />
+
+        <!-- Bottom left small sphere -->
+        <circle cx="180" cy="397" r="8.5" fill="url(#tinySphereGrad)" filter="url(#shadowFloating)" />
+
+        <!-- Bottom right tiny red dot -->
+        <circle cx="308" cy="418" r="4.5" fill="url(#tinySphereGrad)" />
+
+        <!-- Prominent Bottom-Right 3D Sphere -->
+        <circle cx="352" cy="326" r="19" fill="url(#smallSphereGrad)" filter="url(#shadowFloating)" />
+    </g>
+
+    <!-- Central Disconnected / Power Signal Icon -->
+    <g fill="#ffffff" filter="url(#iconGlow)">
+        <!-- Central Node -->
+        <circle cx="250" cy="264" r="8.5" />
+
+        <!-- Lightning Bolt (Over Node) -->
+        <path d="M 252 220
+             L 242.5 237
+             L 251.5 237
+             L 248.5 250
+             L 258 233.5
+             L 249 233.5 Z" />
+
+        <!-- Radiating Signal Waves (Left Side) -->
+        <!-- Inner Left Wave -->
+        <path d="M 235 244.5
+             C 224.5 254.5, 224.5 273.5, 235 283.5"
+            fill="none" stroke="#ffffff" stroke-width="6.8" stroke-linecap="round" />
+
+        <!-- Outer Left Wave -->
+        <path d="M 221 230
+             C 202 248, 202 280, 221 298"
+            fill="none" stroke="#ffffff" stroke-width="7.5" stroke-linecap="round" />
+
+        <!-- Radiating Signal Waves (Right Side) -->
+        <!-- Inner Right Wave -->
+        <path d="M 265 244.5
+             C 275.5 254.5, 275.5 273.5, 265 283.5"
+            fill="none" stroke="#ffffff" stroke-width="6.8" stroke-linecap="round" />
+
+        <!-- Outer Right Wave -->
+        <path d="M 279 230
+             C 298 248, 298 280, 279 298"
+            fill="none" stroke="#ffffff" stroke-width="7.5" stroke-linecap="round" />
+
+        <!-- Power Plug (Hanging Below) -->
+        <!-- Plug Prongs -->
+        <rect x="245.2" y="291" width="2.4" height="4.5" rx="1.2" />
+        <rect x="252.4" y="291" width="2.4" height="4.5" rx="1.2" />
+
+        <!-- Plug Body -->
+        <path d="M 243.5 295.5
+             L 256.5 295.5
+             C 259 295.5, 260 297, 260 299
+             L 260 304
+             C 260 308.5, 257 311.5, 252.5 312.2
+             L 252.5 316.5
+             C 252.5 319.5, 250 321, 247.5 319
+             C 246 317.5, 246.5 314.5, 248 313.5
+             L 247.5 312.2
+             C 243 311.5, 240 308.5, 240 304
+             L 240 299
+             C 240 297, 241 295.5, 243.5 295.5 Z" />
+    </g>
+</svg>

@@ -11,17 +11,29 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/network_connectivity_service.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/support/data/support_service.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/profile/application/profile_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/profile/domain/profile_models.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/screens/app_feedback_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
 
-class ContactCommunityTeamScreen extends StatefulWidget {
+class ContactCommunityTeamScreen extends ConsumerStatefulWidget {
   const ContactCommunityTeamScreen({super.key});
 
   @override
-  State<ContactCommunityTeamScreen> createState() =>
+  ConsumerState<ContactCommunityTeamScreen> createState() =>
       _ContactCommunityTeamScreenState();
 }
 
 class _ContactCommunityTeamScreenState
-    extends State<ContactCommunityTeamScreen> {
+    extends ConsumerState<ContactCommunityTeamScreen> {
+  bool _prefilled = false;
   String? selectedSubject;
   final _formKey = GlobalKey<FormState>();
 
@@ -38,14 +50,67 @@ class _ContactCommunityTeamScreenState
   final GlobalKey _nameFieldKey = GlobalKey();
   final GlobalKey _emailFieldKey = GlobalKey();
   final GlobalKey _messageFieldKey = GlobalKey();
+  bool isSubmitting = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _nameFocusNode.addListener(_scrollToFocusedField);
-    _emailFocusNode.addListener(_scrollToFocusedField);
-    _messageFocusNode.addListener(_scrollToFocusedField);
-  }
+ @override
+void initState() {
+  super.initState();
+  _nameFocusNode.addListener(_scrollToFocusedField);
+  _emailFocusNode.addListener(_scrollToFocusedField);
+  _messageFocusNode.addListener(_scrollToFocusedField);
+
+  ref.listenManual<AsyncValue<ProfileUser?>>(
+    myProfileProvider,
+    (previous, next) => next.whenData(_prefillOnce),
+    fireImmediately: true,
+  );
+}
+void _showContactSuccess() {
+  context.push(
+    RouteNames.feedback,
+    extra: AppFeedbackScreen(
+      image: AssetsPath.successTick,
+      title: 'messageSent.title'.tr(),
+      subtitle: 'messageSent.subtitle'.tr(),
+      buttonText: 'messageSent.backToProfile'.tr(),
+      buttonIcon: Icons.arrow_back,
+      isSuccess: true,
+      onPressed: () => context.go(RouteNames.profile),
+    ),
+  );
+}
+
+void _showContactFailure() {
+  context.push(
+    RouteNames.feedback,
+    extra: AppFeedbackScreen(
+      image: AssetsPath.failureImage,
+      title: 'messageNotSent.title'.tr(),
+      subtitle: 'messageNotSent.subtitle'.tr(),
+      buttonText: 'messageNotSent.backToProfile'.tr(), 
+      isSuccess: false,
+      onPressed: () => context.canPop()
+          ? context.pop()
+          : context.go(RouteNames.contactCommunityTeam),
+    ),
+  );
+}
+
+void _prefillOnce(ProfileUser? profile) {
+  if (_prefilled) return;
+  _prefilled = true;
+
+  final name = (profile?.fullName ?? profile?.displayName ?? '').trim();
+  final email = (profile?.email ?? '').trim().isNotEmpty
+      ? profile!.email.trim()
+      : (Supabase.instance.client.auth.currentUser?.email ?? '').trim();
+
+  if (name.isNotEmpty) _nameController.text = name;
+  if (email.isNotEmpty) _emailController.text = email;
+
+  // If profile load finishes after first frame, refresh so fields show text.
+  if (mounted) setState(() {});
+}
 
   void _scrollToFocusedField() {
     final node = _nameFocusNode.hasFocus
@@ -86,16 +151,45 @@ class _ContactCommunityTeamScreenState
     super.dispose();
   }
 
-  void _submit() {
-    if (_formKey.currentState?.validate() ?? false) {
-      // TODO: implement send logic
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(translate(context, 'contactCommunity.sendMessage')),
+  Future<void> _submit() async {
+  if (isSubmitting) return;
+  if (!(_formKey.currentState?.validate() ?? false)) return;
+  if (selectedSubject == null || selectedSubject!.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          translate(context, 'contactCommunity.selectPlaceholder'),
         ),
-      );
-    }
+      ),
+    );
+    return;
   }
+
+  setState(() => isSubmitting = true);
+  try {
+    final online =
+        await NetworkConnectivityService.instance.checkInternetConnection();
+    if (!mounted) return;
+    if (!online) {
+      _showContactFailure();
+      return;
+    }
+
+    final ok = await SupportService().sendContactMessage(
+      subject: selectedSubject!,
+      message: _messageController.text.trim(),
+      fullName: _nameController.text.trim(),
+      email: _emailController.text.trim(),
+    );
+    if (!mounted) return;
+    ok ? _showContactSuccess() : _showContactFailure();
+  } catch (_) {
+    if (!mounted) return;
+    _showContactFailure();
+  } finally {
+    if (mounted) setState(() => isSubmitting = false);
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -409,13 +503,14 @@ class _ContactCommunityTeamScreenState
         alignment: Alignment.center,
         children: [
           GradientButton(
-            height: 50.h,
-            textStyle: AppTextStyles.titleMedium.copyWith(
-              color: AppColors.whiteBase,
-            ),
-            text: translate(context, 'contactCommunity.sendMessage'),
-            onTap: _submit,
-          ),
+  height: 50.h,
+  textStyle: AppTextStyles.titleMedium.copyWith(
+    color: AppColors.whiteBase,
+  ),
+  text: translate(context, 'contactCommunity.sendMessage'),
+  isLoading: isSubmitting,
+  onTap: isSubmitting ? () {} : _submit,
+),
         ],
       ),
     );

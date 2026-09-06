@@ -424,6 +424,7 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const ContactCommunityTeamScreen(),
     ),
 
+
     /// Report an Issue
     GoRoute(
       path: RouteNames.reportAnIssue,

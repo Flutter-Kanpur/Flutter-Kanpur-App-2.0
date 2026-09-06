@@ -30,7 +30,11 @@ class AssetsPath {
   static const String rejectedPage = 'assets/rejected.png';
   static const String contributorApproved = 'assets/contributorSuccess.png';
   static const String contribute1 = 'assets/contribute1.svg';
-  static const String uploadIcon = 'assets/icons/upload_icon.svg';
+  static const String uploadIcon = 'assets/icons/upload_file.svg';
+static const String fileIcon = 'assets/icons/file_icon.svg';
+static const String yellowFileLoader = 'assets/icons/yellow_file_loader.svg';
+static const String dustbin = 'assets/icons/dustbin.svg';
+static const String crossIcon = 'assets/icons/cross.svg';
   static const String notificationIcon = 'assets/icons/notification_icon.svg';
   static const String codeIcon = 'assets/icons/code.svg';
   static const String linkIcon = 'assets/icons/link.svg';
@@ -38,6 +42,7 @@ class AssetsPath {
 
   /// Blue tick used on the success result screens.
   static const String successTick = 'assets/success_tick.png';
+static const String failureImage = 'assets/failure.svg';
   static const String projectLandingDescription =
       'assets/project_landing_description.svg';
   static const String tickIcon = 'assets/icons/tick.svg';

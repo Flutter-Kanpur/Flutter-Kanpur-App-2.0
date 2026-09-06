@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 
 class FkResultScreen extends StatelessWidget {
   const FkResultScreen({
@@ -36,73 +38,133 @@ class FkResultScreen extends StatelessWidget {
   final VoidCallback? onSecondaryPressed;
 
   @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: AppSpacing.all(AppSpacing.h22),
+  @override
+Widget build(BuildContext context) {
+  return SafeArea(
+    child: Padding(
+      padding: AppSpacing.all(AppSpacing.h22),
+      child: SizedBox(
+        width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (imageAsset != null)
-              Image.asset(
-                imageAsset!,
-                width: 180,
-                height: 180,
-                fit: BoxFit.contain,
-                // Fall back to the drawn circle if the asset is missing, so a
-                // bad path degrades instead of showing a broken-image box.
-                errorBuilder: (_, _, _) => _GradientBadge(icon: icon, color: color),
-              )
+              imageAsset!.endsWith('.svg')
+                  ? SvgPicture.asset(
+                      imageAsset!,
+                      width: 180,
+                      height: 180,
+                      fit: BoxFit.contain,
+                      alignment: Alignment.center,
+                      placeholderBuilder: (_) =>
+                          _GradientBadge(icon: icon, color: color),
+                    )
+                  : Image.asset(
+                      imageAsset!,
+                      width: 180,
+                      height: 180,
+                      fit: BoxFit.contain,
+                      alignment: Alignment.center,
+                      errorBuilder: (_, _, _) =>
+                          _GradientBadge(icon: icon, color: color),
+                    )
             else
               _GradientBadge(icon: icon, color: color),
             SizedBox(height: AppSpacing.v22),
-            Text(
-              title,
-              style: Theme.of(
-                context,
-              ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800),
-              textAlign: TextAlign.center,
+            SizedBox(
+              width: double.infinity,
+              child: Text(
+                title,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.blackBase,
+                    ),
+                textAlign: TextAlign.center,
+              ),
             ),
             SizedBox(height: AppSpacing.v12),
-            Text(
-              message,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyLarge?.copyWith(color: AppColors.neutral500),
-              textAlign: TextAlign.center,
+            SizedBox(
+              width: double.infinity,
+              child: Text(
+                message,
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: AppColors.neutral500,
+                    ),
+                textAlign: TextAlign.center,
+              ),
             ),
             SizedBox(height: AppSpacing.v22),
             SizedBox(
-              width: 220,
-              child: buttonIcon == null
-                  ? OutlinedButton(
-                      onPressed: onPressed,
-                      child: Text(buttonLabel),
-                    )
-                  : OutlinedButton.icon(
-                      onPressed: onPressed,
-                      icon: Icon(buttonIcon, size: 18),
-                      label: Text(buttonLabel),
-                    ),
+              width: 260,
+              child: OutlinedButton(
+                onPressed: onPressed,
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: AppColors.blackBase,
+                  backgroundColor: AppColors.whiteBase,
+                  side: const BorderSide(color: AppBorders.primary),
+                  shape: const StadiumBorder(),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 14,
+                  ),
+                ),
+                child: buttonIcon == null
+                    ? Text(
+                        buttonLabel,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: AppColors.blackBase,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      )
+                    : Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            buttonIcon,
+                            size: 18,
+                            color: AppColors.blackBase,
+                          ),
+                          const SizedBox(width: 8),
+                          Flexible(
+                            child: Text(
+                              buttonLabel,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: AppColors.blackBase,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+              ),
             ),
             if (secondaryLabel != null && onSecondaryPressed != null) ...[
               SizedBox(height: AppSpacing.v12),
               TextButton(
                 onPressed: onSecondaryPressed,
+                style: TextButton.styleFrom(
+                  foregroundColor: AppColors.blackBase,
+                ),
                 child: Text(
                   secondaryLabel!,
+                  textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AppColors.primary500,
-                    fontWeight: FontWeight.w500,
-                  ),
+                        color: AppColors.blackBase,
+                        fontWeight: FontWeight.w500,
+                      ),
                 ),
               ),
             ],
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }
 
 /// Drawn fallback badge, used when no [FkResultScreen.imageAsset] is supplied

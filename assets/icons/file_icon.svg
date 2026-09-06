@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+    <defs>
+        <!-- Base Document Clip Path -->
+        <clipPath id="doc-shape">
+            <path d="M 125 55
+               C 85 55, 75 95, 75 135
+               L 75 410
+               C 75 450, 85 490, 125 490
+               L 365 490
+               C 405 490, 415 450, 415 410
+               L 415 185
+               L 285 55 Z" />
+        </clipPath>
+    </defs>
+
+    <!-- Document Base Layer (Full Page) -->
+    <path d="M 125 55
+           C 85 55, 75 95, 75 135
+           L 75 410
+           C 75 450, 85 490, 125 490
+           L 365 490
+           C 405 490, 415 450, 415 410
+           L 415 185
+           L 285 55 Z"
+        fill="#EDEDEE" />
+
+    <!-- Inner Page Sheet (White foreground with folded corner cut) -->
+    <g clip-path="url(#doc-shape)">
+        <path d="M 132 55
+             C 102 55, 100 85, 100 120
+             L 100 440
+             C 100 475, 102 490, 132 490
+             L 415 490
+             L 415 208
+             C 340 208, 290 200, 290 125
+             L 290 55 Z"
+            fill="#FAFAFA" />
+
+        <!-- Corner Shadow / Crease Underlay -->
+        <path d="M 264 55
+             L 264 150
+             C 264 195, 295 208, 340 208
+             L 415 208
+             L 415 185
+             L 285 55 Z"
+            fill="#D6D8DB" />
+
+        <!-- Corner Fold Triangle (Red) -->
+        <path d="M 290 58
+             L 290 125
+             C 290 175, 320 182, 368 182
+             L 412 182
+             L 290 58 Z"
+            fill="#D93848" />
+    </g>
+
+    <!-- Badge 3D Left Depth / Shadow -->
+    <rect x="56" y="232" width="60" height="195" rx="38" ry="38" fill="#B22034" />
+
+    <!-- Main Red Badge -->
+    <rect x="76" y="232" width="354" height="195" rx="38" ry="38" fill="#D93848" />
+
+    <!-- Badge Text -->
+    <text x="253"
+        y="375"
+        fill="#FFFFFF"
+        font-size="114"
+        font-weight="600"
+        font-family="system-ui, -apple-system, 'SF Pro Display', Roboto, 'Segoe UI', Helvetica, Arial, sans-serif"
+        text-anchor="middle"
+        letter-spacing="3">FILE</text>
+</svg>
