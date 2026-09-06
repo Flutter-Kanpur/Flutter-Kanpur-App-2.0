@@ -37,6 +37,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   final _websiteController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
   File? _imageFile;
+  bool _removePhoto = false;
 
   static const _aboutMaxLength = 150;
 
@@ -207,6 +208,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       if (pickedFile != null) {
         setState(() {
           _imageFile = File(pickedFile.path);
+          _removePhoto = false;
         });
       }
     } catch (e) {
@@ -240,7 +242,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 24.verticalSpace,
                 GestureDetector(
                   onTap: () {
-                    setState(() => _imageFile = null);
+                    setState(() {
+                      _imageFile = null;
+                      _removePhoto = true;
+                    });
                     Navigator.pop(context);
                   },
                   child: Container(
@@ -286,6 +291,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
             yearsOfExperience: yearsOfExperienceValueAt(_yearsIndex),
           ),
           current: current,
+          localPhotoPath: _imageFile?.path,
+          removePhoto: _removePhoto,
         );
 
     if (!mounted) return;
@@ -344,7 +351,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
   Widget _buildForm(BuildContext context, ProfileUser? profile) {
     final photoUrl = profile?.photoUrl;
-    final displayName = profile?.displayLabel ?? '';
+    final displayName = profile?.username ?? '';
 
     return SingleChildScrollView(
                   padding:
@@ -357,12 +364,12 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: AppColors.whiteBase,
-                          borderRadius: AppRadius.all06,
+                          borderRadius: AppRadius.all05,
                           border: Border.all(
                             color: AppBorders.secondary,
                           ),
                         ),
-                        padding: AppSpacing.all(AppSpacing.h20),
+                        padding: AppSpacing.all(AppSpacing.h16),
                         child: Row(
                           children: [
                             Container(
@@ -374,21 +381,25 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                 ),
                               ),
                               child: CircleAvatar(
-                                radius: 35.r,
+                                radius: 30.r,
                                 backgroundColor:
                                     AppColors.neutral100,
                                 backgroundImage: _imageFile != null
                                     ? FileImage(_imageFile!)
-                                    : (photoUrl != null && photoUrl.isNotEmpty
+                                    : (!_removePhoto &&
+                                            photoUrl != null &&
+                                            photoUrl.isNotEmpty
                                         ? NetworkImage(photoUrl)
                                         : null),
                                 child: _imageFile == null &&
-                                        (photoUrl == null || photoUrl.isEmpty)
+                                        (_removePhoto ||
+                                            photoUrl == null ||
+                                            photoUrl.isEmpty)
                                     ? Text(
                                         displayName.isNotEmpty
                                             ? displayName[0].toUpperCase()
                                             : '?',
-                                        style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w500),
+                                        style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase),
                                       )
                                     : null,
                               ),
@@ -400,10 +411,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                 children: [
                                   Text(
                                     displayName,
-                                    style: AppTextStyles.headlineSmall.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold)
+                                    style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase)
                                         ,
                                   ),
-                                  SizedBox(height: AppSpacing.v4),
                                   GestureDetector(
                                     onTap: _showImagePickerSheet,
                                     child: Text(

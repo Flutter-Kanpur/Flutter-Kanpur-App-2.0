@@ -10,23 +10,24 @@ class ExploreRepository {
 
   final SupabaseClient _client;
 
-  /// `community_memberships` joined with `users`, paginated via
-  /// [limit]/[offset].
+  /// Active core team from [DatabaseTables.coreTeamMembers], paginated.
   Future<List<CoreTeamMember>> fetchCoreTeamMembers({
     int limit = 10,
     int offset = 0,
   }) async {
     final data = await _client
-        .from(DatabaseTables.communityMemberships)
+        .from(DatabaseTables.coreTeamMembers)
         .select(
-          'community_key, role, membership_status, joined_at, '
+          'role, team_section, is_lead, sort_order, is_active, joined_at, '
           'user:users!user_uid('
           'display_name, full_name, username, photo_url, bio, '
           'github_url, linkedin_url, website_url, '
           'user_skills(skill_name)'
           ')',
         )
-        .eq('membership_status', 'active')
+        .eq('is_active', true)
+        .eq('is_deleted', false)
+        .order('sort_order', ascending: true)
         .order('joined_at', ascending: false)
         .range(offset, offset + limit - 1);
 

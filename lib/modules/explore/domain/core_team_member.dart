@@ -36,9 +36,7 @@ class CoreTeamMember {
 
   bool get hasSkills => skills.isNotEmpty;
 
-  /// [map] is one row of `community_memberships` joined with `users` via
-  /// `user:users!user_uid(...)`. `name` prefers `display_name` (falling back
-  /// to `full_name`, then a placeholder).
+  /// `core_team_members` joined with `users` via `user:users!user_uid(...)`.
   factory CoreTeamMember.fromMap(Map<String, dynamic> map) {
     final user = map['user'] as Map<String, dynamic>?;
     final displayName = user?['display_name'] as String?;
@@ -52,8 +50,8 @@ class CoreTeamMember {
       username: user?['username'] as String?,
       photoUrl: user?['photo_url'] as String?,
       role: map['role'] as String? ?? 'member',
-      membershipStatus: map['membership_status'] as String? ?? 'pending',
-      communityKey: map['community_key'] as String? ?? 'flutter_kanpur',
+      membershipStatus: (map['is_active'] as bool? ?? true) ? 'active' : 'inactive',
+      communityKey: 'flutter_kanpur',
       bio: user?['bio'] as String?,
       githubUrl: user?['github_url'] as String?,
       linkedinUrl: user?['linkedin_url'] as String?,

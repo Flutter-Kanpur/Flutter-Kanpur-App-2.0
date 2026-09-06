@@ -31,7 +31,7 @@ class ManageProfileSectionCard extends StatelessWidget {
       children: [
         Text(
           title,
-          style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.w800),
+          style: AppTextStyles.titleMedium.copyWith(color: AppColors.blackBase),
         ),
         if (value != null) ...[
           SizedBox(height: AppSpacing.v8),
@@ -60,7 +60,7 @@ class ManageProfileSectionCard extends StatelessWidget {
             onTap: onEdit,
             child: Text(
               translate(context, "profile.edit"),
-              style: AppTextStyles.bodyMedium.copyWith(
+              style: AppTextStyles.titleMedium.copyWith(
                 color: AppColors.primary500,
               ),
             ),

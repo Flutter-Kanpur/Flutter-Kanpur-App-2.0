@@ -43,8 +43,10 @@ class HomeCarouselSlideEntity extends Equatable {
       'body': body,
       'btn_text': btnText,
       'btn_url': btnUrl,
-      'background_image': hasImage ? imageUrl : null,
-      'video_url': hasVideo ? videoUrl : null,
+      'background_image': imageUrl,
+      'video_url': contentType == HomeCarouselContentType.video && hasVideo
+          ? videoUrl
+          : null,
     };
   }
 

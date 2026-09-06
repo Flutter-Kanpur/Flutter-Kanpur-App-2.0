@@ -4,6 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../../../app/router/route_names.dart';
 
 class ProfileHeader extends StatelessWidget {
   const ProfileHeader({
@@ -53,11 +56,9 @@ class ProfileHeader extends StatelessWidget {
                   displayName,
                   style: AppTextStyles.titleLarge.copyWith(
                     color: AppColors.blackBase,
-                    fontWeight: FontWeight.w600,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(height: AppSpacing.v4),
                 Text(
                   username,
                   style: AppTextStyles.bodyMedium.copyWith(
@@ -68,7 +69,7 @@ class ProfileHeader extends StatelessWidget {
                 ),
                 SizedBox(height: AppSpacing.v6),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () => context.push(RouteNames.editProfile),
                   child: Text(
                     'Edit profile',
                     style: AppTextStyles.bodyMedium.copyWith(

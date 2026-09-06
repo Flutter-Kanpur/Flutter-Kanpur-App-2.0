@@ -1,6 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../data/services/auth_service.dart';
 import '../data/services/user_service.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/auth/application/auth_session_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/profile/application/profile_provider.dart';
 
 // ============================================================================
 // CLASS: User Info Model
@@ -35,25 +38,25 @@ final userServiceProvider = Provider<UserService>((ref) {
 // ============================================================================
 // PROVIDER: Current Auth Status
 // ============================================================================
-final currentUserProvider = FutureProvider<UserInfo?>((ref) async {
-  final authService = ref.watch(authServiceProvider);
 
-  try {
-    final isAuth = authService.isAuthenticated();
-    if (isAuth) {
-      final user = authService.getCurrentUser();
-      if (user != null) {
-        return UserInfo(
-          userId: user.id,
-          email: user.email,
-          displayName: user.userMetadata?['display_name'] as String?,
-        );
-      }
-    }
-    return null;
-  } catch (e) {
-    return null;
-  }
+void _invalidateSessionScopedProviders(Ref ref) {
+  ref.invalidate(currentUserProvider);
+  ref.invalidate(myProfileProvider);
+}
+
+final currentUserProvider = FutureProvider<UserInfo?>((ref) async {
+  final uid = await ref.watch(authUserIdProvider.future);
+  if (uid == null) return null;
+
+  final authService = ref.read(authServiceProvider);
+  final user = authService.getCurrentUser();
+  if (user == null || user.id != uid) return null;
+
+  return UserInfo(
+    userId: user.id,
+    email: user.email,
+    displayName: user.userMetadata?['display_name'] as String?,
+  );
 });
 
 // ============================================================================
@@ -77,7 +80,7 @@ final signInProvider =
           throw Exception(response.errorMessage ?? 'Sign in failed');
         }
 
-        ref.invalidate(currentUserProvider);
+        _invalidateSessionScopedProviders(ref);
       };
     });
 
@@ -107,7 +110,7 @@ final signUpProvider =
           throw Exception(response.errorMessage ?? 'Sign up failed');
         }
 
-        ref.invalidate(currentUserProvider);
+        _invalidateSessionScopedProviders(ref);
       };
     });
 
@@ -122,7 +125,7 @@ final signOutProvider = Provider<Future<void> Function()>((ref) {
     await userService.clearUserData();
     await authService.signOut();
 
-    ref.invalidate(currentUserProvider);
+    _invalidateSessionScopedProviders(ref);
   };
 });
 

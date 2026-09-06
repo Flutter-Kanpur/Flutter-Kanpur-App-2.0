@@ -23,6 +23,7 @@ class DatabaseTables {
   static const answerLikes = 'answer_likes';
   static const answerComments = 'answer_comments';
   static const communityMemberships = 'community_memberships';
+  static const coreTeamMembers = 'core_team_members';
   static const contests = 'contests';
   static const contestProblems = 'contest_problems';
   static const contestSubmissions = 'contest_submissions';

@@ -22,13 +22,14 @@ List<RouteBase> readmeHostRoutes({
       name: 'readme_blog_detail',
       parentNavigatorKey: rootNavigatorKey,
       builder: (context, state) {
-        final blog = state.extra;
-        if (blog is! Blog) {
+        final id = state.pathParameters['id'] ?? '';
+        if (id.isEmpty) {
           return const _ReadmeMissingExtraScreen(
             message: 'Blog could not be opened.',
           );
         }
-        return BlogDetailLoader(blog: blog);
+        final blog = state.extra is Blog ? state.extra as Blog : null;
+        return BlogDetailLoader(blogId: id, initialBlog: blog);
       },
     ),
     GoRoute(
@@ -70,9 +71,7 @@ List<RouteBase> readmeHostRoutes({
       parentNavigatorKey: rootNavigatorKey,
       builder: (context, state) {
         final slug = state.pathParameters['slug']!;
-        final community =
-            state.extra is Community ? state.extra as Community : null;
-        return CommunityDetailScreen(slug: slug, community: community);
+        return CommunityDetailScreen(slug: slug);
       },
     ),
     GoRoute(

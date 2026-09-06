@@ -1,11 +1,12 @@
-import 'package:Readme/core/router/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/navigation_provider.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/auth/application/auth_session_provider.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/auth/application/auth_state_manager.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/application/profile_provider.dart';
 import '../../../../utils/assets_path.dart';
@@ -26,13 +27,19 @@ class MyProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(authUserIdProvider, (previous, next) {
+      if (previous?.value != next.value) {
+        ref.invalidate(myProfileProvider);
+      }
+    });
+
     final profileAsync = ref.watch(myProfileProvider);
     return GradientBackground(
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           forceMaterialTransparency: true,
-          centerTitle: false,
+          centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0,
           automaticallyImplyLeading: false,
@@ -44,7 +51,7 @@ class MyProfileScreen extends ConsumerWidget {
               : null,
           title: Text(
             'My Profile',
-            style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w500,
+            style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w500,
             ),
           ),
         ),
@@ -64,11 +71,46 @@ class MyProfileScreen extends ConsumerWidget {
                       displayName: translate(context, 'profile.loadError'),
                       username: '',
                     ),
-                    data: (profile) => ProfileHeader(
-                      displayName: profile?.displayLabel ?? '',
-                      username: profile?.handle ?? '',
-                      photoUrl: profile?.photoUrl,
-                    ),
+                    data: (profile) {
+                      final authUser = Supabase.instance.client.auth.currentUser;
+                      final uid = authUser?.id;
+                      final authEmail = authUser?.email?.trim().toLowerCase();
+                      final profileEmail = profile?.email.trim().toLowerCase();
+
+                      if (profile != null &&
+                          uid != null &&
+                          profile.uid.isNotEmpty &&
+                          profile.uid != uid) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          ref.invalidate(myProfileProvider);
+                        });
+                        return const ProfileHeader(
+                          displayName: '',
+                          username: '',
+                        );
+                      }
+
+                      if (profile != null &&
+                          authEmail != null &&
+                          authEmail.isNotEmpty &&
+                          profileEmail != null &&
+                          profileEmail.isNotEmpty &&
+                          authEmail != profileEmail) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          ref.invalidate(myProfileProvider);
+                        });
+                        return ProfileHeader(
+                          displayName: authUser?.email?.split('@').first ?? '',
+                          username: authUser?.email ?? '',
+                        );
+                      }
+
+                      return ProfileHeader(
+                        displayName: profile?.username ?? '',
+                        username: profile?.handle ?? '',
+                        photoUrl: profile?.photoUrl,
+                      );
+                    },
                   ),
                   ProfileSectionBlock(
                     title: 'Account',
@@ -209,6 +251,7 @@ class MyProfileScreen extends ConsumerWidget {
     try {
       await ref.read(signOutProvider)();
       ref.invalidate(currentUserProvider);
+      ref.invalidate(myProfileProvider);
       ref.invalidate(nextRouteProvider);
       ref.invalidate(splashRouteProvider);
       return true;

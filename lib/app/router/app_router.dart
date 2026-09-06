@@ -37,6 +37,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/p
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/my_contest_detail_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/my_contests_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/my_events_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/privacy_policy_page.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/problem_of_day_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/support/presentation/screens/contactTeam.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/support/presentation/screens/helpCenter.dart';
@@ -402,7 +403,7 @@ final GoRouter appRouter = GoRouter(
     /// Privacy Policy
     GoRoute(
       path: RouteNames.privacyPolicy,
-      builder: (context, state) => const PrivacyPolicy(),
+      builder: (context, state) => const PrivacyPolicyPage(),
     ),
 
     /// Terms of Use

@@ -62,7 +62,9 @@ class ProfileUser {
 
   String get handle {
     final name = username?.trim() ?? '';
-    return name.isEmpty ? '' : '@$name';
+    if (name.isNotEmpty) return '@$name';
+    final localPart = email.split('@').first.trim();
+    return localPart.isEmpty ? '' : '@$localPart';
   }
 
   /// Whether [bio] holds something worth rendering.

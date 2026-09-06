@@ -62,7 +62,7 @@ class _ManageProfileScreenState extends ConsumerState<ManageProfileScreen> {
           ),
           title: Text(
             translate(context, "profile.manageProfile"),
-            style: AppTextStyles.titleMedium,
+            style: AppTextStyles.titleLarge,
           ),
         ),
         body: profileAsync.when(
@@ -99,12 +99,12 @@ class _ManageProfileScreenState extends ConsumerState<ManageProfileScreen> {
             linkedinUrl: profile.linkedinUrl,
             onEditProfile: () => context.push(RouteNames.editProfile),
           ),
-          SizedBox(height: AppSpacing.v22),
-          ProblemOfDaySection(
-            level: 2,
-            progress: 0.25,
-            onViewProgress: () => context.push(RouteNames.problemOfDay),
-          ),
+          // SizedBox(height: AppSpacing.v22),
+          // ProblemOfDaySection(
+          //   level: 2,
+          //   progress: 0.25,
+          //   onViewProgress: () => context.push(RouteNames.problemOfDay),
+          // ),
           SizedBox(height: AppSpacing.v22),
           ManageProfileSectionCard(
             title: translate(context, "profile.aboutMe"),

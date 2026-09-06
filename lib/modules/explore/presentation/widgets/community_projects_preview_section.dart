@@ -63,7 +63,7 @@ class CommunityProjectsPreviewSection extends ConsumerWidget {
               children: [
                 for (final project in projects)
                   Padding(
-                    padding: EdgeInsets.only(bottom: AppSpacing.v12),
+                    padding: EdgeInsets.only(bottom: AppSpacing.v6),
                     child: CommunityProjectPreviewCard(project: project),
                   ),
               ],
