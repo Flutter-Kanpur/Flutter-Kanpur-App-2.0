@@ -12,6 +12,16 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/network_connectivity_service.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/support/data/support_service.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/screens/app_feedback_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:flutter_knp_mobile_app_v2/core/utils/image_compress_helper.dart';
 
 class ReportAnIssueScreen extends StatefulWidget {
   const ReportAnIssueScreen({super.key});
@@ -23,7 +33,80 @@ class ReportAnIssueScreen extends StatefulWidget {
 class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
   String? selectedIssue;
   PlatformFile? pickedFile;
-  bool isUploading = false;
+  Uint8List? previewBytes;
+  double uploadProgress = 0; // 0.0 → 1.0
+  bool isUploadComplete = false;
+  bool isUploadingFile = false;
+  bool isSubmitting = false;
+  final TextEditingController _descriptionController = TextEditingController();
+
+  @override
+  void dispose() {
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
+  void _showReportSuccess() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    context.push(
+      RouteNames.feedback,
+      extra: AppFeedbackScreen(
+        image: AssetsPath.successTick,
+        title: 'reportSubmitted.title'.tr(),
+        subtitle: 'reportSubmitted.subtitle'.tr(),
+        buttonText: 'reportSubmitted.reportAnother'.tr(),
+        buttonIcon: Icons.arrow_back,
+        isSuccess: true,
+        onPressed: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+          _resetForm(); // optional but better UX for "another" report
+          if (context.canPop()) {
+            context.pop();
+          } else {
+            context.go(RouteNames.reportAnIssue);
+          }
+        },
+        secondaryText: 'reportSubmitted.goToProfile'.tr(),
+        onSecondaryPressed: () => context.go(RouteNames.profile),
+      ),
+    );
+  }
+
+  void _showReportFailure() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    context.push(
+      RouteNames.feedback,
+      extra: AppFeedbackScreen(
+        image: AssetsPath.failureImage,
+        title: 'reportFailed.title'.tr(),
+        subtitle: 'reportFailed.subtitle'.tr(),
+        buttonText: 'reportFailed.tryAgain'.tr(),
+        isSuccess: false,
+        onPressed: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+          _resetForm(); // optional but better UX for "another" report
+          if (context.canPop()) {
+            context.pop();
+          } else {
+            context.go(RouteNames.reportAnIssue);
+          }
+        },
+      ),
+    );
+  }
+
+  void _resetForm() {
+    setState(() {
+      selectedIssue = null;
+      pickedFile = null;
+      previewBytes = null;
+      uploadProgress = 0;
+      isUploadComplete = false;
+      isUploadingFile = false;
+      isSubmitting = false;
+    });
+    _descriptionController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -175,6 +258,8 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
         ),
         SizedBox(height: AppSpacing.v10),
         TextFormField(
+          controller: _descriptionController,
+          autofocus: false,
           maxLines: 5,
           decoration: InputDecoration(
             hintText: translate(context, "profile_support.describe_issue_hint"),
@@ -227,10 +312,13 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
             child: Column(
               children: [
                 SvgPicture.asset(
-                  'assets/icons/upload_icon.svg',
+                  AssetsPath.uploadIcon, // assets/icons/upload_file.svg
                   width: 18.w,
                   height: 18.w,
-                  color: AppColors.neutral300,
+                  colorFilter: const ColorFilter.mode(
+                    AppColors.neutral300,
+                    BlendMode.srcIn,
+                  ),
                 ),
                 SizedBox(height: AppSpacing.v10),
                 Text(
@@ -241,8 +329,7 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
                 ),
                 SizedBox(height: AppSpacing.v12),
                 OutlinedButton(
-                  // onPressed: _pickFile,
-                  onPressed: (){},
+                  onPressed: isSubmitting ? null : _pickFile,
                   style: OutlinedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     foregroundColor: AppColors.blackBase,
@@ -268,52 +355,212 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
   }
 
   Widget _buildUploadCards() {
-    return Column(
-      children: [
-        if (pickedFile != null) ...[
-          SizedBox(height: AppSpacing.v10),
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  pickedFile!.name,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.blackBase,
-                  ),
-                  overflow: TextOverflow.ellipsis,
+    if (pickedFile == null) return const SizedBox.shrink();
+
+    final totalBytes = pickedFile!.size;
+    final total = _readableSize(totalBytes);
+    final loadedBytes = (totalBytes * uploadProgress).round();
+    final loaded = _readableSize(loadedBytes);
+
+    final uploading = isUploadingFile || (isSubmitting && !isUploadComplete);
+    // Or simpler for pick-only progress:
+    // final uploading = isUploadingFile;
+    final completed = isUploadComplete && !isUploadingFile;
+
+    return Padding(
+      padding: EdgeInsets.only(top: AppSpacing.v10),
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.all(AppSpacing.h12),
+        decoration: BoxDecoration(
+          color: AppColors.whiteBase,
+          borderRadius: AppRadius.all04,
+          border: Border.all(color: AppBorders.secondary),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SvgPicture.asset(
+                  AssetsPath.fileIcon,
+                  width: 40.w,
+                  height: 40.w,
                 ),
+                SizedBox(width: AppSpacing.h12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        pickedFile!.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyles.titleSmall.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.blackBase,
+                        ),
+                      ),
+                      SizedBox(height: AppSpacing.v4),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              '$loaded of $total',
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: AppColors.neutral400,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: AppSpacing.h8),
+                          SvgPicture.asset(
+                            completed
+                                ? AssetsPath.greenTick
+                                : AssetsPath.yellowFileLoader,
+                            width: 14.w,
+                            height: 14.w,
+                          ),
+                          SizedBox(width: AppSpacing.h4),
+                          Text(
+                            completed
+                                ? translate(
+                                    context,
+                                    'profile_support.completed',
+                                  )
+                                : translate(
+                                    context,
+                                    'profile_support.uploading',
+                                  ),
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: AppColors.neutral500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  onPressed: uploading ? null : _clearFile,
+                  icon: SvgPicture.asset(
+                    uploading ? AssetsPath.crossIcon : AssetsPath.dustbin,
+                    width: 20.w,
+                    height: 20.w,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: AppSpacing.v10),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: LinearProgressIndicator(
+                value: uploadProgress.clamp(0.0, 1.0), // real 0→1 progress
+                minHeight: 6,
+                backgroundColor: AppColors.primary100,
+                color: AppColors.primary500,
               ),
-              SizedBox(width: AppSpacing.h12),
-              isUploading
-                  ? SizedBox(
-                      width: 24.w,
-                      height: 24.w,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : ElevatedButton(
-                      onPressed: _uploadFile,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary500,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: AppRadius.all02,
-                        ),
-                        padding: AppSpacing.symmetric(
-                          horizontal: AppSpacing.h12,
-                          vertical: AppSpacing.v8,
-                        ),
-                      ),
-                      child: Text(
-                        translate(context, "profile_support.upload"),
-                        style: AppTextStyles.bodyMedium
-                            .copyWith(color: AppColors.blackBase)
-                            .copyWith(color: AppColors.whiteBase),
-                      ),
-                    ),
-            ],
-          ),
-        ],
-      ],
+            ),
+          ],
+        ),
+      ),
     );
+  }
+
+  void _clearFile() {
+    setState(() {
+      pickedFile = null;
+      previewBytes = null;
+      uploadProgress = 0;
+      isUploadingFile = false;
+      isUploadComplete = false;
+    });
+  }
+
+  String _readableSize(int bytes) {
+    if (bytes < 1024) return '$bytes B';
+    if (bytes < 1024 * 1024) {
+      return '${(bytes / 1024).toStringAsFixed(0)} kb';
+    }
+    return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+  }
+
+  Future<void> _pickFile() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: const ['jpg', 'jpeg', 'png'],
+      withData: true,
+    );
+    if (result == null || result.files.isEmpty) return;
+
+    final file = result.files.first;
+    final ext = file.extension?.toLowerCase();
+    if (ext == null || !['jpg', 'jpeg', 'png'].contains(ext)) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            translate(context, 'profile_support.onlyImagesAllowed'),
+          ),
+        ),
+      );
+      return;
+    }
+
+    if (file.bytes == null || file.bytes!.isEmpty) return;
+
+    if (file.bytes == null || file.bytes!.isEmpty) return;
+
+    setState(() {
+      pickedFile = file;
+      previewBytes = null;
+      isUploadingFile = true;
+      isUploadComplete = false;
+      uploadProgress = 0;
+    });
+
+    final compressedFuture = ImageCompressHelper.compressForUpload(
+      Uint8List.fromList(file.bytes!),
+    );
+    final progressFuture = _animateUploadProgress();
+
+    final compressed = await compressedFuture;
+    await progressFuture;
+    if (!mounted) return;
+
+    if (compressed == null || compressed.isEmpty) {
+      setState(() {
+        pickedFile = null;
+        previewBytes = null;
+        isUploadingFile = false;
+        isUploadComplete = false;
+        uploadProgress = 0;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Could not process image. Try another file.'),
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      previewBytes = compressed;
+      isUploadingFile = false;
+      isUploadComplete = true;
+      uploadProgress = 1;
+    });
+  }
+
+  Future<void> _animateUploadProgress() async {
+    const steps = 20;
+    for (var i = 1; i <= steps; i++) {
+      await Future.delayed(const Duration(milliseconds: 40));
+      if (!mounted || pickedFile == null) return;
+      setState(() => uploadProgress = i / steps);
+    }
   }
 
   Widget _buildSubmitButton() {
@@ -332,18 +579,20 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
               color: AppColors.whiteBase,
             ),
             text: translate(context, "profile_support.submit_report"),
-            onTap: () {},
+            isLoading: isSubmitting,
+            onTap: isSubmitting ? () {} : _submitReport,
           ),
-          Positioned(
-            right: 60.w,
-            child: Container(
-              padding: EdgeInsets.only(left: AppSpacing.h6),
-              child: const Icon(
-                Icons.arrow_forward,
-                color: AppColors.whiteBase,
+          if (!isSubmitting)
+            Positioned(
+              right: 60.w,
+              child: Container(
+                padding: EdgeInsets.only(left: AppSpacing.h6),
+                child: const Icon(
+                  Icons.arrow_forward,
+                  color: AppColors.whiteBase,
+                ),
               ),
             ),
-          ),
         ],
       ),
     );
@@ -361,39 +610,72 @@ class _ReportIssueScreenState extends State<ReportAnIssueScreen> {
     );
   }
 
-  // Future<void> _pickFile() async {
-  //   try {
-  //     final result = await FilePicker.pickFiles(withData: true);
-  //     if (result != null && result.files.isNotEmpty) {
-  //       setState(() {
-  //         pickedFile = result.files.first;
-  //       });
-  //     }
-  //   } catch (e) {
-  //     // ignore: avoid_print
-  //     print('File pick error: $e');
-  //   }
-  // }
+  Future<void> _submitReport() async {
+    if (isSubmitting) return;
 
-  Future<void> _uploadFile() async {
-    if (pickedFile == null) return;
-    setState(() => isUploading = true);
+    if (selectedIssue == null || selectedIssue!.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            translate(context, 'profile_support.select_placeholder'),
+          ),
+        ),
+      );
+      return;
+    }
+
+    final description = _descriptionController.text.trim();
+    if (description.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            translate(context, 'profile_support.describe_issue_hint'),
+          ),
+        ),
+      );
+      return;
+    }
+
+    setState(() => isSubmitting = true);
+
     try {
-      // TODO: Replace this mock upload with real upload logic (send bytes/path to backend)
-      await Future.delayed(const Duration(seconds: 2));
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(translate(context, 'profile_support.uploaded_success')),
-        ),
+      final online = await NetworkConnectivityService.instance
+          .checkInternetConnection();
+      if (!mounted) return;
+      if (!online) {
+        _showReportFailure();
+        return;
+      }
+
+      String? attachmentBase64;
+      String? attachmentFilename;
+      String? attachmentContentType;
+
+      if (pickedFile != null && previewBytes != null) {
+        attachmentBase64 = base64Encode(previewBytes!);
+        final baseName = pickedFile!.name.replaceAll(
+          RegExp(r'\.(png|jpg|jpeg)$', caseSensitive: false),
+          '',
+        );
+        attachmentFilename = '$baseName.jpg';
+        attachmentContentType = 'image/jpeg';
+      }
+
+      final ok = await SupportService().sendIssueReport(
+        issueType: selectedIssue!,
+        description: description,
+        attachmentBase64: attachmentBase64,
+        attachmentFilename: attachmentFilename,
+        attachmentContentType: attachmentContentType,
       );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(translate(context, 'profile_support.uploaded_failed')),
-        ),
-      );
+
+      if (!mounted) return;
+      ok ? _showReportSuccess() : _showReportFailure();
+    } catch (_) {
+      if (!mounted) return;
+      _showReportFailure();
     } finally {
-      setState(() => isUploading = false);
+      if (mounted) setState(() => isSubmitting = false);
     }
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/shell_with_bottom_nav.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/readme_host_routes.dart';
+import 'package:flutter_knp_mobile_app_v2/app/router/community_upload_routes.dart';
 
 import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/auth_landing_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/auth_options_screen.dart';
@@ -21,7 +22,11 @@ import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/notifications_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/upload_project_form_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/upload_project_landing_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/project_detail_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/events/presentation/screens/events_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/explore/presentation/screens/contests_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/explore/presentation/screens/core_team.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/explore/presentation/screens/explore_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/screens/home_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/onboarding/presentation/screens/onboarding_navigation_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/onboarding/presentation/screens/onboarding_success_screen.dart';
@@ -34,6 +39,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/p
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/my_contest_detail_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/my_contests_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/my_events_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/privacy_policy_page.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/problem_of_day_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/support/presentation/screens/contactTeam.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/support/presentation/screens/helpCenter.dart';
@@ -126,27 +132,19 @@ final GoRouter appRouter = GoRouter(
                 GoRoute(
                   path: RouteNames.communityProjectsSegment,
                   builder: (context, state) => const CommunityProjectsScreen(),
+                  routes: [
+                    GoRoute(
+                      path: ':projectId',
+                      builder: (context, state) => ProjectDetailScreen(
+                        projectId: state.pathParameters['projectId'] ?? '',
+                      ),
+                    ),
+                  ],
                 ),
                 GoRoute(
                   path: RouteNames.communityGuidelinesSegment,
                   builder: (context, state) =>
                       const CommunityGuidelinesScreen(),
-                ),
-                GoRoute(
-                  path: RouteNames.communityUploadProjectSegment,
-                  builder: (context, state) =>
-                      const UploadProjectLandingScreen(),
-                  routes: [
-                    GoRoute(
-                      path: RouteNames.communityUploadProjectFormSegment,
-                      builder: (context, state) =>
-                          const UploadProjectFormScreen(),
-                    ),
-                  ],
-                ),
-                GoRoute(
-                  path: RouteNames.communityProjectSubmittedSegment,
-                  builder: (context, state) => const ProjectSubmittedScreen(),
                 ),
                 GoRoute(
                   path: RouteNames.communityNetworkErrorSegment,
@@ -164,12 +162,12 @@ final GoRouter appRouter = GoRouter(
           ],
         ),
 
-        /// Events
+        /// Explore (bottom-nav tab; was aliased to EventsScreen, now its own dashboard)
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: RouteNames.events,
-              builder: (context, state) => const EventsScreen(),
+              path: RouteNames.explore,
+              builder: (context, state) => const ExploreScreen(),
             ),
           ],
         ),
@@ -236,6 +234,39 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: RouteNames.problemOfDay,
               builder: (context, state) => const ProblemOfDayScreen(),
+            ),
+          ],
+        ),
+
+        /// Contests (browse-all, no bottom-nav tab; reached by pushing from
+        /// the Explore dashboard's "Contests" participation tile).
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.contests,
+              builder: (context, state) => const ContestsScreen(),
+            ),
+          ],
+        ),
+
+        /// Core team (browse-all; reached from Explore dashboard preview).
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.coreTeam,
+              builder: (context, state) => const CoreTeamScreen(),
+            ),
+          ],
+        ),
+
+        /// Events (no longer a bottom-nav tab; reached by pushing from the
+        /// Explore dashboard's "Events" participation tile, same hidden-branch
+        /// treatment as MyEvents/MyContests above.
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.events,
+              builder: (context, state) => const EventsScreen(),
             ),
           ],
         ),
@@ -374,7 +405,7 @@ final GoRouter appRouter = GoRouter(
     /// Privacy Policy
     GoRoute(
       path: RouteNames.privacyPolicy,
-      builder: (context, state) => const PrivacyPolicy(),
+      builder: (context, state) => const PrivacyPolicyPage(),
     ),
 
     /// Terms of Use
@@ -395,6 +426,7 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const ContactCommunityTeamScreen(),
     ),
 
+
     /// Report an Issue
     GoRoute(
       path: RouteNames.reportAnIssue,
@@ -403,5 +435,8 @@ final GoRouter appRouter = GoRouter(
 
     /// Embedded ReadMe overlays (blog detail, create, etc.)
     ...readmeHostRoutes(rootNavigatorKey: rootNavigatorKey),
+
+    /// Upload-project flow (root overlay — safe to open from any tab).
+    ...communityUploadRoutes(rootNavigatorKey: rootNavigatorKey),
   ],
 );

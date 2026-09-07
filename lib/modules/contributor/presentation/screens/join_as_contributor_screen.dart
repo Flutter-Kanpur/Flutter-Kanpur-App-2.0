@@ -27,7 +27,7 @@ class JoinAsContributorScreen extends StatelessWidget {
             leading: const FkBackButton(fallbackPath: RouteNames.profile),
           ),
 
-          SizedBox(height: AppSpacing.v22),
+          SizedBox(height: AppSpacing.v16),
 
           /// Information Card
           Container(

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/core/constants/app_assets.dart';
@@ -51,8 +52,8 @@ class OnboardingProfileAvatar extends StatelessWidget {
                   height: size,
                 )
               : _hasNetworkPhoto
-                  ? Image.network(
-                      networkPhotoUrl!,
+                  ? CachedNetworkImage(
+                      imageUrl: networkPhotoUrl!,
                       key: ValueKey(networkPhotoUrl),
                       fit: BoxFit.cover,
                       width: size,

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
@@ -47,12 +48,12 @@ class DiscussionListItem extends StatelessWidget {
               SizedBox(height: AppSpacing.v12),
               ClipRRect(
                 borderRadius: AppRadius.all02,
-                child: Image.network(
-                  question.imageUrl!,
+                child: CachedNetworkImage(
+                  imageUrl: question.imageUrl!,
                   height: 120,
                   width: double.infinity,
                   fit: BoxFit.cover,
-                  errorBuilder: (_, _, _) => const SizedBox.shrink(),
+                  errorWidget: (_, __, ___) => const SizedBox.shrink(),
                 ),
               ),
             ],

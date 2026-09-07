@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -239,11 +240,11 @@ class _DetailBodyState extends ConsumerState<_DetailBody> {
           SizedBox(height: AppSpacing.v18),
           ClipRRect(
             borderRadius: AppRadius.all03,
-            child: Image.network(
-              question.imageUrl!,
+            child: CachedNetworkImage(
+              imageUrl: question.imageUrl!,
               width: double.infinity,
               fit: BoxFit.cover,
-              errorBuilder: (_, _, _) => const SizedBox.shrink(),
+              errorWidget: (_, __, ___) => const SizedBox.shrink(),
             ),
           ),
         ],

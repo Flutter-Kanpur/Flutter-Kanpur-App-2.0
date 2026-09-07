@@ -42,7 +42,7 @@ class FkSectionTitle extends StatelessWidget {
               ),
               child: Text(
                 actionLabel!,
-                style: AppTextStyles.bodyMedium.copyWith(
+                style: AppTextStyles.titleMedium.copyWith(
                   color: AppColors.primary500,
                   fontWeight: FontWeight.w500,
                 ),

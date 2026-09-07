@@ -17,8 +17,14 @@ class AuthService {
     try {
       print('🔐 [AuthService] Signing in user: $email');
 
+      // Ensure account switches don't keep the previous user's session.
+      if (_client.auth.currentSession != null) {
+        await _client.auth.signOut(scope: SignOutScope.global);
+        await ReadmeAuthBridge.signOut();
+      }
+
       final response = await _client.auth.signInWithPassword(
-        email: email,
+        email: email.trim(),
         password: password,
       );
 
@@ -31,21 +37,33 @@ class AuthService {
         );
       }
 
+      final signedInEmail = user.email?.trim().toLowerCase();
+      if (signedInEmail != email.trim().toLowerCase()) {
+        print('❌ [AuthService] Sign in email mismatch: $signedInEmail != $email');
+        await _client.auth.signOut(scope: SignOutScope.global);
+        return models.AuthResponse.error(
+          errorCode: 'EMAIL_MISMATCH',
+          errorMessage: 'Sign in failed. Please try again.',
+        );
+      }
+
       print('✅ [AuthService] Sign in successful: ${user.id}');
 
-try {
-  await _client.from('users').update({
-    'last_login_at': DateTime.now().toIso8601String(),
-  }).eq('uid', user.id);
-} catch (_) {
-  // profile row may not exist yet — don't block login
-}
+      try {
+        await _client.from('users').update({
+          'last_login_at': DateTime.now().toIso8601String(),
+        }).eq('uid', user.id);
+      } catch (_) {
+        // profile row may not exist yet — don't block login
+      }
 
-return models.AuthResponse.success(
-  userId: user.id,
-  email: user.email ?? '',
-  message: 'Signed in successfully',
-);
+      await ReadmeAuthBridge.ensureSignedIn(force: true);
+
+      return models.AuthResponse.success(
+        userId: user.id,
+        email: user.email ?? '',
+        message: 'Signed in successfully',
+      );
     } on AuthException catch (e) {
       print('❌ [AuthService] Auth error: ${e.message}');
       return models.AuthResponse.error(
@@ -128,7 +146,7 @@ return models.AuthResponse.success(
   Future<void> signOut() async {
     try {
       print('🔐 [AuthService] Signing out');
-      await _client.auth.signOut();
+      await _client.auth.signOut(scope: SignOutScope.global);
       await ReadmeAuthBridge.signOut();
       print('✅ [AuthService] Sign out successful');
     } catch (e) {

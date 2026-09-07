@@ -4,6 +4,7 @@ import 'package:Readme/core/network/readme_supabase.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_knp_mobile_app_v2/app/environments/env.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/auth/auth_constants.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/network_connectivity_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -14,23 +15,50 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class ReadmeAuthBridge {
   ReadmeAuthBridge._();
 
-  static Future<void>? _inFlight;
+  static Future<bool>? _inFlight;
 
   /// Ensures ReadMe has a session when the host user is signed in.
   ///
-  /// No-op when ReadMe is already signed in, the host is a guest, or the
-  /// sync URL / tokens are missing.
-  static Future<void> ensureSignedIn({bool force = false}) {
-    return _inFlight ??= _ensureSignedIn(force: force).whenComplete(() {
-      _inFlight = null;
-    });
+  /// Returns `true` when ReadMe has a valid session after this call.
+  /// Returns `false` when sync was skipped or failed (see debug console).
+  static Future<bool> ensureSignedIn({bool force = false}) {
+    if (_inFlight != null) return _inFlight!;
+    final future = _ensureSignedIn(force: force);
+    _inFlight = future.whenComplete(() => _inFlight = null);
+    return future;
   }
 
-  static Future<void> _ensureSignedIn({required bool force}) async {
-    if (!force && ReadmeSupabase.client.auth.currentSession != null) return;
+  static Future<bool> _ensureSignedIn({required bool force}) async {
+    final online =
+        await NetworkConnectivityService.instance.checkInternetConnection();
+    if (!online) {
+      debugPrint('ReadmeAuthBridge: device is offline — skipping sync.');
+      return false;
+    }
+
+    if (!ReadmeSupabase.isBound) {
+      debugPrint(
+        'ReadmeAuthBridge: ReadMe Supabase client not bound. '
+        'Set README_SUPABASE_URL and README_SUPABASE_ANON_KEY in .env.',
+      );
+      return false;
+    }
+
+    if (!force && ReadmeSupabase.client.auth.currentSession != null) {
+      if (_readmeSessionMatchesHost()) {
+        return true;
+      }
+      debugPrint(
+        'ReadmeAuthBridge: ReadMe session does not match host user — re-syncing.',
+      );
+      await ReadmeSupabase.client.auth.signOut();
+    }
 
     final hostSession = Supabase.instance.client.auth.currentSession;
-    if (hostSession == null) return;
+    if (hostSession == null) {
+      debugPrint('ReadmeAuthBridge: host user is not signed in — skipping sync.');
+      return false;
+    }
 
     final syncUrl = Env.readmeSyncSessionUrl.trim();
     final anonKey = Env.readmeSupabaseAnonKey.trim();
@@ -38,7 +66,7 @@ class ReadmeAuthBridge {
       debugPrint(
         'ReadmeAuthBridge: README_SYNC_SESSION_URL or README_SUPABASE_ANON_KEY missing.',
       );
-      return;
+      return false;
     }
 
     try {
@@ -59,7 +87,7 @@ class ReadmeAuthBridge {
           'ReadmeAuthBridge: sync-session failed (${response.statusCode}): '
           '${response.body}',
         );
-        return;
+        return false;
       }
 
       final body = jsonDecode(response.body) as Map<String, dynamic>;
@@ -68,18 +96,25 @@ class ReadmeAuthBridge {
         debugPrint(
           'ReadmeAuthBridge: sync-session response missing refresh_token.',
         );
-        return;
+        return false;
       }
 
       await ReadmeSupabase.client.auth.setSession(refreshToken);
 
       final user = ReadmeSupabase.client.auth.currentUser;
+      if (user == null) {
+        debugPrint('ReadmeAuthBridge: setSession completed but no ReadMe user.');
+        return false;
+      }
+
       debugPrint(
-        'ReadmeAuthBridge: ReadMe session ready for ${user?.email ?? user?.id}',
+        'ReadmeAuthBridge: ReadMe session ready for ${user.email ?? user.id}',
       );
+      return true;
     } catch (error, stackTrace) {
       debugPrint('ReadmeAuthBridge: ensureSignedIn failed: $error');
       debugPrint('$stackTrace');
+      return false;
     }
   }
 
@@ -154,6 +189,26 @@ class ReadmeAuthBridge {
       if (value is String && value.trim().isNotEmpty) return value.trim();
     }
     return null;
+  }
+
+  static bool readmeSessionMatchesHost() => _readmeSessionMatchesHost();
+
+  static bool _readmeSessionMatchesHost() {
+    final host = Supabase.instance.client.auth.currentUser;
+    final readme = ReadmeSupabase.client.auth.currentUser;
+    if (host == null) return readme == null;
+    if (readme == null) return false;
+
+    final hostEmail = host.email?.trim().toLowerCase();
+    final readmeEmail = readme.email?.trim().toLowerCase();
+    if (hostEmail != null &&
+        readmeEmail != null &&
+        hostEmail.isNotEmpty &&
+        readmeEmail.isNotEmpty) {
+      return hostEmail == readmeEmail;
+    }
+
+    return host.id == readme.id;
   }
 
   /// Clears the ReadMe session when the host signs out.

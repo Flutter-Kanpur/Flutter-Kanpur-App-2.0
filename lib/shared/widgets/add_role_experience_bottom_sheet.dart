@@ -4,21 +4,34 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
 
+
+import 'package:flutter_knp_mobile_app_v2/services/remote_config_service.dart';
 import '../../utils/assets_path.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 import '../../utils/translate.dart';
+import '../../utils/years_of_experience.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 // import '../../domain/entities/profile_entity.dart';
 
+
 class AddRoleExperienceBottomSheet extends StatefulWidget {
-  // final ProfileEntity profile;
-  final Function(List<String> roles, String? experience) onSave;
+  /// Roles already on the profile — preselected when the sheet opens.
+  final List<String> initialRoles;
+
+  /// Stored `users.years_of_experience`, or null when never set.
+  final int? initialYearsOfExperience;
+
+  /// Emits the chosen roles and the int to store for years of experience
+  /// (null when the user never picked a bucket).
+  final Function(List<String> roles, int? yearsOfExperience) onSave;
+
   const AddRoleExperienceBottomSheet({
     super.key,
-    // required this.profile,
+    this.initialRoles = const <String>[],
+    this.initialYearsOfExperience,
     required this.onSave,
   });
 
@@ -35,17 +48,26 @@ class _AddRoleExperienceBottomSheetState
   bool _showInlineAddOther = false;
   TextEditingController? _inlineAddOtherController;
   final FocusNode _inlineAddOtherFocusNode = FocusNode();
-  String? _selectedExperience;
+  /// Index into [kYearsOfExperienceBuckets], not a label — `initState` has no
+  /// usable localization context, and holding the index means a locale change
+  /// mid-edit can never corrupt the value that gets saved.
+  int? _selectedExperienceIndex;
   final GlobalKey _dropdownKey = GlobalKey();
 
-  late final List<String> _predefinedRoles;
+  /// Not `late final`: if Remote Config is unavailable this must degrade to an
+  /// empty suggestion list, not throw LateInitializationError on every build.
+  List<String> _predefinedRoles = const <String>[];
 
   @override
   void initState() {
     super.initState();
-    // _predefinedRoles = RemoteConfigService.instance.onboardingScreen2Options;
-    // _selectedRoles.addAll(widget.profile.roleTags);
-    // _selectedExperience = widget.profile.yearsOfExperience;
+    _predefinedRoles = RemoteConfigService.instance.onboardingScreen2Options;
+    _selectedRoles.addAll(widget.initialRoles);
+    if (widget.initialYearsOfExperience != null) {
+      _selectedExperienceIndex = yearsOfExperienceIndexFor(
+        widget.initialYearsOfExperience,
+      );
+    }
     _searchController.addListener(() {
       setState(() => _searchQuery = _searchController.text);
     });
@@ -59,14 +81,24 @@ class _AddRoleExperienceBottomSheetState
     super.dispose();
   }
 
-  List<String> get _allRoles => [..._predefinedRoles];
+  /// Already-selected roles first, then the Remote Config suggestions.
+  ///
+  /// The union matters: a role that isn't in the suggestion list would
+  /// otherwise be invisible here and get silently dropped on save.
+  List<String> get _allRoles =>
+      <String>{..._selectedRoles, ..._predefinedRoles}.toList();
 
   List<String> get _filteredRoles {
+    final all = _allRoles;
     if (_searchQuery.trim().isEmpty) {
-      return _allRoles.take(5).toList();
+      // Never hide a selected role behind the default cut-off. `take` caps
+      // itself at the list length, so no clamping against `all.length` (which
+      // would assert when the list is empty).
+      final limit = _selectedRoles.length > 5 ? _selectedRoles.length : 5;
+      return all.take(limit).toList();
     }
     final q = _searchQuery.trim().toLowerCase();
-    return _allRoles.where((s) => s.toLowerCase().contains(q)).toList();
+    return all.where((s) => s.toLowerCase().contains(q)).toList();
   }
 
   void _toggleRole(String role) {
@@ -91,11 +123,16 @@ class _AddRoleExperienceBottomSheetState
 
   void _commitInlineAddOther() {
     final value = _inlineAddOtherController?.text.trim() ?? '';
-    if (value.isNotEmpty && !_allRoles.contains(value)) {
+    if (value.isNotEmpty) {
+      // Typing a role that already exists selects it rather than doing nothing.
+      final existing = _allRoles.firstWhere(
+        (role) => role.toLowerCase() == value.toLowerCase(),
+        orElse: () => '',
+      );
       setState(() {
-        _selectedRoles.add(value);
+        _selectedRoles.add(existing.isEmpty ? value : existing);
       });
-      _saveSuggestedRoleToFirestore(value);
+      if (existing.isEmpty) _saveSuggestedRoleToFirestore(value);
     }
     _cancelInlineAddOther();
   }
@@ -167,10 +204,7 @@ class _AddRoleExperienceBottomSheetState
               ),
               decoration: InputDecoration(
                 hintText: translate(context, "profile.searchRolesSkills"),
-                hintStyle: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.neutral500,
-                  fontWeight: FontWeight.w300,
-                ),
+                hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500, fontWeight: FontWeight.w300),
                 prefixIcon: Icon(Icons.search, color: AppColors.neutral400),
                 filled: true,
                 fillColor: AppColors.neutral50,
@@ -191,10 +225,7 @@ class _AddRoleExperienceBottomSheetState
                   return GestureDetector(
                     onTap: () => _toggleRole(role),
                     child: Container(
-                      padding: AppSpacing.symmetric(
-                        horizontal: AppSpacing.h16,
-                        vertical: AppSpacing.v10,
-                      ),
+                      padding: AppSpacing.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v10),
                       decoration: BoxDecoration(
                         color: isSelected
                             ? AppColors.primary500.withValues(alpha: 0.12)
@@ -212,9 +243,8 @@ class _AddRoleExperienceBottomSheetState
                           color: isSelected
                               ? AppColors.primary500
                               : AppColors.neutral900,
-                          fontWeight: isSelected
-                              ? FontWeight.w600
-                              : FontWeight.w400,
+                          fontWeight:
+                              isSelected ? FontWeight.w600 : FontWeight.w400,
                         ),
                       ),
                     ),
@@ -229,22 +259,23 @@ class _AddRoleExperienceBottomSheetState
               onTap: _startInlineAddOther,
               child: Text(
                 translate(context, "profile.addOther"),
-                style: AppTextStyles.bodyLarge.copyWith(
-                  color: AppColors.primary500,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: AppTextStyles.bodyLarge.copyWith(color: AppColors.primary500, fontWeight: FontWeight.w500),
               ),
             ),
             SizedBox(height: AppSpacing.v20),
             GradientButton(
               onTap: () {
-                widget.onSave(_selectedRoles.toList(), _selectedExperience);
+                widget.onSave(
+                  _selectedRoles.toList(),
+                  _selectedExperienceIndex == null
+                      ? null
+                      : yearsOfExperienceValueAt(_selectedExperienceIndex!),
+                );
                 Navigator.of(context).pop();
               },
               text: translate(context, "profile.saveChanges"),
-              textStyle: AppTextStyles.titleMedium.copyWith(
-                color: AppColors.whiteBase,
-              ),
+              textStyle:
+                  AppTextStyles.titleMedium.copyWith(color: AppColors.whiteBase),
             ),
             SizedBox(height: AppSpacing.v20),
           ],
@@ -254,7 +285,9 @@ class _AddRoleExperienceBottomSheetState
   }
 
   Widget _buildExperienceDropdown() {
-    final List<String> experienceList = ["0-1", "1-2", "2-3", "3-4"];
+    // Shared with Edit Profile so both screens offer the same buckets; the
+    // menu carries the bucket index, never the label.
+    final List<String> experienceLabels = yearsOfExperienceLabels(context);
 
     return GestureDetector(
       onTap: () async {
@@ -264,14 +297,10 @@ class _AddRoleExperienceBottomSheetState
         final Offset offset = renderBox.localToGlobal(Offset.zero);
         final Size size = renderBox.size;
 
-        final Rect rect = Rect.fromLTWH(
-          offset.dx,
-          offset.dy,
-          size.width,
-          size.height,
-        );
+        final Rect rect =
+            Rect.fromLTWH(offset.dx, offset.dy, size.width, size.height);
 
-        final selected = await showMenu<String>(
+        final selectedIndex = await showMenu<int>(
           context: context,
           position: RelativeRect.fromRect(
             rect.translate(0, size.height),
@@ -283,33 +312,32 @@ class _AddRoleExperienceBottomSheetState
           ),
           color: AppColors.whiteBase,
           elevation: 6,
-          shape: RoundedRectangleBorder(borderRadius: AppRadius.all06),
-          items: experienceList.map((exp) {
-            final bool isSelected = _selectedExperience == exp;
-            return PopupMenuItem<String>(
-              value: exp,
+          shape: RoundedRectangleBorder(
+            borderRadius: AppRadius.all06,
+          ),
+          items: List.generate(experienceLabels.length, (index) {
+            final String exp = experienceLabels[index];
+            final bool isSelected = _selectedExperienceIndex == index;
+            return PopupMenuItem<int>(
+              value: index,
               padding: EdgeInsets.zero,
               child: Container(
                 width: size.width,
-                margin: EdgeInsets.symmetric(
-                  horizontal: AppSpacing.h12,
-                  vertical: AppSpacing.v6,
-                ),
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppSpacing.h16,
-                  vertical: AppSpacing.v16,
-                ),
+                margin: EdgeInsets.symmetric(horizontal: AppSpacing.h12, vertical: AppSpacing.v6),
+                padding:
+                    EdgeInsets.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v16),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppColors.primary100 : Colors.transparent,
+                  color:
+                      isSelected ? AppColors.primary100 : Colors.transparent,
                   borderRadius: AppRadius.all03,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "$exp ${translate(context, "profile.yearsSuffix")}",
-                      style: AppTextStyles.bodyLarge
-                          .copyWith(color: AppColors.blackBase)
+                      // Labels already read "0-1 years" — no suffix to append.
+                      exp,
+                      style: AppTextStyles.bodyLarge.copyWith(color: AppColors.blackBase)
                           .copyWith(color: AppColors.blackBase),
                     ),
                     if (isSelected)
@@ -325,18 +353,15 @@ class _AddRoleExperienceBottomSheetState
           }).toList(),
         );
 
-        if (selected != null) {
+        if (selectedIndex != null) {
           setState(() {
-            _selectedExperience = selected;
+            _selectedExperienceIndex = selectedIndex;
           });
         }
       },
       child: Container(
         key: _dropdownKey,
-        padding: EdgeInsets.symmetric(
-          horizontal: AppSpacing.h10,
-          vertical: AppSpacing.v18,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: AppSpacing.h10, vertical: AppSpacing.v18),
         decoration: BoxDecoration(
           color: AppColors.whiteBase,
           borderRadius: AppRadius.all04,
@@ -346,14 +371,10 @@ class _AddRoleExperienceBottomSheetState
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              _selectedExperience != null
-                  ? "$_selectedExperience ${translate(context, 'profile.yearsSuffix')}"
+              _selectedExperienceIndex != null
+                  ? experienceLabels[_selectedExperienceIndex!]
                   : translate(context, "profile.yearsOfExperience"),
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: _selectedExperience != null
-                    ? AppColors.blackBase
-                    : AppColors.neutral400,
-              ),
+              style: AppTextStyles.bodyMedium.copyWith(color: _selectedExperienceIndex != null ? AppColors.blackBase : AppColors.neutral400),
             ),
             const Icon(Icons.keyboard_arrow_down_rounded),
           ],
@@ -365,16 +386,14 @@ class _AddRoleExperienceBottomSheetState
   Widget _buildInlineAddOtherChip() {
     return Container(
       constraints: BoxConstraints(minWidth: 120.w, maxWidth: 200.w),
-      padding: EdgeInsets.only(
-        left: AppSpacing.h16,
-        right: AppSpacing.h8,
-        top: AppSpacing.v6,
-        bottom: AppSpacing.v6,
-      ),
+      padding: EdgeInsets.only(left: AppSpacing.h16, right: AppSpacing.h8, top: AppSpacing.v6, bottom: AppSpacing.v6),
       decoration: BoxDecoration(
         color: AppColors.whiteBase,
         borderRadius: AppRadius.all06,
-        border: Border.all(color: AppBorders.blue, width: 1.5),
+        border: Border.all(
+          color: AppBorders.blue,
+          width: 1.5,
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -399,7 +418,11 @@ class _AddRoleExperienceBottomSheetState
           ),
           GestureDetector(
             onTap: _cancelInlineAddOther,
-            child: Icon(Icons.close, size: 18.sp, color: AppColors.blackBase),
+            child: Icon(
+              Icons.close,
+              size: 18.sp,
+              color: AppColors.blackBase,
+            ),
           ),
         ],
       ),

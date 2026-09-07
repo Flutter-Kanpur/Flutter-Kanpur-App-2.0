@@ -5,11 +5,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
 
-// import '../../../../services/remote_config_service.dart';
-import '../../../utils/assets_path.dart';
+import 'package:flutter_knp_mobile_app_v2/services/remote_config_service.dart';
+import '../../utils/assets_path.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
-import '../../../utils/translate.dart';
+import '../../utils/translate.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
@@ -18,11 +18,12 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 // import '../bloc/profile_event.dart';
 
 class AddSkillsBottomSheet extends StatefulWidget {
-  // final ProfileEntity profile;
+  /// Skills already on the profile — preselected when the sheet opens.
+  final List<String> initialSkills;
   final Function(List<String> skills) onSave;
   const AddSkillsBottomSheet({
     super.key,
-    // required this.profile,
+    this.initialSkills = const <String>[],
     required this.onSave,
   });
 
@@ -38,13 +39,15 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
   TextEditingController? _inlineAddOtherController;
   final FocusNode _inlineAddOtherFocusNode = FocusNode();
 
-  late final List<String> _predefinedSkills;
+  /// Not `late final`: if Remote Config is unavailable this must degrade to an
+  /// empty suggestion list, not throw LateInitializationError on every build.
+  List<String> _predefinedSkills = const <String>[];
 
   @override
   void initState() {
     super.initState();
-    // _predefinedSkills = RemoteConfigService.instance.onboardingScreen3Options;
-    // _selectedSkills.addAll(widget.profile.skills);
+    _predefinedSkills = RemoteConfigService.instance.onboardingScreen3Options;
+    _selectedSkills.addAll(widget.initialSkills);
     _searchController.addListener(() {
       setState(() => _searchQuery = _searchController.text);
     });
@@ -58,12 +61,26 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
     super.dispose();
   }
 
+  /// Already-selected skills first, then the Remote Config suggestions.
+  ///
+  /// The union matters: a stored skill that isn't in the suggestion list would
+  /// otherwise be invisible here and get silently dropped on save.
+  List<String> get _allSkills => <String>{
+    ..._selectedSkills,
+    ..._predefinedSkills,
+  }.toList();
+
   List<String> get _filteredSkills {
+    final all = _allSkills;
     if (_searchQuery.trim().isEmpty) {
-      return _predefinedSkills.take(5).toList();
+      // Never hide a selected skill behind the default cut-off. `take` caps
+      // itself at the list length, so no clamping against `all.length` (which
+      // would assert when the list is empty).
+      final limit = _selectedSkills.length > 5 ? _selectedSkills.length : 5;
+      return all.take(limit).toList();
     }
     final q = _searchQuery.trim().toLowerCase();
-    return _predefinedSkills.where((s) => s.toLowerCase().contains(q)).toList();
+    return all.where((s) => s.toLowerCase().contains(q)).toList();
   }
 
   void _startInlineAddOther() {
@@ -82,8 +99,17 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
     _inlineAddOtherFocusNode.unfocus();
     setState(() => _showInlineAddOther = false);
     if (value.isEmpty) return;
-    if (_predefinedSkills.any((s) => s.toLowerCase() == value.toLowerCase()))
+
+    // Typing a skill that already exists selects it rather than doing nothing.
+    final existing = _allSkills.firstWhere(
+      (s) => s.toLowerCase() == value.toLowerCase(),
+      orElse: () => '',
+    );
+    if (existing.isNotEmpty) {
+      setState(() => _selectedSkills.add(existing));
       return;
+    }
+
     setState(() {
       _selectedSkills.add(value);
     });
@@ -146,17 +172,11 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
               children: [
                 Text(
                   translate(context, "profile.addSkills"),
-                  style: AppTextStyles.titleLarge.copyWith(
-                    color: AppColors.blackBase,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: AppTextStyles.titleLarge.copyWith(color: AppColors.blackBase, fontWeight: FontWeight.bold),
                 ),
                 IconButton(
                   onPressed: () => context.pop(),
-                  icon: const Icon(
-                    Icons.close_rounded,
-                    color: AppColors.blackBase,
-                  ),
+                  icon: const Icon(Icons.close_rounded, color: AppColors.blackBase),
                   style: IconButton.styleFrom(
                     backgroundColor: AppColors.neutral50,
                   ),
@@ -173,33 +193,24 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
               child: TextField(
                 controller: _searchController,
                 style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.neutral900,
-                ),
+          color: AppColors.neutral900,
+        ),
                 decoration: InputDecoration(
                   hintText: translate(context, "profile.searchRolesSkills"),
-                  hintStyle: AppTextStyles.bodyLarge.copyWith(
-                    color: AppColors.neutral500,
-                  ),
+                  hintStyle: AppTextStyles.bodyLarge.copyWith(color: AppColors.neutral500),
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(
                     horizontal: AppSpacing.h16,
                     vertical: AppSpacing.v16,
                   ),
                   suffixIcon: Padding(
-                    padding: EdgeInsets.only(
-                      right: AppSpacing.h12,
-                      top: AppSpacing.v16,
-                      bottom: AppSpacing.v16,
-                    ),
+                    padding: EdgeInsets.only(right: AppSpacing.h12, top: AppSpacing.v16, bottom: AppSpacing.v16),
                     child: SizedBox(
                       height: 20.h,
                       width: 20.w,
                       child: SvgPicture.asset(
                         AssetsPath.explore,
-                        colorFilter: const ColorFilter.mode(
-                          AppColors.neutral300,
-                          BlendMode.srcIn,
-                        ),
+                        colorFilter: const ColorFilter.mode(AppColors.neutral300, BlendMode.srcIn),
                         fit: BoxFit.contain,
                       ),
                     ),
@@ -226,10 +237,7 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
                     },
                     child: AnimatedContainer(
                       duration: Duration(milliseconds: 150),
-                      padding: AppSpacing.symmetric(
-                        horizontal: AppSpacing.h16,
-                        vertical: AppSpacing.v8,
-                      ),
+                      padding: AppSpacing.symmetric(horizontal: AppSpacing.h16, vertical: AppSpacing.v8),
                       decoration: BoxDecoration(
                         color: isSelected
                             ? AppColors.primary500.withValues(alpha: 0.12)
@@ -248,9 +256,8 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
                           color: isSelected
                               ? AppColors.primary500
                               : AppColors.neutral900,
-                          fontWeight: isSelected
-                              ? FontWeight.w600
-                              : FontWeight.w400,
+                          fontWeight:
+                              isSelected ? FontWeight.w600 : FontWeight.w400,
                         ),
                       ),
                     ),
@@ -265,10 +272,7 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
               onTap: _startInlineAddOther,
               child: Text(
                 translate(context, "profile.addOther"),
-                style: AppTextStyles.bodyLarge.copyWith(
-                  color: AppColors.primary500,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: AppTextStyles.bodyLarge.copyWith(color: AppColors.primary500, fontWeight: FontWeight.w500),
               ),
             ),
             SizedBox(height: AppSpacing.v20),
@@ -278,9 +282,8 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
                 Navigator.of(context).pop();
               },
               text: translate(context, "profile.saveChanges"),
-              textStyle: AppTextStyles.titleMedium.copyWith(
-                color: AppColors.whiteBase,
-              ),
+              textStyle:
+                  AppTextStyles.titleMedium.copyWith(color: AppColors.whiteBase),
             ),
             SizedBox(height: AppSpacing.v20),
           ],
@@ -292,16 +295,14 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
   Widget _buildInlineAddOtherChip() {
     return Container(
       constraints: BoxConstraints(minWidth: 120.w, maxWidth: 200.w),
-      padding: EdgeInsets.only(
-        left: AppSpacing.h16,
-        right: AppSpacing.h8,
-        top: AppSpacing.v6,
-        bottom: AppSpacing.v6,
-      ),
+      padding: EdgeInsets.only(left: AppSpacing.h16, right: AppSpacing.h8, top: AppSpacing.v6, bottom: AppSpacing.v6),
       decoration: BoxDecoration(
         color: AppColors.whiteBase,
         borderRadius: AppRadius.all06,
-        border: Border.all(color: AppBorders.blue, width: 1.5),
+        border: Border.all(
+          color: AppBorders.blue,
+          width: 1.5,
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -326,7 +327,11 @@ class _AddSkillsBottomSheetState extends State<AddSkillsBottomSheet> {
           ),
           GestureDetector(
             onTap: _cancelInlineAddOther,
-            child: Icon(Icons.close, size: 18.sp, color: AppColors.blackBase),
+            child: Icon(
+              Icons.close,
+              size: 18.sp,
+              color: AppColors.blackBase,
+            ),
           ),
         ],
       ),

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_back_button.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_header.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
@@ -10,8 +11,7 @@ class PrivacyPolicyPage extends StatelessWidget {
   const PrivacyPolicyPage({super.key});
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final usedTextTheme = theme.textTheme.bodyLarge;
+    final usedTextTheme =AppTextStyles.titleMedium;
     return GradientBackground(
       child: FkScreen(
         children: [

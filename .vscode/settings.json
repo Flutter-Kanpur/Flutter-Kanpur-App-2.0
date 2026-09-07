@@ -1,8 +1,17 @@
 {
+  "dart.flutterSdkPath": ".fvm/versions/3.44.9",
+  "search.exclude": {
+    "**/.fvm/versions": true
+  },
+  "files.watcherExclude": {
+    "**/.fvm/versions": true
+  },
+  "files.exclude": {
+    "**/.fvm/versions": true
+  },
   "flutterTools.displayGetxContextMenu": false,
   "flutterTools.displayMobxContextMenu": false,
   "flutterTools.displayRiverpodContextMenu": false,
   "flutterTools.displayModularContextMenu": false,
-  "flutterTools.displaySignalsContextMenu": false,
-  "dart.flutterSdkPath": ".fvm/versions/3.41.0"
+  "flutterTools.displaySignalsContextMenu": false
 }

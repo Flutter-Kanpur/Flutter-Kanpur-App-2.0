@@ -96,7 +96,7 @@ class AuthRemoteDataSource {
   }
 
   Future<void> signOut() async {
-    await _client.auth.signOut();
+    await _client.auth.signOut(scope: SignOutScope.global);
     await ReadmeAuthBridge.signOut();
   }
 

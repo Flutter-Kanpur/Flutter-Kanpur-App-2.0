@@ -62,53 +62,55 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: GradientBackground(
-        child: Column(
-          children: [
-            Padding(
-              padding: AppSpacing.all(AppSpacing.h20),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: TextButton(
-                  onPressed: () async {
-                    await AppPrefs.setHasSeenLanding(true);
-                    if (!mounted) return;
-                    context.go(RouteNames.authOptions);
-                  },
-                  child: Text(
-                    'Skip',
-                    style: AppTextStyles.titleMedium.copyWith(
-                      color: AppColors.blackBase,
+        child: SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                padding: AppSpacing.all(AppSpacing.h20),
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: TextButton(
+                    onPressed: () async {
+                      await AppPrefs.setHasSeenLanding(true);
+                      if (!mounted) return;
+                      context.go(RouteNames.authOptions);
+                    },
+                    child: Text(
+                      'Skip',
+                      style: AppTextStyles.titleMedium.copyWith(
+                        color: AppColors.blackBase,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              child: PageView.builder(
-                controller: _pageController,
-                onPageChanged: (index) {
-                  setState(() {
-                    _currentPage = index;
-                  });
-                },
-                itemCount: pages.length,
-                itemBuilder: (context, index) {
-                  return _buildPage(pages[index]);
-                },
+              Expanded(
+                child: PageView.builder(
+                  controller: _pageController,
+                  onPageChanged: (index) {
+                    setState(() {
+                      _currentPage = index;
+                    });
+                  },
+                  itemCount: pages.length,
+                  itemBuilder: (context, index) {
+                    return _buildPage(pages[index]);
+                  },
+                ),
               ),
-            ),
-            Padding(
-              padding: AppSpacing.all(AppSpacing.h20),
-              child: Column(
-                children: [
-                  _buildPageIndicators(),
-                  32.verticalSpace,
-                  _buildNextButton(),
-                  27.verticalSpace,
-                ],
+              Padding(
+                padding: AppSpacing.all(AppSpacing.h20),
+                child: Column(
+                  children: [
+                    _buildPageIndicators(),
+                    32.verticalSpace,
+                    _buildNextButton(),
+                    27.verticalSpace,
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -121,13 +123,11 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Spacer(flex: 3),
-
           Text(
             pageData.title,
             textAlign: TextAlign.center,
             style: AppTextStyles.headlineSmall.copyWith(
               color: AppColors.blackBase,
-              fontWeight: FontWeight.bold,
             ),
           ),
           16.verticalSpace,
@@ -139,8 +139,6 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
               textAlign: TextAlign.center,
               style: AppTextStyles.bodyMedium.copyWith(
                 color: AppColors.neutral500,
-                fontWeight: FontWeight.w300,
-                height: 1.5,
               ),
             ),
           ),
@@ -172,8 +170,9 @@ class _AuthLandingScreenState extends State<AuthLandingScreen> {
 
   Widget _buildNextButton() {
     return GradientButton(
-      textStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.whiteBase),
-      width: 150.w,
+      textStyle: AppTextStyles.titleMedium.copyWith(color: AppColors.whiteBase),
+      height: 56.h,
+      width: 200.w,
       onTap: _goToNextPage,
       text: _currentPage == pages.length - 1 ? 'Get Started ->' : 'Next ->',
     );

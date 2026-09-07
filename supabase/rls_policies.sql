@@ -189,8 +189,15 @@ CREATE POLICY "featured_resources_admin_full" ON public.featured_resources
   USING (public.is_admin()) WITH CHECK (public.is_admin());
 
 -- ─── community_memberships ───────────────────────────────────────
+DROP POLICY IF EXISTS "community_memberships_read_all"    ON public.community_memberships;
 DROP POLICY IF EXISTS "community_memberships_own"        ON public.community_memberships;
 DROP POLICY IF EXISTS "community_memberships_admin_full" ON public.community_memberships;
+
+-- Any signed-in user can see the member/team directory (needed for the
+-- Community > Members screen and Explore's Core Team preview) - matches the
+-- "_read_all" pattern already used on users/user_skills/contests above.
+CREATE POLICY "community_memberships_read_all" ON public.community_memberships
+  FOR SELECT TO authenticated USING (true);
 
 CREATE POLICY "community_memberships_own" ON public.community_memberships
   FOR ALL TO authenticated

@@ -35,6 +35,7 @@ class _BlogsScreenState extends State<BlogsScreen> {
   int _currentIndex = 0;
   bool _hasDraft = false;
   bool _readmeSessionReady = false;
+  bool _readmeAuthFailed = false;
   late final StreamSubscription<AuthState> _hostAuthSub;
 
   @override
@@ -45,20 +46,39 @@ class _BlogsScreenState extends State<BlogsScreen> {
       data,
     ) async {
       if (data.event == AuthChangeEvent.signedIn) {
-        setState(() => _readmeSessionReady = false);
-        await ReadmeAuthBridge.ensureSignedIn();
-        if (mounted) setState(() => _readmeSessionReady = true);
+        setState(() {
+          _readmeSessionReady = false;
+          _readmeAuthFailed = false;
+        });
+        final ok = await ReadmeAuthBridge.ensureSignedIn(force: true);
+        if (mounted) {
+          setState(() {
+            _readmeSessionReady = true;
+            _readmeAuthFailed = !ok &&
+                Supabase.instance.client.auth.currentSession != null;
+          });
+        }
       } else if (data.event == AuthChangeEvent.signedOut) {
         await ReadmeAuthBridge.signOut();
-        if (mounted) setState(() => _readmeSessionReady = true);
+        if (mounted) {
+          setState(() {
+            _readmeSessionReady = true;
+            _readmeAuthFailed = false;
+          });
+        }
       }
     });
   }
 
   Future<void> _bootstrapReadmeSession() async {
-    await ReadmeAuthBridge.ensureSignedIn();
+    final hostSignedIn =
+        Supabase.instance.client.auth.currentSession != null;
+    final ok = await ReadmeAuthBridge.ensureSignedIn();
     if (!mounted) return;
-    setState(() => _readmeSessionReady = true);
+    setState(() {
+      _readmeSessionReady = true;
+      _readmeAuthFailed = hostSignedIn && !ok;
+    });
     _refreshDraftFlag();
   }
 
@@ -92,6 +112,8 @@ class _BlogsScreenState extends State<BlogsScreen> {
       backgroundColor: Colors.transparent,
       body: !_readmeSessionReady
           ? const Center(child: CircularProgressIndicator())
+          : _readmeAuthFailed
+          ? _ReadmeAuthFailedView(onRetry: _bootstrapReadmeSession)
           : IndexedStack(
               index: _currentIndex,
               children: const [
@@ -112,6 +134,44 @@ class _BlogsScreenState extends State<BlogsScreen> {
               onTap: _goTab,
               onDraftTap: () => _goTab(_draftsIndex),
             ),
+    );
+  }
+}
+
+class _ReadmeAuthFailedView extends StatelessWidget {
+  const _ReadmeAuthFailedView({required this.onRetry});
+
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: AppSpacing.all(AppSpacing.h22),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Could not connect your account to ReadMe.',
+              style: AppTextStyles.titleMedium.copyWith(
+                color: AppColors.blackBase,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: AppSpacing.v12),
+            Text(
+              'Check README_SYNC_SESSION_URL and ReadMe Supabase secrets, '
+              'then try again.',
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.neutral500,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: AppSpacing.v20),
+            FilledButton(onPressed: onRetry, child: const Text('Retry')),
+          ],
+        ),
+      ),
     );
   }
 }

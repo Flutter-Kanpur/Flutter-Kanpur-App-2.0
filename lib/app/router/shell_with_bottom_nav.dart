@@ -22,7 +22,7 @@ class ShellWithBottomNav extends StatelessWidget {
 
   static int _selectedIndexForPath(String path) {
     if (path.startsWith('/community')) return 1;
-    if (path.startsWith('/events')) return 2;
+    if (path.startsWith('/explore')) return 2;
     if (path.startsWith('/blogs')) return 3;
     if (path.startsWith('/profile')) return 4;
     return 0; // /home or default
@@ -80,7 +80,7 @@ class ShellWithBottomNav extends StatelessWidget {
                   splashFactory: NoSplash.splashFactory,
                 ),
                 child: BottomNavigationBar(
-                  backgroundColor: AppColors.whiteBase,
+                  backgroundColor: Color(0XFFFAFCFF),
                   currentIndex: currentIndex,
                   onTap: (index) => navigationShell.goBranch(index),
                   type: BottomNavigationBarType.fixed,

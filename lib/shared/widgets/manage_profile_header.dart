@@ -62,34 +62,30 @@ class ManageProfileHeader extends StatelessWidget {
                     displayName.isNotEmpty ? displayName[0].toUpperCase() : '?',
                     style: AppTextStyles.titleLarge.copyWith(
                       color: AppColors.blackBase,
-                      fontWeight: FontWeight.w600,
                     ),
                   )
                 : null,
           ),
         ),
-        SizedBox(height: AppSpacing.v12),
+        SizedBox(height: AppSpacing.v6),
         Text(
           displayName,
           style: AppTextStyles.headlineSmall.copyWith(
             color: AppColors.blackBase,
-            fontWeight: FontWeight.bold,
           ),
           textAlign: TextAlign.center,
         ),
-        SizedBox(height: AppSpacing.v8),
         Text(
           designation,
           style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500),
           textAlign: TextAlign.center,
         ),
-        SizedBox(height: AppSpacing.v4),
         Text(
           username,
           style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral300),
           textAlign: TextAlign.center,
         ),
-        SizedBox(height: AppSpacing.v12),
+        SizedBox(height: AppSpacing.v6),
         TextButton(
           onPressed: onEditProfile,
           style: TextButton.styleFrom(

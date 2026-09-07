@@ -14,6 +14,7 @@ class RouteNames {
   static const home = '/home';
   static const community = '/community';
   static const events = '/events';
+  static const explore = '/explore';
   static const blogs = '/blogs';
   static const profile = '/profile';
 
@@ -70,6 +71,14 @@ class RouteNames {
   static const myEvents = '/profile/my-events';
   static const myContests = '/profile/my-contests';
   static const problemOfDay = '/profile/problem-of-day';
+
+  /// Browse-all contests, reached by pushing from the Explore dashboard's
+  /// "Contests" participation tile.
+  static const contests = '/contests';
+
+  /// Browse-all core team, reached from the Explore dashboard's core-team
+  /// preview "View all" action.
+  static const coreTeam = '/core-team';
 
   /// Legal
   static const aboutFlutterKanpur = '/profile/about-flutter-kanpur';

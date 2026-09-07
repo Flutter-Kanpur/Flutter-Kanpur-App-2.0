@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_kanpur_ui_kit/flutter_kanpur_ui_kit.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/border_shadow_container.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
 
 class EventCardComponent extends StatelessWidget {
   const EventCardComponent({
@@ -23,7 +25,7 @@ class EventCardComponent extends StatelessWidget {
     this.onEyeIconPressed,
   });
 
-  /// Path to the image asset (e.g., 'assets/launch_event.png')
+  /// Path to the image asset or network URL
   final String assetPath;
 
   /// Status text (e.g., 'Upcoming', 'Ongoing')
@@ -56,14 +58,43 @@ class EventCardComponent extends StatelessWidget {
   /// Callback when eye icon is pressed (optional)
   final VoidCallback? onEyeIconPressed;
 
+  Widget _buildCoverImage(String path) {
+    if (path.isEmpty) {
+      return Image.asset(AssetsPath.launcheventpng, fit: BoxFit.cover);
+    }
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return Image.network(
+        path,
+        fit: BoxFit.cover,
+        alignment: Alignment.center,
+        errorBuilder: (context, error, stackTrace) => Image.asset(
+          AssetsPath.launcheventpng,
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+    final normalizedPath = path.startsWith('assets/') ? path : 'assets/$path';
+    return Image.asset(
+      normalizedPath,
+      fit: BoxFit.cover,
+      alignment: Alignment.center,
+      errorBuilder: (context, error, stackTrace) => Image.asset(
+        AssetsPath.launcheventpng,
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.whiteBase,
-        borderRadius: AppRadius.all06,
-        border: Border.all(color: AppBorders.primary, width: 1.5),
-      ),
+    return InnerShadowContainer(
+      borderRadius: 28,
+      shadowColor: const Color(0XFFB3C4FF).withValues(alpha: 0.08),
+      borderColor: AppColors.borderSecondary,
+      isShadowBottomLeft: true,
+      isShadowBottomRight: true,
+      isShadowTopLeft: true,
+      isShadowTopRight: true,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -90,15 +121,10 @@ class EventCardComponent extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     height: 180.h,
-                    //padding: AppSpacing.symmetric(horizontal: AppSpacing.h4, vertical: AppSpacing.v2),
-                    child: Image.asset(
-                      assetPath,
-                      fit: BoxFit.cover,
-                      alignment: Alignment.center,
-                    ),
+                    child: _buildCoverImage(assetPath),
                   ),
                   Positioned(
                     top: 10.h,
@@ -106,7 +132,7 @@ class EventCardComponent extends StatelessWidget {
                     child: Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: AppSpacing.h16,
-                        vertical: AppSpacing.v16,
+                        vertical: AppSpacing.v6,
                       ),
                       decoration: BoxDecoration(
                         color: statusColor,

@@ -29,76 +29,133 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   late TextEditingController confirmPasswordController;
   late GlobalKey<FormState> formKey;
   bool isLoading = false;
+  final _usernameFocusNode = FocusNode();
+  final _emailFocusNode = FocusNode();
+  final _passwordFocusNode = FocusNode();
+  final _confirmPasswordFocusNode = FocusNode();
+
+  final _usernameFieldKey = GlobalKey();
+  final _emailFieldKey = GlobalKey();
+  final _passwordFieldKey = GlobalKey();
+  final _confirmPasswordFieldKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
+
     usernameController = TextEditingController();
     emailController = TextEditingController();
     passwordController = TextEditingController();
     confirmPasswordController = TextEditingController();
+
     formKey = GlobalKey<FormState>();
+
+    for (final controller in [
+      usernameController,
+      emailController,
+      passwordController,
+      confirmPasswordController,
+    ]) {
+      controller.addListener(_onFieldChanged);
+    }
+
+    for (final node in [
+      _usernameFocusNode,
+      _emailFocusNode,
+      _passwordFocusNode,
+      _confirmPasswordFocusNode,
+    ]) {
+      node.addListener(_onFieldChanged);
+    }
+  }
+
+  void _onFieldChanged() {
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
   void dispose() {
-    usernameController.dispose();
-    emailController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
+    for (final controller in [
+      usernameController,
+      emailController,
+      passwordController,
+      confirmPasswordController,
+    ]) {
+      controller.removeListener(_onFieldChanged);
+      controller.dispose();
+    }
+
+    for (final node in [
+      _usernameFocusNode,
+      _emailFocusNode,
+      _passwordFocusNode,
+      _confirmPasswordFocusNode,
+    ]) {
+      node.removeListener(_onFieldChanged);
+      node.dispose();
+    }
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return GradientBackground(
-      child: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppSpacing.h16,
-            vertical: AppSpacing.v10,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
+          backgroundColor: Colors.transparent,
+          leading: IconButton(
+            onPressed: () => context.pop(),
+            icon: const Icon(Icons.arrow_back),
+            padding: EdgeInsets.zero,
           ),
-          child: Form(
-            key: formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: IconButton(
-                    onPressed: () => context.pop(),
-                    icon: const Icon(Icons.arrow_back),
-                    padding: EdgeInsets.zero,
+        ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSpacing.h16,
+              vertical: AppSpacing.v16,
+            ),
+            child: Form(
+              key: formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  10.verticalSpace,
+                  _buildMascot(),
+                  30.verticalSpace,
+                  _buildHeaderText(),
+                  35.verticalSpace,
+                  _buildUsernameField(usernameController),
+                  10.verticalSpace,
+                  _buildEmailField(emailController),
+                  10.verticalSpace,
+                  _buildPasswordField(passwordController),
+                  10.verticalSpace,
+                  _buildConfirmPasswordField(
+                    confirmPasswordController,
+                    passwordController,
                   ),
-                ),
-                60.verticalSpace,
-                _buildMascot(),
-                30.verticalSpace,
-                _buildHeaderText(),
-                35.verticalSpace,
-                _buildUsernameField(usernameController),
-                16.verticalSpace,
-                _buildEmailField(emailController),
-                16.verticalSpace,
-                _buildPasswordField(passwordController),
-                16.verticalSpace,
-                _buildConfirmPasswordField(
-                  confirmPasswordController,
-                  passwordController,
-                ),
-                50.verticalSpace,
-                _buildCreateButton(
-                  context,
-                  ref,
-                  formKey,
-                  usernameController,
-                  emailController,
-                  passwordController,
-                  isLoading,
-                ),
-                20.verticalSpace,
-                _buildSignInText(context),
-              ],
+                  40.verticalSpace,
+                  _buildCreateButton(
+                    context,
+                    ref,
+                    formKey,
+                    usernameController,
+                    emailController,
+                    passwordController,
+                    isLoading,
+                  ),
+                  20.verticalSpace,
+                  _buildSignInText(context),
+                  20.verticalSpace,
+                ],
+              ),
             ),
           ),
         ),
@@ -119,20 +176,17 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       children: [
         Text(
           'auth.signUpTitle'.tr(),
-          style: AppTextStyles.titleLarge.copyWith(
+          style: AppTextStyles.headlineSmall.copyWith(
             color: AppColors.blackBase,
-            fontWeight: FontWeight.w700,
           ),
         ),
-        14.verticalSpace,
+        10.verticalSpace,
         Padding(
-          padding: AppSpacing.horizontal(AppSpacing.h16),
-          child: Text(
+          padding: AppSpacing.horizontal(AppSpacing.h16), child: Text(
             'auth.signUpSubTitle'.tr(),
             textAlign: TextAlign.center,
-            style: AppTextStyles.bodyMedium.copyWith(
+            style: AppTextStyles.titleMedium.copyWith(
               color: AppColors.neutral500,
-              height: 1.5,
             ),
           ),
         ),
@@ -142,18 +196,20 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
   Widget _buildUsernameField(TextEditingController controller) {
     return CustomTextField(
+      key: _usernameFieldKey,
       text: 'auth.username'.tr(),
       controller: controller,
-      showBorder: true,
-      borderColor: AppColors.neutral100,
-      fillColor: AppColors.neutral50,
+      focusNode: _usernameFocusNode,
+      showTickIcon: controller.text.isNotEmpty && !_usernameFocusNode.hasFocus,
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
           return 'auth.usernameRequired'.tr();
         }
+
         if (value.length < 3) {
           return 'auth.usernameMin3'.tr();
         }
+
         return null;
       },
     );
@@ -161,188 +217,194 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
   Widget _buildEmailField(TextEditingController controller) {
     return CustomTextField(
+      key: _emailFieldKey,
       text: 'auth.emailAddress'.tr(),
       controller: controller,
+      focusNode: _emailFocusNode,
       keyboardType: TextInputType.emailAddress,
-      showBorder: true,
-      borderColor: AppColors.neutral100,
-      fillColor: AppColors.neutral50,
+      showTickIcon: controller.text.isNotEmpty && !_emailFocusNode.hasFocus,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'auth.emailRequired'.tr();
         }
+
         if (!value.contains('@')) {
           return 'auth.invalidEmail'.tr();
         }
+
         return null;
       },
     );
   }
-}
 
-Widget _buildPasswordField(TextEditingController controller) {
-  return CustomTextField(
-    text: 'auth.password'.tr(),
-    controller: controller,
-    isPassword: true,
-    showBorder: true,
-    borderColor: AppColors.neutral100,
-    fillColor: AppColors.neutral50,
-    validator: (value) {
-      if (value == null || value.isEmpty) {
-        return 'auth.passwordRequired'.tr();
-      }
-      if (value.length < 6) {
-        return 'auth.passwordMin6'.tr();
-      }
-      return null;
-    },
-  );
-}
+  Widget _buildPasswordField(TextEditingController controller) {
+    return CustomTextField(
+      key: _passwordFieldKey,
+      text: 'auth.createPassword'.tr(),
+      controller: controller,
+      focusNode: _passwordFocusNode,
+      isPassword: true,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'auth.passwordRequired'.tr();
+        }
 
-Widget _buildConfirmPasswordField(
-  TextEditingController controller,
-  TextEditingController passwordController,
-) {
-  return CustomTextField(
-    text: 'auth.confirmPassword'.tr(),
-    controller: controller,
-    isPassword: true,
-    showBorder: true,
-    borderColor: AppColors.neutral100,
-    fillColor: AppColors.neutral50,
-    validator: (value) {
-      if (value == null || value.isEmpty) {
-        return 'auth.confirmPasswordRequired'.tr();
-      }
-      if (value != passwordController.text) {
-        return 'auth.passwordsDoNotMatch'.tr();
-      }
-      return null;
-    },
-  );
-}
+        if (value.length < 6) {
+          return 'auth.passwordMin6'.tr();
+        }
 
-Widget _buildCreateButton(
-  BuildContext context,
-  WidgetRef ref,
-  GlobalKey<FormState> formKey,
-  TextEditingController usernameController,
-  TextEditingController emailController,
-  TextEditingController passwordController,
-  bool isLoading,
-) {
-  return SizedBox(
-    width: double.infinity,
-    height: 52.h,
-    child: GradientButton(
-      text: isLoading ? 'auth.creatingAccount'.tr() : 'auth.createAccount'.tr(),
-      textStyle: AppTextStyles.bodyLarge.copyWith(
-        color: AppColors.whiteBase,
-        fontWeight: FontWeight.w600,
+        return null;
+      },
+    );
+  }
+
+  Widget _buildConfirmPasswordField(
+    TextEditingController controller,
+    TextEditingController passwordController,
+  ) {
+    return CustomTextField(
+      key: _confirmPasswordFieldKey,
+      text: 'auth.confirmPassword'.tr(),
+      controller: controller,
+      focusNode: _confirmPasswordFocusNode,
+      isPassword: true,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'auth.confirmPasswordRequired'.tr();
+        }
+
+        if (value != passwordController.text) {
+          return 'auth.passwordsDoNotMatch'.tr();
+        }
+
+        return null;
+      },
+    );
+  }
+
+  Widget _buildCreateButton(
+    BuildContext context,
+    WidgetRef ref,
+    GlobalKey<FormState> formKey,
+    TextEditingController usernameController,
+    TextEditingController emailController,
+    TextEditingController passwordController,
+    bool isLoading,
+  ) {
+    return SizedBox(
+      height: 46.h,
+      width: double.infinity,
+      child: GradientButton(
+        text: isLoading
+            ? 'auth.creatingAccount'.tr()
+            : 'auth.createAccount'.tr(),
+        textStyle: AppTextStyles.titleMedium.copyWith(
+          color: AppColors.whiteBase,
+        ),
+        onTap: isLoading
+            ? () {}
+            : () async {
+                if (!formKey.currentState!.validate()) return;
+                FocusScope.of(context).unfocus();
+
+                final username = usernameController.text.trim();
+                final email = emailController.text.trim();
+                final password = passwordController.text.trim();
+                final ctx = context;
+
+                try {
+                  await ref.read(signUpProvider)(
+                    email: email,
+                    password: password,
+                    displayName: username,
+                  );
+                  if (ctx.mounted) {
+                    _showToast(
+                      ctx,
+                      'auth.signup_success'.tr(),
+                      AppColors.success600,
+                      Icons.check_circle,
+                    );
+                    Future.delayed(const Duration(milliseconds: 800)).then((_) {
+                      if (ctx.mounted) {
+                        ctx.pushReplacement(RouteNames.onboardingNavigation);
+                      }
+                    });
+                  }
+                } catch (e) {
+                  if (ctx.mounted) {
+                    _showToast(
+                      ctx,
+                      e.toString(),
+                      AppColors.warning600,
+                      Icons.error,
+                    );
+                  }
+                }
+              },
       ),
-      onTap: isLoading
-          ? () {}
-          : () async {
-              if (!formKey.currentState!.validate()) return;
-              FocusScope.of(context).unfocus();
+    );
+  }
 
-              final username = usernameController.text.trim();
-              final email = emailController.text.trim();
-              final password = passwordController.text.trim();
-              final ctx = context;
-
-              try {
-                await ref.read(signUpProvider)(
-                  email: email,
-                  password: password,
-                  displayName: username,
-                );
-                if (ctx.mounted) {
-                  _showToast(
-                    ctx,
-                    'auth.signup_success'.tr(),
-                    AppColors.success600,
-                    Icons.check_circle,
-                  );
-                  Future.delayed(const Duration(milliseconds: 800)).then((_) {
-                    if (ctx.mounted) {
-                      ctx.pushReplacement(RouteNames.onboardingNavigation);
-                    }
-                  });
-                }
-              } catch (e) {
-                if (ctx.mounted) {
-                  _showToast(
-                    ctx,
-                    e.toString(),
-                    AppColors.warning600,
-                    Icons.error,
-                  );
-                }
-              }
-            },
-    ),
-  );
-}
-
-Widget _buildSignInText(BuildContext context) {
-  return Padding(
-    padding: AppSpacing.horizontal(AppSpacing.h16),
-    child: Center(
-      child: Text.rich(
-        TextSpan(
-          text: '${'auth.alreadyHaveAccount'.tr()} ',
-          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral500),
-          children: [
-            TextSpan(
-              text: 'auth.login'.tr(),
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.primary500,
-                fontWeight: FontWeight.w700,
+  Widget _buildSignInText(BuildContext context) {
+    return Padding(
+      padding: AppSpacing.horizontal(AppSpacing.h16),
+      child: Center(
+        child: Text.rich(
+          TextSpan(
+            text: '${'auth.alreadyHaveAccount'.tr()} ',
+            style: AppTextStyles.titleMedium.copyWith(
+              color: AppColors.neutral500,
+            ),
+            children: [
+              TextSpan(
+                text: 'auth.login'.tr(),
+                style: AppTextStyles.titleMedium.copyWith(
+                  color: AppColors.primary500,
+                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => context.pushReplacement(RouteNames.signIn),
               ),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () => context.pushReplacement(RouteNames.signIn),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showToast(
+    BuildContext context,
+    String message,
+    Color bgColor,
+    IconData icon,
+  ) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            Icon(icon, color: AppColors.whiteBase, size: 20.sp),
+            12.horizontalSpace,
+            Expanded(
+              child: Text(
+                message,
+                style: AppTextStyles.labelLarge.copyWith(
+                  color: AppColors.whiteBase,
+                ),
+              ),
             ),
           ],
         ),
+        backgroundColor: bgColor,
+        duration: Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating,
+        margin: AppSpacing.all(AppSpacing.h16),
+        shape: RoundedRectangleBorder(borderRadius: AppRadius.all02),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppSpacing.h16,
+          vertical: AppSpacing.v16,
+        ),
       ),
-    ),
-  );
-}
-
-void _showToast(
-  BuildContext context,
-  String message,
-  Color bgColor,
-  IconData icon,
-) {
-  ScaffoldMessenger.of(context).clearSnackBars();
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Row(
-        children: [
-          Icon(icon, color: AppColors.whiteBase, size: 20.sp),
-          12.horizontalSpace,
-          Expanded(
-            child: Text(
-              message,
-              style: AppTextStyles.labelLarge.copyWith(
-                color: AppColors.whiteBase,
-              ),
-            ),
-          ),
-        ],
-      ),
-      backgroundColor: bgColor,
-      duration: Duration(seconds: 2),
-      behavior: SnackBarBehavior.floating,
-      margin: AppSpacing.all(AppSpacing.h16),
-      shape: RoundedRectangleBorder(borderRadius: AppRadius.all02),
-      padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.h16,
-        vertical: AppSpacing.v16,
-      ),
-    ),
-  );
+    );
+  }
 }

@@ -8,6 +8,8 @@ class AppPrefs {
 
   static const _hasSeenLandingKey = 'has_seen_landing';
   static const _onboardingDraftKey = 'onboarding_draft';
+  static const _likedProjectIdsKey = 'liked_project_ids';
+  static const _likedContestIdsKey = 'liked_contest_ids';
 
   static Future<bool> getHasSeenLanding() async {
     final prefs = await SharedPreferences.getInstance();
@@ -40,5 +42,27 @@ class AppPrefs {
   static Future<void> clearOnboardingDraft() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_onboardingDraftKey);
+  }
+
+  /// Ids of liked projects - no server-side like table, so purely local.
+  static Future<Set<String>> getLikedProjectIds() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList(_likedProjectIdsKey)?.toSet() ?? {};
+  }
+
+  static Future<void> setLikedProjectIds(Set<String> ids) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(_likedProjectIdsKey, ids.toList());
+  }
+
+  /// Ids of liked contests - no server-side like table, so purely local.
+  static Future<Set<String>> getLikedContestIds() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList(_likedContestIdsKey)?.toSet() ?? {};
+  }
+
+  static Future<void> setLikedContestIds(Set<String> ids) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(_likedContestIdsKey, ids.toList());
   }
 }
