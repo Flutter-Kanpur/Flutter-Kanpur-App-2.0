@@ -63,7 +63,8 @@ class CommunityRepository {
     // before the main query can be restricted.
     List<String>? restrictToIds;
     if (filter == CommunityFilter.saved) {
-      if (userId == null) return const CommunityQuestionPage(items: [], hasMore: false);
+      if (userId == null)
+        return const CommunityQuestionPage(items: [], hasMore: false);
       restrictToIds = await _savedQuestionIds(userId);
       if (restrictToIds.isEmpty) {
         return const CommunityQuestionPage(items: [], hasMore: false);
@@ -96,8 +97,7 @@ class CommunityRepository {
               .order('created_at', ascending: false)
         : query.order('created_at', ascending: false);
 
-    final data =
-        await ordered.range(offset, offset + limit) as List<dynamic>;
+    final data = await ordered.range(offset, offset + limit) as List<dynamic>;
 
     final hasMore = data.length > limit;
     final rows = (hasMore ? data.sublist(0, limit) : data)
@@ -361,20 +361,23 @@ class CommunityRepository {
   Future<void> submitProject(CommunityProjectSubmission submission) async {
     final userId = _requireUser();
 
-    final inserted =
-        await _client.from(DatabaseTables.projects).insert({
-              'slug': _slugFrom(submission.name),
-              'title': submission.name,
-              'summary': submission.description,
-              'description': submission.description,
-              'status': 'pending_review',
-              'owner_uid': userId,
-              'github_url': submission.githubUrl,
-              'live_url': submission.liveDemoUrl,
-              'cover_image_url': submission.screenshotUrl,
-              'created_by': userId,
-              'updated_by': userId,
-            }).select('id').single();
+    final inserted = await _client
+        .from(DatabaseTables.projects)
+        .insert({
+          'slug': _slugFrom(submission.name),
+          'title': submission.name,
+          'summary': submission.description,
+          'description': submission.description,
+          'status': 'pending_review',
+          'owner_uid': userId,
+          'github_url': submission.githubUrl,
+          'live_url': submission.liveDemoUrl,
+          'cover_image_url': submission.screenshotUrl,
+          'created_by': userId,
+          'updated_by': userId,
+        })
+        .select('id')
+        .single();
 
     final projectId = inserted['id'] as String?;
     if (projectId == null || submission.techStack.isEmpty) return;
@@ -384,12 +387,10 @@ class CommunityRepository {
     // for the user to retry cleanly. Roll the project back and surface the
     // original error.
     try {
-      await _client
-          .from(DatabaseTables.projectTechStack)
-          .insert([
-            for (final tech in submission.techStack)
-              {'project_id': projectId, 'tech_name': tech},
-          ]);
+      await _client.from(DatabaseTables.projectTechStack).insert([
+        for (final tech in submission.techStack)
+          {'project_id': projectId, 'tech_name': tech},
+      ]);
     } catch (_) {
       try {
         await _client

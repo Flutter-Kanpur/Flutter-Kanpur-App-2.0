@@ -159,10 +159,7 @@ class _DetailBodyState extends ConsumerState<_DetailBody> {
                 case 'guidelines':
                   context.push(RouteNames.communityGuidelines);
                 case 'discord':
-                  openExternalUrlOrNotify(
-                    context,
-                    ExternalLinks.discordInvite,
-                  );
+                  openExternalUrlOrNotify(context, ExternalLinks.discordInvite);
               }
             },
             itemBuilder: (context) => [
@@ -172,9 +169,7 @@ class _DetailBodyState extends ConsumerState<_DetailBody> {
                   dense: true,
                   contentPadding: EdgeInsets.zero,
                   leading: Icon(
-                    question.isSaved
-                        ? Icons.bookmark
-                        : Icons.bookmark_outline,
+                    question.isSaved ? Icons.bookmark : Icons.bookmark_outline,
                   ),
                   title: Text(question.isSaved ? 'Remove bookmark' : 'Save'),
                 ),
@@ -278,9 +273,7 @@ class _DetailBodyState extends ConsumerState<_DetailBody> {
             ),
             const Spacer(),
             _QuestionAction(
-              icon: question.isSaved
-                  ? Icons.bookmark
-                  : Icons.bookmark_outline,
+              icon: question.isSaved ? Icons.bookmark : Icons.bookmark_outline,
               color: AppColors.primary500,
               label: formatCount(question.saveCount),
               onTap: _toggleSave,

@@ -39,131 +39,131 @@ class FkResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  return SafeArea(
-    child: Padding(
-      padding: AppSpacing.all(AppSpacing.h22),
-      child: SizedBox(
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            if (imageAsset != null)
-              imageAsset!.endsWith('.svg')
-                  ? SvgPicture.asset(
-                      imageAsset!,
-                      width: 180,
-                      height: 180,
-                      fit: BoxFit.contain,
-                      alignment: Alignment.center,
-                      placeholderBuilder: (_) =>
-                          _GradientBadge(icon: icon, color: color),
-                    )
-                  : Image.asset(
-                      imageAsset!,
-                      width: 180,
-                      height: 180,
-                      fit: BoxFit.contain,
-                      alignment: Alignment.center,
-                      errorBuilder: (_, _, _) =>
-                          _GradientBadge(icon: icon, color: color),
-                    )
-            else
-              _GradientBadge(icon: icon, color: color),
-            SizedBox(height: AppSpacing.v22),
-            SizedBox(
-              width: double.infinity,
-              child: Text(
-                title,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.blackBase,
-                    ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            SizedBox(height: AppSpacing.v12),
-            SizedBox(
-              width: double.infinity,
-              child: Text(
-                message,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppColors.neutral500,
-                    ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            SizedBox(height: AppSpacing.v22),
-            SizedBox(
-              width: 260,
-              child: OutlinedButton(
-                onPressed: onPressed,
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.blackBase,
-                  backgroundColor: AppColors.whiteBase,
-                  side: const BorderSide(color: AppBorders.primary),
-                  shape: const StadiumBorder(),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 14,
-                  ),
-                ),
-                child: buttonIcon == null
-                    ? Text(
-                        buttonLabel,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: AppColors.blackBase,
-                          fontWeight: FontWeight.w500,
-                        ),
+    return SafeArea(
+      child: Padding(
+        padding: AppSpacing.all(AppSpacing.h22),
+        child: SizedBox(
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              if (imageAsset != null)
+                imageAsset!.endsWith('.svg')
+                    ? SvgPicture.asset(
+                        imageAsset!,
+                        width: 180,
+                        height: 180,
+                        fit: BoxFit.contain,
+                        alignment: Alignment.center,
+                        placeholderBuilder: (_) =>
+                            _GradientBadge(icon: icon, color: color),
                       )
-                    : Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            buttonIcon,
-                            size: 18,
+                    : Image.asset(
+                        imageAsset!,
+                        width: 180,
+                        height: 180,
+                        fit: BoxFit.contain,
+                        alignment: Alignment.center,
+                        errorBuilder: (_, _, _) =>
+                            _GradientBadge(icon: icon, color: color),
+                      )
+              else
+                _GradientBadge(icon: icon, color: color),
+              SizedBox(height: AppSpacing.v22),
+              SizedBox(
+                width: double.infinity,
+                child: Text(
+                  title,
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.blackBase,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(height: AppSpacing.v12),
+              SizedBox(
+                width: double.infinity,
+                child: Text(
+                  message,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyLarge?.copyWith(color: AppColors.neutral500),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(height: AppSpacing.v22),
+              SizedBox(
+                width: 260,
+                child: OutlinedButton(
+                  onPressed: onPressed,
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.blackBase,
+                    backgroundColor: AppColors.whiteBase,
+                    side: const BorderSide(color: AppBorders.primary),
+                    shape: const StadiumBorder(),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 14,
+                    ),
+                  ),
+                  child: buttonIcon == null
+                      ? Text(
+                          buttonLabel,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
                             color: AppColors.blackBase,
+                            fontWeight: FontWeight.w500,
                           ),
-                          const SizedBox(width: 8),
-                          Flexible(
-                            child: Text(
-                              buttonLabel,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: AppColors.blackBase,
-                                fontWeight: FontWeight.w500,
+                        )
+                      : Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              buttonIcon,
+                              size: 18,
+                              color: AppColors.blackBase,
+                            ),
+                            const SizedBox(width: 8),
+                            Flexible(
+                              child: Text(
+                                buttonLabel,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  color: AppColors.blackBase,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-              ),
-            ),
-            if (secondaryLabel != null && onSecondaryPressed != null) ...[
-              SizedBox(height: AppSpacing.v12),
-              TextButton(
-                onPressed: onSecondaryPressed,
-                style: TextButton.styleFrom(
-                  foregroundColor: AppColors.blackBase,
-                ),
-                child: Text(
-                  secondaryLabel!,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: AppColors.blackBase,
-                        fontWeight: FontWeight.w500,
-                      ),
+                          ],
+                        ),
                 ),
               ),
+              if (secondaryLabel != null && onSecondaryPressed != null) ...[
+                SizedBox(height: AppSpacing.v12),
+                TextButton(
+                  onPressed: onSecondaryPressed,
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppColors.blackBase,
+                  ),
+                  child: Text(
+                    secondaryLabel!,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: AppColors.blackBase,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 }
 
 /// Drawn fallback badge, used when no [FkResultScreen.imageAsset] is supplied

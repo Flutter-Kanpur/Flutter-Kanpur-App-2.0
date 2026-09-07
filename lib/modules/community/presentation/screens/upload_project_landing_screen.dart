@@ -186,10 +186,7 @@ class _TimelineStep extends StatelessWidget {
                         begin: Alignment.bottomCenter,
                         end: Alignment.topCenter,
                         stops: const [0, 1],
-                        colors: [
-                          AppColors.whiteBase,
-                          AppColors.primary500,
-                        ],
+                        colors: [AppColors.whiteBase, AppColors.primary500],
                       ),
                     ),
                   ),

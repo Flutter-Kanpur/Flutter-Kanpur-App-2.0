@@ -58,8 +58,9 @@ import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/scree
 import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/screens/review_application_screen.dart';
 import 'package:go_router/go_router.dart';
 
-final GlobalKey<NavigatorState> rootNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'root');
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(
+  debugLabel: 'root',
+);
 
 final GoRouter appRouter = GoRouter(
   navigatorKey: rootNavigatorKey,
@@ -425,7 +426,6 @@ final GoRouter appRouter = GoRouter(
       path: RouteNames.contactCommunityTeam,
       builder: (context, state) => const ContactCommunityTeamScreen(),
     ),
-
 
     /// Report an Issue
     GoRoute(
