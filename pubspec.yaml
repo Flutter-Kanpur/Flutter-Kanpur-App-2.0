@@ -17,7 +17,7 @@ dependencies:
   flutter_secure_storage: ^10.2.0
   supabase_flutter: ^2.12.4
   flutter_dotenv: ^6.0.1
-  flutter_quill: ^11.5.1
+  flutter_quill: ^11.5.0
   flutter_riverpod: ^3.3.1
   easy_localization: ^3.0.8
   flutter_kanpur_ui_kit: ^0.0.13
@@ -66,6 +66,11 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^6.0.0
+
+dependency_overrides:
+  # Dart 3.11 compatibility: Readme's current branch requests 11.5.1,
+  # whose SDK floor is Dart 3.12, while 11.5.0 supports the project SDK.
+  flutter_quill: ^11.5.0
 
 # The following section is specific to Flutter packages.
 flutter:

@@ -5,6 +5,25 @@ import 'package:go_router/go_router.dart';
 
 import 'package:flutter_knp_mobile_app_v2/app/router/community_upload_routes.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/application/community_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/application/notifications_provider.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/data/community_error_message.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_ask_banner.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_async_views.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_contribute_section.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_discussion_card.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_stats_panel.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/widgets/community_team_carousel.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_section_title.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/external_links.dart';
+
 ///
 /// [CommunityEngagement] rolls its optimistic update back on error and returns
 /// the error rather than throwing, so without this the icon would silently
@@ -90,8 +109,7 @@ class CommunityScreen extends ConsumerWidget {
                 return CommunityEmptyView(
                   message: 'No discussions yet.',
                   actionLabel: 'Start one',
-                  onAction: () =>
-                      context.push(RouteNames.communityAskQuestion),
+                  onAction: () => context.push(RouteNames.communityAskQuestion),
                 );
               }
               // Carousel shows the newest handful; "Explore all" has the rest.
