@@ -227,7 +227,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 FocusScope.of(context).unfocus();
 
                 final email = emailController.text.trim();
-                final password = passwordController.text.trim();
+                final password = passwordController.text;
                 final ctx = context;
 
                 setState(() => isLoading = true);

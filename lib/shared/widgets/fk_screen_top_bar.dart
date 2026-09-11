@@ -57,7 +57,6 @@ class FkScreenTopBar extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: AppTextStyles.titleLarge.copyWith(
-              fontWeight: FontWeight.w700,
               color: AppColors.neutral950,
             ),
           ),

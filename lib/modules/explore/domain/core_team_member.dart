@@ -12,6 +12,10 @@ class CoreTeamMember {
     this.websiteUrl,
     this.skills = const [],
     this.joinedAt,
+    this.sectionId,
+    this.sectionSlug,
+    this.sectionTitle,
+    this.teamSection,
   });
 
   final String name;
@@ -26,6 +30,18 @@ class CoreTeamMember {
   final String? websiteUrl;
   final List<String> skills;
   final DateTime? joinedAt;
+
+  /// FK to `core_team_sections.id` when set.
+  final String? sectionId;
+
+  /// From joined `core_team_sections.slug`, else legacy [teamSection].
+  final String? sectionSlug;
+
+  /// From joined `core_team_sections.title`.
+  final String? sectionTitle;
+
+  /// Legacy denormalized section slug column on `core_team_members`.
+  final String? teamSection;
 
   bool get hasBio => bio != null && bio!.trim().isNotEmpty;
 
@@ -42,6 +58,8 @@ class CoreTeamMember {
     final displayName = user?['display_name'] as String?;
     final fullName = user?['full_name'] as String?;
     final skillsList = (user?['user_skills'] as List<dynamic>?) ?? const [];
+    final section = map['section'] as Map<String, dynamic>?;
+    final teamSection = map['team_section'] as String?;
 
     return CoreTeamMember(
       name: (displayName != null && displayName.isNotEmpty)
@@ -61,6 +79,10 @@ class CoreTeamMember {
           .where((skill) => skill.isNotEmpty)
           .toList(),
       joinedAt: DateTime.tryParse(map['joined_at'] as String? ?? ''),
+      sectionId: map['section_id'] as String? ?? section?['id'] as String?,
+      sectionSlug: section?['slug'] as String? ?? teamSection,
+      sectionTitle: section?['title'] as String?,
+      teamSection: teamSection,
     );
   }
 

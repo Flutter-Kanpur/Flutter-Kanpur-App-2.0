@@ -46,7 +46,7 @@ class MyProfileScreen extends ConsumerWidget {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           forceMaterialTransparency: true,
-          centerTitle: false,
+          centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0,
           automaticallyImplyLeading: false,
@@ -58,188 +58,240 @@ class MyProfileScreen extends ConsumerWidget {
               : null,
           title: Text(
             'profile.myProfileTitle'.tr(),
-            style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w500,
+            style: AppTextStyles.titleLarge.copyWith(
+
             ),
           ),
         ),
         body: RefreshIndicator(
           onRefresh: () => ref.read(myProfileProvider.notifier).refresh(),
           child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  profileAsync.when(
-                    loading: () => const ProfileHeader(
-                      displayName: '',
-                      username: '',
-                    ),
-                    error: (_, _) => ProfileHeader(
-                      displayName: translate(context, 'profile.loadError'),
-                      username: '',
-                    ),
-                    data: (profile) {
-                      final authUser = Supabase.instance.client.auth.currentUser;
-                      final uid = authUser?.id;
-                      final authEmail = authUser?.email?.trim().toLowerCase();
-                      final profileEmail = profile?.email.trim().toLowerCase();
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                profileAsync.when(
+                  loading: () =>
+                      const ProfileHeader(displayName: '', username: ''),
+                  error: (_, _) => ProfileHeader(
+                    displayName: translate(context, 'profile.loadError'),
+                    username: '',
+                  ),
+                  data: (profile) {
+                    final authUser = Supabase.instance.client.auth.currentUser;
+                    final uid = authUser?.id;
+                    final authEmail = authUser?.email?.trim().toLowerCase();
+                    final profileEmail = profile?.email.trim().toLowerCase();
 
-                      if (profile != null &&
-                          uid != null &&
-                          profile.uid.isNotEmpty &&
-                          profile.uid != uid) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          ref.invalidate(myProfileProvider);
-                        });
-                        return const ProfileHeader(
-                          displayName: '',
-                          username: '',
-                        );
-                      }
+                    if (profile != null &&
+                        uid != null &&
+                        profile.uid.isNotEmpty &&
+                        profile.uid != uid) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        ref.invalidate(myProfileProvider);
+                      });
+                      return const ProfileHeader(displayName: '', username: '');
+                    }
 
-                      if (profile != null &&
-                          authEmail != null &&
-                          authEmail.isNotEmpty &&
-                          profileEmail != null &&
-                          profileEmail.isNotEmpty &&
-                          authEmail != profileEmail) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          ref.invalidate(myProfileProvider);
-                        });
-                        return ProfileHeader(
-                          displayName: authUser?.email?.split('@').first ?? '',
-                          username: authUser?.email ?? '',
-                        );
-                      }
-
+                    if (profile != null &&
+                        authEmail != null &&
+                        authEmail.isNotEmpty &&
+                        profileEmail != null &&
+                        profileEmail.isNotEmpty &&
+                        authEmail != profileEmail) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        ref.invalidate(myProfileProvider);
+                      });
                       return ProfileHeader(
-                        displayName: profile?.username ?? '',
-                        username: profile?.handle ?? '',
-                        photoUrl: profile?.photoUrl,
+                        displayName: authUser?.email?.split('@').first ?? '',
+                        username: authUser?.email ?? '',
                       );
-                    },
-                  ),
-                  ProfileSectionBlock(
-  title: 'profile.sectionAccount'.tr(),
-  tiles: [
-    ProfileTile(iconSvgPath: AssetsPath.profileManageProfile, title: 'profile.manageProfile'.tr(), onTap: () => context.push('/profile/manage-profile')),
-    ProfileTile(iconSvgPath: AssetsPath.profileLoginSecurity, title: 'profile.loginAndSecurity'.tr(), onTap: () {}),
-    ProfileTile(iconSvgPath: AssetsPath.profileNotifications, title: 'profile.notifications'.tr(), onTap: () {}),
-  ],
-),
-                 ProfileSectionBlock(
-  title: 'profile.sectionMyActivity'.tr(),
-  tiles: [
-    ProfileTile(iconSvgPath: AssetsPath.profileMyEvents, title: 'profile.myEvents'.tr(), onTap: () {}),
-    ProfileTile(iconSvgPath: AssetsPath.profileMyContests, title: 'profile.myContests'.tr(), onTap: () {}),
-    ProfileTile(iconSvgPath: AssetsPath.profileProblemOfDay, title: 'profile.problemOfDay'.tr(), onTap: () {}),
-  ],
-),
-                    ProfileSectionBlock(
-                     title: 'profile.sectionCommunity'.tr(),
-                      tiles: [
-                        ProfileTile(
-                          iconSvgPath: AssetsPath.profileMyContributions,
-                         title: 'profile.myContributions'.tr(),
-                          onTap: () =>
-                              context.push(RouteNames.myContributions),
-                        ),
-                        ProfileTile(
-                          iconSvgPath: AssetsPath.profileJoinAsContributor,
-                          title: 'profile.joinAsContributor'.tr(),
-                          onTap: () => context.push(RouteNames.joinContributor),
-                        ),
-                        ProfileTile(
-                          iconSvgPath: AssetsPath.profileCommunityGuidelines,
-                         title: 'profile.communityGuidelines'.tr(),
-                          onTap: () => context.push(RouteNames.communityGuidelines),
-                        ),
-                      ],
+                    }
+
+                    return ProfileHeader(
+                      displayName: profile?.username ?? '',
+                      username: profile?.handle ?? '',
+                      photoUrl: profile?.photoUrl,
+                      onEditProfile:()=> context.go(RouteNames.editProfile),
+                    );
+                  },
+                ),
+                ProfileSectionBlock(
+                  title: 'profile.sectionAccount'.tr(),
+                  tiles: [
+                    ProfileTile(
+                      iconSvgPath: AssetsPath.profileManageProfile,
+                      title: 'profile.manageProfile'.tr(),
+                      onTap: () => context.push('/profile/manage-profile'),
                     ),
-                  ProfileSectionBlock(
-                   title: 'profile.sectionAchievements'.tr(),
-                    tiles: [
-                      ProfileTile(iconSvgPath: AssetsPath.profileYourBadges, title: 'profile.yourBadges'.tr(), onTap: () {}),
-                      ProfileTile(iconSvgPath: AssetsPath.profileYourRank, title: 'profile.yourRank'.tr(), onTap: () {}),
-                      ProfileTile(iconSvgPath: AssetsPath.profileLeaderboard, title: 'profile.leaderboard'.tr(), onTap: () {}),
-                    ],
-                  ),
-                  ProfileSectionBlock(
-                   title: 'profile.sectionSupport'.tr(),
-                    tiles: [
-                      ProfileTile(iconSvgPath: AssetsPath.profileHelpCenter, title: 'profile.helpCenter'.tr(), onTap: () => context.push(RouteNames.helpCenter)),
-                      ProfileTile(
-                        iconSvgPath: AssetsPath.profileContactCommunity,
-                       title: 'profile.contactCommunity'.tr(),
-                        onTap: () =>
-                            context.push(RouteNames.contactCommunityTeam),
-                      ),
-                      ProfileTile(iconSvgPath: AssetsPath.profileReportIssue, title: 'profile.reportIssue'.tr(), onTap: () => context.push(RouteNames.reportAnIssue)),
-                    ],
-                  ),
-                  ProfileSectionBlock(
-                   title: 'profile.sectionAboutLegal'.tr(),
-                    tiles: [
-                      ProfileTile(iconSvgPath: AssetsPath.profileAboutFlutterKanpur, title: 'profile.aboutFlutterKanpur'.tr(), onTap: () => context.push(RouteNames.aboutFlutterKanpur)),
-                      ProfileTile(iconSvgPath: AssetsPath.profilePrivacyPolicy, title: 'profile.privacyPolicy'.tr(), onTap: () => context.push(RouteNames.privacyPolicy)),
-                      ProfileTile(iconSvgPath: AssetsPath.profileTermsOfUse, title: 'profile.termsOfUse'.tr(), onTap: () => context.push(RouteNames.termsOfUse)),
-                    ],
-                  ),
-                  ProfileSectionBlock(
-                   title: 'profile.sectionAccountActions'.tr(),
-                    tiles: [
-                      ProfileTile(
-                        iconSvgPath: AssetsPath.profileLogout,
-                       title: 'profile.logout'.tr(),
-                        textColor: AppColors.warning600,
-                        iconColor: AppColors.warning600,
-                        onTap: () => _showLogoutDialog(context, ref),
-                      ),
-                      ProfileTile(
-                        iconSvgPath: AssetsPath.profileDeleteAccount,
-                       title: 'profile.deleteAccount'.tr(),
-                        textColor: AppColors.warning600,
-                        iconColor: AppColors.warning600,
-                        onTap: () => _showDeleteAccountDialog(context, ref),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: AppSpacing.v22),
-                ],
-              ),
+                    ProfileTile(
+                      iconSvgPath: AssetsPath.profileLoginSecurity,
+                      title: 'profile.loginAndSecurity'.tr(),
+                      onTap: () {},
+                    ),
+                    ProfileTile(
+                      iconSvgPath: AssetsPath.profileNotifications,
+                      title: 'profile.notifications'.tr(),
+                      onTap: () {},
+                    ),
+                  ],
+                ),
+                ProfileSectionBlock(
+                  title: 'profile.sectionMyActivity'.tr(),
+                  tiles: [
+                    ProfileTile(
+                      iconSvgPath: AssetsPath.profileMyEvents,
+                      title: 'profile.myEvents'.tr(),
+                      onTap: () {},
+                    ),
+                    ProfileTile(
+                      iconSvgPath: AssetsPath.profileMyContests,
+                      title: 'profile.myContests'.tr(),
+                      onTap: () {},
+                    ),
+                    ProfileTile(
+                      iconSvgPath: AssetsPath.profileProblemOfDay,
+                      title: 'profile.problemOfDay'.tr(),
+                      onTap: () {},
+                    ),
+                  ],
+                ),
+                ProfileSectionBlock(
+                  title: 'profile.sectionCommunity'.tr(),
+                  tiles: [
+                    ProfileTile(
+                      iconSvgPath: AssetsPath.profileMyContributions,
+                      title: 'profile.myContributions'.tr(),
+                      onTap: () => context.push(RouteNames.myContributions),
+                    ),
+                    ProfileTile(
+                      iconSvgPath: AssetsPath.profileJoinAsContributor,
+                      title: 'profile.joinAsContributor'.tr(),
+                      onTap: () => context.push(RouteNames.joinContributor),
+                    ),
+                    ProfileTile(
+                      iconSvgPath: AssetsPath.profileCommunityGuidelines,
+                      title: 'profile.communityGuidelines'.tr(),
+                      onTap: () => context.push(RouteNames.communityGuidelines),
+                    ),
+                  ],
+                ),
+                ProfileSectionBlock(
+                  title: 'profile.sectionAchievements'.tr(),
+                  tiles: [
+                    ProfileTile(
+                      iconSvgPath: AssetsPath.profileYourBadges,
+                      title: 'profile.yourBadges'.tr(),
+                      onTap: () {},
+                    ),
+                    ProfileTile(
+                      iconSvgPath: AssetsPath.profileYourRank,
+                      title: 'profile.yourRank'.tr(),
+                      onTap: () {},
+                    ),
+                    ProfileTile(
+                      iconSvgPath: AssetsPath.profileLeaderboard,
+                      title: 'profile.leaderboard'.tr(),
+                      onTap: () {},
+                    ),
+                  ],
+                ),
+                ProfileSectionBlock(
+                  title: 'profile.sectionSupport'.tr(),
+                  tiles: [
+                    ProfileTile(
+                      iconSvgPath: AssetsPath.profileHelpCenter,
+                      title: 'profile.helpCenter'.tr(),
+                      onTap: () => context.push(RouteNames.helpCenter),
+                    ),
+                    ProfileTile(
+                      iconSvgPath: AssetsPath.profileContactCommunity,
+                      title: 'profile.contactCommunity'.tr(),
+                      onTap: () =>
+                          context.push(RouteNames.contactCommunityTeam),
+                    ),
+                    ProfileTile(
+                      iconSvgPath: AssetsPath.profileReportIssue,
+                      title: 'profile.reportIssue'.tr(),
+                      onTap: () => context.push(RouteNames.reportAnIssue),
+                    ),
+                  ],
+                ),
+                ProfileSectionBlock(
+                  title: 'profile.sectionAboutLegal'.tr(),
+                  tiles: [
+                    ProfileTile(
+                      iconSvgPath: AssetsPath.profileAboutFlutterKanpur,
+                      title: 'profile.aboutFlutterKanpur'.tr(),
+                      onTap: () => context.push(RouteNames.aboutFlutterKanpur),
+                    ),
+                    ProfileTile(
+                      iconSvgPath: AssetsPath.profilePrivacyPolicy,
+                      title: 'profile.privacyPolicy'.tr(),
+                      onTap: () => context.push(RouteNames.privacyPolicy),
+                    ),
+                    ProfileTile(
+                      iconSvgPath: AssetsPath.profileTermsOfUse,
+                      title: 'profile.termsOfUse'.tr(),
+                      onTap: () => context.push(RouteNames.termsOfUse),
+                    ),
+                  ],
+                ),
+                ProfileSectionBlock(
+                  title: 'profile.sectionAccountActions'.tr(),
+                  tiles: [
+                    ProfileTile(
+                      iconSvgPath: AssetsPath.profileLogout,
+                      title: 'profile.logout'.tr(),
+                      textColor: AppColors.warning600,
+                      iconColor: AppColors.warning600,
+                      onTap: () => _showLogoutDialog(context, ref),
+                    ),
+                    ProfileTile(
+                      iconSvgPath: AssetsPath.profileDeleteAccount,
+                      title: 'profile.deleteAccount'.tr(),
+                      textColor: AppColors.warning600,
+                      iconColor: AppColors.warning600,
+                      onTap: () => _showDeleteAccountDialog(context, ref),
+                    ),
+                  ],
+                ),
+                SizedBox(height: AppSpacing.v22),
+              ],
             ),
+          ),
         ),
       ),
     );
   }
 
   void _showLogoutDialog(BuildContext context, WidgetRef ref) {
-  FkConfirmDialog.show(
-    context,
-    title: 'profile.logoutTitle'.tr(),
-    message: 'profile.logoutMessage'.tr(),
-    confirmLabel: 'profile.logout'.tr(),
-    cancelLabel: 'profile.cancel'.tr(),
-    confirmColor: AppColors.warning600,
-    messageColor: AppColors.neutral400,
-    blurBarrier: true,
-    onConfirm: () async {
-      final logoutSuccess = await _logout(ref);
-      if (!context.mounted) return;
+    FkConfirmDialog.show(
+      context,
+      title: 'profile.logoutTitle'.tr(),
+      message: 'profile.logoutMessage'.tr(),
+      confirmLabel: 'profile.logout'.tr(),
+      cancelLabel: 'profile.cancel'.tr(),
+      confirmColor: AppColors.warning600,
+      messageColor: AppColors.neutral400,
+      blurBarrier: true,
+      onConfirm: () async {
+        final logoutSuccess = await _logout(ref);
+        if (!context.mounted) return;
 
-      if (logoutSuccess) {
-        context.go(RouteNames.authLanding);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('profile.logoutFailed'.tr()),
-            backgroundColor: AppColors.warning600,
-          ),
-        );
-      }
-    },
-  );
-}
+        if (logoutSuccess) {
+          context.go(RouteNames.authLanding);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('profile.logoutFailed'.tr()),
+              backgroundColor: AppColors.warning600,
+            ),
+          );
+        }
+      },
+    );
+  }
 
   Future<bool> _logout(WidgetRef ref) async {
     try {
@@ -253,50 +305,50 @@ class MyProfileScreen extends ConsumerWidget {
       return false;
     }
   }
+
   void _showDeleteAccountDialog(BuildContext context, WidgetRef ref) {
-  FkConfirmDialog.show(
-    context,
-    title: 'profile.deleteAccountTitle'.tr(),
-    message: 'profile.deleteAccountMessage'.tr(),
-    confirmLabel: 'profile.deleteAccount'.tr(),
-    cancelLabel: 'profile.cancel'.tr(),
-    confirmColor: AppColors.warning600,
-    messageColor: AppColors.neutral400,
-    blurBarrier: true,
-    onConfirm: () async {
-      final ok = await _deleteAccount(ref);
-      if (!context.mounted) return;
-      if (ok) {
-        context.go(RouteNames.authLanding);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('profile.deleteAccountFailed'.tr()),
-            backgroundColor: AppColors.warning600,
-          ),
-        );
-      }
-    },
-  );
-}
+    FkConfirmDialog.show(
+      context,
+      title: 'profile.deleteAccountTitle'.tr(),
+      message: 'profile.deleteAccountMessage'.tr(),
+      confirmLabel: 'profile.deleteAccount'.tr(),
+      cancelLabel: 'profile.cancel'.tr(),
+      confirmColor: AppColors.warning600,
+      messageColor: AppColors.neutral400,
+      blurBarrier: true,
+      onConfirm: () async {
+        final ok = await _deleteAccount(ref);
+        if (!context.mounted) return;
+        if (ok) {
+          context.go(RouteNames.authLanding);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('profile.deleteAccountFailed'.tr()),
+              backgroundColor: AppColors.warning600,
+            ),
+          );
+        }
+      },
+    );
+  }
 
-Future<bool> _deleteAccount(WidgetRef ref) async {
-  try {
-    final uid = Supabase.instance.client.auth.currentUser?.id;
-    if (uid == null) return false;
+  Future<bool> _deleteAccount(WidgetRef ref) async {
+    try {
+      final uid = Supabase.instance.client.auth.currentUser?.id;
+      if (uid == null) return false;
 
-    final result = await UserRepository().deleteUser(uid);
-    if (!result.isSuccess) return false;
+      final result = await UserRepository().deleteUser(uid);
+      if (!result.isSuccess) return false;
 
-    await AppPrefs.clearOnboardingDraft();
-    await ref.read(signOutProvider)();
-    ref.invalidate(currentUserProvider);
-    ref.invalidate(nextRouteProvider);
-    ref.invalidate(splashRouteProvider);
-    return true;
-  } catch (_) {
-    return false;
+      await AppPrefs.clearOnboardingDraft();
+      await ref.read(signOutProvider)();
+      ref.invalidate(currentUserProvider);
+      ref.invalidate(nextRouteProvider);
+      ref.invalidate(splashRouteProvider);
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 }
-}
-

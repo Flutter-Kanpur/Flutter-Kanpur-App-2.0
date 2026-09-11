@@ -2,49 +2,106 @@ import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/core_team_member.dart';
 
-/// Team buckets used by the full core-team screen.
-enum CoreTeamSection { organisors, appTeam, webTeam, designTeam }
+/// Section header from `core_team_sections` (admin-managed).
+class CoreTeamSectionInfo {
+  const CoreTeamSectionInfo({
+    required this.id,
+    required this.slug,
+    required this.title,
+    this.sortOrder = 0,
+  });
 
-/// Groups [CoreTeamMember] rows into the four team sections.
+  final String id;
+  final String slug;
+  final String title;
+  final int sortOrder;
+
+  bool get isOrganisorsStyle => slug.toLowerCase().contains('organi');
+
+  factory CoreTeamSectionInfo.fromMap(Map<String, dynamic> map) {
+    return CoreTeamSectionInfo(
+      id: (map['id'] ?? '').toString(),
+      slug: (map['slug'] ?? '').toString(),
+      title: (map['title'] ?? '').toString(),
+      sortOrder: (map['sort_order'] as num?)?.toInt() ?? 0,
+    );
+  }
+}
+
+/// One section bucket for the Core Team screen.
+class CoreTeamSectionBucket {
+  const CoreTeamSectionBucket({
+    required this.section,
+    required this.members,
+  });
+
+  final CoreTeamSectionInfo section;
+  final List<CoreTeamMember> members;
+}
+
+/// Groups members by dynamic section headers from Supabase.
 class CoreTeamGrouping {
   CoreTeamGrouping._();
 
-  static CoreTeamSection sectionForRole(String? role) {
-    final r = (role ?? '').trim().toLowerCase();
-    if (r.contains('organizer') || r.contains('organisor')) {
-      return CoreTeamSection.organisors;
-    }
-    if (r.contains('app') || r.contains('mobile')) {
-      return CoreTeamSection.appTeam;
-    }
-    if (r.contains('web')) return CoreTeamSection.webTeam;
-    if (r.contains('design') || r.contains('ui') || r.contains('ux')) {
-      return CoreTeamSection.designTeam;
-    }
-    return CoreTeamSection.organisors;
-  }
+  static const _otherId = '__other__';
 
-  static String titleFor(CoreTeamSection section) {
-    return switch (section) {
-      CoreTeamSection.organisors => 'Organisors',
-      CoreTeamSection.appTeam => 'App Team',
-      CoreTeamSection.webTeam => 'Web Team',
-      CoreTeamSection.designTeam => 'Design Team',
-    };
-  }
+  /// Ordered buckets: known sections first (by [sortOrder]), then unmatched.
+  static List<CoreTeamSectionBucket> groupBySections({
+    required List<CoreTeamSectionInfo> sections,
+    required List<CoreTeamMember> members,
+  }) {
+    final ordered = List<CoreTeamSectionInfo>.from(sections)
+      ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
 
-  static Map<CoreTeamSection, List<CoreTeamMember>> groupBySection(
-    List<CoreTeamMember> members,
-  ) {
-    final map = {
-      for (final section in CoreTeamSection.values) section: <CoreTeamMember>[],
+    final byId = <String, List<CoreTeamMember>>{
+      for (final s in ordered) s.id: <CoreTeamMember>[],
     };
+    final bySlug = <String, String>{
+      for (final s in ordered) s.slug.toLowerCase(): s.id,
+    };
+    final other = <CoreTeamMember>[];
 
     for (final member in members) {
-      map[sectionForRole(member.role)]!.add(member);
+      final id = member.sectionId;
+      if (id != null && byId.containsKey(id)) {
+        byId[id]!.add(member);
+        continue;
+      }
+
+      // Fallback: denormalized team_section / joined section slug.
+      final slug =
+          (member.sectionSlug ?? member.teamSection)?.toLowerCase();
+      final fromSlug = slug == null ? null : bySlug[slug];
+      if (fromSlug != null) {
+        byId[fromSlug]!.add(member);
+      } else {
+        other.add(member);
+      }
     }
 
-    return map;
+    final buckets = <CoreTeamSectionBucket>[
+      for (final s in ordered)
+        CoreTeamSectionBucket(
+          section: s,
+          members: sortLeadsFirst(byId[s.id] ?? const []),
+        ),
+    ];
+
+    if (other.isNotEmpty) {
+      buckets.add(
+        CoreTeamSectionBucket(
+          section: const CoreTeamSectionInfo(
+            id: _otherId,
+            slug: 'other',
+            title: 'Other',
+            sortOrder: 9999,
+          ),
+          members: sortLeadsFirst(other),
+        ),
+      );
+    }
+
+    return buckets;
   }
 
   static List<CoreTeamMember> sortLeadsFirst(List<CoreTeamMember> members) {
@@ -61,7 +118,7 @@ class CoreTeamGrouping {
 extension CoreTeamMemberX on CoreTeamMember {
   bool get isLead => role.toLowerCase().contains('lead');
 
-  /// Short role label for cards. Organisors section uses organiser wording.
+  /// Short role label for cards. Organisors-style sections use organiser wording.
   String roleLabel({required bool isOrganisorsSection}) {
     final normalized = role.trim().toLowerCase();
 

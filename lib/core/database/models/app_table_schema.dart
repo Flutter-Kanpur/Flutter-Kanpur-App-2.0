@@ -110,12 +110,19 @@ const appTableSchemas = <AppTableSchema>[
     fields: ['user_uid', 'role', 'membership_status', 'community_key', 'joined_at'],
   ),
   AppTableSchema(
+    name: 'core_team_sections',
+    module: 'explore',
+    purpose: 'Admin-managed Core Team section headers (title, slug, sort_order).',
+    fields: ['id', 'slug', 'title', 'sort_order', 'is_active', 'is_deleted'],
+  ),
+  AppTableSchema(
     name: 'core_team_members',
     module: 'explore',
     purpose: 'Core / organising team shown on Explore and Core Team screens.',
     fields: [
       'user_uid',
       'role',
+      'section_id',
       'team_section',
       'is_lead',
       'sort_order',

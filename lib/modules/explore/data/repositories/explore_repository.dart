@@ -2,6 +2,7 @@ import 'package:flutter_knp_mobile_app_v2/core/database/database_tables.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/community_project_detail.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/community_project_preview.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/core_team_member.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/core_team_section.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ExploreRepository {
@@ -9,6 +10,20 @@ class ExploreRepository {
     : _client = client ?? Supabase.instance.client;
 
   final SupabaseClient _client;
+
+  /// Active section headers from [DatabaseTables.coreTeamSections].
+  Future<List<CoreTeamSectionInfo>> fetchCoreTeamSections() async {
+    final data = await _client
+        .from(DatabaseTables.coreTeamSections)
+        .select('id, slug, title, sort_order')
+        .eq('is_active', true)
+        .eq('is_deleted', false)
+        .order('sort_order', ascending: true);
+
+    return (data as List<dynamic>)
+        .map((m) => CoreTeamSectionInfo.fromMap(m as Map<String, dynamic>))
+        .toList();
+  }
 
   /// Active core team from [DatabaseTables.coreTeamMembers], paginated.
   Future<List<CoreTeamMember>> fetchCoreTeamMembers({
@@ -18,7 +33,8 @@ class ExploreRepository {
     final data = await _client
         .from(DatabaseTables.coreTeamMembers)
         .select(
-          'role, team_section, is_lead, sort_order, is_active, joined_at, '
+          'role, team_section, section_id, is_lead, sort_order, is_active, joined_at, '
+          'section:core_team_sections!section_id(id, slug, title, sort_order), '
           'user:users!user_uid('
           'display_name, full_name, username, photo_url, bio, '
           'github_url, linkedin_url, website_url, '

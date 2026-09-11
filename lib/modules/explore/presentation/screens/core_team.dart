@@ -19,7 +19,7 @@ const _gridCrossAxisCount = 3;
 const _gridChildAspectRatio = 0.65;
 const _organisorsAspectRatio = 0.65;
 
-/// Full core-team list grouped by role, backed by [coreTeamMembersProvider].
+/// Full core-team list grouped by dynamic sections from Supabase.
 class CoreTeamScreen extends ConsumerStatefulWidget {
   const CoreTeamScreen({super.key});
 
@@ -28,10 +28,17 @@ class CoreTeamScreen extends ConsumerStatefulWidget {
 }
 
 class _CoreTeamScreenState extends ConsumerState<CoreTeamScreen> {
-  final Set<CoreTeamSection> _expandedSections = {
-    CoreTeamSection.organisors,
-    CoreTeamSection.appTeam,
-  };
+  final Set<String> _expandedSectionIds = {};
+  bool _didSeedExpanded = false;
+
+  void _seedExpandedIfNeeded(List<CoreTeamSectionBucket> buckets) {
+    if (_didSeedExpanded || buckets.isEmpty) return;
+    _didSeedExpanded = true;
+    // Expand first two sections by default (matches old organisors + app team).
+    for (final bucket in buckets.take(2)) {
+      _expandedSectionIds.add(bucket.section.id);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +70,7 @@ class _CoreTeamScreenState extends ConsumerState<CoreTeamScreen> {
                     ),
                   ),
                   data: (state) {
-                    if (state.members.isEmpty) {
+                    if (state.members.isEmpty && state.sections.isEmpty) {
                       return const SliverToBoxAdapter(
                         child: CommunityEmptyView(
                           icon: Icons.groups_outlined,
@@ -72,27 +79,30 @@ class _CoreTeamScreenState extends ConsumerState<CoreTeamScreen> {
                       );
                     }
 
-                    final grouped = CoreTeamGrouping.groupBySection(
-                      state.members,
+                    final buckets = CoreTeamGrouping.groupBySections(
+                      sections: state.sections,
+                      members: state.members,
                     );
+                    _seedExpandedIfNeeded(buckets);
 
                     return SliverPadding(
                       padding: AppSpacing.horizontal(AppSpacing.h20),
                       sliver: SliverList(
                         delegate: SliverChildListDelegate([
-                          for (final section in CoreTeamSection.values)
+                          for (final bucket in buckets)
                             _TeamSectionTile(
-                              section: section,
-                              members: CoreTeamGrouping.sortLeadsFirst(
-                                grouped[section] ?? const [],
+                              section: bucket.section,
+                              members: bucket.members,
+                              isExpanded: _expandedSectionIds.contains(
+                                bucket.section.id,
                               ),
-                              isExpanded: _expandedSections.contains(section),
                               onToggle: () {
                                 setState(() {
-                                  if (_expandedSections.contains(section)) {
-                                    _expandedSections.remove(section);
+                                  final id = bucket.section.id;
+                                  if (_expandedSectionIds.contains(id)) {
+                                    _expandedSectionIds.remove(id);
                                   } else {
-                                    _expandedSections.add(section);
+                                    _expandedSectionIds.add(id);
                                   }
                                 });
                               },
@@ -101,7 +111,7 @@ class _CoreTeamScreenState extends ConsumerState<CoreTeamScreen> {
                                   context,
                                   member: member,
                                   isOrganisorsSection:
-                                      section == CoreTeamSection.organisors,
+                                      bucket.section.isOrganisorsStyle,
                                 );
                               },
                             ),
@@ -153,7 +163,7 @@ class _TeamSectionTile extends StatelessWidget {
     required this.onMemberTap,
   });
 
-  final CoreTeamSection section;
+  final CoreTeamSectionInfo section;
   final List<CoreTeamMember> members;
   final bool isExpanded;
   final VoidCallback onToggle;
@@ -161,8 +171,9 @@ class _TeamSectionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final title = CoreTeamGrouping.titleFor(section);
+    final title = section.title;
     final count = members.length;
+    final isOrganisors = section.isOrganisorsStyle;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,12 +217,9 @@ class _TeamSectionTile extends StatelessWidget {
           ),
         ),
         DottedLine(),
-        if (isExpanded && count > 0)
+        if (isExpanded && count > 0) ...[
           Padding(
-            padding: EdgeInsets.only(
-              top: AppSpacing.v12,
-              bottom: AppSpacing.v16,
-            ),
+            padding: EdgeInsets.only(top: AppSpacing.v12),
             child: GridView.builder(
               itemCount: count,
               shrinkWrap: true,
@@ -219,18 +227,20 @@ class _TeamSectionTile extends StatelessWidget {
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: _gridCrossAxisCount,
                 crossAxisSpacing: AppSpacing.h8,
-                mainAxisSpacing: AppSpacing.h2,
-                childAspectRatio: section == CoreTeamSection.organisors
+                mainAxisSpacing: AppSpacing.h8,
+                childAspectRatio: isOrganisors
                     ? _organisorsAspectRatio
                     : _gridChildAspectRatio,
               ),
               itemBuilder: (context, index) => CoreTeamMemberGridCard(
                 member: members[index],
-                isOrganisorsSection: section == CoreTeamSection.organisors,
+                isOrganisorsSection: isOrganisors,
                 onTap: () => onMemberTap(members[index]),
               ),
             ),
           ),
+          SizedBox(height: AppSpacing.v22),
+        ],
       ],
     );
   }

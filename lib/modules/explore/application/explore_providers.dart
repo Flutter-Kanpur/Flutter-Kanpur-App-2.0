@@ -7,6 +7,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/explore/data/repositories/expl
 import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/community_project_detail.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/community_project_preview.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/core_team_member.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/explore/domain/core_team_section.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
@@ -377,21 +378,25 @@ class ProjectDetailNotifier extends AsyncNotifier<CommunityProjectDetail> {
 /// ReplyFeedState.
 class CoreTeamMembersState {
   const CoreTeamMembersState({
+    this.sections = const [],
     this.members = const [],
     this.hasMore = false,
     this.isLoadingMore = false,
   });
 
+  final List<CoreTeamSectionInfo> sections;
   final List<CoreTeamMember> members;
   final bool hasMore;
   final bool isLoadingMore;
 
   CoreTeamMembersState copyWith({
+    List<CoreTeamSectionInfo>? sections,
     List<CoreTeamMember>? members,
     bool? hasMore,
     bool? isLoadingMore,
   }) {
     return CoreTeamMembersState(
+      sections: sections ?? this.sections,
       members: members ?? this.members,
       hasMore: hasMore ?? this.hasMore,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
@@ -413,13 +418,17 @@ class CoreTeamMembersNotifier extends AsyncNotifier<CoreTeamMembersState> {
   Future<CoreTeamMembersState> build() => _loadFirstPage();
 
   Future<CoreTeamMembersState> _loadFirstPage() async {
+    final sectionsFuture = _repo.fetchCoreTeamSections();
     // Ask for one extra to detect a next page without a count query.
-    final rows = await _repo.fetchCoreTeamMembers(
+    final rowsFuture = _repo.fetchCoreTeamMembers(
       limit: pageSize + 1,
       offset: 0,
     );
+    final sections = await sectionsFuture;
+    final rows = await rowsFuture;
     final hasMore = rows.length > pageSize;
     return CoreTeamMembersState(
+      sections: sections,
       members: hasMore ? rows.sublist(0, pageSize) : rows,
       hasMore: hasMore,
     );

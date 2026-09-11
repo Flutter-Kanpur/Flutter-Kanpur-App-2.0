@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_knp_mobile_app_v2/modules/blogs/data/readme_auth_bridge.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../domain/auth_models.dart' as models;
@@ -17,10 +19,13 @@ class AuthService {
     try {
       print('🔐 [AuthService] Signing in user: $email');
 
-      // Ensure account switches don't keep the previous user's session.
+      // Clear any previous session so account switches are clean.
+      // Local scope is enough; do not block login on ReadMe cleanup.
       if (_client.auth.currentSession != null) {
-        await _client.auth.signOut(scope: SignOutScope.global);
-        await ReadmeAuthBridge.signOut();
+        try {
+          await _client.auth.signOut(scope: SignOutScope.local);
+        } catch (_) {}
+        unawaited(ReadmeAuthBridge.signOut());
       }
 
       final response = await _client.auth.signInWithPassword(
@@ -37,16 +42,6 @@ class AuthService {
         );
       }
 
-      final signedInEmail = user.email?.trim().toLowerCase();
-      if (signedInEmail != email.trim().toLowerCase()) {
-        print('❌ [AuthService] Sign in email mismatch: $signedInEmail != $email');
-        await _client.auth.signOut(scope: SignOutScope.global);
-        return models.AuthResponse.error(
-          errorCode: 'EMAIL_MISMATCH',
-          errorMessage: 'Sign in failed. Please try again.',
-        );
-      }
-
       print('✅ [AuthService] Sign in successful: ${user.id}');
 
       try {
@@ -57,7 +52,8 @@ class AuthService {
         // profile row may not exist yet — don't block login
       }
 
-      await ReadmeAuthBridge.ensureSignedIn(force: true);
+      // ReadMe sync must never block Kanpur login (network / edge function hang).
+      unawaited(ReadmeAuthBridge.ensureSignedIn(force: true));
 
       return models.AuthResponse.success(
         userId: user.id,
@@ -74,7 +70,7 @@ class AuthService {
       print('❌ [AuthService] Unexpected error: $e');
       return models.AuthResponse.error(
         errorCode: 'UNKNOWN_ERROR',
-        errorMessage: 'An unexpected error occurred. Please try again.',
+        errorMessage: _mapNetworkOrUnknownError(e),
       );
     }
   }
@@ -173,22 +169,51 @@ class AuthService {
 
   // ─── Helpers ──────────────────────────────────────────────────────────────
 
+  String _mapNetworkOrUnknownError(Object error) {
+    final text = error.toString().toLowerCase();
+    if (text.contains('failed host lookup') ||
+        text.contains('socketexception') ||
+        text.contains('network is unreachable') ||
+        text.contains('connection failed') ||
+        text.contains('clientexception')) {
+      return 'No internet connection. Check Wi‑Fi/mobile data and try again.';
+    }
+    return 'An unexpected error occurred. Please try again.';
+  }
+
   String _mapAuthError(String? message) {
     if (message == null) return 'An error occurred. Please try again.';
 
-    if (message.toLowerCase().contains('invalid login credentials')) {
+    final lower = message.toLowerCase();
+
+    if (lower.contains('failed host lookup') ||
+        lower.contains('socketexception') ||
+        lower.contains('clientexception') ||
+        lower.contains('network is unreachable')) {
+      return 'No internet / DNS on this device. Restart the emulator with DNS (8.8.8.8) or try a real phone.';
+    }
+
+    if (lower.contains('invalid login credentials') ||
+        lower.contains('invalid email or password') ||
+        lower == 'invalid password') {
       return 'Invalid email or password';
     }
-    if (message.toLowerCase().contains('email not confirmed')) {
+    if (lower.contains('email not confirmed')) {
       return 'Please confirm your email first';
     }
-    if (message.toLowerCase().contains('already registered')) {
+    if (lower.contains('already registered')) {
       return 'This email is already registered';
     }
-    if (message.toLowerCase().contains('password')) {
+    // Only map real length/strength errors — not every message that says "password".
+    if (lower.contains('password should be at least') ||
+        lower.contains('password must be at least') ||
+        lower.contains('password is too short') ||
+        (lower.contains('password') &&
+            (lower.contains('at least 6') || lower.contains('minimum')))) {
       return 'Password must be at least 6 characters';
     }
-    if (message.toLowerCase().contains('email')) {
+    if (lower.contains('unable to validate email') ||
+        lower.contains('invalid email')) {
       return 'Please enter a valid email address';
     }
 
