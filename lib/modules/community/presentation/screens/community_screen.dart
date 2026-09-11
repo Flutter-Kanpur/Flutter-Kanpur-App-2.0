@@ -71,7 +71,7 @@ class CommunityScreen extends ConsumerWidget {
         padding: EdgeInsets.fromLTRB(
           AppSpacing.h22,
           AppSpacing.h20,
-          AppSpacing.h8,
+          AppSpacing.h22,
           AppSpacing.h8,
         ),
         children: [
