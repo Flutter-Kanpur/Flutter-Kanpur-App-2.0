@@ -4,7 +4,7 @@ description: "A new Flutter project."
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 
-version: 2.0.0+11
+version: 2.0.0+12
 
 environment:
   sdk: ^3.11.0
@@ -80,6 +80,7 @@ flutter:
     - assets/contributor/
     - assets/translations/en.json
     - assets/translations/hi.json
+    - shorebird.yaml
 
   fonts:
     - family: ProductSans
