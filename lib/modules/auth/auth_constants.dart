@@ -30,5 +30,5 @@ class AuthConstants {
   static const int resendCooldownSeconds = 60;
 
   static const String oauthRedirectUrl =
-      'com.example.flutter_knp_mobile_app_v2://login-callback';
+      'com.flutterkanpur.community://login-callback';
 }
