@@ -6,7 +6,6 @@ import 'package:flutter_knp_mobile_app_v2/modules/contributor/domain/contributor
 import 'package:flutter_knp_mobile_app_v2/modules/profile/application/profile_provider.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/domain/profile_models.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_back_button.dart';
-import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_header.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_text_field.dart';
@@ -19,6 +18,7 @@ import '../widgets/contributor_info_banner.dart';
 import '../widgets/contributor_profile_links.dart';
 import '../widgets/contributor_skill_chip.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 
 class ContributorApplicationScreen extends ConsumerStatefulWidget {
   const ContributorApplicationScreen({super.key});
@@ -50,23 +50,44 @@ class _ContributorApplicationScreenState
 
   final roles = [
     "Student",
-    "Flutter Developer",
-    "Backend Developer",
-    "UI/UX Designer",
+    "Developer",
+    "Designer",
+    "Working Professional",
   ];
 
   final contributions = [
+    "Events & Logistics",
+    "Content Writing",
+    "UI Design",
+    "Graphic Design",
+    "UX Design",
+    "App Development",
+    "Web Development",
     "Community Management",
-    "Events",
-    "Content",
-    "Development",
   ];
 
-  final skills = ["Flutter", "UI / UX Designer", "Backend", "Firebase"];
+  final skills = [
+    "Flutter",
+    "UI Design",
+    "Content Writing",
+    "Event Coordination",
+    "Backend",
+    "Graphic Design",
+  ];
 
-  final experienceLevels = ["0 years", "1 year", "2 years", "3+ years"];
+  final experienceLevels = [
+    "Just getting started",
+    "0-1 years",
+    "1-3 years",
+    "3+ years",
+  ];
 
-  final weeklyHoursList = ["2-4 hours", "4-6 hours", "6-10 hours", "10+ hours"];
+  final weeklyHoursList = [
+    "Less than 2 hours",
+    "2-4 hours",
+    "4-6 hours",
+    "Flexible",
+  ];
 
   final List<String> selectedSkills = [];
 
@@ -214,7 +235,7 @@ class _ContributorApplicationScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.neutral50,
+      backgroundColor: AppColors.whiteBase,
       body: FkScreen(
         children: [
           Form(
@@ -222,12 +243,24 @@ class _ContributorApplicationScreenState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FkHeader(
-                  title: "contributor.applicationTitle".tr(),
-                  subtitle: "",
-                  leading: const FkBackButton(
-                    fallbackPath: RouteNames.joinContributor,
-                  ),
+                Row(
+                  children: [
+                    const FkBackButton(
+                      fallbackPath: RouteNames.joinContributor,
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          "contributor.applicationTitle".tr(),
+                          style: AppTextStyles.titleLarge.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.neutral950,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 48), // Balances the 48px IconButton
+                  ],
                 ),
 
                 SizedBox(height: AppSpacing.v22),
@@ -307,24 +340,26 @@ class _ContributorApplicationScreenState
                   },
                 ),
 
-                SizedBox(height: AppSpacing.v12),
-                Wrap(
-                  spacing: AppSpacing.h8,
-                  runSpacing: AppSpacing.v8,
-                  children: selectedSkills.map((skill) {
-                    return ContributorSkillChip(
-                      label: skill,
-                      onDeleted: () {
-                        setState(() {
-                          selectedSkills.remove(skill);
-                        });
-                        _skillsFieldKey.currentState?.didChange(
-                          List.of(selectedSkills),
-                        );
-                      },
-                    );
-                  }).toList(),
-                ),
+                if (selectedSkills.isNotEmpty) ...[
+                  SizedBox(height: AppSpacing.v12),
+                  Wrap(
+                    spacing: AppSpacing.h8,
+                    runSpacing: AppSpacing.v8,
+                    children: selectedSkills.map((skill) {
+                      return ContributorSkillChip(
+                        label: skill,
+                        onDeleted: () {
+                          setState(() {
+                            selectedSkills.remove(skill);
+                          });
+                          _skillsFieldKey.currentState?.didChange(
+                            List.of(selectedSkills),
+                          );
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ],
 
                 FormField<List<String>>(
                   key: _skillsFieldKey,
@@ -414,7 +449,7 @@ class _ContributorApplicationScreenState
 
                 SizedBox(height: AppSpacing.v22),
                 FkPrimaryButton(
-                  label: "contributor.submitApplication".tr(),
+                  label: "contributor.continueButton".tr(),
                   icon: Icons.arrow_forward_rounded,
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
