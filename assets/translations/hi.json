@@ -527,7 +527,22 @@
     "reportIssue": "समस्या की रिपोर्ट करें",
     "fieldRequired": "{field} आवश्यक है।",
     "invalidUrl": "कृपया एक मान्य URL दर्ज करें।",
-    "whyContributeTooShort": "कृपया कम से कम 20 अक्षरों में बताएं कि आप योगदान क्यों देना चाहते हैं।"
+    "whyContributeTooShort": "कृपया कम से कम 20 अक्षरों में बताएं कि आप योगदान क्यों देना चाहते हैं।",
+    "continueButton": "जारी रखें",
+    "status": "स्थिति",
+    "underReview": "समीक्षाधीन",
+    "withinFiveToSevenDays": "5-7 दिनों के भीतर",
+    "seniorContributor": "वरिष्ठ योगदानकर्ता",
+    "currentAssignments": "वर्तमान कार्य",
+    "viewAssignments": "असाइनमेंट देखें",
+    "viewAssignmentsDesc": "टीम लीड द्वारा दिए गए कार्य देखें",
+    "submitWork": "कार्य जमा करें",
+    "submitWorkDesc": "डिज़ाइन, लिंक या अपडेट साझा करें",
+    "viewResources": "संसाधन देखें",
+    "viewResourcesDesc": "दिशानिर्देश, ब्रांड संपत्तियां और दस्तावेज़",
+    "contactTeam": "टीम से संपर्क करें",
+    "contactTeamDesc": "कोर टीम से कभी भी संपर्क करें",
+    "onboardedNoContributions": "बधाई हो! आप एक योगदानकर्ता के रूप में शामिल हो गए हैं।"
   },
   "messageSent": {
     "title": "संदेश भेजा गया",

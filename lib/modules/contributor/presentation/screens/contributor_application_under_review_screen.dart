@@ -1,121 +1,187 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
-import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
-import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_back_button.dart';
-import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_header.dart';
-import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart';
-import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradiant_background.dart';
-import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_back_button.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
+import 'package:go_router/go_router.dart';
 
-class ContributorApplicationUnderReviewScreen extends StatelessWidget {
+import '../../application/contributor_application_provider.dart';
+
+class ContributorApplicationUnderReviewScreen extends ConsumerWidget {
   const ContributorApplicationUnderReviewScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final appData = ref.watch(myContributorApplicationProvider).value;
+    String submittedDate = "Apr 12, 2026";
+    final rawCreatedAt = appData?['created_at'] as String?;
+    if (rawCreatedAt != null) {
+      try {
+        final parsed = DateTime.parse(rawCreatedAt);
+        submittedDate = DateFormat('MMM d, yyyy').format(parsed);
+      } catch (_) {}
+    }
 
-    return GradientBackground(
-      child: SafeArea(
+    return Scaffold(
+      backgroundColor: AppColors.whiteBase,
+      body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(
-            AppSpacing.h20,
-            AppSpacing.h18,
-            AppSpacing.h20,
-            24,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.h20),
           child: Column(
             children: [
-              FkHeader(
-                title: "contributor.myContributions".tr(),
-                subtitle: "",
-                leading: const FkBackButton(
-                  fallbackPath: RouteNames.applicationAlreadySubmitted,
-                ),
+              SizedBox(height: AppSpacing.v10),
+
+              /// Top App Bar / Header
+              Row(
+                children: [
+                  const FkBackButton(
+                    fallbackPath: RouteNames.joinContributor,
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        "contributor.myContributions".tr(),
+                        style: AppTextStyles.titleLarge.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.neutral950,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 48), // Balances the 48px IconButton
+                ],
               ),
 
               Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(AssetsPath.contributorReviewClock, width: 120),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: AppSpacing.v20),
 
-                    SizedBox(height: AppSpacing.v22),
-
-                    Text(
-                      "contributor.applicationUnderReview".tr(),
-                      textAlign: TextAlign.center,
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
+                      Image.asset(
+                        AssetsPath.contributorReviewClock,
+                        width: 120.w,
                       ),
-                    ),
 
-                    SizedBox(height: AppSpacing.v12),
+                      SizedBox(height: AppSpacing.v20),
 
-                    Text(
-                      "contributor.thanksForApplying".tr(),
-                      textAlign: TextAlign.center,
-                      style: theme.textTheme.bodyMedium,
-                    ),
+                      Text(
+                        "contributor.applicationUnderReview".tr(),
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.titleLarge.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.neutral950,
+                        ),
+                      ),
 
-                    SizedBox(height: AppSpacing.v22),
+                      SizedBox(height: AppSpacing.v10),
 
-                    FkPrimaryButton(
-                      label: "contributor.viewApplicationDetails".tr(),
-                      onPressed: () =>
-                          context.push(RouteNames.reviewApplication),
-                    ),
+                      Text(
+                        "contributor.thanksForApplying".tr(),
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: AppColors.neutral500,
+                        ),
+                      ),
 
-                    SizedBox(height: AppSpacing.v22),
+                      SizedBox(height: AppSpacing.v20),
 
-                    _item(
-                      "contributor.status".tr(),
-                      "contributor.underReview".tr(),
-                    ),
-                    SizedBox(height: AppSpacing.v18),
-                    _item("contributor.submittedOn".tr(), "Apr 12, 2026"),
-                    SizedBox(height: AppSpacing.v18),
-                    _item(
-                      "contributor.estimatedResponse".tr(),
-                      "contributor.withinFiveToSevenDays".tr(),
-                    ),
-                  ],
+                      FkPrimaryButton(
+                        label: "contributor.viewApplicationDetails".tr(),
+                        icon: Icons.arrow_forward_rounded,
+                        onPressed: () =>
+                            context.push(RouteNames.applicationSummary),
+                      ),
+
+                      SizedBox(height: 24.h),
+
+                      /// Status Timeline Card
+                      Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppSpacing.h18,
+                          vertical: AppSpacing.v16,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.whiteBase,
+                          borderRadius: BorderRadius.circular(16.r),
+                          border: Border.all(color: AppBorders.secondary),
+                        ),
+                        child: Column(
+                          children: [
+                            _item(
+                              "contributor.status".tr(),
+                              "contributor.underReview".tr(),
+                            ),
+                            const Divider(
+                              color: AppBorders.secondary,
+                              height: 20,
+                            ),
+                            _item(
+                              "contributor.submittedOn".tr(),
+                              submittedDate,
+                            ),
+                            const Divider(
+                              color: AppBorders.secondary,
+                              height: 20,
+                            ),
+                            _item(
+                              "contributor.estimatedResponse".tr(),
+                              "contributor.withinFiveToSevenDays".tr(),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      SizedBox(height: AppSpacing.v20),
+                    ],
+                  ),
                 ),
               ),
 
+              /// Bottom Notification Banner
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(
                   horizontal: AppSpacing.h16,
-                  vertical: AppSpacing.v16,
+                  vertical: 14.h,
                 ),
                 decoration: BoxDecoration(
                   color: AppColors.pending50,
-                  borderRadius: AppRadius.all03,
+                  borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(
+                    color: AppColors.pending200.withValues(alpha: 0.6),
+                  ),
                 ),
                 child: Row(
                   children: [
                     const Icon(
-                      Icons.info,
+                      Icons.info_outline_rounded,
                       size: 18,
-                      color: AppColors.pending400,
+                      color: AppColors.pending700,
                     ),
-                    SizedBox(width: AppSpacing.h8),
+                    SizedBox(width: AppSpacing.h10),
                     Expanded(
                       child: Text(
                         "contributor.notifyOnUpdate".tr(),
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: AppColors.pending400,
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.pending700,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
+
+              SizedBox(height: AppSpacing.v16),
             ],
           ),
         ),
@@ -124,14 +190,22 @@ class ContributorApplicationUnderReviewScreen extends StatelessWidget {
   }
 
   Widget _item(String title, String value) {
-    return Column(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           title,
-          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.neutral400),
+          style: AppTextStyles.bodyMedium.copyWith(
+            color: AppColors.neutral400,
+          ),
         ),
-        SizedBox(height: AppSpacing.v4),
-        Text(value, style: AppTextStyles.titleMedium),
+        Text(
+          value,
+          style: AppTextStyles.titleSmall.copyWith(
+            fontWeight: FontWeight.w600,
+            color: AppColors.neutral950,
+          ),
+        ),
       ],
     );
   }

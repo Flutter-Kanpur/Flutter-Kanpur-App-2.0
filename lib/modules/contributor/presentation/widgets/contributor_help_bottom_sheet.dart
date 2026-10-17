@@ -4,6 +4,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 
+import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
+import 'package:go_router/go_router.dart';
+
 class ContributorHelpBottomSheet extends StatelessWidget {
   const ContributorHelpBottomSheet({super.key});
 
@@ -32,6 +35,7 @@ class ContributorHelpBottomSheet extends StatelessWidget {
               title: "contributor.viewContributorGuidelines".tr(),
               onTap: () {
                 Navigator.pop(context);
+                context.push(RouteNames.communityGuidelines);
               },
             ),
 
@@ -42,6 +46,7 @@ class ContributorHelpBottomSheet extends StatelessWidget {
               title: "contributor.reportIssue".tr(),
               onTap: () {
                 Navigator.pop(context);
+                context.push(RouteNames.reportAnIssue);
               },
             ),
           ],

@@ -16,8 +16,11 @@ class ContributorSkillChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Chip(
-      shape: RoundedRectangleBorder(borderRadius: AppRadius.all05),
-      backgroundColor: AppColors.whiteBase,
+      shape: RoundedRectangleBorder(
+        borderRadius: AppRadius.all05,
+        side: BorderSide.none,
+      ),
+      backgroundColor: AppColors.primary500,
       label: Text(
         label,
         style: AppTextStyles.bodyMedium.copyWith(color: AppColors.whiteBase),

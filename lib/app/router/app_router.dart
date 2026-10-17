@@ -29,7 +29,6 @@ import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/screens/home
 import 'package:flutter_knp_mobile_app_v2/modules/onboarding/presentation/screens/onboarding_navigation_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/onboarding/presentation/screens/onboarding_success_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/legal/presentation/about.dart';
-import 'package:flutter_knp_mobile_app_v2/modules/legal/presentation/privacy_policy.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/legal/presentation/terms_of_use.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/my_profile_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/edit_profile_screen.dart';
@@ -268,6 +267,108 @@ final GoRouter appRouter = GoRouter(
             ),
           ],
         ),
+
+        /// Contributor - Join
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.joinContributor,
+              builder: (context, state) => const JoinAsContributorScreen(),
+            ),
+          ],
+        ),
+
+        /// Contributor - Application Form
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.contributorApplication,
+              builder: (context, state) => const ContributorApplicationScreen(),
+            ),
+          ],
+        ),
+
+        /// Contributor - Review Application
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.reviewApplication,
+              builder: (context, state) => const ReviewApplicationScreen(),
+            ),
+          ],
+        ),
+
+        /// Contributor - Application Summary
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.applicationSummary,
+              builder: (context, state) => const ApplicationSummaryScreen(),
+            ),
+          ],
+        ),
+
+        /// Contributor - My Contributions Dashboard
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.myContributions,
+              builder: (context, state) => const MyContributionsScreen(),
+            ),
+          ],
+        ),
+
+        /// Contributor - No Contributions
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.noContributions,
+              builder: (context, state) => const NoContributionsScreen(),
+            ),
+          ],
+        ),
+
+        /// Contributor - Already Contributor
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.alreadyContributor,
+              builder: (context, state) => const AlreadyContributorScreen(),
+            ),
+          ],
+        ),
+
+        /// Contributor - Application Already Submitted
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.applicationAlreadySubmitted,
+              builder: (context, state) =>
+                  const ContributorApplicationSubmittedScreen(),
+            ),
+          ],
+        ),
+
+        /// Contributor - Application Under Review
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.applicationUnderReview,
+              builder: (context, state) =>
+                  const ContributorApplicationUnderReviewScreen(),
+            ),
+          ],
+        ),
+
+        /// Contributor - Application Rejected
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.applicationRejected,
+              builder: (context, state) => const ContributorRejectedScreen(),
+            ),
+          ],
+        ),
       ],
     ),
 
@@ -326,72 +427,10 @@ final GoRouter appRouter = GoRouter(
       },
     ),
 
-    /// Join as Contributor
-    GoRoute(
-      path: RouteNames.joinContributor,
-      builder: (context, state) => const JoinAsContributorScreen(),
-    ),
-
-    /// Contributor Application
-    GoRoute(
-      path: RouteNames.contributorApplication,
-      builder: (context, state) => const ContributorApplicationScreen(),
-    ),
-
-    /// Review Application
-    GoRoute(
-      path: RouteNames.reviewApplication,
-      builder: (context, state) => const ReviewApplicationScreen(),
-    ),
-
-    /// Application Summary
-    GoRoute(
-      path: RouteNames.applicationSummary,
-      builder: (context, state) => const ApplicationSummaryScreen(),
-    ),
-
-    /// Application Submitted
+    /// Application Submitted (fullscreen completion modal without bottom nav)
     GoRoute(
       path: RouteNames.applicationSubmitted,
       builder: (context, state) => const ApplicationSubmittedScreen(),
-    ),
-
-    /// My Contributions
-    GoRoute(
-      path: RouteNames.myContributions,
-      builder: (context, state) => const MyContributionsScreen(),
-    ),
-
-    /// No Contributions
-    GoRoute(
-      path: RouteNames.noContributions,
-      builder: (context, state) => const NoContributionsScreen(),
-    ),
-
-    /// Already Contributor
-    GoRoute(
-      path: RouteNames.alreadyContributor,
-      builder: (context, state) => const AlreadyContributorScreen(),
-    ),
-
-    /// Application Already Submitted
-    GoRoute(
-      path: RouteNames.applicationAlreadySubmitted,
-      builder: (context, state) =>
-          const ContributorApplicationSubmittedScreen(),
-    ),
-
-    /// Application Under Review
-    GoRoute(
-      path: RouteNames.applicationUnderReview,
-      builder: (context, state) =>
-          const ContributorApplicationUnderReviewScreen(),
-    ),
-
-    /// Application Rejected
-    GoRoute(
-      path: RouteNames.applicationRejected,
-      builder: (context, state) => const ContributorRejectedScreen(),
     ),
 
     /// About Flutter Kanpur

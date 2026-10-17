@@ -525,7 +525,22 @@
     "reportIssue": "Report an issue",
     "fieldRequired": "{field} is required.",
     "invalidUrl": "Please enter a valid URL.",
-    "whyContributeTooShort": "Please enter at least 20 characters explaining why you'd like to contribute."
+    "whyContributeTooShort": "Please enter at least 20 characters explaining why you'd like to contribute.",
+    "continueButton": "Continue",
+    "status": "Status",
+    "underReview": "Under review",
+    "withinFiveToSevenDays": "Within 5-7 days",
+    "seniorContributor": "Senior Contributor",
+    "currentAssignments": "Current assignments",
+    "viewAssignments": "View assignments",
+    "viewAssignmentsDesc": "See tasks assigned by your team lead",
+    "submitWork": "Submit work",
+    "submitWorkDesc": "Share designs, links, or updates",
+    "viewResources": "View Resources",
+    "viewResourcesDesc": "Guidelines, brand assets, and docs",
+    "contactTeam": "Contact Team",
+    "contactTeamDesc": "Reach out to the core team anytime",
+    "onboardedNoContributions": "Congratulations! You have been onboarded as a contributor."
   },
   "profile_about_flutter_kanpur": {
     "title": "About Flutter Kanpur",
