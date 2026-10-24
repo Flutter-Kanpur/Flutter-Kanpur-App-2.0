@@ -24,7 +24,7 @@ class ShellWithBottomNav extends StatelessWidget {
     if (path.startsWith('/community')) return 1;
     if (path.startsWith('/explore')) return 2;
     if (path.startsWith('/blogs')) return 3;
-    if (path.startsWith('/profile')) return 4;
+    if (path.startsWith('/profile') || path.startsWith('/contributor')) return 4;
     return 0; // /home or default
   }
 
