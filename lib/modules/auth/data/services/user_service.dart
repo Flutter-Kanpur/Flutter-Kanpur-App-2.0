@@ -31,6 +31,56 @@ class UserService {
     }
   }
 
+  /// Google (OAuth) sign-ins never go through `AuthService.signUp`, so no
+  /// `users` row exists for them. Without one, onboarding's
+  /// `onboarding_completed` update would silently match zero rows. Creates the
+  /// row if missing; never throws.
+  Future<void> ensureUserRow() async {
+    try {
+      final user = _client.auth.currentUser;
+      if (user == null) return;
+
+      final existing = await _client
+          .from('users')
+          .select('uid')
+          .eq('uid', user.id)
+          .maybeSingle();
+      if (existing != null) return;
+
+      final meta = user.userMetadata ?? const <String, dynamic>{};
+      final fullName = (meta['full_name'] ?? meta['name']) as String?;
+      final email = user.email ?? '';
+      final base = _usernameFromEmail(email);
+
+      Future<void> insert(String username) => _client.from('users').insert({
+        'uid': user.id,
+        'email': email,
+        'username': username,
+        'display_name': fullName,
+        'email_verified': user.emailConfirmedAt != null,
+        'onboarding_completed': false,
+      });
+
+      try {
+        await insert(base);
+      } catch (_) {
+        // The username may be taken; retry once with a numeric suffix.
+        final suffix = (DateTime.now().millisecondsSinceEpoch % 10000)
+            .toString()
+            .padLeft(4, '0');
+        await insert('${base}_$suffix');
+      }
+    } catch (e) {
+      print('❌ [UserService] ensureUserRow failed: $e');
+    }
+  }
+
+  static String _usernameFromEmail(String email) {
+    final local = email.split('@').first.toLowerCase();
+    final cleaned = local.replaceAll(RegExp(r'[^a-z0-9_]'), '');
+    return cleaned.length >= 3 ? cleaned : 'user$cleaned';
+  }
+
   Future<bool> isOnboardingCompleted() async {
     try {
       final user = _client.auth.currentUser;

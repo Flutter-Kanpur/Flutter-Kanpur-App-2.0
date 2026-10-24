@@ -24,6 +24,8 @@ class AuthOptionsScreen extends ConsumerWidget {
     ref.listen(currentUserProvider, (previous, next) {
       next.whenData((user) async {
         if (!context.mounted || user == null) return;
+        // Google sign-ins have no `users` row yet; email accounts already do.
+        await UserService().ensureUserRow();
         final done = await UserService().isOnboardingCompleted();
         if (!context.mounted) return;
         context.go(done ? RouteNames.home : RouteNames.onboardingNavigation);
@@ -47,10 +49,7 @@ class AuthOptionsScreen extends ConsumerWidget {
               40.verticalSpace,
 
               _AuthOptionButton(
-                onPressed: () {
-                  // TODO: Implement Google Sign In
-                  context.push(RouteNames.signIn);
-                },
+                onPressed: () => _signInWithGoogle(context, ref),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -62,7 +61,7 @@ class AuthOptionsScreen extends ConsumerWidget {
                     12.horizontalSpace,
                     Text(
                       'auth.continueWithGoogle'.tr(),
-                      style: AppTextStyles.titleMedium
+                      style: AppTextStyles.titleMedium,
                     ),
                   ],
                 ),
@@ -83,7 +82,7 @@ class AuthOptionsScreen extends ConsumerWidget {
                     12.horizontalSpace,
                     Text(
                       'auth.signInWithEmail'.tr(),
-                      style: AppTextStyles.titleMedium
+                      style: AppTextStyles.titleMedium,
                     ),
                   ],
                 ),
@@ -94,7 +93,10 @@ class AuthOptionsScreen extends ConsumerWidget {
               Row(
                 children: [
                   Expanded(
-                    child: Divider(color: AppColors.borderSecondary, thickness: 1),
+                    child: Divider(
+                      color: AppColors.borderSecondary,
+                      thickness: 1,
+                    ),
                   ),
                   Padding(
                     padding: AppSpacing.horizontal(AppSpacing.h12),
@@ -128,6 +130,19 @@ class AuthOptionsScreen extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _signInWithGoogle(BuildContext context, WidgetRef ref) async {
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      await ref.read(signInWithGoogleProvider)();
+    } catch (e) {
+      messenger
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(content: Text(e.toString().replaceFirst('Exception: ', ''))),
+        );
+    }
   }
 
   Widget _buildMascot() {
@@ -178,9 +193,7 @@ class AuthOptionsScreen extends ConsumerWidget {
       child: Text(
         'auth.signInSubTitle'.tr(),
         textAlign: TextAlign.center,
-        style: AppTextStyles.titleMedium.copyWith(
-          color: AppColors.neutral500,
-        ),
+        style: AppTextStyles.titleMedium.copyWith(color: AppColors.neutral500),
       ),
     );
   }

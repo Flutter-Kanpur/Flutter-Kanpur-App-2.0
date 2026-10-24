@@ -4,7 +4,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/auth/application/auth_state_ma
 import 'package:flutter_knp_mobile_app_v2/modules/auth/data/services/user_service.dart';
 import 'route_names.dart';
 
-enum NavigationRoute { splash, authLanding, signIn, onboarding, home }
+enum NavigationRoute { splash, authLanding, authOptions, onboarding, home }
 
 final nextRouteProvider = FutureProvider<NavigationRoute>((ref) async {
   try {
@@ -16,13 +16,17 @@ final nextRouteProvider = FutureProvider<NavigationRoute>((ref) async {
     }
 
     final hasSeenLanding = await AppPrefs.getHasSeenLanding();
+    // Logged-out users who have seen the carousel go to Auth Options, where
+    // they choose between Google and email, not straight to email sign-in.
     return hasSeenLanding
-        ? NavigationRoute.signIn
+        ? NavigationRoute.authOptions
         : NavigationRoute.authLanding;
   } catch (_) {
     final hasSeenLanding = await AppPrefs.getHasSeenLanding();
+    // Logged-out users who have seen the carousel go to Auth Options, where
+    // they choose between Google and email, not straight to email sign-in.
     return hasSeenLanding
-        ? NavigationRoute.signIn
+        ? NavigationRoute.authOptions
         : NavigationRoute.authLanding;
   }
 });
@@ -40,7 +44,7 @@ final routePathProvider = Provider.family<String, NavigationRoute>((
   final routePaths = {
     NavigationRoute.splash: RouteNames.splash,
     NavigationRoute.authLanding: RouteNames.authLanding,
-    NavigationRoute.signIn: RouteNames.signIn,
+    NavigationRoute.authOptions: RouteNames.authOptions,
     NavigationRoute.onboarding: RouteNames.onboardingNavigation,
     NavigationRoute.home: RouteNames.home,
   };

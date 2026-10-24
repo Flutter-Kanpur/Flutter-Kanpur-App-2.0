@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_knp_mobile_app_v2/modules/auth/auth_constants.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/blogs/data/readme_auth_bridge.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../domain/auth_models.dart' as models;
@@ -45,9 +46,10 @@ class AuthService {
       print('✅ [AuthService] Sign in successful: ${user.id}');
 
       try {
-        await _client.from('users').update({
-          'last_login_at': DateTime.now().toIso8601String(),
-        }).eq('uid', user.id);
+        await _client
+            .from('users')
+            .update({'last_login_at': DateTime.now().toIso8601String()})
+            .eq('uid', user.id);
       } catch (_) {
         // profile row may not exist yet — don't block login
       }
@@ -75,6 +77,36 @@ class AuthService {
     }
   }
 
+  // ─── Sign In With Google ─────────────────────────────────────────────────
+
+  /// Opens the browser for Google OAuth. Returns `null` once the browser was
+  /// launched, or a user-facing error message if it could not be.
+  ///
+  /// The sign-in itself completes asynchronously: Supabase redirects back to
+  /// the app through the deep link ([AuthConstants.oauthRedirectUrl]) and the
+  /// `onAuthStateChange` stream then emits `signedIn`.
+  Future<String?> signInWithGoogle() async {
+    try {
+      print('🔐 [AuthService] Starting Google sign-in');
+      final launched = await _client.auth.signInWithOAuth(
+        OAuthProvider.google,
+        redirectTo: AuthConstants.oauthRedirectUrl,
+        // Always show the account chooser so users can switch Google accounts.
+        queryParams: const {'prompt': 'select_account'},
+      );
+      if (!launched) {
+        return 'Could not open Google sign-in. Please try again.';
+      }
+      return null;
+    } on AuthException catch (e) {
+      print('❌ [AuthService] Google auth error: ${e.message}');
+      return _mapAuthError(e.message);
+    } catch (e) {
+      print('❌ [AuthService] Google sign-in error: $e');
+      return _mapNetworkOrUnknownError(e);
+    }
+  }
+
   // ─── Sign Up ──────────────────────────────────────────────────────────────
 
   Future<models.SignUpResponse> signUp({
@@ -86,13 +118,13 @@ class AuthService {
       print('🔐 [AuthService] Signing up user: $email');
 
       final response = await _client.auth.signUp(
-  email: email,
-  password: password,
-  data: {
-    if (displayName != null && displayName.isNotEmpty)
-      'display_name': displayName,
-  },
-);
+        email: email,
+        password: password,
+        data: {
+          if (displayName != null && displayName.isNotEmpty)
+            'display_name': displayName,
+        },
+      );
 
       final user = response.user;
       if (user == null) {
@@ -105,17 +137,17 @@ class AuthService {
 
       print('✅ [AuthService] Sign up successful: ${user.id}');
       try {
-  await _client.from('users').insert({
-    'uid': user.id,
-    'email': email,
-    'username': displayName ?? '',
-    'display_name': displayName,
-    'email_verified': user.emailConfirmedAt != null,
-    'onboarding_completed': false,
-  });
-} catch (_) {
-  // row may already exist from a partial retry
-}
+        await _client.from('users').insert({
+          'uid': user.id,
+          'email': email,
+          'username': displayName ?? '',
+          'display_name': displayName,
+          'email_verified': user.emailConfirmedAt != null,
+          'onboarding_completed': false,
+        });
+      } catch (_) {
+        // row may already exist from a partial retry
+      }
 
       return models.SignUpResponse.success(
         userId: user.id,

@@ -84,6 +84,16 @@ final signInProvider =
       };
     });
 
+/// Sign in with Google. Completes when the browser is launched; the session
+/// itself arrives later through the OAuth deep link (see
+/// [AuthService.signInWithGoogle]).
+final signInWithGoogleProvider = Provider<Future<void> Function()>((ref) {
+  return () async {
+    final error = await ref.read(authServiceProvider).signInWithGoogle();
+    if (error != null) throw Exception(error);
+  };
+});
+
 /// Sign up with email, password, and display name
 final signUpProvider =
     Provider<

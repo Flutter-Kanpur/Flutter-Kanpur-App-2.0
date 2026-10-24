@@ -30,6 +30,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/onboarding/presentation/screen
 import 'package:flutter_knp_mobile_app_v2/modules/onboarding/presentation/screens/onboarding_success_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/legal/presentation/about.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/legal/presentation/privacy_policy.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/shorebird/shorebird_playground_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/legal/presentation/terms_of_use.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/my_profile_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/profile/presentation/screens/pages/edit_profile_screen.dart';
@@ -56,8 +57,9 @@ import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/scree
 import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/screens/review_application_screen.dart';
 import 'package:go_router/go_router.dart';
 
-final GlobalKey<NavigatorState> rootNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'root');
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(
+  debugLabel: 'root',
+);
 
 final GoRouter appRouter = GoRouter(
   navigatorKey: rootNavigatorKey,
@@ -412,6 +414,12 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const TermsOfUse(),
     ),
 
+    /// Shorebird Playground (live-demo screen)
+    GoRoute(
+      path: RouteNames.shorebirdPlayground,
+      builder: (context, state) => const ShorebirdPlaygroundScreen(),
+    ),
+
     /// Help Center
     GoRoute(
       path: RouteNames.helpCenter,
@@ -423,7 +431,6 @@ final GoRouter appRouter = GoRouter(
       path: RouteNames.contactCommunityTeam,
       builder: (context, state) => const ContactCommunityTeamScreen(),
     ),
-
 
     /// Report an Issue
     GoRoute(

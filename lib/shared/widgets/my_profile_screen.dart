@@ -183,6 +183,16 @@ class MyProfileScreen extends StatelessWidget {
                 ],
               ),
               ProfileSectionBlock(
+                title: 'Developer',
+                tiles: [
+                  ProfileTile(
+                    icon: Icons.rocket_launch_rounded,
+                    title: 'Shorebird Playground',
+                    onTap: () => context.push(RouteNames.shorebirdPlayground),
+                  ),
+                ],
+              ),
+              ProfileSectionBlock(
                 title: 'Account Actions',
                 tiles: [
                   ProfileTile(

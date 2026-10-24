@@ -60,6 +60,8 @@ dependencies:
       url: https://github.com/Flutter-Kanpur/readmeApp.git
       ref: readme_integration_flutterkanpur
   youtube_player_iframe: ^6.0.2
+  shorebird_code_push: ^2.0.7
+  package_info_plus: ^9.0.1
 
 dev_dependencies:
   flutter_test:

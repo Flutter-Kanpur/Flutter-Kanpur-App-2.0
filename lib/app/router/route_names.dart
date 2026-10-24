@@ -85,6 +85,12 @@ class RouteNames {
   static const privacyPolicy = '/profile/privacy-policy';
   static const termsOfUse = '/profile/terms-of-use';
 
+  /// Developer
+  ///
+  /// Top-level (outside /profile and /community) so the ReadMe path redirect
+  /// never touches it.
+  static const shorebirdPlayground = '/shorebird-playground';
+
   /// Support
   static const helpCenter = '/profile/help-center';
   static const contactCommunityTeam = '/profile/contact-community-team';
