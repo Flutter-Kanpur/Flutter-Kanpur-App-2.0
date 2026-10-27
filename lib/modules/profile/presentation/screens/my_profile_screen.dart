@@ -182,7 +182,7 @@ class MyProfileScreen extends ConsumerWidget {
                     ProfileTile(
                       iconSvgPath: AssetsPath.profileYourBadges,
                       title: 'profile.yourBadges'.tr(),
-                      onTap: () {},
+                      onTap: () => context.push(RouteNames.yourBadges),
                     ),
                     ProfileTile(
                       iconSvgPath: AssetsPath.profileYourRank,

@@ -72,6 +72,9 @@ class RouteNames {
   static const myContests = '/profile/my-contests';
   static const problemOfDay = '/profile/problem-of-day';
 
+  /// Achievements. `badges` is in readmePathRedirect's host-profile allowlist.
+  static const yourBadges = '/profile/badges';
+
   /// Browse-all contests, reached by pushing from the Explore dashboard's
   /// "Contests" participation tile.
   static const contests = '/contests';
