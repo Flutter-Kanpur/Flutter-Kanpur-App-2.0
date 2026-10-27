@@ -26,6 +26,8 @@ import 'package:flutter_knp_mobile_app_v2/modules/explore/presentation/screens/c
 import 'package:flutter_knp_mobile_app_v2/modules/explore/presentation/screens/core_team.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/presentation/screens/explore_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/screens/home_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/leaderboard/presentation/screens/leaderboard_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/leaderboard/presentation/screens/my_rank_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/onboarding/presentation/screens/onboarding_navigation_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/onboarding/presentation/screens/onboarding_success_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/legal/presentation/about.dart';
@@ -233,6 +235,22 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: RouteNames.problemOfDay,
               builder: (context, state) => const ProblemOfDayScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.leaderboard,
+              builder: (context, state) => const LeaderboardScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.myRank,
+              builder: (context, state) => const MyRankScreen(),
             ),
           ],
         ),

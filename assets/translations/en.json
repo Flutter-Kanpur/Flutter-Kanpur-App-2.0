@@ -170,6 +170,43 @@
     "noBio": "No bio added yet.",
     "noSkills": "No skills added yet."
   },
+  "leaderboard": {
+    "points": {
+      "zero": "{} points",
+      "one": "{} point",
+      "other": "{} points"
+    },
+    "member": "Member",
+    "you": "{} (You)",
+    "share": "Share with friends",
+    "shareMessage": "Check out the Flutter Kanpur community leaderboard!",
+    "shareMessageRanked": "I'm #{} on the Flutter Kanpur leaderboard with {}! Join the community.",
+    "rankSemantics": "Rank {}, {}, {}",
+    "emptyTitle": "No rankings yet",
+    "emptyMessage": "The leaderboard will appear here once rankings are published.",
+    "loadError": "Couldn't load the leaderboard."
+  },
+  "myRank": {
+    "title": "My Ranks",
+    "levelOf": "Level {} of {}",
+    "description": "Your rank reflects your activity and participation across the community.",
+    "position": "#{} on leaderboard",
+    "toNext": "{} more to reach {}",
+    "topLevel": "You've reached the highest level!",
+    "notRanked": "You're not on the leaderboard yet. Join events, contests and discussions to earn points.",
+    "notPublished": "Rankings haven't been published yet. Check back soon.",
+    "shareMessage": "I'm a {} (Level {} of {}) in the Flutter Kanpur community!",
+    "viewLeaderboard": "View leaderboard",
+    "loadError": "Couldn't load your rank.",
+    "levels": {
+      "1": "Newcomer",
+      "2": "Active Learner",
+      "3": "Consistent Learner",
+      "4": "Contributor",
+      "5": "Community Star",
+      "6": "Flutter Champion"
+    }
+  },
   "editProfile": {
     "title": "Edit Profile",
     "username": "Username",

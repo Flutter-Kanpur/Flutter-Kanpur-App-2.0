@@ -72,6 +72,10 @@ class RouteNames {
   static const myContests = '/profile/my-contests';
   static const problemOfDay = '/profile/problem-of-day';
 
+  /// Achievements. Segments are in readmePathRedirect's host-profile allowlist.
+  static const leaderboard = '/profile/leaderboard';
+  static const myRank = '/profile/my-rank';
+
   /// Browse-all contests, reached by pushing from the Explore dashboard's
   /// "Contests" participation tile.
   static const contests = '/contests';
