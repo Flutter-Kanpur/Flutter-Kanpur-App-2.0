@@ -10,6 +10,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/sign
 import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/sign_up_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/email_verification_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/splash_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/badges/presentation/screens/your_badges_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/blogs/presentation/screens/blogs_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/ask_question_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/community_discussions_screen.dart';
@@ -26,6 +27,8 @@ import 'package:flutter_knp_mobile_app_v2/modules/explore/presentation/screens/c
 import 'package:flutter_knp_mobile_app_v2/modules/explore/presentation/screens/core_team.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/explore/presentation/screens/explore_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/home/presentation/screens/home_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/leaderboard/presentation/screens/leaderboard_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/leaderboard/presentation/screens/my_rank_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/onboarding/presentation/screens/onboarding_navigation_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/onboarding/presentation/screens/onboarding_success_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/legal/presentation/about.dart';
@@ -233,6 +236,30 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: RouteNames.problemOfDay,
               builder: (context, state) => const ProblemOfDayScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.yourBadges,
+              builder: (context, state) => const YourBadgesScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.leaderboard,
+              builder: (context, state) => const LeaderboardScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.myRank,
+              builder: (context, state) => const MyRankScreen(),
             ),
           ],
         ),
