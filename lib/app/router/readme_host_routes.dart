@@ -105,6 +105,7 @@ String? readmePathRedirect(GoRouterState state) {
       'my-events',
       'my-contests',
       'problem-of-day',
+      'badges',
       'leaderboard',
       'my-rank',
       'about-flutter-kanpur',

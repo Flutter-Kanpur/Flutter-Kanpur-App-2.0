@@ -170,6 +170,21 @@
     "noBio": "No bio added yet.",
     "noSkills": "No skills added yet."
   },
+  "badges": {
+    "intro": "Earn badges by staying consistent, participating in events, and contributing to the community.",
+    "earned": "Earned",
+    "earnedOn": "Earned on {}",
+    "earnedOnLabel": "Earned on:",
+    "locked": "Locked",
+    "progress": "Progress : {}",
+    "getStarted": "Get started today to make progress toward this badge.",
+    "keepGoing": "Keep going. {} more to unlock this badge.",
+    "almostThere": "You're almost there. Just one more to unlock this badge.",
+    "awaitingAward": "You've reached the goal. This badge will be awarded soon.",
+    "emptyTitle": "No badges yet",
+    "emptyMessage": "Badges will appear here once they're available. Keep participating!",
+    "loadError": "Couldn't load your badges."
+  },
   "leaderboard": {
     "points": {
       "zero": "{} points",

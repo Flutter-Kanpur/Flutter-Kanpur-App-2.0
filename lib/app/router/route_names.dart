@@ -73,6 +73,7 @@ class RouteNames {
   static const problemOfDay = '/profile/problem-of-day';
 
   /// Achievements. Segments are in readmePathRedirect's host-profile allowlist.
+  static const yourBadges = '/profile/badges';
   static const leaderboard = '/profile/leaderboard';
   static const myRank = '/profile/my-rank';
 

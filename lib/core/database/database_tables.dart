@@ -32,6 +32,9 @@ class DatabaseTables {
   static const hackathonTeams = 'hackathon_teams';
   static const hackathonMembers = 'hackathon_members';
   static const hackathonSubmissions = 'hackathon_submissions';
+  static const badges = 'badges';
+  static const badgeAssignments = 'badge_assignments';
+  static const badgeProgress = 'badge_progress';
   static const leaderboardSnapshots = 'leaderboard_snapshots';
   static const leaderboardEntries = 'leaderboard_entries';
   static const roleSuggestions = 'role_suggestions';

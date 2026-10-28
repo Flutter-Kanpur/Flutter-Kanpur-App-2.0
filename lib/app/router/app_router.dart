@@ -10,6 +10,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/sign
 import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/sign_up_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/email_verification_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/auth/presentation/screens/splash_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/badges/presentation/screens/your_badges_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/blogs/presentation/screens/blogs_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/ask_question_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/community/presentation/screens/community_discussions_screen.dart';
@@ -235,6 +236,14 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: RouteNames.problemOfDay,
               builder: (context, state) => const ProblemOfDayScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.yourBadges,
+              builder: (context, state) => const YourBadgesScreen(),
             ),
           ],
         ),
