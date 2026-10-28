@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ContributorActionCard extends StatelessWidget {
@@ -27,33 +29,51 @@ class ContributorActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Material(
-      color: AppColors.neutral50,
-      borderRadius: AppRadius.all04,
+      color: Colors.transparent,
       child: InkWell(
-        borderRadius: AppRadius.all04,
+        borderRadius: BorderRadius.circular(16.r),
         onTap: onTap,
         child: Container(
-          padding: AppSpacing.all(AppSpacing.h18),
+          padding: EdgeInsets.all(AppSpacing.h16),
           decoration: BoxDecoration(
-            color: AppColors.primary50,
-            borderRadius: AppRadius.all04,
+            color: AppColors.whiteBase,
+            borderRadius: BorderRadius.circular(16.r),
+            border: Border.all(color: AppBorders.secondary),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               iconAsset != null
-                  ? SvgPicture.asset(iconAsset!, width: 46, height: 44)
-                  : CircleAvatar(radius: 18, child: Icon(icon, size: 18)),
-              SizedBox(height: AppSpacing.v20),
-              Text(title, style: theme.textTheme.titleMedium),
-              SizedBox(height: AppSpacing.v6),
+                  ? SvgPicture.asset(iconAsset!, width: 44.r, height: 44.r)
+                  : Container(
+                      width: 40.r,
+                      height: 40.r,
+                      decoration: const BoxDecoration(
+                        color: AppColors.primary50,
+                        shape: BoxShape.circle,
+                      ),
+                      alignment: Alignment.center,
+                      child: Icon(
+                        icon,
+                        size: 20.r,
+                        color: AppColors.primary500,
+                      ),
+                    ),
+              SizedBox(height: 16.h),
+              Text(
+                title,
+                style: AppTextStyles.titleSmall.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.neutral950,
+                ),
+              ),
+              SizedBox(height: 4.h),
               Text(
                 subtitle,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: AppColors.neutral500,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: AppColors.neutral400,
+                  height: 1.3,
                 ),
               ),
             ],
@@ -63,3 +83,4 @@ class ContributorActionCard extends StatelessWidget {
     );
   }
 }
+

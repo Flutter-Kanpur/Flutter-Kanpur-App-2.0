@@ -4,12 +4,15 @@ import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/contributor/application/contributor_application_provider.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_back_button.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradient_background.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-class NoContributionsScreen extends StatelessWidget {
+class NoContributionsScreen extends ConsumerWidget {
   final bool isOnboarded;
 
   const NoContributionsScreen({
@@ -18,10 +21,9 @@ class NoContributionsScreen extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.whiteBase,
-      body: SafeArea(
+  Widget build(BuildContext context, WidgetRef ref) {
+    return GradientBackground(
+      child: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: AppSpacing.h20),
           child: Column(
@@ -47,45 +49,76 @@ class NoContributionsScreen extends StatelessWidget {
                 ],
               ),
 
-              const Spacer(),
+              Expanded(
+                child: RefreshIndicator(
+                  color: AppColors.primary500,
+                  onRefresh: () async {
+                    ref.invalidate(myContributorApplicationProvider);
+                    ref.invalidate(myContributorMembershipProvider);
+                    await Future.wait([
+                      ref.read(myContributorApplicationProvider.future),
+                      ref.read(myContributorMembershipProvider.future),
+                    ]);
+                  },
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      return SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minHeight: constraints.maxHeight,
+                          ),
+                          child: IntrinsicHeight(
+                            child: Column(
+                              children: [
+                                const Spacer(),
 
-              Text(
-                "contributor.noContributionsYet".tr(),
-                textAlign: TextAlign.center,
-                style: AppTextStyles.titleMedium.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.neutral950,
+                                Text(
+                                  "contributor.noContributionsYet".tr(),
+                                  textAlign: TextAlign.center,
+                                  style: AppTextStyles.titleLarge.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.neutral950,
+                                  ),
+                                ),
+
+                                SizedBox(height: AppSpacing.v8),
+
+                                Text(
+                                  isOnboarded
+                                      ? "contributor.onboardedNoContributions".tr()
+                                      : "contributor.noContributionsDescription".tr(),
+                                  textAlign: TextAlign.center,
+                                  style: AppTextStyles.bodyMedium.copyWith(
+                                    color: AppColors.neutral500,
+                                    height: 1.4,
+                                  ),
+                                ),
+
+                                SizedBox(height: 24.h),
+
+                                FkPrimaryButton(
+                                  label: isOnboarded
+                                      ? "contributor.viewContributorResources".tr()
+                                      : "contributor.joinAsContributor".tr(),
+                                  icon: null,
+                                  onPressed: () => context.push(
+                                    isOnboarded
+                                        ? RouteNames.myContributions
+                                        : RouteNames.joinContributor,
+                                  ),
+                                ),
+
+                                const Spacer(),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
-
-              SizedBox(height: AppSpacing.v8),
-
-              Text(
-                isOnboarded
-                    ? "contributor.onboardedNoContributions".tr()
-                    : "contributor.noContributionsDescription".tr(),
-                textAlign: TextAlign.center,
-                style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.neutral500,
-                  height: 1.4,
-                ),
-              ),
-
-              SizedBox(height: 24.h),
-
-              FkPrimaryButton(
-                label: isOnboarded
-                    ? "contributor.viewContributorResources".tr()
-                    : "contributor.joinAsContributor".tr(),
-                icon: Icons.arrow_forward_rounded,
-                onPressed: () => context.push(
-                  isOnboarded
-                      ? RouteNames.myContributions
-                      : RouteNames.joinContributor,
-                ),
-              ),
-
-              const Spacer(),
             ],
           ),
         ),
@@ -93,3 +126,4 @@ class NoContributionsScreen extends StatelessWidget {
     );
   }
 }
+

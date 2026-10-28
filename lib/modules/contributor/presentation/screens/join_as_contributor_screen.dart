@@ -7,6 +7,7 @@ import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/common_widgets/fk_primary_button.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_back_button.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradient_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -40,9 +41,8 @@ class JoinAsContributorScreen extends ConsumerWidget {
   }
 
   Widget _buildJoinContent(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.whiteBase,
-      body: SafeArea(
+    return GradientBackground(
+      child: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
             return SingleChildScrollView(
