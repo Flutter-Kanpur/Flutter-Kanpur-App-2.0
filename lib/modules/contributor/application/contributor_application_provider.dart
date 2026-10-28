@@ -12,6 +12,16 @@ final myContributorApplicationProvider =
   return ref.watch(contributorRepositoryProvider).fetchMyApplication();
 });
 
+final myContributorMembershipProvider =
+    FutureProvider<Map<String, dynamic>?>((ref) async {
+  return ref.watch(contributorRepositoryProvider).fetchMyMembership();
+});
+
+final myContributorProjectsProvider =
+    FutureProvider<List<Map<String, dynamic>>>((ref) async {
+  return ref.watch(contributorRepositoryProvider).fetchMyProjects();
+});
+
 enum ContributorStatus {
   notApplied,
   pending,
@@ -23,23 +33,38 @@ enum ContributorStatus {
 final contributorStatusProvider =
     Provider<AsyncValue<ContributorStatus>>((ref) {
   final appAsync = ref.watch(myContributorApplicationProvider);
-  return appAsync.whenData((data) {
-    if (data == null) return ContributorStatus.notApplied;
-    if (data['is_approved'] == true) return ContributorStatus.approved;
+  final membershipAsync = ref.watch(myContributorMembershipProvider);
 
-    final status = (data['status'] as String? ?? 'pending').toLowerCase();
-    switch (status) {
-      case 'under_review':
-        return ContributorStatus.underReview;
-      case 'rejected':
-        return ContributorStatus.rejected;
-      case 'approved':
-        return ContributorStatus.approved;
-      case 'pending':
-      default:
-        return ContributorStatus.pending;
-    }
-  });
+  if (appAsync.isLoading || membershipAsync.isLoading) {
+    return const AsyncLoading();
+  }
+
+  // Active membership takes priority: user is already an approved contributor
+  if (membershipAsync.value != null) {
+    return const AsyncData(ContributorStatus.approved);
+  }
+
+  // If application fetch has an error and no membership exists, surface error
+  if (appAsync.hasError) {
+    return AsyncError(appAsync.error!, appAsync.stackTrace!);
+  }
+
+  final data = appAsync.value;
+  if (data == null) return const AsyncData(ContributorStatus.notApplied);
+  if (data['is_approved'] == true) return const AsyncData(ContributorStatus.approved);
+
+  final status = (data['status'] as String? ?? 'pending').toLowerCase();
+  switch (status) {
+    case 'under_review':
+      return const AsyncData(ContributorStatus.underReview);
+    case 'rejected':
+      return const AsyncData(ContributorStatus.rejected);
+    case 'approved':
+      return const AsyncData(ContributorStatus.approved);
+    case 'pending':
+    default:
+      return const AsyncData(ContributorStatus.pending);
+  }
 });
 
 final contributorApplicationDraftProvider =
@@ -63,6 +88,8 @@ class ContributorApplicationDraftNotifier
     }
     await ref.read(contributorRepositoryProvider).submitApplication(draft);
     ref.invalidate(myContributorApplicationProvider);
+    ref.invalidate(myContributorMembershipProvider);
+    ref.invalidate(myContributorProjectsProvider);
     clear();
   }
 }

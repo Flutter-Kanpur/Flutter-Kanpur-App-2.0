@@ -10,6 +10,7 @@ import 'package:flutter_knp_mobile_app_v2/modules/contributor/application/contri
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_back_button.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradient_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -51,9 +52,8 @@ class ContributorApplicationSubmittedScreen extends ConsumerWidget {
             ? draft.weeklyHours
             : "2-4 hours");
 
-    return Scaffold(
-      backgroundColor: AppColors.whiteBase,
-      body: SafeArea(
+    return GradientBackground(
+      child: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: AppSpacing.h20),
           child: Column(
@@ -64,7 +64,7 @@ class ContributorApplicationSubmittedScreen extends ConsumerWidget {
               Row(
                 children: [
                   const FkBackButton(
-                    fallbackPath: RouteNames.joinContributor,
+                    fallbackPath: RouteNames.profile,
                   ),
                   Expanded(
                     child: Center(
@@ -81,72 +81,105 @@ class ContributorApplicationSubmittedScreen extends ConsumerWidget {
                 ],
               ),
 
-              SizedBox(height: AppSpacing.v20),
+              Expanded(
+                child: RefreshIndicator(
+                  color: AppColors.primary500,
+                  onRefresh: () async {
+                    ref.invalidate(myContributorApplicationProvider);
+                    ref.invalidate(myContributorMembershipProvider);
+                    await Future.wait([
+                      ref.read(myContributorApplicationProvider.future),
+                      ref.read(myContributorMembershipProvider.future),
+                    ]);
+                  },
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      return SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minHeight: constraints.maxHeight,
+                          ),
+                          child: IntrinsicHeight(
+                            child: Column(
+                              children: [
+                                SizedBox(height: AppSpacing.v20),
 
-              Center(
-                child: Image.asset(
-                  AssetsPath.contributorPaperPlane,
-                  width: 120.w,
+                                Center(
+                                  child: Image.asset(
+                                    AssetsPath.contributorPaperPlane,
+                                    width: 120.w,
+                                  ),
+                                ),
+
+                                SizedBox(height: AppSpacing.v20),
+
+                                Text(
+                                  "contributor.applicationAlreadySubmitted".tr(),
+                                  textAlign: TextAlign.center,
+                                  style: AppTextStyles.titleLarge.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.neutral950,
+                                  ),
+                                ),
+
+                                SizedBox(height: AppSpacing.v10),
+
+                                Text(
+                                  "contributor.applicationReviewMessage".tr(),
+                                  textAlign: TextAlign.center,
+                                  style: AppTextStyles.bodyMedium.copyWith(
+                                    color: AppColors.neutral500,
+                                    height: 1.4,
+                                  ),
+                                ),
+
+                                SizedBox(height: AppSpacing.v20),
+
+                                FkPrimaryButton(
+                                  label: "contributor.viewApplication".tr(),
+                                  icon: null,
+                                  onPressed: () =>
+                                      context.push(RouteNames.applicationUnderReview),
+                                ),
+
+                                const Spacer(),
+
+                                SizedBox(height: AppSpacing.v20),
+
+                                /// Applicant Details Card
+                                Container(
+                                  padding: EdgeInsets.all(AppSpacing.h18),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.whiteBase,
+                                    borderRadius: BorderRadius.circular(16.r),
+                                    border: Border.all(color: AppBorders.secondary),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      _row("contributor.fullName".tr(), fullName),
+                                      const Divider(color: AppBorders.secondary, height: 16),
+                                      _row("contributor.emailAddress".tr(), email),
+                                      const Divider(color: AppBorders.secondary, height: 16),
+                                      _row("contributor.currentRole".tr(), role),
+                                      const Divider(color: AppBorders.secondary, height: 16),
+                                      _row("contributor.experienceLevel".tr(), experience),
+                                      const Divider(color: AppBorders.secondary, height: 16),
+                                      _row("contributor.time".tr(), time),
+                                    ],
+                                  ),
+                                ),
+
+                                SizedBox(height: AppSpacing.v20),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
-
-              SizedBox(height: AppSpacing.v20),
-
-              Text(
-                "contributor.applicationAlreadySubmitted".tr(),
-                textAlign: TextAlign.center,
-                style: AppTextStyles.titleLarge.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.neutral950,
-                ),
-              ),
-
-              SizedBox(height: AppSpacing.v10),
-
-              Text(
-                "contributor.applicationReviewMessage".tr(),
-                textAlign: TextAlign.center,
-                style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.neutral500,
-                  height: 1.4,
-                ),
-              ),
-
-              SizedBox(height: AppSpacing.v20),
-
-              FkPrimaryButton(
-                label: "contributor.viewApplication".tr(),
-                icon: Icons.arrow_forward_rounded,
-                onPressed: () =>
-                    context.push(RouteNames.applicationUnderReview),
-              ),
-
-              const Spacer(),
-
-              /// Applicant Details Card
-              Container(
-                padding: EdgeInsets.all(AppSpacing.h18),
-                decoration: BoxDecoration(
-                  color: AppColors.whiteBase,
-                  borderRadius: BorderRadius.circular(16.r),
-                  border: Border.all(color: AppBorders.secondary),
-                ),
-                child: Column(
-                  children: [
-                    _row("contributor.fullName".tr(), fullName),
-                    const Divider(color: AppBorders.secondary, height: 16),
-                    _row("contributor.emailAddress".tr(), email),
-                    const Divider(color: AppBorders.secondary, height: 16),
-                    _row("contributor.currentRole".tr(), role),
-                    const Divider(color: AppBorders.secondary, height: 16),
-                    _row("contributor.experienceLevel".tr(), experience),
-                    const Divider(color: AppBorders.secondary, height: 16),
-                    _row("contributor.time".tr(), time),
-                  ],
-                ),
-              ),
-
-              SizedBox(height: AppSpacing.v20),
             ],
           ),
         ),

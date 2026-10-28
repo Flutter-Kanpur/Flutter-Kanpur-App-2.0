@@ -591,8 +591,9 @@
     "viewResources": "View Resources",
     "viewResourcesDesc": "Guidelines, brand assets, and docs",
     "contactTeam": "Contact Team",
-    "contactTeamDesc": "Reach out to the core team anytime",
-    "onboardedNoContributions": "Congratulations! You have been onboarded as a contributor."
+    "contactTeamDesc": "Reach out for help or clarification",
+    "onboardedNoContributions": "Congratulations! You have been onboarded as a contributor.",
+    "loadError": "Unable to load contributor status. Please try again."
   },
   "profile_about_flutter_kanpur": {
     "title": "About Flutter Kanpur",

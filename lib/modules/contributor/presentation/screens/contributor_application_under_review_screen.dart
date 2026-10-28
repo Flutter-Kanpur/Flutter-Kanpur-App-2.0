@@ -2,12 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_text_styles.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_back_button.dart';
 import 'package:flutter_knp_mobile_app_v2/shared/widgets/fk_primary_button.dart';
+import 'package:flutter_knp_mobile_app_v2/shared/widgets/gradient_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_knp_mobile_app_v2/utils/assets_path.dart';
 import 'package:go_router/go_router.dart';
@@ -29,9 +29,8 @@ class ContributorApplicationUnderReviewScreen extends ConsumerWidget {
       } catch (_) {}
     }
 
-    return Scaffold(
-      backgroundColor: AppColors.whiteBase,
-      body: SafeArea(
+    return GradientBackground(
+      child: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: AppSpacing.h20),
           child: Column(
@@ -42,7 +41,7 @@ class ContributorApplicationUnderReviewScreen extends ConsumerWidget {
               Row(
                 children: [
                   const FkBackButton(
-                    fallbackPath: RouteNames.joinContributor,
+                    fallbackPath: RouteNames.profile,
                   ),
                   Expanded(
                     child: Center(
@@ -60,88 +59,79 @@ class ContributorApplicationUnderReviewScreen extends ConsumerWidget {
               ),
 
               Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(height: AppSpacing.v20),
+                child: RefreshIndicator(
+                  color: AppColors.primary500,
+                  onRefresh: () async {
+                    ref.invalidate(myContributorApplicationProvider);
+                    ref.invalidate(myContributorMembershipProvider);
+                    await Future.wait([
+                      ref.read(myContributorApplicationProvider.future),
+                      ref.read(myContributorMembershipProvider.future),
+                    ]);
+                  },
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Column(
+                      children: [
+                        SizedBox(height: AppSpacing.v20),
 
-                      Image.asset(
-                        AssetsPath.contributorReviewClock,
-                        width: 120.w,
-                      ),
-
-                      SizedBox(height: AppSpacing.v20),
-
-                      Text(
-                        "contributor.applicationUnderReview".tr(),
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.titleLarge.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.neutral950,
+                        Image.asset(
+                          AssetsPath.contributorReviewClock,
+                          width: 120.w,
                         ),
-                      ),
 
-                      SizedBox(height: AppSpacing.v10),
+                        SizedBox(height: AppSpacing.v20),
 
-                      Text(
-                        "contributor.thanksForApplying".tr(),
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.neutral500,
+                        Text(
+                          "contributor.applicationUnderReview".tr(),
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.titleLarge.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.neutral950,
+                          ),
                         ),
-                      ),
 
-                      SizedBox(height: AppSpacing.v20),
+                        SizedBox(height: AppSpacing.v10),
 
-                      FkPrimaryButton(
-                        label: "contributor.viewApplicationDetails".tr(),
-                        icon: Icons.arrow_forward_rounded,
-                        onPressed: () =>
-                            context.push(RouteNames.applicationSummary),
-                      ),
-
-                      SizedBox(height: 24.h),
-
-                      /// Status Timeline Card
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: AppSpacing.h18,
-                          vertical: AppSpacing.v16,
+                        Text(
+                          "contributor.thanksForApplying".tr(),
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.neutral500,
+                            height: 1.4,
+                          ),
                         ),
-                        decoration: BoxDecoration(
-                          color: AppColors.whiteBase,
-                          borderRadius: BorderRadius.circular(16.r),
-                          border: Border.all(color: AppBorders.secondary),
-                        ),
-                        child: Column(
-                          children: [
-                            _item(
-                              "contributor.status".tr(),
-                              "contributor.underReview".tr(),
-                            ),
-                            const Divider(
-                              color: AppBorders.secondary,
-                              height: 20,
-                            ),
-                            _item(
-                              "contributor.submittedOn".tr(),
-                              submittedDate,
-                            ),
-                            const Divider(
-                              color: AppBorders.secondary,
-                              height: 20,
-                            ),
-                            _item(
-                              "contributor.estimatedResponse".tr(),
-                              "contributor.withinFiveToSevenDays".tr(),
-                            ),
-                          ],
-                        ),
-                      ),
 
-                      SizedBox(height: AppSpacing.v20),
-                    ],
+                        SizedBox(height: AppSpacing.v20),
+
+                        FkPrimaryButton(
+                          label: "contributor.viewApplicationDetails".tr(),
+                          icon: null,
+                          onPressed: () =>
+                              context.push(RouteNames.applicationSummary),
+                        ),
+
+                        SizedBox(height: 28.h),
+
+                        /// Status Details Section (Centered stack matching Figma design)
+                        _statusBlock(
+                          "contributor.status".tr(),
+                          "contributor.underReview".tr(),
+                        ),
+                        SizedBox(height: 16.h),
+                        _statusBlock(
+                          "contributor.submittedOn".tr(),
+                          submittedDate,
+                        ),
+                        SizedBox(height: 16.h),
+                        _statusBlock(
+                          "contributor.estimatedResponse".tr(),
+                          "contributor.withinFiveToSevenDays".tr(),
+                        ),
+
+                        SizedBox(height: 28.h),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -163,7 +153,7 @@ class ContributorApplicationUnderReviewScreen extends ConsumerWidget {
                 child: Row(
                   children: [
                     const Icon(
-                      Icons.info_outline_rounded,
+                      Icons.error_outline_rounded,
                       size: 18,
                       color: AppColors.pending700,
                     ),
@@ -189,20 +179,20 @@ class ContributorApplicationUnderReviewScreen extends ConsumerWidget {
     );
   }
 
-  Widget _item(String title, String value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget _statusBlock(String label, String value) {
+    return Column(
       children: [
         Text(
-          title,
+          label.endsWith(':') ? label : '$label:',
           style: AppTextStyles.bodyMedium.copyWith(
             color: AppColors.neutral400,
           ),
         ),
+        SizedBox(height: 2.h),
         Text(
           value,
           style: AppTextStyles.titleSmall.copyWith(
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w700,
             color: AppColors.neutral950,
           ),
         ),
@@ -210,3 +200,4 @@ class ContributorApplicationUnderReviewScreen extends ConsumerWidget {
     );
   }
 }
+
