@@ -22,6 +22,16 @@ final myContributorProjectsProvider =
   return ref.watch(contributorRepositoryProvider).fetchMyProjects();
 });
 
+final myContributorAssignmentsProvider =
+    FutureProvider<List<Map<String, dynamic>>>((ref) async {
+  return ref.watch(contributorRepositoryProvider).fetchMyAssignments();
+});
+
+final myContributorMetricsProvider =
+    FutureProvider<Map<String, String>>((ref) async {
+  return ref.watch(contributorRepositoryProvider).fetchMyMetrics();
+});
+
 enum ContributorStatus {
   notApplied,
   pending,
@@ -90,6 +100,8 @@ class ContributorApplicationDraftNotifier
     ref.invalidate(myContributorApplicationProvider);
     ref.invalidate(myContributorMembershipProvider);
     ref.invalidate(myContributorProjectsProvider);
+    ref.invalidate(myContributorAssignmentsProvider);
+    ref.invalidate(myContributorMetricsProvider);
     clear();
   }
 }

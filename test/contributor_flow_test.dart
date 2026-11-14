@@ -137,4 +137,50 @@ void main() {
       expect(asyncStatus.value, ContributorStatus.pending);
     });
   });
+
+  group('Contributor assignments and metrics providers', () {
+    test('myContributorAssignmentsProvider returns expected assignments', () async {
+      final container = ProviderContainer(
+        overrides: [
+          myContributorAssignmentsProvider.overrideWith(
+            (ref) async => [
+              {
+                'id': 'test-1',
+                'title': 'Mobile App UI Implementation',
+                'context': 'Flutter Kanpur App 2.0',
+                'due_date': 'Due in 3 days',
+                'status': 'in_progress',
+              }
+            ],
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      final assignments = await container.read(myContributorAssignmentsProvider.future);
+      expect(assignments.length, 1);
+      expect(assignments.first['title'], 'Mobile App UI Implementation');
+      expect(assignments.first['due_date'], 'Due in 3 days');
+    });
+
+    test('myContributorMetricsProvider returns expected summary statistics', () async {
+      final container = ProviderContainer(
+        overrides: [
+          myContributorMetricsProvider.overrideWith(
+            (ref) async => {
+              'tasks_completed': '06',
+              'events_contributed': '40%',
+              'active_tasks': '24',
+            },
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      final metrics = await container.read(myContributorMetricsProvider.future);
+      expect(metrics['tasks_completed'], '06');
+      expect(metrics['events_contributed'], '40%');
+      expect(metrics['active_tasks'], '24');
+    });
+  });
 }

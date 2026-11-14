@@ -47,6 +47,7 @@ import 'package:flutter_knp_mobile_app_v2/shared/screens/app_feedback_screen.dar
 import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/screens/already_contributor_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/screens/application_submitted_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/screens/application_summary_screen.dart';
+import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/screens/contribution_details_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/screens/contributor_application_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/screens/contributor_application_submitted_screen.dart';
 import 'package:flutter_knp_mobile_app_v2/modules/contributor/presentation/screens/contributor_application_under_review_screen.dart';
@@ -320,6 +321,16 @@ final GoRouter appRouter = GoRouter(
           ],
         ),
 
+        /// Contributor - Contribution Details
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.contributionDetails,
+              builder: (context, state) => const ContributionDetailsScreen(),
+            ),
+          ],
+        ),
+
         /// Contributor - No Contributions
         StatefulShellBranch(
           routes: [
@@ -463,6 +474,12 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: RouteNames.myContributions,
       builder: (context, state) => const MyContributionsScreen(),
+    ),
+
+    /// Contribution Details
+    GoRoute(
+      path: RouteNames.contributionDetails,
+      builder: (context, state) => const ContributionDetailsScreen(),
     ),
 
     /// No Contributions
