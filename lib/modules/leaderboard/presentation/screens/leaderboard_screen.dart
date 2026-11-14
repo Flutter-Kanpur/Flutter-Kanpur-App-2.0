@@ -17,9 +17,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widgets/leaderboard_common.dart';
 
 /// Latest community leaderboard: top 3 as balloons, everyone else in a list.
-/// The signed-in user's row is highlighted.
+/// The signed-in user's row is highlighted. Rows load page by page as the
+/// user nears the bottom (infinite scroll).
 class LeaderboardScreen extends ConsumerWidget {
   const LeaderboardScreen({super.key});
+
+  /// Start fetching the next page this far (px) from the bottom, same
+  /// threshold as the Community Discussions feed.
+  static const _loadMoreThreshold = 400.0;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -36,39 +41,54 @@ class LeaderboardScreen extends ConsumerWidget {
               Expanded(
                 child: RefreshIndicator(
                   onRefresh: () => ref.refresh(leaderboardProvider.future),
-                  child: CustomScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    slivers: [
-                      leaderboardAsync.when(
-                        // Keep the board during pull-to-refresh, but show the
-                        // skeleton when retrying from the error view.
-                        skipLoadingOnRefresh: !leaderboardAsync.hasError,
-                        loading: () => const SliverToBoxAdapter(
-                          child: _LeaderboardSkeleton(),
-                        ),
-                        error: (_, _) => SliverFillRemaining(
-                          hasScrollBody: false,
-                          child: Center(
-                            child: FkErrorView(
-                              message: 'leaderboard.loadError'.tr(),
-                              onRetry: () =>
-                                  ref.invalidate(leaderboardProvider),
+                  // A listener instead of a ScrollController so the screen
+                  // stays a ConsumerWidget (no StatefulWidget). Only
+                  // user/fling scroll updates trigger it - never mid-build.
+                  // loadMore() itself ignores repeat calls.
+                  child: NotificationListener<ScrollUpdateNotification>(
+                    onNotification: (n) {
+                      if (n.metrics.axis == Axis.vertical &&
+                          n.metrics.extentAfter < _loadMoreThreshold) {
+                        ref.read(leaderboardProvider.notifier).loadMore();
+                      }
+                      // Let RefreshIndicator see the notification too.
+                      return false;
+                    },
+                    child: CustomScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      slivers: [
+                        leaderboardAsync.when(
+                          // Keep the board during pull-to-refresh, but show
+                          // the skeleton when retrying from the error view.
+                          skipLoadingOnRefresh: !leaderboardAsync.hasError,
+                          loading: () => const SliverToBoxAdapter(
+                            child: _LeaderboardSkeleton(),
+                          ),
+                          error: (_, _) => SliverFillRemaining(
+                            hasScrollBody: false,
+                            child: Center(
+                              child: FkErrorView(
+                                message: 'leaderboard.loadError'.tr(),
+                                onRetry: () =>
+                                    ref.invalidate(leaderboardProvider),
+                              ),
                             ),
                           ),
-                        ),
-                        data: (board) => board.isEmpty
-                            ? const SliverFillRemaining(
-                                hasScrollBody: false,
-                                child: _EmptyLeaderboardView(),
-                              )
-                            : SliverToBoxAdapter(
-                                child: _LeaderboardBody(
+                          data: (board) => board.isEmpty
+                              ? const SliverFillRemaining(
+                                  hasScrollBody: false,
+                                  child: _EmptyLeaderboardView(),
+                                )
+                              : _LeaderboardBody(
                                   board: board,
                                   myId: myId,
+                                  onRetryLoadMore: () => ref
+                                      .read(leaderboardProvider.notifier)
+                                      .loadMore(),
                                 ),
-                              ),
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -80,12 +100,20 @@ class LeaderboardScreen extends ConsumerWidget {
   }
 }
 
+/// The loaded board as slivers, so rank rows are built lazily as they
+/// scroll into view instead of all at once.
 class _LeaderboardBody extends StatelessWidget {
-  const _LeaderboardBody({required this.board, required this.myId});
+  const _LeaderboardBody({
+    required this.board,
+    required this.myId,
+    required this.onRetryLoadMore,
+  });
 
   final Leaderboard board;
   final String? myId;
+  final VoidCallback onRetryLoadMore;
 
+  /// Uses the ranked message only once the user's row has been loaded.
   String get _shareMessage {
     final me = board.entries.where((e) => e.userId == myId).firstOrNull;
     return me == null
@@ -97,22 +125,51 @@ class _LeaderboardBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    final rest = board.rest;
+    final loadMoreError = board.loadMoreError;
+
+    return SliverPadding(
       padding: EdgeInsets.fromLTRB(
         AppSpacing.h20,
         AppSpacing.v8,
         AppSpacing.h20,
         AppSpacing.v22,
       ),
-      child: Column(
-        children: [
-          _Podium(entries: board.podium, myId: myId),
-          if (board.rest.isNotEmpty)
-            _RankList(entries: board.rest, myId: myId)
+      sliver: SliverMainAxisGroup(
+        slivers: [
+          SliverToBoxAdapter(
+            child: _Podium(entries: board.podium, myId: myId),
+          ),
+          if (rest.isNotEmpty)
+            _RankListSliver(entries: rest, myId: myId)
           else
-            const FkDashedDivider(),
-          SizedBox(height: AppSpacing.v22),
-          ShareWithFriendsButton(message: _shareMessage),
+            const SliverToBoxAdapter(child: FkDashedDivider()),
+          // Footer: next page in flight, or it failed (loaded rows stay).
+          if (board.isLoadingMore)
+            SliverPadding(
+              padding: EdgeInsets.only(top: AppSpacing.v10),
+              sliver: const SliverToBoxAdapter(
+                child: FkSkeletonPulse(child: _RankRowsSkeleton(count: 2)),
+              ),
+            )
+          else if (loadMoreError != null)
+            SliverToBoxAdapter(
+              child: FkErrorView(
+                message: 'leaderboard.loadMoreError'.tr(),
+                onRetry: onRetryLoadMore,
+              ),
+            ),
+          // Shown only after the last page so it doesn't jump down each
+          // time another page is appended below it.
+          if (!board.hasMore)
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.only(top: AppSpacing.v22),
+                child: Center(
+                  child: ShareWithFriendsButton(message: _shareMessage),
+                ),
+              ),
+            ),
         ],
       ),
     );
@@ -253,16 +310,17 @@ class _Balloon extends StatelessWidget {
   }
 }
 
-/// Rank 4+ in a rounded card with dashed separators.
-class _RankList extends StatelessWidget {
-  const _RankList({required this.entries, required this.myId});
+/// Rank 4+ in a rounded card with dashed separators. A sliver (not a
+/// Column) so only on-screen rows are built as pages keep appending.
+class _RankListSliver extends StatelessWidget {
+  const _RankListSliver({required this.entries, required this.myId});
 
   final List<LeaderboardEntry> entries;
   final String? myId;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return DecoratedSliver(
       decoration: BoxDecoration(
         color: AppColors.whiteBase,
         borderRadius: AppRadius.all05,
@@ -275,18 +333,17 @@ class _RankList extends StatelessWidget {
           ),
         ],
       ),
-      padding: EdgeInsets.symmetric(vertical: AppSpacing.v6),
-      child: Column(
-        children: [
-          for (var i = 0; i < entries.length; i++) ...[
-            if (i > 0)
-              Padding(
-                padding: AppSpacing.horizontal(AppSpacing.h16),
-                child: const FkDashedDivider(),
-              ),
-            _RankRow(entry: entries[i], isMe: entries[i].userId == myId),
-          ],
-        ],
+      sliver: SliverPadding(
+        padding: EdgeInsets.symmetric(vertical: AppSpacing.v6),
+        sliver: SliverList.separated(
+          itemCount: entries.length,
+          itemBuilder: (context, i) =>
+              _RankRow(entry: entries[i], isMe: entries[i].userId == myId),
+          separatorBuilder: (context, _) => Padding(
+            padding: AppSpacing.horizontal(AppSpacing.h16),
+            child: const FkDashedDivider(),
+          ),
+        ),
       ),
     );
   }
@@ -429,13 +486,31 @@ class _LeaderboardSkeleton extends StatelessWidget {
                 ],
               ),
             ),
-            for (var i = 0; i < 6; i++) ...[
-              FkSkeletonBlock(height: 44.r, radius: AppRadius.r03),
-              SizedBox(height: AppSpacing.v10),
-            ],
+            const _RankRowsSkeleton(count: 6),
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Placeholder rank rows: the first-load skeleton's list part, and the
+/// infinite-scroll footer while the next page loads. Callers wrap it in
+/// [FkSkeletonPulse].
+class _RankRowsSkeleton extends StatelessWidget {
+  const _RankRowsSkeleton({required this.count});
+
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        for (var i = 0; i < count; i++) ...[
+          FkSkeletonBlock(height: 44.r, radius: AppRadius.r03),
+          SizedBox(height: AppSpacing.v10),
+        ],
+      ],
     );
   }
 }

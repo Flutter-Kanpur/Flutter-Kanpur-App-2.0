@@ -14,7 +14,6 @@ void main() {
         'user': {
           'display_name': 'Pushti Sonawala',
           'full_name': 'Pushti S',
-          'photo_url': 'https://cdn.example.com/p.png',
         },
       }, fallbackName: 'Member');
 
@@ -23,7 +22,6 @@ void main() {
       expect(entry.points, 56);
       expect(entry.name, 'Pushti Sonawala');
       expect(entry.shortName, 'Pushti');
-      expect(entry.photoUrl, 'https://cdn.example.com/p.png');
     });
 
     test('falls back through full_name, username, then fallbackName', () {
@@ -54,7 +52,6 @@ void main() {
       );
       expect(hidden.name, 'Member');
       expect(hidden.points, 80);
-      expect(hidden.photoUrl, isNull);
     });
 
     test('bad numbers become 0', () {
@@ -70,28 +67,43 @@ void main() {
   });
 
   group('Leaderboard', () {
-    test('sorted by rank, ties by points then name; podium/rest split', () {
+    // Entries arrive in server order (rank, then user id) and are kept as-is.
+    test('keeps server order; podium/rest split', () {
       final board = Leaderboard(
-        entries: Leaderboard.sorted([
-          _entry('Utsav', 7, 55),
+        entries: [
           _entry('Angie', 1, 250),
-          _entry('Naman', 3, 60),
-          _entry('Ayush', 6, 55),
           _entry('Akash', 2, 80),
-          _entry('Aneesh', 5, 55),
+          _entry('Naman', 3, 60),
           _entry('Pushti', 4, 55),
-          _entry('Bob', 7, 55),
-        ]),
+          _entry('Aneesh', 5, 55),
+        ],
       );
 
       expect(board.podium.map((e) => e.name), ['Angie', 'Akash', 'Naman']);
-      expect(board.rest.map((e) => e.name), [
-        'Pushti',
-        'Aneesh',
-        'Ayush',
-        'Bob',
-        'Utsav',
-      ]);
+      expect(board.rest.map((e) => e.name), ['Pushti', 'Aneesh']);
+    });
+
+    test('copyWith keeps snapshotId and can set/clear loadMoreError', () {
+      final board = Leaderboard(
+        snapshotId: 's1',
+        entries: [_entry('Angie', 1, 250)],
+        hasMore: true,
+      );
+
+      final failed = board.copyWith(loadMoreError: Exception('offline'));
+      expect(failed.snapshotId, 's1');
+      expect(failed.hasMore, isTrue);
+      expect(failed.loadMoreError, isNotNull);
+
+      final appended = failed.copyWith(
+        entries: [...board.entries, _entry('Akash', 2, 80)],
+        hasMore: false,
+        clearLoadMoreError: true,
+      );
+      expect(appended.entries, hasLength(2));
+      expect(appended.hasMore, isFalse);
+      expect(appended.loadMoreError, isNull);
+      expect(appended.snapshotId, 's1');
     });
 
     test('fewer than 3 entries: podium only, empty rest', () {

@@ -199,7 +199,8 @@
     "rankSemantics": "Rank {}, {}, {}",
     "emptyTitle": "No rankings yet",
     "emptyMessage": "The leaderboard will appear here once rankings are published.",
-    "loadError": "Couldn't load the leaderboard."
+    "loadError": "Couldn't load the leaderboard.",
+    "loadMoreError": "Couldn't load more rankings."
   },
   "myRank": {
     "title": "My Ranks",

@@ -149,3 +149,55 @@ Persistent project memory. Read at the start of every session; append (never ove
 - The empty state's CTA ("Solve today's problem") routes to the already-existing `RouteNames.problemOfDay` screen rather than a new destination. The contest card's own action button (`"Continue contest"`/`"View details"`) is left as a no-op - no join/participate flow exists yet, same as several other placeholder destinations built this session. "Open Calls" (the sibling no-op tile) was out of scope - no Figma was provided for it.
 
 **What changed**: folded `_EmptyProjectsView`, `_LoadMoreButton`, `_PagedProjectsList`, `_SearchResults` back into `community_projects_screen.dart`, and `_ProjectDetailContent`, `_ScreenshotThumbnail`/`_ExpandedScreenshotView`, `_ProjectDetailSkeleton` back into `project_detail_screen.dart`, deleting the 7 files those had been split into. Kept `project_filter_chips_row.dart` (matches the existing `community_filter_row.dart` precedent) and `fk_dashed_divider.dart` (explicitly requested as a common widget, matches `DottedRoundedRect`). Also stripped Figma export-filename references (`iPhone 16 - XXX.svg`) from every doc comment - zero elsewhere in the app - and trimmed a comment on `ProjectSearchNotifier.setQuery` that had drifted into narrating its own bug-fix history instead of just stating the current behavior.
+
+### 2026-11-01 — Review: Leaderboard & My Rank module (no code changed)
+
+**Why**: read-only review of `lib/modules/leaderboard/` (added in #42) plus a light project-wide pass. Nothing was edited; these are open findings.
+
+**Leaderboard findings**:
+- `autoDispose` on `leaderboardProvider`/`myRankProvider` probably doesn't refresh data on reopen as the comments say. Both screens are hidden `StatefulShellBranch`es, and `indexedStack` keeps each visited branch mounted, so the providers keep a listener and are never disposed. Not verified on device.
+- My Rank → "View leaderboard" pushes into a different shell branch. Back there may fall through to `FkBackButton`'s `/profile` fallback instead of returning to My Rank. Not verified on device.
+- `fetchLatest` limits to 100. A user ranked >100 gets no highlighted row, and the share text uses the "unranked" message even though My Rank shows them ranked.
+- `_latestSnapshot()` takes the newest row by `generated_at` with no published/complete filter. A snapshot whose entries are still being written could show up partially. `fetchMyRank`'s `.maybeSingle()` throws if a snapshot has duplicate `(snapshot_id, user_uid)` rows.
+- The level is computed from the rounded `score` (49.5 → 50 → Level 2).
+- `LeaderboardEntry.photoUrl` (and `username`) are fetched but never rendered. `_RankMedal.level` only affects semantics, so the medal looks the same at every level.
+- `currentUserIdProvider` just wraps `authUserIdProvider`. `leaderboard_screen_test.dart` hides every "overflowed" error.
+- The skeleton podium is 200.r tall and the real podium 230.r, so the layout shifts on load.
+
+**Project-wide findings**:
+- `supabase/schema.sql` is referenced by `docs/flutter_kanpur_architecture.md` but missing, so no DDL for the leaderboard tables exists in the repo.
+- `lib/shared/widgets/my_profile_screen.dart` is an unused duplicate `MyProfileScreen` (hardcoded strings, no-op tiles).
+- `bypassAuthForTesting` (listed in Known Tech Debt above) no longer exists in `lib/app/router/`, so that entry is stale.
+- About 20 files still use `setState`, despite the Riverpod-only rule.
+
+### 2026-11-03 — Leaderboard: schema-aligned fetching + infinite scroll
+
+**Why**: you supplied the real DDL for `leaderboard_snapshots` (`id, snapshot_name, snapshot_type, generated_at, created_by`) and `leaderboard_entries` (`id, snapshot_id, user_uid, rank_position, score numeric(12,2), metric_label, created_at`, `UNIQUE (snapshot_id, user_uid)`). The app picked the newest snapshot of *any* type, fetched columns it never displayed, and loaded the top 100 rows eagerly. Decisions you made: one fixed snapshot type (value not decided yet), fetch only what the UI shows (no `metric_label`/`snapshot_name`/avatars), infinite scroll at 20 per page, no pinned "you" row.
+
+**What changed**:
+- `leaderboard_repository.dart`:
+  - `static const String? snapshotType = null` with a TODO. The `.eq('snapshot_type', …)` filter is applied only when it's non-null, so behaviour stays "latest of any type" until it's set. **Set it before release.**
+  - `_latestSnapshotId()` selects `id` only.
+  - The entry select dropped `users.photo_url`.
+  - `fetchLatest` was replaced by `fetchLatestSnapshotId()` + `fetchEntriesPage()`, which orders by `rank_position, user_uid` (a stable tie-break, so offset paging can't skip or repeat tied rows) and fetches `limit + 1` rows to compute `hasMore`.
+  - `fetchMyRank` now shares the type filter.
+- `leaderboard_models.dart`:
+  - `LeaderboardEntry.photoUrl` removed.
+  - `Leaderboard` is now the paged state (`snapshotId, entries, hasMore, isLoadingMore, loadMoreError, copyWith`), modelled on `QuestionFeedState`.
+  - `generatedAt` and `Leaderboard.sorted` removed: the server order is authoritative, and per-page client sorting could reorder rows across page boundaries.
+- `leaderboard_providers.dart`: `leaderboardProvider` is now `AsyncNotifierProvider.autoDispose<LeaderboardNotifier, Leaderboard>`.
+  - `build()` pins the snapshot id. `loadMore()` pages from that same id, so a snapshot published mid-scroll can't mix two boards.
+  - **Race guard**: a page that finishes after pull-to-refresh, or after the screen was left, is discarded (`ref.mounted` / `state.isLoading` / identity check). Otherwise the stale list plus the new page would overwrite the fresh page 1.
+- `leaderboard_screen.dart`:
+  - Infinite scroll via `NotificationListener<ScrollUpdateNotification>` (`extentAfter < 400`) rather than a `ScrollController`, which keeps the screen a `ConsumerWidget` under the Riverpod-only rule.
+  - Rank rows are a `DecoratedSliver` + `SliverList.separated` (lazy) inside a `SliverMainAxisGroup`.
+  - The footer shows 2 skeleton rows while loading, or an inline `FkErrorView` retry.
+  - The share button appears only after the last page, so it doesn't jump on every append.
+- New translation key: `leaderboard.loadMoreError` (en/hi).
+- Tests:
+  - `leaderboard_screen_test.dart` now drives the real notifier through a fake `LeaderboardRepository`, covering paging, a failed page with retry, empty and first-page error.
+  - `leaderboard_models_test.dart`: updated for the removed members and adds `copyWith` coverage.
+
+**Known gaps (not app-fixable)**:
+- No published/status column on snapshots: a snapshot whose entries are still being inserted can appear partial. The backend should write a snapshot and its entries in one transaction or RPC.
+- If the first page doesn't fill the viewport (e.g. a tablet), no scroll update fires, so page 2 won't auto-load until the user drags.

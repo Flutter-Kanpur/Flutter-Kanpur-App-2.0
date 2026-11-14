@@ -1,20 +1,19 @@
 import 'package:equatable/equatable.dart';
 
 /// One row of `leaderboard_entries` joined with the member's `users` row.
+/// No photo: the leaderboard UI shows no avatars, so `photo_url` isn't fetched.
 class LeaderboardEntry extends Equatable {
   const LeaderboardEntry({
     required this.userId,
     required this.name,
     required this.rank,
     required this.points,
-    this.photoUrl,
   });
 
   final String userId;
   final String name;
   final int rank;
   final int points;
-  final String? photoUrl;
 
   /// First word of [name], for the small top-3 balloons.
   String get shortName {
@@ -34,7 +33,6 @@ class LeaderboardEntry extends Equatable {
     final name = [user['display_name'], user['full_name'], user['username']]
         .map((v) => v == null ? '' : '$v'.trim())
         .firstWhere((v) => v.isNotEmpty, orElse: () => fallbackName);
-    final photo = user['photo_url'] == null ? '' : '${user['photo_url']}';
 
     return LeaderboardEntry(
       userId: '${row['user_uid'] ?? ''}',
@@ -42,7 +40,6 @@ class LeaderboardEntry extends Equatable {
       rank: _int(row['rank_position']),
       // `score` is NUMERIC(12,2); the UI shows whole points.
       points: _int(row['score']),
-      photoUrl: photo.startsWith('http') ? photo : null,
     );
   }
 
@@ -52,21 +49,38 @@ class LeaderboardEntry extends Equatable {
   }
 
   @override
-  List<Object?> get props => [userId, name, rank, points, photoUrl];
+  List<Object?> get props => [userId, name, rank, points];
 }
 
-/// The latest published leaderboard.
+/// The latest leaderboard snapshot, loaded page by page (infinite scroll).
 class Leaderboard extends Equatable {
-  const Leaderboard({required this.entries, this.snapshotId, this.generatedAt});
+  const Leaderboard({
+    required this.entries,
+    this.snapshotId,
+    this.hasMore = false,
+    this.isLoadingMore = false,
+    this.loadMoreError,
+  });
 
   static const empty = Leaderboard(entries: []);
 
-  /// Null when no snapshot has been published yet.
+  /// Null when no snapshot has been published yet. Every page is read from
+  /// this id, so a snapshot published mid-scroll can't mix two boards.
   final String? snapshotId;
-  final DateTime? generatedAt;
 
-  /// Sorted by rank, then points (desc), then name.
+  /// Loaded rows in server order (rank, then user id). Not re-sorted here:
+  /// sorting each page on the client could reorder rows across pages.
   final List<LeaderboardEntry> entries;
+
+  /// Whether another page exists after [entries].
+  final bool hasMore;
+
+  /// A next page is being fetched.
+  final bool isLoadingMore;
+
+  /// Set when a *later* page fails, so loaded rows stay on screen. A
+  /// first-page failure surfaces through the AsyncValue instead.
+  final Object? loadMoreError;
 
   bool get isEmpty => entries.isEmpty;
 
@@ -76,18 +90,32 @@ class Leaderboard extends Equatable {
   /// Everyone after the podium, for the list card.
   List<LeaderboardEntry> get rest => entries.skip(3).toList();
 
-  static List<LeaderboardEntry> sorted(Iterable<LeaderboardEntry> entries) {
-    return [...entries]..sort((a, b) {
-      final byRank = a.rank.compareTo(b.rank);
-      if (byRank != 0) return byRank;
-      final byPoints = b.points.compareTo(a.points);
-      if (byPoints != 0) return byPoints;
-      return a.name.toLowerCase().compareTo(b.name.toLowerCase());
-    });
+  Leaderboard copyWith({
+    List<LeaderboardEntry>? entries,
+    bool? hasMore,
+    bool? isLoadingMore,
+    Object? loadMoreError,
+    bool clearLoadMoreError = false,
+  }) {
+    return Leaderboard(
+      entries: entries ?? this.entries,
+      snapshotId: snapshotId,
+      hasMore: hasMore ?? this.hasMore,
+      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      loadMoreError: clearLoadMoreError
+          ? null
+          : (loadMoreError ?? this.loadMoreError),
+    );
   }
 
   @override
-  List<Object?> get props => [snapshotId, generatedAt, entries];
+  List<Object?> get props => [
+    snapshotId,
+    entries,
+    hasMore,
+    isLoadingMore,
+    loadMoreError,
+  ];
 }
 
 /// A rank level on My Rank, e.g. "Consistent Learner - Level 3 of 6".
