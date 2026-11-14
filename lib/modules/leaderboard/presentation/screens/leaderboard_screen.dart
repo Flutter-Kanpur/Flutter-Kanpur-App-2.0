@@ -148,8 +148,17 @@ class _LeaderboardBody extends StatelessWidget {
           if (board.isLoadingMore)
             SliverPadding(
               padding: EdgeInsets.only(top: AppSpacing.v10),
-              sliver: const SliverToBoxAdapter(
-                child: FkSkeletonPulse(child: _RankRowsSkeleton(count: 2)),
+              sliver: SliverToBoxAdapter(
+                child: FkSkeletonPulse(
+                  child: Column(
+                    children: [
+                      for (var i = 0; i < 2; i++) ...[
+                        FkSkeletonBlock(height: 44.r, radius: AppRadius.r03),
+                        SizedBox(height: AppSpacing.v10),
+                      ],
+                    ],
+                  ),
+                ),
               ),
             )
           else if (loadMoreError != null)
@@ -486,31 +495,13 @@ class _LeaderboardSkeleton extends StatelessWidget {
                 ],
               ),
             ),
-            const _RankRowsSkeleton(count: 6),
+            for (var i = 0; i < 6; i++) ...[
+              FkSkeletonBlock(height: 44.r, radius: AppRadius.r03),
+              SizedBox(height: AppSpacing.v10),
+            ],
           ],
         ),
       ),
-    );
-  }
-}
-
-/// Placeholder rank rows: the first-load skeleton's list part, and the
-/// infinite-scroll footer while the next page loads. Callers wrap it in
-/// [FkSkeletonPulse].
-class _RankRowsSkeleton extends StatelessWidget {
-  const _RankRowsSkeleton({required this.count});
-
-  final int count;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        for (var i = 0; i < count; i++) ...[
-          FkSkeletonBlock(height: 44.r, radius: AppRadius.r03),
-          SizedBox(height: AppSpacing.v10),
-        ],
-      ],
     );
   }
 }
