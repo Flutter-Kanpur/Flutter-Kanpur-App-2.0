@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
+import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
@@ -72,9 +73,7 @@ class MyContributionsScreen extends ConsumerWidget {
               ),
               const Expanded(
                 child: Center(
-                  child: CircularProgressIndicator(
-                    color: AppColors.primary500,
-                  ),
+                  child: CircularProgressIndicator(color: AppColors.primary500),
                 ),
               ),
             ],
@@ -147,11 +146,13 @@ class MyContributionsScreen extends ConsumerWidget {
     final assignmentsAsync = ref.watch(myContributorAssignmentsProvider);
     final assignments = assignmentsAsync.value ?? [];
     final metricsAsync = ref.watch(myContributorMetricsProvider);
-    final metrics = metricsAsync.value ?? {
-      'tasks_completed': '06',
-      'events_contributed': '40%',
-      'active_tasks': '24',
-    };
+    final metrics =
+        metricsAsync.value ??
+        {
+          'tasks_completed': '06',
+          'events_contributed': '40%',
+          'active_tasks': '24',
+        };
 
     final userName = user?.displayLabel ?? "Angelica Singh";
 
@@ -159,20 +160,23 @@ class MyContributionsScreen extends ConsumerWidget {
     final userRole = (membership?['role'] as String?)?.trim().isNotEmpty == true
         ? membership!['role'] as String
         : ((user != null && user.skills.isNotEmpty)
-            ? user.skills.first
-            : ((appData?['job_role'] as String?)?.trim().isNotEmpty == true
-                ? appData!['job_role'] as String
-                : "Design"));
+              ? user.skills.first
+              : ((appData?['job_role'] as String?)?.trim().isNotEmpty == true
+                    ? appData!['job_role'] as String
+                    : "Design"));
 
     // Check tier (Senior Contributor vs standard Active Contributor)
-    final isSenior = (membership?['role'] as String?)?.toLowerCase().contains('senior') == true ||
+    final isSenior =
+        (membership?['role'] as String?)?.toLowerCase().contains('senior') ==
+            true ||
         (membership?['is_senior'] == true) ||
         (membership?['tier'] as String?)?.toLowerCase() == 'senior' ||
         assignments.isNotEmpty;
 
     // Dynamic joined date resolution
     String contributorSinceDate = "Mar 2026";
-    final rawDate = (membership?['joined_at'] as String?) ??
+    final rawDate =
+        (membership?['joined_at'] as String?) ??
         (appData?['created_at'] as String?);
     if (rawDate != null) {
       try {
@@ -237,10 +241,13 @@ class MyContributionsScreen extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(100.r),
                 ),
                 child: Text(
-                  isSenior && (membership?['role'] as String?)?.toLowerCase().contains('senior') == true
+                  isSenior &&
+                          (membership?['role'] as String?)
+                                  ?.toLowerCase()
+                                  .contains('senior') ==
+                              true
                       ? "contributor.seniorContributor".tr()
                       : "contributor.activeContributor".tr(),
-                  "contributor.activeContributor".tr(),
                   style: AppTextStyles.bodySmall.copyWith(
                     color: const Color(0xFF027A48),
                     fontWeight: FontWeight.w600,
@@ -271,7 +278,9 @@ class MyContributionsScreen extends ConsumerWidget {
             SizedBox(height: 2.h),
 
             Text(
-              "contributor.contributorSince".tr(namedArgs: {"date": contributorSinceDate}),
+              "contributor.contributorSince".tr(
+                namedArgs: {"date": contributorSinceDate},
+              ),
               style: AppTextStyles.bodyMedium.copyWith(
                 color: AppColors.neutral400,
               ),
@@ -308,7 +317,8 @@ class MyContributionsScreen extends ConsumerWidget {
                       icon: Icons.cloud_upload_outlined,
                       title: "contributor.submitWork".tr(),
                       subtitle: "contributor.submitWorkDesc".tr(),
-                      onTap: () => context.push(RouteNames.communityUploadProject),
+                      onTap: () =>
+                          context.push(RouteNames.communityUploadProject),
                     ),
                   ),
                 ],
@@ -330,7 +340,8 @@ class MyContributionsScreen extends ConsumerWidget {
                       icon: Icons.chat_bubble_outline_rounded,
                       title: "contributor.contactTeam".tr(),
                       subtitle: "contributor.contactTeamDesc".tr(),
-                      onTap: () => context.push(RouteNames.contactCommunityTeam),
+                      onTap: () =>
+                          context.push(RouteNames.contactCommunityTeam),
                     ),
                   ),
                 ],
@@ -362,13 +373,8 @@ class MyContributionsScreen extends ConsumerWidget {
 
             SizedBox(height: 24.h),
 
-            /// Contribution Summary Section Header
             Text(
               "contributor.yourContributionSummary".tr(),
-
-            /// Action Cards Section Header
-            Text(
-              "contributor.heresWhatYouCanDo".tr(),
               style: AppTextStyles.titleSmall.copyWith(
                 fontWeight: FontWeight.w700,
                 color: AppColors.neutral950,
@@ -435,7 +441,8 @@ class MyContributionsScreen extends ConsumerWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                assignment['title']?.toString() ?? "Mobile App UI Implementation",
+                                assignment['title']?.toString() ??
+                                    "Mobile App UI Implementation",
                                 style: AppTextStyles.titleSmall.copyWith(
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.neutral950,
@@ -482,12 +489,14 @@ class MyContributionsScreen extends ConsumerWidget {
                 child: Column(
                   children: [
                     InkWell(
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(16.r),
+                      ),
                       onTap: () => context.push(RouteNames.communityGuidelines),
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: AppSpacing.h16,
-                          vertical: AppSpacing.v14,
+                          vertical: 14.h,
                         ),
                         child: Row(
                           children: [
@@ -521,12 +530,14 @@ class MyContributionsScreen extends ConsumerWidget {
                       color: AppBorders.secondary,
                     ),
                     InkWell(
-                      borderRadius: BorderRadius.vertical(bottom: Radius.circular(16.r)),
+                      borderRadius: BorderRadius.vertical(
+                        bottom: Radius.circular(16.r),
+                      ),
                       onTap: () => context.push(RouteNames.reportAnIssue),
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: AppSpacing.h16,
-                          vertical: AppSpacing.v14,
+                          vertical: 14.h,
                         ),
                         child: Row(
                           children: [
@@ -575,6 +586,7 @@ class MyContributionsScreen extends ConsumerWidget {
                 ),
               ),
             ],
+
             /// 2x2 Action Cards Grid (matching Figma Dashboard)
             Row(
               children: [
@@ -667,5 +679,3 @@ class MyContributionsScreen extends ConsumerWidget {
     );
   }
 }
-
-

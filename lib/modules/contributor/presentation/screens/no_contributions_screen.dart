@@ -15,10 +15,7 @@ import 'package:go_router/go_router.dart';
 class NoContributionsScreen extends ConsumerWidget {
   final bool isOnboarded;
 
-  const NoContributionsScreen({
-    super.key,
-    this.isOnboarded = false,
-  });
+  const NoContributionsScreen({super.key, this.isOnboarded = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -86,8 +83,10 @@ class NoContributionsScreen extends ConsumerWidget {
 
                                 Text(
                                   isOnboarded
-                                      ? "contributor.onboardedNoContributions".tr()
-                                      : "contributor.noContributionsDescription".tr(),
+                                      ? "contributor.onboardedNoContributions"
+                                            .tr()
+                                      : "contributor.noContributionsDescription"
+                                            .tr(),
                                   textAlign: TextAlign.center,
                                   style: AppTextStyles.bodyMedium.copyWith(
                                     color: AppColors.neutral500,
@@ -99,13 +98,13 @@ class NoContributionsScreen extends ConsumerWidget {
 
                                 FkPrimaryButton(
                                   label: isOnboarded
-                                      ? "contributor.viewContributorResources".tr()
+                                      ? "contributor.viewContributorResources"
+                                            .tr()
                                       : "contributor.joinAsContributor".tr(),
                                   icon: null,
                                   onPressed: () => context.push(
                                     isOnboarded
                                         ? RouteNames.communityGuidelines
-                                        ? RouteNames.myContributions
                                         : RouteNames.joinContributor,
                                   ),
                                 ),
@@ -127,4 +126,3 @@ class NoContributionsScreen extends ConsumerWidget {
     );
   }
 }
-

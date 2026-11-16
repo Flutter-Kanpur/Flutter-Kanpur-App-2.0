@@ -86,8 +86,8 @@ bool _isSupabaseOfflineAuthError(Object error) {
 Future<void> _bootstrapReadmeAuthWhenOnline() async {
   if (Supabase.instance.client.auth.currentSession == null) return;
 
-  final online =
-      await NetworkConnectivityService.instance.checkInternetConnection();
+  final online = await NetworkConnectivityService.instance
+      .checkInternetConnection();
   if (!online) {
     _retryReadmeAuthWhenOnline();
     return;
@@ -100,21 +100,19 @@ Future<void> _bootstrapReadmeAuthWhenOnline() async {
 
 void _retryReadmeAuthWhenOnline() {
   late final StreamSubscription<bool> subscription;
-  subscription =
-      NetworkConnectivityService.instance.connectionStatusStream.listen((
-    isOnline,
-  ) async {
-    if (!isOnline) return;
-    if (Supabase.instance.client.auth.currentSession == null) {
-      await subscription.cancel();
-      return;
-    }
+  subscription = NetworkConnectivityService.instance.connectionStatusStream
+      .listen((isOnline) async {
+        if (!isOnline) return;
+        if (Supabase.instance.client.auth.currentSession == null) {
+          await subscription.cancel();
+          return;
+        }
 
-    await ReadmeAuthBridge.ensureSignedIn(
-      force: !ReadmeAuthBridge.readmeSessionMatchesHost(),
-    );
-    await subscription.cancel();
-  });
+        await ReadmeAuthBridge.ensureSignedIn(
+          force: !ReadmeAuthBridge.readmeSessionMatchesHost(),
+        );
+        await subscription.cancel();
+      });
 }
 
 /// Keeps the embedded ReadMe Supabase session in sync with Kanpur auth.
