@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_knp_mobile_app_v2/app/router/route_names.dart';
-import 'package:flutter_knp_mobile_app_v2/app/theme/app_borders.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_colors.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_radius.dart';
 import 'package:flutter_knp_mobile_app_v2/app/theme/app_spacing.dart';
@@ -225,6 +224,7 @@ class MyContributionsScreen extends ConsumerWidget {
             SizedBox(height: AppSpacing.v20),
 
             /// Status Badge (matching Image 1 Bottom Right & Column 9)
+            /// Status Badge (matching Image 1 Bottom Right)
             Align(
               alignment: Alignment.topLeft,
               child: Container(
@@ -240,6 +240,7 @@ class MyContributionsScreen extends ConsumerWidget {
                   isSenior && (membership?['role'] as String?)?.toLowerCase().contains('senior') == true
                       ? "contributor.seniorContributor".tr()
                       : "contributor.activeContributor".tr(),
+                  "contributor.activeContributor".tr(),
                   style: AppTextStyles.bodySmall.copyWith(
                     color: const Color(0xFF027A48),
                     fontWeight: FontWeight.w600,
@@ -364,6 +365,10 @@ class MyContributionsScreen extends ConsumerWidget {
             /// Contribution Summary Section Header
             Text(
               "contributor.yourContributionSummary".tr(),
+
+            /// Action Cards Section Header
+            Text(
+              "contributor.heresWhatYouCanDo".tr(),
               style: AppTextStyles.titleSmall.copyWith(
                 fontWeight: FontWeight.w700,
                 color: AppColors.neutral950,
@@ -570,6 +575,90 @@ class MyContributionsScreen extends ConsumerWidget {
                 ),
               ),
             ],
+            /// 2x2 Action Cards Grid (matching Figma Dashboard)
+            Row(
+              children: [
+                Expanded(
+                  child: ContributorActionCard(
+                    icon: Icons.code_rounded,
+                    title: "contributor.viewBlogs".tr(),
+                    subtitle: "contributor.viewBlogsDescription".tr(),
+                    onTap: () => context.push(RouteNames.blogs),
+                  ),
+                ),
+                SizedBox(width: AppSpacing.h12),
+                Expanded(
+                  child: ContributorActionCard(
+                    icon: Icons.code_rounded,
+                    title: "contributor.viewProjects".tr(),
+                    subtitle: "contributor.viewProjectsDescription".tr(),
+                    onTap: () => context.push(RouteNames.communityProjects),
+                  ),
+                ),
+              ],
+            ),
+
+            SizedBox(height: AppSpacing.v12),
+
+            Row(
+              children: [
+                Expanded(
+                  child: ContributorActionCard(
+                    icon: Icons.code_rounded,
+                    title: "contributor.contactTeam".tr(),
+                    subtitle: "contributor.contactTeamDesc".tr(),
+                    onTap: () => context.push(RouteNames.contactCommunityTeam),
+                  ),
+                ),
+                SizedBox(width: AppSpacing.h12),
+                Expanded(
+                  child: ContributorActionCard(
+                    icon: Icons.code_rounded,
+                    title: "contributor.viewResources".tr(),
+                    subtitle: "contributor.viewResourcesDesc".tr(),
+                    onTap: () => context.push(RouteNames.communityGuidelines),
+                  ),
+                ),
+              ],
+            ),
+
+            SizedBox(height: 24.h),
+
+            /// Contribution Summary Section Header
+            Text(
+              "contributor.yourContributionSummary".tr(),
+              style: AppTextStyles.titleSmall.copyWith(
+                fontWeight: FontWeight.w700,
+                color: AppColors.neutral950,
+              ),
+            ),
+
+            SizedBox(height: 14.h),
+
+            const ContributorSummaryCard(
+              tasksCompleted: "06",
+              eventsContributed: "40%",
+              activeTasks: "24",
+            ),
+
+            SizedBox(height: 24.h),
+
+            /// Need help? action
+            Center(
+              child: GestureDetector(
+                onTap: () => _showHelpBottomSheet(context),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 4.h),
+                  child: Text(
+                    "contributor.needHelp".tr(),
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.primary500,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ),
 
             SizedBox(height: AppSpacing.v20),
           ],
