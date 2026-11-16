@@ -121,6 +121,7 @@ class RouteNames {
       '/contributor/application-already-submitted';
   static const applicationUnderReview = '/contributor/application-under-review';
   static const applicationRejected = '/contributor/application-rejected';
+  static const contributionDetails = '/contributor/contribution-details';
 
   /// Contributor Segments
   static const contributorApplicationSegment = 'application';
@@ -133,4 +134,5 @@ class RouteNames {
   static const applicationAlreadySubmittedSegment = 'application-submitted';
   static const applicationUnderReviewSegment = 'application-under-review';
   static const applicationRejectedSegment = 'application-rejected';
+  static const contributionDetailsSegment = 'contribution-details';
 }

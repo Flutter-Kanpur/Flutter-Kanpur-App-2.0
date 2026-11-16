@@ -104,6 +104,7 @@ class NoContributionsScreen extends ConsumerWidget {
                                   icon: null,
                                   onPressed: () => context.push(
                                     isOnboarded
+                                        ? RouteNames.communityGuidelines
                                         ? RouteNames.myContributions
                                         : RouteNames.joinContributor,
                                   ),
